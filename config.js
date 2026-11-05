@@ -1,10 +1,9 @@
-// Pegá aquí los datos de tu proyecto de Firebase (guía, Parte 4).
-// Reemplazá cada valor entre comillas con el tuyo. No borres las comas.
+// Datos del proyecto de Firebase "glassdetailingcr".
 window.FIREBASE_CONFIG = {
-  apiKey: "PEGA_AQUI_TU_apiKey",
-  authDomain: "PEGA_AQUI.firebaseapp.com",
-  projectId: "PEGA_AQUI",
-  storageBucket: "PEGA_AQUI.firebasestorage.app",
-  messagingSenderId: "PEGA_AQUI",
-  appId: "PEGA_AQUI"
+  apiKey: "AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",
+  authDomain: "glassdetailingcr.firebaseapp.com",
+  projectId: "glassdetailingcr",
+  storageBucket: "glassdetailingcr.firebasestorage.app",
+  messagingSenderId: "527384576479",
+  appId: "1:527384576479:web:7ca94fc76a98bf9ce6046a"
 };
