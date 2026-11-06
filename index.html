@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GlassDetailingCR</title>
-<meta name="theme-color" content="#0a3c42">
+<meta name="theme-color" content="#0d1119">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,23 +15,24 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;112,700;112,800&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#e8f0ef;--card:#f7fbfa;--ink:#10292b;--mute:#587073;--line:#c9dbd9;--acc:#0d7a85;--accink:#fff;--glow:#e0a020;--ok:#1f8a4c;--bad:#b3392f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1819;--card:#142729;--ink:#e3f0ee;--mute:#8fabad;--line:#274245;--acc:#3fc1cd;--accink:#06201f;--glow:#f2b134;--ok:#4cc782;--bad:#ff8b80}}
-:root[data-theme="dark"]{--bg:#0c1819;--card:#142729;--ink:#e3f0ee;--mute:#8fabad;--line:#274245;--acc:#3fc1cd;--accink:#06201f;--glow:#f2b134;--ok:#4cc782;--bad:#ff8b80}
+/* Identidad GlassDetailing "Faro": grafito + luz de xenón ámbar (ver reservar/). */
+:root{--bg:#f1f2f5;--card:#ffffff;--ink:#121722;--mute:#5c6577;--line:#dfe2e8;--acc:#141a26;--accink:#fff;--glow:#ffb23f;--ok:#13a463;--bad:#d14343;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0e14;--card:#151a24;--ink:#eef1f6;--mute:#8d97a8;--line:#262d3a;--acc:#ffb23f;--accink:#1b1204;--glow:#ffb23f;--ok:#36c37f;--bad:#ff7a7a}}
+:root[data-theme="dark"]{--bg:#0b0e14;--card:#151a24;--ink:#eef1f6;--mute:#8d97a8;--line:#262d3a;--acc:#ffb23f;--accink:#1b1204;--glow:#ffb23f;--ok:#36c37f;--bad:#ff7a7a}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 Figtree,system-ui,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 Manrope,system-ui,sans-serif}
 main{max-width:520px;margin:0 auto;padding:14px 14px 90px}
-h1{font:800 24px/1 "Bricolage Grotesque",system-ui,sans-serif;margin:6px 0 12px;letter-spacing:-.5px}
-h1 span{color:var(--acc)}
-h2{font:700 17px "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 10px}
+h1{font:800 24px/1 Archivo,system-ui,sans-serif;font-stretch:112%;margin:6px 0 12px;letter-spacing:-.6px}
+h1 span{color:var(--glow)}
+h2{font:700 17px Archivo,system-ui,sans-serif;margin:0 0 10px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
 label{display:block;font-size:13px;color:var(--mute);margin:8px 0 3px}
 input,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 input:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
-button{font:600 15px Figtree,system-ui,sans-serif;border:0;border-radius:10px;padding:12px 14px;cursor:pointer;flex:1;background:var(--acc);color:var(--accink);text-align:center;text-decoration:none}
+button{font:600 15px Manrope,system-ui,sans-serif;border:0;border-radius:10px;padding:12px 14px;cursor:pointer;flex:1;background:var(--acc);color:var(--accink);text-align:center;text-decoration:none}
 button.alt,a.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
 button.sm,a.sm{flex:none;padding:7px 10px;font-size:13px;border-radius:10px;font-weight:600;text-decoration:none;display:inline-block;font-family:inherit}
 .row{display:flex;gap:8px;margin-top:10px;align-items:center}
@@ -41,13 +42,13 @@ nav button{background:transparent;color:var(--mute);padding:10px 4px}
 nav button[aria-selected=true]{background:var(--acc);color:var(--accink)}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
 .week button{padding:7px 0;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:12px;line-height:1.2;position:relative}
-.week button b{display:block;font-size:17px;font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.week button b{display:block;font-size:17px;font-family:Archivo,system-ui,sans-serif}
 .week button[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
-.week i{position:absolute;top:3px;right:4px;font-style:normal;font-size:10px;background:var(--glow);color:#10292b;border-radius:99px;padding:0 5px;font-weight:700}
+.week i{position:absolute;top:3px;right:4px;font-style:normal;font-size:10px;background:var(--glow);color:#1b1204;border-radius:99px;padding:0 5px;font-weight:700}
 .nav2{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:var(--mute);font-size:14px}
 .job{display:flex;gap:12px;border-top:1px solid var(--line);padding:12px 0}
 .job:first-child{border-top:0}
-.hr{font:800 20px "Bricolage Grotesque",system-ui,sans-serif;min-width:64px;color:var(--acc)}
+.hr{font:800 20px Archivo,system-ui,sans-serif;min-width:64px;color:var(--acc)}
 .jb{flex:1;min-width:0}
 .jb .n{font-weight:600}
 .m{color:var(--mute);font-size:14px}
@@ -59,18 +60,18 @@ nav button[aria-selected=true]{background:var(--acc);color:var(--accink)}
 .svc label{flex:1;margin:0;color:var(--ink);font-size:16px}
 .svc .p{width:110px;text-align:right}
 .total{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--glow);margin-top:10px;padding-top:10px}
-.total b{font:800 28px "Bricolage Grotesque",system-ui,sans-serif}
+.total b{font:800 28px Archivo,system-ui,sans-serif}
 .seg{display:flex;gap:4px;margin-bottom:12px}
 .seg button{background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .seg button[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stats div{background:var(--bg);border-radius:10px;padding:10px}
 .stats small{color:var(--mute);display:block}
-.stats b{font:700 19px "Bricolage Grotesque",system-ui,sans-serif}
+.stats b{font:700 19px Archivo,system-ui,sans-serif}
 .up{color:var(--ok)}.down{color:var(--bad)}
 .leg{display:flex;gap:14px;font-size:13px;color:var(--mute);margin-top:4px}
 .leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
-svg text{fill:var(--mute);font-size:9px;font-family:Figtree,sans-serif}
+svg text{fill:var(--mute);font-size:9px;font-family:Manrope,sans-serif}
 .empty{color:var(--mute);text-align:center;padding:16px 0}
 textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px}
 nav button{font-size:14px}
@@ -97,12 +98,12 @@ button:active,a.sm:active{transform:scale(.95)}
 nav button{transition:background-color .25s,color .25s,transform .12s}
 .week i{animation:pop .4s both}
 .card{transition:box-shadow .25s}
-.hero{position:relative;overflow:hidden;color:#fff;border:0;background:linear-gradient(135deg,#0d7a85,#0a4a52 70%,#08363c)}
+.hero{position:relative;overflow:hidden;color:#fff;border:0;background:radial-gradient(70% 70% at 95% 0%,rgba(255,190,90,.42),transparent 60%),#0d1119}
 .hero::after{content:"";position:absolute;top:-50%;bottom:-50%;width:45%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-18deg);animation:sweep 6s ease-in-out infinite;pointer-events:none}
 @keyframes sweep{0%,55%{left:-60%}100%{left:130%}}
 .hero .hg{font-size:13px;opacity:.8}
-.hero .hn{font:700 18px/1.25 "Bricolage Grotesque",system-ui,sans-serif;margin:4px 0}
-.hero .hc{font:800 34px/1.1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.5px}
+.hero .hn{font:700 18px/1.25 Archivo,system-ui,sans-serif;margin:4px 0}
+.hero .hc{font:800 34px/1.1 Archivo,system-ui,sans-serif;letter-spacing:-.5px}
 .hero .hs{font-size:14px;opacity:.85;margin-top:2px}
 .hero .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.18);margin:12px 0 6px;overflow:hidden}
 .hero .bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#f2b134,#ffe08a);transition:width 1s cubic-bezier(.2,.8,.2,1)}
@@ -113,7 +114,7 @@ svg rect.br{transform-box:fill-box;transform-origin:bottom;animation:grow .7s cu
 .goal{display:flex;gap:14px;align-items:center}
 .goal svg{flex:none}
 .goal circle.pr{transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)}
-.goal .gp{font:800 22px "Bricolage Grotesque",system-ui,sans-serif;fill:var(--ink)}
+.goal .gp{font:800 22px Archivo,system-ui,sans-serif;fill:var(--ink)}
 .ins{margin-top:10px;display:grid;gap:6px}
 .ins div{background:var(--bg);border-radius:10px;padding:8px 10px;font-size:14px}
 #toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:600;font-size:14px;transition:all .3s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:20;white-space:nowrap}
@@ -155,12 +156,12 @@ body.locked main>section,body.locked nav{display:none!important}
 .lmsg{min-height:20px;margin-top:10px;font-size:14px;color:var(--bad)}
 .lmsg.ok{color:var(--ok)}
 .lnk{background:none!important;border:0!important;color:var(--acc)!important;padding:8px 0!important;font-size:14px!important;flex:none}
-#who{font:600 12px Figtree,sans-serif;color:var(--mute);float:right;margin-top:4px;display:flex;gap:8px;align-items:center}
+#who{font:600 12px Manrope,sans-serif;color:var(--mute);float:right;margin-top:4px;display:flex;gap:8px;align-items:center}
 #who.hide{display:none}#who span{color:var(--mute);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#who button{padding:4px 10px;font-size:12px;flex:none}
 .tm{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:8px 0;gap:8px;font-size:14px;word-break:break-all}
 .armed{background:var(--bad)!important;color:#fff!important;border-color:var(--bad)!important}
 #toast{white-space:normal;max-width:90vw;text-align:center}
-#mot{display:flex;gap:8px;align-items:flex-start;margin:-4px 2px 14px;padding:0;background:none;border:0;width:100%;text-align:left;color:var(--ink);font:600 15px/1.35 Figtree,system-ui,sans-serif;cursor:pointer;animation:motf 5s ease-in-out 1.6s infinite}
+#mot{display:flex;gap:8px;align-items:flex-start;margin:-4px 2px 14px;padding:0;background:none;border:0;width:100%;text-align:left;color:var(--ink);font:600 15px/1.35 Manrope,system-ui,sans-serif;cursor:pointer;animation:motf 5s ease-in-out 1.6s infinite}
 #mot .ic{flex:none;font-size:17px;animation:motsp 2.4s ease-in-out infinite}
 #mot .w{display:inline-block;opacity:0;transform:translateY(8px);animation:motw .55s cubic-bezier(.2,.8,.2,1) forwards}
 #mot .w.g{background:linear-gradient(90deg,var(--acc),var(--glow),var(--acc));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:motw .55s cubic-bezier(.2,.8,.2,1) forwards,shine 3s linear infinite}
@@ -197,7 +198,7 @@ nav .bdg{position:absolute;top:2px;left:calc(50% + 5px);background:var(--bad);co
 .dic{width:50px;height:50px;border-radius:50%;background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
 #dlg.on .dic{animation:shk .45s .15s both}
 @keyframes shk{0%,100%{transform:none}25%{transform:rotate(-12deg)}50%{transform:rotate(10deg)}75%{transform:rotate(-6deg)}}
-#dlg h3{font:700 20px "Bricolage Grotesque",system-ui,sans-serif;margin:0 0 6px}
+#dlg h3{font:700 20px Archivo,system-ui,sans-serif;margin:0 0 6px}
 .dwhat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0 8px;font-weight:600;word-break:break-word}
 button.danger{background:var(--bad);color:#fff}
 #undo{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);opacity:0;visibility:hidden;z-index:21;display:flex;gap:14px;align-items:center;background:var(--ink);color:var(--bg);padding:7px 7px 7px 16px;border-radius:99px;font-weight:600;font-size:14px;transition:all .3s cubic-bezier(.2,.8,.2,1);white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -218,9 +219,9 @@ button.danger{background:var(--bad);color:#fff}
 .hnote{display:flex!important;width:100%;margin-top:10px;position:relative;z-index:1;justify-content:center}
 /* INSUMOS */
 .icard .ih{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.iname{font:700 20px/1.15 "Bricolage Grotesque",system-ui,sans-serif}
+.iname{font:700 20px/1.15 Archivo,system-ui,sans-serif}
 .istk{flex:none;text-align:center;background:var(--bg);border-radius:12px;padding:7px 12px;min-width:76px}
-.istk b{display:block;font:800 26px/1 "Bricolage Grotesque",system-ui,sans-serif;color:var(--acc)}
+.istk b{display:block;font:800 26px/1 Archivo,system-ui,sans-serif;color:var(--acc)}
 .istk small{color:var(--mute);font-size:12px}
 .istk.low{background:color-mix(in srgb,var(--bad) 15%,transparent)}.istk.low b{color:var(--bad)}
 .ial{font-size:14px;border-radius:10px;padding:8px 10px;margin-top:8px}
@@ -263,14 +264,14 @@ button.danger{background:var(--bad);color:#fff}
 #intro.still .imark *{transform:none}
 
 .ilogo{position:absolute;left:0;right:0;top:57%;text-align:center;color:#effdfe;overflow:hidden;padding:6px 0}
-.iw{font:800 40px/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-1px;position:relative;display:inline-block}
+.iw{font:800 40px/1 Archivo,system-ui,sans-serif;letter-spacing:-1px;position:relative;display:inline-block}
 .iw .l{display:inline-block;opacity:0;transform:translateY(26px) scale(.5);filter:blur(8px)}
-.iw .s{color:#3fc1cd;text-shadow:0 0 18px rgba(63,193,205,.7)}
+.iw .s{color:#ffb23f;text-shadow:0 0 18px rgba(255,178,63,.7)}
 #intro.logo .iw .l{animation:ilt .75s cubic-bezier(.2,1.5,.4,1) forwards}
 @keyframes ilt{to{opacity:1;transform:none;filter:none}}
 #intro.logo .iw{animation:iglo 1.6s .8s ease-in-out forwards}
 @keyframes iglo{0%,100%{text-shadow:none}45%{text-shadow:0 0 22px rgba(160,245,255,.85),0 0 4px #fff}}
-.itag{margin-top:12px;font:600 11px Figtree,system-ui,sans-serif;letter-spacing:.2em;white-space:nowrap;text-transform:uppercase;color:#a6eaee;opacity:0}
+.itag{margin-top:12px;font:600 11px Manrope,system-ui,sans-serif;letter-spacing:.2em;white-space:nowrap;text-transform:uppercase;color:#a6eaee;opacity:0}
 #intro.logo .itag{animation:itg 1s .75s forwards}
 @keyframes itg{from{opacity:0;letter-spacing:.6em}to{opacity:.92;letter-spacing:.2em}}
 .iskip{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:rgba(255,255,255,.38);font-size:12px;opacity:0;animation:itg2 .6s 1.2s forwards}
@@ -286,7 +287,7 @@ button.danger{background:var(--bad);color:#fff}
 .sw{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;font-weight:600}
 .sw input{width:46px;height:26px;accent-color:var(--acc)}
 #nmd{margin-bottom:12px}
-.gsum .gt{font-size:13px;opacity:.8}.gsum .gb{font:800 30px/1.1 "Bricolage Grotesque",system-ui,sans-serif;margin:4px 0}
+.gsum .gt{font-size:13px;opacity:.8}.gsum .gb{font:800 30px/1.1 Archivo,system-ui,sans-serif;margin:4px 0}
 .gsum .gs{font-size:14px;opacity:.9}
 .gsum .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;position:relative;z-index:1}
 .gsum .chips span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 10px;font-size:13px;font-weight:600}
@@ -294,9 +295,9 @@ button.danger{background:var(--bad);color:#fff}
 .goal-c:first-of-type{border-top:0}
 .goal-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .goal-t{font-weight:700}
-.goal-v{font:800 17px "Bricolage Grotesque",system-ui,sans-serif;white-space:nowrap}
+.goal-v{font:800 17px Archivo,system-ui,sans-serif;white-space:nowrap}
 .gbar{height:10px;border-radius:99px;background:var(--line);margin:8px 0 6px;overflow:hidden}
-.gbar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--acc),#3fc1cd);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.gbar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--glow),#ffd88a);transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .gbar.ok i{background:linear-gradient(90deg,#1f8a4c,#4cc782)}.gbar.late i{background:linear-gradient(90deg,#e0a020,#f2b134)}.gbar.over i{background:linear-gradient(90deg,#b3392f,#ff8b80)}
 .gst{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 8px;margin-right:6px;border:1px solid currentColor}
 .gst.ok{color:var(--ok)}.gst.on{color:var(--acc)}.gst.late{color:var(--glow)}.gst.over{color:var(--bad)}
@@ -315,7 +316,9 @@ button.danger{background:var(--bad);color:#fff}
 <div class="lgt" id="lgt"></div><div class="lgtag">Pulido de parabrisas · a domicilio</div></div>
 <div class="lgskip">Tocá para entrar</div></div>
 <style>
-#intro{background:radial-gradient(110% 80% at 50% 42%,#0f4a52 0%,#0b3c43 38%,#04191c 100%)}
+.cxn{display:block;margin-top:8px;background:rgba(209,67,67,.18);border:1px solid rgba(255,122,122,.45);border-radius:12px;padding:9px 11px;font-size:14px;color:#fff}
+.cxn .acts{display:flex;gap:6px;margin-top:6px}
+#intro{background:radial-gradient(60% 50% at 50% 40%,rgba(255,190,90,.38),transparent 70%),#0d1119}
 .lgw{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:min(84vw,400px);text-align:center;z-index:2}
 .lgh{position:absolute;left:50%;top:34%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.4);border-radius:50%;background:radial-gradient(closest-side,rgba(127,227,234,.30),rgba(127,227,234,0));opacity:0;animation:lgh 2.2s .9s ease-out forwards}
 .lgi{position:relative;width:64%;margin:0 auto;aspect-ratio:397/314;-webkit-mask-image:linear-gradient(90deg,#000 42%,transparent 58%);mask-image:linear-gradient(90deg,#000 42%,transparent 58%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:lgrev 1.25s .25s cubic-bezier(.65,0,.25,1) forwards,lgfl 3.4s 1.6s ease-in-out infinite alternate}
@@ -323,11 +326,11 @@ button.danger{background:var(--bad);color:#fff}
 .lgsh{position:absolute;inset:0;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.95) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;background-repeat:no-repeat;-webkit-mask:url(logo-icon.png) center/contain no-repeat;mask:url(logo-icon.png) center/contain no-repeat;opacity:0;animation:lgsh 1.1s 1.45s ease-in-out forwards}
 .lgst{position:absolute;left:31%;top:60%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%) scale(0) rotate(-30deg);background:conic-gradient(from 0deg,transparent 0 10%,#fff 12.5%,transparent 15% 35%,#fff 37.5%,transparent 40% 60%,#fff 62.5%,transparent 65% 85%,#fff 87.5%,transparent 90%);-webkit-mask:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.7) 30%,transparent 100%);mask:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.7) 30%,transparent 100%);filter:drop-shadow(0 0 6px #fff);animation:lgst 1s 1.3s cubic-bezier(.2,1.4,.4,1) forwards}
 .lgrg{position:absolute;left:31%;top:60%;width:20%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(200,250,255,.8);transform:translate(-50%,-50%) scale(.2);opacity:0;animation:lgrg 1.1s 1.35s ease-out forwards}
-.lgt{margin-top:16px;font:800 clamp(30px,9vw,44px)/1 Figtree,system-ui,sans-serif;letter-spacing:-.01em;color:#f2fdfe;white-space:nowrap}
+.lgt{margin-top:16px;font:800 clamp(30px,9vw,44px)/1 Manrope,system-ui,sans-serif;letter-spacing:-.01em;color:#f2fdfe;white-space:nowrap}
 .lgt span{display:inline-block;opacity:0;transform:translateY(14px);filter:blur(6px);animation:lgl .7s cubic-bezier(.2,1.3,.4,1) forwards}
 .lgt span.c{font-weight:300}
-.lgtag{margin-top:12px;font:600 11px Figtree,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#a6eaee;opacity:0;animation:lgf .9s 2.25s forwards}
-.lgskip{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:rgba(255,255,255,.4);font:12px Figtree,system-ui,sans-serif;opacity:0;animation:lgf .6s 1.4s forwards;z-index:2}
+.lgtag{margin-top:12px;font:600 11px Manrope,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#a6eaee;opacity:0;animation:lgf .9s 2.25s forwards}
+.lgskip{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:rgba(255,255,255,.4);font:12px Manrope,system-ui,sans-serif;opacity:0;animation:lgf .6s 1.4s forwards;z-index:2}
 #intro canvas{position:absolute;inset:0;width:100%;height:100%}
 @keyframes lgrev{to{-webkit-mask-position:0 0;mask-position:0 0}}
 @keyframes lgfl{from{translate:0 0}to{translate:0 -5px}}
@@ -500,9 +503,9 @@ raf=requestAnimationFrame(frame);
 </nav>
 
 <script>
-var SERV=[{id:"ps",n:"Parabrisas sedán + protección cerámica",p:20000,g:1},{id:"pu",n:"Parabrisas SUV + protección cerámica",p:25000,g:1},{id:"tvc",n:"Todos los vidrios + protección cerámica",p:40000,g:1},{id:"tv",n:"Todos los vidrios sin protección",p:30000,g:1},{id:"focos",n:"Pulido de focos con polímero líquido",p:20000},{id:"hidro",n:"Tratamiento hidrofóbico",p:10000}];
+var SERV=[{id:"combo",n:"Promo parabrisas + focos con cerámico Fireball",p:30000,g:1},{id:"pu",n:"Parabrisas SUV o pick-up + cerámico Fireball",p:25000,g:1},{id:"ps",n:"Parabrisas sedán + cerámico Fireball",p:20000,g:1},{id:"focos",n:"Pulido de focos con polímero líquido",p:20000}];
 /* familia de un servicio (para metas e insumos, también con nombres viejos o de la web) */
-function sfam(n){n=String(n||"");return /focos/i.test(n)?"focos":/hidrof/i.test(n)?"hidro":/parabrisas|vidrios/i.test(n)?"parabrisas":""}
+function sfam(n){n=String(n||"");return /^promo/i.test(n)?"parabrisas":/focos/i.test(n)?"focos":/hidrof/i.test(n)?"hidro":/parabrisas|vidrios/i.test(n)?"parabrisas":""}
 /* nombres viejos o de la página de reservas → servicio de la lista */
 function salias(l){var n=String(l.n||"");if(/^Pulido de parabrisas( \+ protección cerámica)?$/.test(n))return (l.p||0)>=25000?"pu":"ps";if(/^Pulido de focos/.test(n))return "focos";return null}
 var DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
@@ -584,7 +587,7 @@ $("save").onclick=function(){
   if(c){toast(clashMsg(c));updClash();return}
   var b=$("save");b.disabled=true;
   /* Revisa contra el servidor por si alguien acaba de agendar esa hora */
-  var chk=t?DB.collection("jobs").where("date","==",f).get({source:"server"}).then(function(sn){return sn.docs.map(function(d){return d.data()})},function(){return null}):Promise.resolve(null);
+  var chk=t?DB.collection("jobs").where("date","==",f).get({source:"server"}).then(function(sn){return sn.docs.map(function(d){return d.data()}).filter(function(j){return j.st!=="Cancelada"})},function(){return null}):Promise.resolve(null);
   chk.then(function(L){b.disabled=false;if(EID!==id)return;
     var c2=L&&clash(f,t,id,L);if(c2){toast(clashMsg(c2));updClash();return}
     var nj={zone:$("zsel2").value,cli:$("cli").value,tel:$("tel").value,veh:$("veh").value,items:it.map(function(x){return x.n}),lines:it,disc:+$("desc").value||0,total:calc(),date:f,time:t,note:$("note").value,ubic:$("ubic").value,src:$("src").value},oj=null;
@@ -697,7 +700,7 @@ function ask(b,fn){if(b.dataset.armed){clearTimeout(b._t);delete b.dataset.armed
   b._o=b.textContent;b.dataset.armed="1";b.textContent="¿Seguro? Tocá otra vez";b.classList.add("armed");b._t=setTimeout(function(){delete b.dataset.armed;b.textContent=b._o;b.classList.remove("armed")},4000)}
 function stopSubs(){SUBS.forEach(function(f){try{f()}catch(e){}});SUBS=[];DB=null}
 function startSubs(u){DB=firebase.firestore();var first=true;
-  SUBS.push(DB.collection("jobs").onSnapshot(function(sn){S.jobs=sn.docs.map(function(d){return d.data()});fix();JOBS_READY=true;reconcile();if(!first){var me=myEmail();sn.docChanges().forEach(function(ch){var j=ch.doc.data();if(ch.type==="added"&&!ch.doc.metadata.hasPendingWrites&&j.by&&j.by!==me)toast("🔔 "+whoN(j.by)+" agendó a "+j.cli+" · "+fmtD(j.date)+(j.time?" "+fmtT(j.time):""))})}if(CUR==="new")updClash();if(first){first=false;lockShow(null);show(CUR==="num"&&!OWN?"ag":CUR)}else refresh()},function(e){if(e&&e.code==="permission-denied"){$("ne").textContent=u.email;lockShow("noauth")}else{lockShow(null)}}));
+  SUBS.push(DB.collection("jobs").onSnapshot(function(sn){var ALL=sn.docs.map(function(d){return d.data()});S.jobs=ALL.filter(function(j){return j.st!=="Cancelada"});S.cx=ALL.filter(function(j){return j.st==="Cancelada"&&!j.cxSeen});fix();JOBS_READY=true;reconcile();if(!first){var me=myEmail();sn.docChanges().forEach(function(ch){var j=ch.doc.data();if(ch.type==="added"&&!ch.doc.metadata.hasPendingWrites&&j.by&&j.by!==me&&j.st!=="Cancelada")toast("🔔 "+whoN(j.by)+" agendó a "+j.cli+" · "+fmtD(j.date)+(j.time?" "+fmtT(j.time):""));if(ch.type==="modified"&&j.st==="Cancelada"&&!j.cxSeen)toast("❌ "+j.cli+" canceló su cita del "+fmtD(j.date))})}if(CUR==="new")updClash();if(first){first=false;lockShow(null);show(CUR==="num"&&!OWN?"ag":CUR)}else refresh()},function(e){if(e&&e.code==="permission-denied"){$("ne").textContent=u.email;lockShow("noauth")}else{lockShow(null)}}));
   SUBS.push(DB.doc("settings/goal").onSnapshot(function(sn){S.goal=sn.exists?sn.data().v:0;if(CUR==="num"&&OWN)renderNum()},function(){}));
   SUBS.push(DB.doc("settings/notify").onSnapshot(function(sn){NTFY=sn.exists?(sn.data().topic||""):"";renderNtfy()},function(){renderNtfy()}));
   SUBS.push(DB.collection("settings").onSnapshot(onSettings,function(){}));
@@ -788,7 +791,7 @@ $("ubic").oninput=updUbm;
 $("ubp").onclick=function(){try{navigator.clipboard.readText().then(function(t){if(t){$("ubic").value=cleanLoc(t);updUbm();toast("Ubicación pegada")}},function(){toast("Mantené presionado el campo y tocá Pegar")})}catch(e){toast("Mantené presionado el campo y tocá Pegar")}};
 function fillUbic(){var n=$("cli").value.toLowerCase(),cu=S.jobs.filter(function(j){return j.cli.toLowerCase()===n&&j.ubic}).pop();if(cu&&!$("ubic").value){$("ubic").value=cu.ubic;updUbm()}}
 function toast(m){var t=$("toast");if(!t){t=document.createElement("div");t.id="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on")},2200)}
-function confetti(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;var C=["#0d7a85","#3fc1cd","#f2b134","#ffe08a","#1f8a4c","#ffffff"];
+function confetti(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;var C=["#ffb23f","#ffd88a","#141a26","#9aa4b5","#13a463","#ffffff"];
   for(var i=0;i<46;i++){var d=document.createElement("i");d.className="cf";d.style.left=Math.random()*100+"vw";d.style.background=C[i%C.length];d.style.setProperty("--dx",(Math.random()*160-80)+"px");d.style.setProperty("--r",(Math.random()*900-450)+"deg");d.style.animationDelay=Math.random()*.35+"s";document.body.appendChild(d);setTimeout(function(x){x.remove()}.bind(null,d),2200)}}
 function animNums(root){Array.prototype.forEach.call(root.querySelectorAll("b"),function(b){var t=b.textContent,m=t.replace(/[^\d-]/g,"");if(!m||m==="-"||/[a-zA-Záéíóú]/.test(t))return;var v=+m,cur=t.indexOf("₡")>-1,t0=performance.now();
   function f(n){var k=Math.min(1,(n-t0)/800),e=1-Math.pow(1-k,3),x=v*e;b.textContent=cur?crc(x):Math.round(x);if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)})}
@@ -1176,19 +1179,24 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden&&CUR
 /* RESERVAS EN LÍNEA */
 var SLOTS=[],HOLDS=[],PUB=null,RCT=0,JOBS_READY=false,SLOTS_READY=false,RULES_MISSING=false;
 var BOOKURL=location.origin+location.pathname.replace(/[^\/]*$/,"")+"reservar/";
-var RULES="rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    function signed() { return request.auth != null && request.auth.token.email_verified == true; }\n    function isOwner() { return signed() && request.auth.token.email == 'jersan06500@gmail.com'; }\n    function isTeam() { return isOwner() || (signed() && exists(/databases/$(database)/documents/team/$(request.auth.token.email))); }\n    function str(v, mn, mx) { return v is string && v.size() >= mn && v.size() <= mx; }\n    function webJob() {\n      let d = request.resource.data;\n      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at'])\n        && d.st == 'Por confirmar' && d.by == 'web' && d.web == true\n        && str(d.cli, 2, 60) && str(d.tel, 8, 8) && str(d.veh, 2, 60) && str(d.date, 10, 10) && str(d.time, 5, 5)\n        && str(d.note, 0, 400) && str(d.ubic, 0, 300) && str(d.src, 0, 40)\n        && d.total is number && d.total > 0 && d.total <= 200000\n        && d.items is list && d.items.size() <= 4 && d.lines is list && d.lines.size() <= 4;\n    }\n    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); }\n    match /settings/{id} { allow read, write: if isTeam(); }\n    match /exp/{id} { allow read, write: if isTeam(); }\n    match /team/{email} { allow read: if isTeam(); allow write: if isOwner(); }\n    match /slots/{id} {\n      allow read: if true;\n      allow create: if request.resource.data.keys().hasOnly(['date','h','job','at']) && request.resource.data.job is string;\n      allow update, delete: if isTeam();\n    }\n    match /holds/{id} {\n      allow create: if request.resource.data.keys().hasOnly(['job','date','at']) && request.resource.data.job is string;\n      allow read, update, delete: if isTeam();\n    }\n    match /pub/{id} { allow read: if true; allow write: if isTeam(); }\n  }\n}";
+var RULES="rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    function signed() { return request.auth != null && request.auth.token.email_verified == true; }\n    function isOwner() { return signed() && request.auth.token.email == 'jersan06500@gmail.com'; }\n    function isTeam() { return isOwner() || (signed() && exists(/databases/$(database)/documents/team/$(request.auth.token.email))); }\n    function str(v, mn, mx) { return v is string && v.size() >= mn && v.size() <= mx; }\n    function webJob() {\n      let d = request.resource.data;\n      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at','ck'])\n        && (!('ck' in d) || str(d.ck, 16, 16))\n        && d.st == 'Por confirmar' && d.by == 'web' && d.web == true\n        && str(d.cli, 2, 60) && str(d.tel, 8, 8) && str(d.veh, 2, 60) && str(d.date, 10, 10) && str(d.time, 5, 5)\n        && str(d.note, 0, 400) && str(d.ubic, 0, 300) && str(d.src, 0, 40)\n        && d.total is number && d.total > 0 && d.total <= 200000\n        && d.items is list && d.items.size() <= 4 && d.lines is list && d.lines.size() <= 4;\n    }\n    // El cliente cancela su propia cita con la clave (ck) que recibió al agendar.\n    function webCancel() {\n      let d = request.resource.data;\n      let o = resource.data;\n      return o.web == true && o.ck is string && d.cxk == o.ck\n        && o.st in ['Por confirmar', 'Pendiente'] && d.st == 'Cancelada'\n        && d.diff(o).affectedKeys().hasOnly(['st', 'cxk', 'cxAt', 'cxWhy'])\n        && d.cxAt is number && str(d.cxWhy, 0, 60);\n    }\n    function jobCancelled(job) { return get(/databases/$(database)/documents/jobs/$(job)).data.st == 'Cancelada'; }\n    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); allow update: if webCancel(); }\n    match /settings/{id} { allow read, write: if isTeam(); }\n    match /exp/{id} { allow read, write: if isTeam(); }\n    match /team/{email} { allow read: if isTeam(); allow write: if isOwner(); }\n    match /slots/{id} {\n      allow read: if true;\n      allow create: if request.resource.data.keys().hasOnly(['date','h','job','at']) && request.resource.data.job is string;\n      allow update, delete: if isTeam();\n      allow delete: if jobCancelled(resource.data.job);\n    }\n    match /holds/{id} {\n      allow create: if request.resource.data.keys().hasOnly(['job','date','at']) && request.resource.data.job is string;\n      allow read, update, delete: if isTeam();\n      allow delete: if jobCancelled(resource.data.job);\n    }\n    match /pub/{id} { allow read: if true; allow write: if isTeam(); }\n  }\n}";
+function cxLink(G){var j=G[0];if(!j||!j.ck)return "";return "\n\nSi no podés, cancelá aquí: "+location.origin+location.pathname.replace(/[^/]*$/,"")+"reservar/?cancelar="+G.map(function(x){return x.id}).join(".")+"&k="+j.ck+"&d="+j.date+"&h="+parseInt(j.time,10)+"&t="+j.tel}
 function webGroup(j){if(!j.web||!j.at)return [j];return S.jobs.filter(function(x){return x.web&&x.tel===j.tel&&x.at===j.at&&x.date===j.date}).sort(function(a,b){return (a.time||"")<(b.time||"")?-1:1})}
 function webBox(j){var G=webGroup(j),gi=G.indexOf(j);return '<div class="webb">'+(G.length>1?'🚗🚗 <b>Reserva web de '+G.length+' carros</b> ('+(gi+1)+' de '+G.length+') · total '+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+' · falta confirmar':'🌐 <b>Reserva desde la web</b> · falta confirmar')+(j.vt?' · '+(j.vt==="suv"?"SUV o pick-up":"Sedán"):'')+'<div class="acts"><button class="sm" data-wc="'+j.id+'">✓ Confirmar</button><button class="alt sm" data-wr="'+j.id+'">Rechazar</button></div></div>'}
 function bindWeb(root){var gJ=function(id){return S.jobs.find(function(x){return x.id==id})};
   Array.prototype.forEach.call(root.querySelectorAll("[data-wc]"),function(b){b.onclick=function(){var j=gJ(b.dataset.wc);if(!j||!DB)return;var G=webGroup(j).filter(function(x){return x.st==="Por confirmar"});
     G.forEach(function(x){DB.doc("jobs/"+x.id).update({st:"Pendiente"}).catch(dberr)});toast(G.length>1?"Reserva de "+G.length+" carros confirmada ✓":"Cita confirmada ✓");
-    if(G.length>1)waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" para tus "+G.length+" carros:\n"+G.map(function(x){return "• "+fmtT(x.time)+" · "+(x.veh||"")+" · "+crc(x.total)}).join("\n")+"\nTotal: "+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+". El día anterior te escribimos para recordarte. ¡Nos vemos!");
-    else waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". Total: "+crc(j.total)+". El día anterior te escribimos para recordarte. ¡Nos vemos!")}});
+    if(G.length>1)waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" para tus "+G.length+" carros:\n"+G.map(function(x){return "• "+fmtT(x.time)+" · "+(x.veh||"")+" · "+crc(x.total)}).join("\n")+"\nTotal: "+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+". El día anterior te escribimos para recordarte. ¡Nos vemos!"+cxLink(G));
+    else waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". Total: "+crc(j.total)+". El día anterior te escribimos para recordarte. ¡Nos vemos!"+cxLink(G))}});
   Array.prototype.forEach.call(root.querySelectorAll("[data-wr]"),function(b){b.onclick=function(){var j=gJ(b.dataset.wr);if(!j)return;var G=webGroup(j).filter(function(x){return x.st==="Por confirmar"}),n=G.length;
     confirmDel({t:n>1?"¿Rechazar la reserva de "+n+" carros?":"¿Rechazar esta reserva?",w:esc(j.cli)+' <span class="m">· '+fmtD(j.date)+" · "+fmtT(G[0].time)+(n>1?" · "+n+" carros":"")+'</span>',m:"Se borra"+(n>1?"n las citas":" la cita")+" y esas horas quedan libres otra vez. Después te abro WhatsApp por si querés avisarle al cliente.",ok:"Sí, rechazar"},
       function(){delDocs(G.map(function(x){return ["jobs/"+x.id,x]}),n>1?"Reserva de "+n+" carros rechazada":"Reserva rechazada");if(j.tel)waTo(j.tel,"Hola "+j.cli+", te escribimos de GlassDetailingCR por tu reserva del "+fmtD(j.date)+" a las "+fmtT(G[0].time)+". ")})}})}
 var _ra2=renderAg;renderAg=function(){_ra2();bindWeb($("dl"))};
 var _rh2=renderHero;renderHero=function(){_rh2();var P=S.jobs.filter(function(j){return j.st==="Por confirmar"}).sort(function(a,b){return (a.date+a.time)<(b.date+b.time)?-1:1});
+  (S.cx||[]).forEach(function(j){var c=document.createElement("div");c.className="cxn";
+    c.innerHTML='❌ <b>'+esc(j.cli)+'</b> canceló su cita del '+fmtD(j.date)+(j.time?' · '+fmtT(j.time):'')+(j.cxWhy?' · '+esc(j.cxWhy):'')+'<div class="acts"><button class="sm" data-cxw="'+j.id+'">Escribirle</button><button class="alt sm" data-cxs="'+j.id+'">Entendido</button></div>';
+    c.querySelector("[data-cxw]").onclick=function(){waTo(j.tel,"Hola "+j.cli+" 👋 Vimos que cancelaste tu cita del "+fmtD(j.date)+". ¿Querés que te ayudemos a buscar otro día?")};
+    c.querySelector("[data-cxs]").onclick=function(){if(DB)DB.doc("jobs/"+j.id).update({cxSeen:true}).catch(dberr)};$("hero").appendChild(c)});
   if(P.length){var d=document.createElement("button");d.className="sm hnote";d.textContent="🌐 "+P.length+(P.length===1?" reserva web por confirmar":" reservas web por confirmar")+" ›";
     d.onclick=function(){sel=P[0].date;wOff=Math.round((monday(pd(sel))-monday(new Date()))/6048e5);renderAg();$("dl").scrollIntoView({behavior:"smooth"})};$("hero").appendChild(d)}};
 function wantLocks(){var W={};S.jobs.forEach(function(j){if(!j.time||!j.date||j.date<today)return;var p=j.time.split(":"),m=(+p[0])*60+(+p[1]||0),e=m+120,zp=jobPos(j);
@@ -1198,6 +1206,7 @@ function reconcile(){clearTimeout(RCT);RCT=setTimeout(function(){if(!DB||!OWN||!
   Object.keys(W).forEach(function(k){var h=have[k];if(!h||h.job!==W[k].job)DB.doc("slots/"+k).set({date:W[k].date,h:W[k].h,job:W[k].job,at:now}).catch(function(){});else if(W[k].z&&h.z!==W[k].z)DB.doc("slots/"+k).update({z:W[k].z}).catch(function(){})});
   SLOTS.forEach(function(x){if(W[x.id])return;if(x.date>=today&&!ids[x.job]&&now-(x.at||0)<120000)return;DB.doc("slots/"+x.id).delete().catch(function(){})});
   HOLDS.forEach(function(x){var j=ids[x.job];if(!j&&now-(x.at||0)<120000)return;if(!j||j.st!=="Por confirmar"||j.date<today)DB.doc("holds/"+x.id).delete().catch(function(){})});
+  if(BOSS)(S.cx||[]).forEach(function(j){if(j.cxNtf)return;notify("❌ "+j.cli+" canceló su cita",fmtD(j.date)+(j.time?" · "+fmtT(j.time):"")+(j.veh?"\n"+j.veh:"")+(j.cxWhy?"\nMotivo: "+j.cxWhy:"")+"\nEsas horas ya quedaron libres en la web");DB.doc("jobs/"+j.id).update({cxNtf:true}).catch(function(){})});
   if(BOSS){var seen={};S.jobs.forEach(function(j){if(!(j.web&&!j.ntf&&j.st==="Por confirmar"))return;var G=webGroup(j),gk=j.tel+"|"+j.at;if(seen[gk])return;seen[gk]=1;
     if(G.length>1)notify("🚗🚗 Reserva web de "+G.length+" carros · "+j.cli,fmtD(j.date)+" · desde las "+fmtT(G[0].time)+"\n"+G.map(function(x){return "• "+(x.veh||"Carro")+" · "+fmtT(x.time)+" · "+crc(x.total)}).join("\n")+"\nTotal: "+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+"\nFalta confirmarla en la app");
     else notify("🌐 Reserva web · "+j.cli,fmtD(j.date)+" · "+fmtT(j.time)+"\n"+(j.veh||"")+" · "+crc(j.total)+"\nFalta confirmarla en la app");

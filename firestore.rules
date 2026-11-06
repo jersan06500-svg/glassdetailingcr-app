@@ -7,14 +7,25 @@ service cloud.firestore {
     function str(v, mn, mx) { return v is string && v.size() >= mn && v.size() <= mx; }
     function webJob() {
       let d = request.resource.data;
-      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at'])
+      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at','ck'])
+        && (!('ck' in d) || str(d.ck, 16, 16))
         && d.st == 'Por confirmar' && d.by == 'web' && d.web == true
         && str(d.cli, 2, 60) && str(d.tel, 8, 8) && str(d.veh, 2, 60) && str(d.date, 10, 10) && str(d.time, 5, 5)
         && str(d.note, 0, 400) && str(d.ubic, 0, 300) && str(d.src, 0, 40)
         && d.total is number && d.total > 0 && d.total <= 200000
         && d.items is list && d.items.size() <= 4 && d.lines is list && d.lines.size() <= 4;
     }
-    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); }
+    // El cliente cancela su propia cita con la clave (ck) que recibió al agendar.
+    function webCancel() {
+      let d = request.resource.data;
+      let o = resource.data;
+      return o.web == true && o.ck is string && d.cxk == o.ck
+        && o.st in ['Por confirmar', 'Pendiente'] && d.st == 'Cancelada'
+        && d.diff(o).affectedKeys().hasOnly(['st', 'cxk', 'cxAt', 'cxWhy'])
+        && d.cxAt is number && str(d.cxWhy, 0, 60);
+    }
+    function jobCancelled(job) { return get(/databases/$(database)/documents/jobs/$(job)).data.st == 'Cancelada'; }
+    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); allow update: if webCancel(); }
     match /settings/{id} { allow read, write: if isTeam(); }
     match /exp/{id} { allow read, write: if isTeam(); }
     match /team/{email} { allow read: if isTeam(); allow write: if isOwner(); }
@@ -22,10 +33,12 @@ service cloud.firestore {
       allow read: if true;
       allow create: if request.resource.data.keys().hasOnly(['date','h','job','at']) && request.resource.data.job is string;
       allow update, delete: if isTeam();
+      allow delete: if jobCancelled(resource.data.job);
     }
     match /holds/{id} {
       allow create: if request.resource.data.keys().hasOnly(['job','date','at']) && request.resource.data.job is string;
       allow read, update, delete: if isTeam();
+      allow delete: if jobCancelled(resource.data.job);
     }
     match /pub/{id} { allow read: if true; allow write: if isTeam(); }
   }

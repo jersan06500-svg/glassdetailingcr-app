@@ -51,11 +51,24 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - `REVURL` (reseñas de Google) quedó vacío. El mensaje de agradecimiento sale sin enlace hasta que el dueño dé el enlace de reseñas de su Perfil de Empresa.
 - El canal de avisos de ntfy se crea con el prefijo `glassdetailingcr-`.
 
+## Ajustes del 6 nov 2026 (tarde)
+
+- **Servicios** (todos con 1 año de protección): promo parabrisas + focos con polímero líquido y cerámico Fireball ₡30 000, pulido de focos ₡20 000, parabrisas SUV o pick-up ₡25 000 y parabrisas sedán ₡20 000. El precio de sedán no lo dio el dueño; quedó el de la plantilla y falta confirmarlo.
+  - En `reservar/` están en `GLASS`, `FOCOS` y `LN`; en la app, en `SERV`. Los nombres de `LN` y `SERV` tienen que ser iguales. Si se elige la promo, los focos ya vienen incluidos.
+  - La promo vieja de GlassStudio (`PROMO`, regalo de vidrio trasero) quedó apagada.
+- **Zona**: toda la GAM (San José, Heredia, Alajuela y Cartago) es gratis. Fuera de la GAM no se agenda por la web: se le pide al cliente que escriba por WhatsApp.
+- **Formulario de cada carro**: tipo, marca (lista `MARCAS`), modelo (con sugerencias), año, color y placa opcionales. `veh` = marca + modelo + año. El color y la placa van en la nota de la cita.
+- **Cancelar cita**: al reservar se guarda en cada cita una clave `ck` de 16 caracteres. El cliente recibe el enlace `reservar/?cancelar=<ids>&k=<ck>&d=<fecha>&h=<hora>&t=<tel>` en tres lugares: la pantalla final, el mensaje de WhatsApp que manda y el mensaje de confirmación del equipo (`cxLink`).
+  - Las reglas (`webCancel`) solo dejan pasar la cita a `Cancelada` si la clave coincide, y luego el cliente libera sus `slots` y `holds` (`jobCancelled`).
+  - En la app, las citas `Cancelada` salen de `S.jobs` y quedan en `S.cx`. Se muestran como aviso en el inicio (Escribirle / Entendido = `cxSeen`) y le llegan al dueño por ntfy (`cxNtf`).
+- **Diseño "Faro"**, para que no se parezca a GlassStudio: noche grafito (`#0d1119`) con luz de xenón ámbar (`#ffb23f`), letras Archivo (ancha, 112 %) y Manrope.
+  - En modo claro el botón principal es grafito; en modo oscuro, ámbar.
+  - El momento protagonista es el haz del foco que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
+
 ## Pendiente de confirmar con el dueño
 
-- **Servicios y precios**: todavía son los de GlassStudio (`var SERV` en `index.html` y `GLASS` / `FOCOS` / `PROMO` en `reservar/index.html`). Los nombres tienen que coincidir entre los dos archivos.
-- **Zonas y recargos** (`ZF`, `PL`, `MAXKM` en `reservar/`, y `ZPL` en `index.html`), **horario** (`HOURS`, `DUR`, `DAYS_AHEAD`, `LEAD_H`, `MAXC`) y el bloqueo de 120 minutos (`wantLocks`): también son los de GlassStudio.
-- Enlace de reseñas de Google y píxel de Meta propios.
+- Precio del parabrisas sedán. El horario (`HOURS`, `DUR`) sigue siendo el de GlassStudio: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm, 2 horas por carro.
+- Enlace de reseñas de Google (`REVURL`) y, si lo quiere, un píxel de Meta propio.
 
 ## Reglas de la casa
 

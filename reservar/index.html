@@ -4,46 +4,49 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Agendá tu pulido a domicilio · GlassDetailingCR</title>
-<meta name="description" content="Pulido de parabrisas y focos a domicilio, gratis en toda la GAM. Promo: agendá aquí tu parabrisas y te regalamos el vidrio trasero y los retrovisores.">
+<meta name="description" content="Restauración de focos y pulido de parabrisas a domicilio, gratis en toda la GAM. Todos los servicios con 1 año de protección. Promo parabrisas + focos ₡30 000.">
 <meta property="og:title" content="Agendá tu pulido a domicilio · GlassDetailingCR">
-<meta property="og:description" content="🎁 Agendá aquí tu pulido de parabrisas y te regalamos el vidrio trasero y los retrovisores. Domicilio gratis en San José, Heredia y Alajuela.">
+<meta property="og:description" content="Focos y parabrisas como nuevos, sin salir de casa. Promo parabrisas + focos ₡30 000 con cerámico Fireball. Domicilio gratis en toda la GAM.">
 <meta property="og:image" content="https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/og.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:url" content="https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0a3c42">
+<meta name="theme-color" content="#0d1119">
 <link rel="icon" href="../icon-192.png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,700;112,800;112,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f1f6f5;--card:#fff;--ink:#0f2a2c;--mute:#5a7174;--line:#d6e4e2;--acc:#0d7a85;--acc2:#3fc1cd;--accink:#fff;--glow:#f2b134;--ok:#1f8a4c;--bad:#c0392b;--sh:0 10px 30px rgba(10,60,66,.12);box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root{--bg:#0a1718;--card:#122426;--ink:#e6f3f1;--mute:#8fabad;--line:#23403f;--acc:#3fc1cd;--acc2:#7fe3ea;--accink:#04201f;--ok:#4cc782;--bad:#ff8b80;--sh:0 10px 30px rgba(0,0,0,.35)}}
+/* Identidad GlassDetailing "Faro": noche grafito y luz de xenón ámbar, como un foco recién restaurado.
+   Botón principal grafito (ámbar en oscuro), selección con anillo ámbar, tarjetas blancas limpias. */
+:root{--bg:#f4f5f7;--card:#fff;--ink:#121722;--mute:#5c6577;--line:#e2e5eb;--acc:#141a26;--acc2:#ffb23f;--accink:#fff;--glow:#ffb23f;--ok:#13a463;--bad:#d14343;--night:#0d1119;--sh:0 1px 2px rgba(18,23,34,.05),0 12px 28px rgba(18,23,34,.08);box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0e14;--card:#151a24;--ink:#eef1f6;--mute:#8d97a8;--line:#262d3a;--acc:#ffb23f;--acc2:#ffd88a;--accink:#1b1204;--ok:#36c37f;--bad:#ff7a7a;--sh:0 12px 30px rgba(0,0,0,.4)}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,sans-serif;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.4px;margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 Manrope,system-ui,sans-serif;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:Archivo,system-ui,sans-serif;font-stretch:112%;letter-spacing:-.6px;margin:0}
 button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
 input,textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;width:100%}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
 label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
 .wrap{max-width:560px;margin:0 auto;padding:0 16px}
 /* HERO */
-.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 80% 0%,#15a2ad 0%,#0b5d66 38%,#062e33 100%);padding:calc(18px + env(safe-area-inset-top,0px)) 0 34px;border-radius:0 0 28px 28px}
-.hero::after{content:"";position:absolute;top:-40%;bottom:-40%;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);transform:skewX(-18deg);animation:sweep 6s ease-in-out infinite}
-@keyframes sweep{0%,55%{left:-60%}100%{left:130%}}
-.brand{display:flex;align-items:center;gap:10px;font:800 20px "Bricolage Grotesque",sans-serif}
+.hero{position:relative;overflow:hidden;color:#fff;background:var(--night);padding:calc(18px + env(safe-area-inset-top,0px)) 0 34px;border-radius:0 0 30px 30px}
+/* El momento de la página: al cargar, el haz del foco se enciende una sola vez. */
+.hero::before{content:"";position:absolute;inset:-20% -30% 0 10%;background:radial-gradient(55% 45% at 82% 6%,rgba(255,214,140,.75),rgba(255,178,63,.28) 35%,transparent 70%),conic-gradient(from 200deg at 88% 0%,transparent 0deg,rgba(255,190,90,.20) 18deg,transparent 44deg);animation:encender 1.6s cubic-bezier(.2,.8,.2,1) .2s both;pointer-events:none}
+@keyframes encender{0%{opacity:0;filter:brightness(.4)}40%{opacity:1;filter:brightness(1.6)}55%{filter:brightness(.8)}100%{opacity:1;filter:none}}
+.brand{display:flex;align-items:center;gap:10px;font:800 20px Archivo,sans-serif}
 .brand svg{flex:none}
-.brand span{color:#7fe3ea}
-.hero h1{font-size:34px;line-height:1.05;margin:22px 0 10px}
-.hero h1 em{font-style:normal;background:linear-gradient(90deg,#fff,#a6f3f8,#ffe08a,#fff);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 5s linear infinite}
-@keyframes sh{to{background-position:-250% 0}}
-.hero p{margin:0;opacity:.9;font-size:16px}
+.brand span{color:#ffb23f}
+.hero h1{font-size:36px;line-height:1.02;margin:24px 0 12px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:#ffcf7a}
+.hero p{margin:0;color:#c9cfdb;font-size:16px}
+.hero p b{color:#fff}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px}
-.chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:6px 11px;font-size:13px;font-weight:600}
-.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#fff;color:#0a3c42;font:700 17px Figtree,sans-serif;border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.25);position:relative;z-index:1}
+.chips span{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:6px 11px;font-size:13px;font-weight:600;color:#e7eaf1}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#ffb23f;color:#1b1204;text-decoration:none;font:700 17px Manrope,sans-serif;border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.25);position:relative;z-index:1}
 .cta:active{transform:scale(.98)}
 .hero .wrap{position:relative;z-index:1}
 /* PRECIOS */
@@ -68,7 +71,7 @@ body.book #wiz{display:block}
 .prog{flex:1}
 .prog small{color:var(--mute);font-size:12px;font-weight:600}
 .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:5px}
-.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--glow),#ffd88a);border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
 .step{display:none;animation:in .35s cubic-bezier(.2,.8,.2,1)}
 .step.on{display:block}
 @keyframes in{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
@@ -77,8 +80,8 @@ body.book #wiz{display:block}
 .vt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .opt{position:relative;display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px;transition:border-color .2s,transform .1s,box-shadow .2s}
 .opt:active{transform:scale(.98)}
-.opt[aria-pressed=true]{border-color:var(--acc);box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 18%,transparent)}
-.opt[aria-pressed=true]::after{content:"✓";position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:var(--acc);color:var(--accink);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.opt[aria-pressed=true]{border-color:var(--glow);box-shadow:0 0 0 4px color-mix(in srgb,var(--glow) 25%,transparent)}
+.opt[aria-pressed=true]::after{content:"✓";position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:var(--glow);color:#1b1204;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
 .opt svg{width:100%;height:auto;display:block;margin-bottom:6px}
 .opt b{display:block;font-size:17px}
 .opt small{display:block;color:var(--mute);font-size:13px;line-height:1.3;margin-top:2px}
@@ -87,24 +90,25 @@ body.book #wiz{display:block}
 .warn button{display:inline-block;margin-top:8px;background:var(--acc);color:var(--accink);padding:8px 12px;border-radius:10px;font-weight:700;font-size:14px}
 .svc{display:grid;gap:10px}
 .svc .opt{display:flex;align-items:center;gap:12px;padding:14px 46px 14px 14px}
-.svc .ic{flex:none;width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--acc) 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:22px}
+.svc .ic{flex:none;width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--glow) 16%,transparent);display:flex;align-items:center;justify-content:center;font-size:22px}
 .svc .tx{flex:1;min-width:0}
-.svc .pr{font:800 17px "Bricolage Grotesque",sans-serif;white-space:nowrap}
+.svc .pr{font:800 17px Archivo,sans-serif;white-space:nowrap}
 .tag{display:inline-block;font-size:11px;font-weight:700;background:var(--glow);color:#3b2a00;border-radius:99px;padding:1px 8px;margin-left:4px;vertical-align:2px}
 .hint{color:var(--mute);font-size:13px;margin-top:10px}
 /* PROMO */
-.promo{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#ffe08a,#f2b134);color:#3b2a00;border-radius:18px;padding:13px 15px;margin:0 0 16px;box-shadow:0 8px 22px rgba(0,0,0,.22)}
+.promo{display:flex;gap:12px;align-items:center;background:rgba(255,178,63,.10);border:1px solid rgba(255,178,63,.45);color:#fff;border-radius:18px;padding:13px 15px;margin:18px 0 16px}
+.promo b{color:#ffcf7a}
 .promo i{font-style:normal;font-size:30px;flex:none;animation:wig 2.4s ease-in-out infinite}
 @keyframes wig{0%,80%,100%{transform:none}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
-.promo b{display:block;font:800 16px/1.2 "Bricolage Grotesque",sans-serif}
-.promo small{display:block;font-size:13px;line-height:1.3;margin-top:2px;opacity:.85}
+.promo b{display:block;font:800 16px/1.2 Archivo,sans-serif}
+.promo small{display:block;font-size:13px;line-height:1.3;margin-top:2px;color:#c9cfdb}
 .gift{display:block;margin-top:5px;font-size:12px;font-weight:700;color:#7a5200;background:color-mix(in srgb,var(--glow) 28%,transparent);border-radius:8px;padding:3px 8px;width:fit-content}
 @media (prefers-color-scheme:dark){.gift{color:#ffe08a}}
 .days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
 .days::-webkit-scrollbar{display:none}
 .day{flex:none;width:66px;scroll-snap-align:start;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:9px 0;text-align:center}
 .day small{display:block;font-size:12px;color:var(--mute);font-weight:600;text-transform:capitalize}
-.day b{display:block;font:800 22px/1.1 "Bricolage Grotesque",sans-serif}
+.day b{display:block;font:800 22px/1.1 Archivo,sans-serif}
 .day i{display:block;font-style:normal;font-size:11px;color:var(--mute)}
 .day[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:var(--accink)}
 .day[aria-pressed=true] small,.day[aria-pressed=true] i{color:var(--accink);opacity:.85}
@@ -115,7 +119,7 @@ body.book #wiz{display:block}
 .hr:disabled{opacity:.35;text-decoration:line-through}
 .gps{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#1e9e57;color:#fff;font-weight:700;font-size:16px;border-radius:16px;padding:15px;margin-top:6px}
 .gps:active{transform:scale(.98)}
-.map{position:relative;height:150px;border-radius:16px;overflow:hidden;margin-top:10px;background:#dfe9e6;border:1px solid var(--line)}
+.map{position:relative;height:150px;border-radius:16px;overflow:hidden;margin-top:10px;background:var(--line);border:1px solid var(--line)}
 .map .tl{position:absolute;left:50%;top:50%;width:768px;height:768px}
 .map .tl img{position:absolute;width:256px;height:256px;max-width:none}
 .map .pin{position:absolute;left:50%;top:50%;width:34px;height:44px;transform:translate(-50%,-100%);filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));animation:drop .6s cubic-bezier(.3,1.5,.5,1) both}
@@ -144,7 +148,7 @@ body.book #wiz{display:block}
 .sum div:first-child{border-top:0}
 .sum i{font-style:normal;flex:none;width:24px;text-align:center}
 .sum span{flex:1;min-width:0;word-break:break-word}
-.sum .tot{font:800 24px "Bricolage Grotesque",sans-serif}
+.sum .tot{font:800 24px Archivo,sans-serif}
 .note{font-size:13px;color:var(--mute);margin-top:12px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 /* BARRA INFERIOR */
@@ -152,7 +156,7 @@ body.book #wiz{display:block}
 body.book .dock{transform:none}
 .dock .wrap{display:flex;align-items:center;gap:12px}
 .dock .t small{display:block;color:var(--mute);font-size:12px}
-.dock .t b{font:800 22px "Bricolage Grotesque",sans-serif}
+.dock .t b{font:800 22px Archivo,sans-serif}
 .next{flex:1;background:var(--acc);color:var(--accink);font-weight:700;font-size:17px;border-radius:16px;padding:15px;transition:opacity .2s,transform .1s}
 .next:disabled{opacity:.45}
 .next:active{transform:scale(.98)}
@@ -177,15 +181,37 @@ body.ok .dock{display:none}
 .cars{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
 .cars:empty{display:none}
 .cars button{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:99px;padding:7px 12px;font-weight:700;font-size:14px}
-.cars button[aria-pressed=true]{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,var(--card))}
+.cars button[aria-pressed=true]{border-color:var(--glow);background:color-mix(in srgb,var(--glow) 14%,var(--card))}
 .cars button.ok::before{content:"✓";color:var(--ok)}
 .cars .x{margin-left:2px;opacity:.6;font-weight:800}
-.more{margin-top:16px;background:var(--card);border:2px dashed var(--acc);border-radius:18px;padding:14px;text-align:center}
+.more{margin-top:16px;background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:14px;text-align:center}
 .more button{display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:var(--accink);font-weight:700;border-radius:14px;padding:12px 16px}
 .more small{display:block;color:var(--mute);font-size:13px;margin-top:8px}
 .more a{color:var(--acc);font-weight:700}
-.sum .carh{font:800 16px "Bricolage Grotesque",sans-serif;padding-top:14px}
+.sum .carh{font:800 16px Archivo,sans-serif;padding-top:14px}
 footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
+.pl .star{background:color-mix(in srgb,var(--glow) 12%,var(--card))}
+.pl .star b{color:inherit}
+.carform{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;margin-top:6px}
+.carform .full{grid-column:1/-1}
+.carform label small{color:var(--mute);font-weight:500}
+.incl{background:color-mix(in srgb,var(--ok) 10%,var(--card));border:1.5px solid color-mix(in srgb,var(--ok) 45%,transparent);border-radius:16px;padding:14px;font-weight:600;font-size:15px}
+.cxinfo{color:var(--mute);font-size:14px;text-align:center}
+.cxinfo a{color:var(--ink);font-weight:700}
+.cxbox{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.cxbox b{display:block;font-size:16px}
+.cxbox small{display:block;color:var(--mute);margin:2px 0 4px}
+button.lbtn{font-weight:600;background:none}
+#cx{display:none;padding:calc(36px + env(safe-area-inset-top,0px)) 0 30px}
+body.cxm #land,body.cxm #wiz,body.cxm #done,body.cxm .dock{display:none}
+body.cxm #cx{display:block}
+.cxcard{background:var(--card);border-radius:22px;box-shadow:var(--sh);padding:22px 18px;text-align:center}
+.cxcard h2{font-size:26px}
+.cxcard .sub{color:var(--mute);margin:6px 0 4px;font-weight:600}
+.cxcard label{text-align:left}
+.cxgo{display:block;width:100%;margin-top:16px;background:var(--bad);color:#fff;font-weight:700;font-size:17px;border-radius:16px;padding:15px}
+.cxgo:disabled{opacity:.6}
+.cxcard .cta{margin-top:16px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -193,23 +219,23 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
 <section id="land">
   <div class="hero"><div class="wrap">
     <div class="brand"><img src="logo-icon.png" alt="" width="56" height="44" style="height:44px;width:auto"><span style="color:#fff">GlassDetailing<b style="font-weight:400;color:#fff">CR</b></span></div>
-    <h1>Vidrios como nuevos, <em>sin salir de casa</em></h1>
-    <p>Pulido de parabrisas y focos a domicilio. Llegamos <b>gratis</b> a San José, Heredia y Alajuela, y con un pequeño costo a Cartago, Grecia, San Ramón y alrededores.</p>
-    <div class="promo" id="promo" hidden><i>🎁</i><span><b>Promo: agendá aquí y te regalamos el vidrio trasero y los retrovisores</b><small>Al agendar el pulido de parabrisas desde esta página. Sedán o SUV, mismo regalo.</small></span></div>
-    <div class="chips"><span>🚗 Vamos donde estés</span><span>🚙🚗 ¿Varios carros? Agendalos juntos</span><span>🛡️ Protección cerámica incluida</span><span>⏱️ Agendás en 1 minuto</span></div>
+    <h1>Focos y parabrisas como nuevos, <em>sin salir de casa</em></h1>
+    <p>Restauración de focos y pulido de parabrisas a domicilio, <b>gratis en toda la GAM</b>. Todos los trabajos llevan <b>1 año de protección</b>.</p>
+    <div class="promo" id="promo"><i>🎁</i><span><b>Promo parabrisas + focos: ₡30 000</b><small>Con polímero líquido y cerámico Fireball. 1 año de protección.</small></span></div>
+    <div class="chips"><span>📍 Gratis en toda la GAM</span><span>🛡️ 1 año de protección</span><span>🚙🚗 Varios carros en una visita</span><span>⏱️ Agendás en 1 minuto</span></div>
     <button class="cta" id="go">Agendar mi cita <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></div>
   <div class="wrap">
     <div class="sec"><h2>Así de fácil</h2><div class="how"><div><i>📅</i><b>Elegí día y hora</b>Solo ves horas libres</div><div><i>📍</i><b>Mandá tu ubicación</b>Con un toque</div><div><i>✨</i><b>Llegamos y listo</b>Vos seguís en lo tuyo</div></div></div>
     <div class="sec"><h2>Precios</h2><div class="pl">
-      <div><span>Parabrisas + protección cerámica<small>Sedán o hatchback</small></span><b>₡20 000</b></div>
-      <div><span>Parabrisas + protección cerámica<small>SUV o pick-up</small></span><b>₡25 000</b></div>
-      <div><span>Todos los vidrios + protección cerámica</span><b>₡40 000</b></div>
-      <div><span>Todos los vidrios sin protección</span><b>₡30 000</b></div>
-      <div><span>Pulido de focos con polímero líquido<small>El par</small></span><b>₡20 000</b></div>
-      <div><span>Servicio a domicilio en la GAM</span><b style="color:var(--ok)">Gratis</b></div>
+      <div class="star"><span>Promo parabrisas + focos<small>Polímero líquido + cerámico Fireball · 1 año de protección</small></span><b>₡30 000</b></div>
+      <div><span>Pulido de focos con polímero líquido<small>El par · 1 año de protección</small></span><b>₡20 000</b></div>
+      <div><span>Pulido de parabrisas + cerámico Fireball<small>SUV o pick-up · 1 año de protección</small></span><b>₡25 000</b></div>
+      <div><span>Pulido de parabrisas + cerámico Fireball<small>Sedán o hatchback · 1 año de protección</small></span><b>₡20 000</b></div>
+      <div><span>Servicio a domicilio en toda la GAM</span><b style="color:var(--ok)">Gratis</b></div>
     </div></div>
     <div class="sec"><h2>¿Hasta dónde llegamos?</h2><div class="zones" id="zlist"></div></div>
+    <div class="sec cxinfo">¿Necesitás cancelar tu cita? Usá el enlace <b>“Cancelar mi cita”</b> que te dimos al agendar, o <a id="cxwa" href="#" target="_blank" rel="noopener">escribinos por WhatsApp</a>.</div>
   </div>
 </section>
 
@@ -222,13 +248,20 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
         <button class="opt" data-vt="sedan" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 50c0-6 4-9 10-10l22-4 20-14c4-3 9-4 14-4h28c6 0 11 2 15 6l14 13 18 3c5 1 7 4 7 9v5c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 50v5c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M62 24l-12 12h44V21H74c-5 0-9 1-12 3zM100 21v15h30l-11-11c-3-3-6-4-10-4z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>Sedán o hatchback</b><small>Carro bajo: Corolla, Yaris, Civic, Accent, Mazda 3…</small></button>
         <button class="opt" data-vt="suv" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 52V38c0-4 3-7 7-8l22-4 14-14c3-3 7-4 11-4h52c5 0 9 2 12 6l12 16 9 2c4 1 6 4 6 8v12c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 52v3c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M58 14l-14 14h50V12H64c-2 0-4 1-6 2zM100 12v16h38l-10-13c-2-2-4-3-7-3z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>SUV o pick-up</b><small>Carro alto: RAV4, CR-V, Hilux, Prado, Tucson…</small></button>
       </div>
-      <label for="veh">Marca y modelo</label><input id="veh" placeholder="Ej: Toyota RAV4 2018" autocomplete="off" autocapitalize="words" maxlength="60">
+      <input id="veh" type="hidden">
+      <div class="carform">
+        <div><label for="mk">Marca</label><select id="mk"></select></div>
+        <div><label for="md">Modelo</label><input id="md" list="mdl" placeholder="Ej: RAV4" autocomplete="off" autocapitalize="words" maxlength="30"><datalist id="mdl"></datalist></div>
+        <div><label for="yr">Año</label><select id="yr"></select></div>
+        <div><label for="col">Color <small>(opcional)</small></label><input id="col" placeholder="Ej: gris" autocomplete="off" maxlength="20"></div>
+        <div class="full"><label for="pl">Placa <small>(opcional)</small></label><input id="pl" placeholder="Ej: BHK123" autocomplete="off" autocapitalize="characters" maxlength="10"></div>
+      </div>
       <div class="warn" id="vw"></div>
       <div class="hint">Si al llegar el tipo de carro es otro, el precio se ajusta al real.</div>
     </div>
 
     <div class="step" id="s2">
-      <div class="cars" id="ct2"></div><h2 id="h2t">¿Qué le hacemos?</h2><p class="sub">Elegí los vidrios y, si querés, sumá los focos.</p>
+      <div class="cars" id="ct2"></div><h2 id="h2t">¿Qué le hacemos?</h2><p class="sub">La promo trae parabrisas y focos. Todo lleva 1 año de protección.</p>
       <div class="svc" id="gl"></div>
       <div class="svc" style="margin-top:10px" id="fo"></div>
       <div class="more" id="more"></div>
@@ -276,7 +309,12 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
   <a class="wbtn" id="wa" href="#" target="_blank" rel="noopener"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2.1 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l2 1c.3.1.4.2.5.3.1.2.1.7-.1 1.3z"/></svg>Confirmar por WhatsApp</a>
   <p style="font-size:13px;margin-top:10px">Mandá el mensaje para que confirmemos tu cita. Te respondemos por ahí mismo.</p>
   <a class="lbtn" id="cal" href="#" target="_blank" rel="noopener">📅 Agregar a mi calendario</a>
+  <div class="cxbox"><b>¿Y si no podés?</b><small>Guardá este enlace. Con él podés cancelar tu cita vos mismo, sin escribirnos.</small><a class="lbtn" id="cxl" href="#">Cancelar mi cita</a><button class="lbtn" id="cxcopy" type="button">Copiar el enlace</button></div>
   <a class="lbtn" href="./">Agendar otro carro</a>
+</div></section>
+
+<section id="cx"><div class="wrap">
+  <div class="cxcard" id="cxc"></div>
 </div></section>
 
 <div class="dock"><div class="wrap"><div class="t"><small id="totl">Total</small><b id="tot">₡0</b></div><button class="next" id="nx" disabled>Siguiente</button></div></div>
@@ -287,19 +325,20 @@ var FBC={apiKey:"AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",authDomain:"glassdetai
 /* HORARIO: domingo 8 am a 3 pm (última cita 1 pm); lunes a sábado 6 am a 6 pm (última cita 4 pm). Cada carro ocupa 2 horas.
    Varios carros: se apartan 2 horas por carro, seguidas. MAXC = máximo de carros por reserva web. */
 var HOURS={0:[8,15],1:[6,18],2:[6,18],3:[6,18],4:[6,18],5:[6,18],6:[6,18]},DUR=2,DAYS_AHEAD=21,LEAD_H=2,MAXC=3;
-var GLASS=[{id:"pb",n:"Pulido de parabrisas + protección cerámica",s:"Lo más pedido",p:{sedan:20000,suv:25000},ic:"🛡️"},
-  {id:"tvc",n:"Todos los vidrios + protección cerámica",s:"Parabrisas, laterales y trasero",p:{sedan:40000,suv:40000},ic:"✨"},
-  {id:"tv",n:"Todos los vidrios sin protección",s:"Solo el pulido",p:{sedan:30000,suv:30000},ic:"🪟"},
-  {id:"none",n:"Solo los focos",s:"No necesito pulir vidrios",p:{sedan:0,suv:0},ic:"💡"}];
+/* SERVICIOS: todos llevan 1 año de protección. Los nombres de las líneas (LN) tienen que ser iguales a SERV en la app. */
+var GLASS=[{id:"combo",n:"Promo: parabrisas + focos",s:"Polímero líquido + cerámico Fireball · 1 año de protección",p:{sedan:30000,suv:30000},ic:"🎁"},
+  {id:"pb",n:"Pulido de parabrisas + cerámico Fireball",s:"1 año de protección",p:{sedan:20000,suv:25000},ic:"🛡️"},
+  {id:"none",n:"Solo los focos",s:"No necesito el parabrisas",p:{sedan:0,suv:0},ic:"💡"}];
+var LN={ps:"Parabrisas sedán + cerámico Fireball",pu:"Parabrisas SUV o pick-up + cerámico Fireball",combo:"Promo parabrisas + focos con cerámico Fireball"};
 /* PROMO: al agendar el parabrisas por esta página se regala el vidrio trasero y los retrovisores.
    Para apagarla: PROMO.on=false, ponerle fecha final en PROMO.end ("2026-12-31"), o guardar promo:false en pub/cfg. */
-var PROMO={on:true,end:"",svc:"pb",n:"🎁 Regalo promo: vidrio trasero + retrovisores"};
+var PROMO={on:false,end:"",svc:"pb",n:""};
 function promoOn(){return PROMO.on&&(!PROMO.end||ymd(new Date())<=PROMO.end)}
 function hasGift(c){c=c||S;return promoOn()&&c.gl===PROMO.svc}
-var FOCOS={id:"fo",n:"Pulido de focos con polímero líquido",s:"El par, quedan transparentes",p:20000,ic:"💡"};
+var FOCOS={id:"fo",n:"Pulido de focos con polímero líquido",s:"El par · 1 año de protección",p:20000,ic:"💡"};
 var SUVRX=["rav ?4","cr-?v","hr-?v","c-?hr","prado","land ?cruiser","fortuner","rush","hilux","tacoma","tundra","4 ?runner","highlander","sequoia","sportage","sorento","seltos","sonet","tucson","santa ?fe","creta","venue","kona","palisade","x-?trail","qashqai","kicks","frontier","navara","pathfinder","montero","outlander","asx","l ?200","pajero","nativa","mu-?x","d-?max","ranger","explorer","escape","ecosport","bronco","everest","cx-?[3589]0?","bt-?50","forester","outback","xv","crosstrek","vitara","jimny","s-?cross","terios","bego","tiguan","t-?cross","t-?roc","touareg","amarok","duster","koleos","captur","oroch","trailblazer","tracker","equinox","colorado","silverado","wrangler","cherokee","compass","renegade","gladiator","x[1-7]","q[2-8]","gl[abce]","ml","rx","nx","ux","gx","lx","xc[469]0","h6","jolion","haval","korando","tivoli","rexton","actyon","musso","partner","l300","hiace","4x4","pick ?up","pickup","camioneta","suv","jeep"];
 var SEDRX=["corolla","yaris","camry","prius","etios","civic","accord","city","fit","jazz","sentra","versa","almera","march","tiida","note","elantra","accent","i10","i20","i30","grand i10","sonata","rio","picanto","k3","k5","cerato","forte","soluto","mazda ?[236]","demio","swift","alto","celerio","ciaz","dzire","baleno","mirage","lancer","attrage","jetta","golf","gol","polo","vento","virtus","spark","sail","aveo","cruze","onix","beat","focus","fiesta","logan","sandero","clase c","model 3","leaf","ioniq","sedan","sed[aá]n","hatchback"];
-var S={vt:"",gl:"pb",fo:false,day:"",h:null,lat:null,lng:null,acc:null,step:0},BUSY={},CFG={wa:"50670458967",open:true,off:[]},T0=Date.now(),DB=null;
+var S={vt:"",gl:"combo",fo:false,day:"",h:null,lat:null,lng:null,acc:null,step:0},BUSY={},CFG={wa:"50670458967",open:true,off:[]},T0=Date.now(),DB=null;
 var $=function(i){return document.getElementById(i)},pad=function(n){return n<10?"0"+n:""+n},ymd=function(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
 var DN=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],DS=["dom","lun","mar","mié","jue","vie","sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],MNL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 function crc(n){return "₡"+Math.round(n).toLocaleString("es-CR")}
@@ -315,18 +354,22 @@ function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 var STEPS=["s1","s2","s4","s3","s4b","s5"];
 function show(i){S.step=i;STEPS.forEach(function(s,k){$(s).classList.toggle("on",k===i)});$("pt").textContent=i<5?"Paso "+(i+1)+" de 5":"Último paso";$("pb").style.width=((i+1)/6*100)+"%";
   $("nx").textContent=i===5?"Confirmar cita":"Siguiente";err("");upd();window.scrollTo(0,0);if(i===3)loadBusy();if(i===5)renderSum()}
-$("go").onclick=function(){try{fbq("track","InitiateCheckout")}catch(e){}document.body.classList.add("book");history.pushState({b:1},"");show(0)};
+$("go").onclick=function(){document.body.classList.add("book");history.pushState({b:1},"");show(0)};
 $("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(1);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
 window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(1)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
 /* VARIOS CARROS */
-var CARS=[{vt:"",veh:"",gl:"pb",fo:false}];S.ci=0;
-function curCar(){return {vt:S.vt,veh:$("veh").value.trim(),gl:S.gl,fo:S.fo}}
+function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,mk:"",md:"",yr:"",col:"",pl:""}}
+var CARS=[newCar()];S.ci=0;
+function vehOf(c){return [c.mk==="Otra"?"":c.mk,c.md,c.yr].filter(Boolean).join(" ").trim()}
+function syncVeh(){$("veh").value=vehOf({mk:$("mk").value,md:$("md").value.trim(),yr:$("yr").value})}
+function curCar(){syncVeh();return {vt:S.vt,veh:$("veh").value,gl:S.gl,fo:S.fo,mk:$("mk").value,md:$("md").value.trim(),yr:$("yr").value,col:$("col").value.trim(),pl:$("pl").value.trim().toUpperCase()}}
+function setCarFields(c){$("mk").value=c.mk||"";models();$("md").value=c.md||"";$("yr").value=c.yr||"";$("col").value=c.col||"";$("pl").value=c.pl||"";syncVeh()}
 function allCars(){return CARS.map(function(c,i){return i===S.ci?curCar():c})}
 function saveCar(){CARS[S.ci]=curCar()}
-function loadCar(i){saveCar();S.ci=i;var c=CARS[i];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;$("veh").value=c.veh;
+function loadCar(i){saveCar();S.ci=i;var c=CARS[i];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
   Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.setAttribute("aria-pressed",x.dataset.vt===S.vt)});$("vw").classList.remove("on");buildSvc();upd()}
 function carTotal(c){var g=GLASS.find(function(x){return x.id===c.gl}),vt=c.vt||"sedan";return (g?g.p[vt]:0)+(c.fo?FOCOS.p:0)}
-function carOk(c){return !!c.vt&&c.veh.length>=3&&carTotal(c)>0}
+function carOk(c){return !!c.vt&&!!c.mk&&(c.md||"").length>=2&&carTotal(c)>0}
 function vtN(c){return c.vt==="suv"?"SUV o pick-up":"Sedán o hatchback"}
 function renderCars(){var A=allCars(),n=A.length,h="";
   if(n>1)h=A.map(function(c,i){return '<button data-ci="'+i+'" aria-pressed="'+(i===S.ci)+'"'+(carOk(c)&&i!==S.ci?' class="ok"':'')+'>🚗 '+(c.veh?esc(c.veh.slice(0,14)):"Carro "+(i+1))+(n>1?'<span class="x" data-cx="'+i+'" aria-label="Quitar carro '+(i+1)+'">✕</span>':'')+'</button>'}).join("");
@@ -335,16 +378,16 @@ function renderCars(){var A=allCars(),n=A.length,h="";
   $("h2t").textContent=n>1?"Carro "+(S.ci+1)+": ¿qué le hacemos?":"¿Qué le hacemos?";
   $("more").innerHTML=n<MAXC?'<button id="addcar"><span style="font-size:20px">＋</span> Agregar otro carro</button><small>¿Tenés otro carro? Agendalos juntos en la misma visita. Cada uno con sus propios servicios.</small>':
     '<small>Máximo '+MAXC+' carros por reserva aquí. ¿Son más? <a href="'+waUrl("Hola GlassDetailingCR, quiero agendar más de "+MAXC+" carros")+'" target="_blank" rel="noopener">Escribinos por WhatsApp</a>.</small>';
-  if($("addcar"))$("addcar").onclick=function(){if(!carOk(curCar())){err(!S.vt||$("veh").value.trim().length<3?"Primero completá el tipo y modelo de este carro.":"Elegí al menos un servicio para este carro.");return}
-    saveCar();CARS.push({vt:"",veh:"",gl:"pb",fo:false});loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")};
+  if($("addcar"))$("addcar").onclick=function(){if(!carOk(curCar())){err(!S.vt||!$("mk").value||$("md").value.trim().length<2?"Primero completá el tipo, la marca y el modelo de este carro.":"Elegí al menos un servicio para este carro.");return}
+    saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")};
   Array.prototype.forEach.call(document.querySelectorAll("[data-ci]"),function(b){b.onclick=function(e){var x=e.target.getAttribute("data-cx");
-    if(x!=null){saveCar();var k=+x;CARS.splice(k,1);if(S.ci>=k&&S.ci>0)S.ci--;var c=CARS[S.ci];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;$("veh").value=c.veh;
+    if(x!=null){saveCar();var k=+x;CARS.splice(k,1);if(S.ci>=k&&S.ci>0)S.ci--;var c=CARS[S.ci];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
       Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});buildSvc();show(S.step>1?1:S.step);return}
     var i=+b.dataset.ci;if(i===S.ci)return;loadCar(i);show(S.step>1?0:S.step)}})}
 function toast2(m){var t=$("er");t.textContent=m;t.style.background="color-mix(in srgb,var(--ok) 14%,transparent)";t.style.color="var(--ok)";t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on");t.style.background="";t.style.color=""},2200)}
 function err(t){$("er").textContent=t||"";$("er").classList.toggle("on",!!t)}
 function total(){return allCars().reduce(function(a,c){return a+carTotal(c)},0)+feeAmt()}
-function okStep(){if(S.step===0)return !!S.vt&&$("veh").value.trim().length>=3;if(S.step===1)return carTotal(curCar())>0;if(S.step===2)return zoneOk()&&(S.lat!=null||$("addr").value.trim().length>=10);if(S.step===3)return !!S.day&&S.h!=null;
+function okStep(){if(S.step===0)return !!S.vt&&!!$("mk").value&&$("md").value.trim().length>=2;if(S.step===1)return carTotal(curCar())>0;if(S.step===2)return zoneOk()&&(S.lat!=null||$("addr").value.trim().length>=10);if(S.step===3)return !!S.day&&S.h!=null;
   if(S.step===4)return $("cli").value.trim().length>=2&&telOk();return true}
 function upd(){var n=CARS.length;$("tot").textContent=crc(total());$("totl").textContent=n>1?"Total · "+n+" carros":"Total";$("nx").disabled=!okStep();renderCars()}
 function telN(){var n=$("tel").value.replace(/\D/g,"");if(n.length===11&&n.indexOf("506")===0)n=n.slice(3);return n}
@@ -352,25 +395,48 @@ function telOk(){return /^[245678]\d{7}$/.test(telN())}
 $("nx").onclick=function(){if(!okStep()){hintStep();return}
   if(S.step===1){var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar()}
   if(S.step<5)show(S.step+1);else submit()};
-function hintStep(){if(S.step===0)err(!S.vt?"Elegí si es sedán o SUV.":"Escribí la marca y el modelo del carro.");if(S.step===2)err(!S.zone?"Mandanos tu ubicación o elegí la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escribinos por WhatsApp para un pedido especial.":"Escribí la dirección con algunas señas.");if(S.step===3)err("Elegí el día y la hora.");if(S.step===4)err(!telOk()?"Revisá tu número de WhatsApp: son 8 dígitos.":"Escribí tu nombre.")}
+function hintStep(){if(S.step===0)err(!S.vt?"Elegí si es sedán o SUV.":!$("mk").value?"Elegí la marca del carro.":"Escribí el modelo del carro.");if(S.step===2)err(!S.zone?"Mandanos tu ubicación o elegí la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escribinos por WhatsApp para un pedido especial.":"Escribí la dirección con algunas señas.");if(S.step===3)err("Elegí el día y la hora.");if(S.step===4)err(!telOk()?"Revisá tu número de WhatsApp: son 8 dígitos.":"Escribí tu nombre.")}
 
 /* PASO 1: tipo de carro */
 Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(b){b.onclick=function(){S.vt=b.dataset.vt;Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.setAttribute("aria-pressed",x===b)});chkModel();buildSvc();upd()}});
 function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
 function hit(L,s){return L.some(function(r){return new RegExp("(^|[^a-z0-9])("+r+")([^a-z0-9]|$)").test(s)})}
 function guess(){var s=norm($("veh").value);if(s.length<2)return "";var su=hit(SUVRX,s),se=hit(SEDRX,s);return su&&!se?"suv":se&&!su?"sedan":""}
-function chkModel(){var g=guess(),w=$("vw");if(g&&S.vt&&g!==S.vt){var nm=$("veh").value.trim();
+function chkModel(){syncVeh();var g=guess(),w=$("vw");if(g&&S.vt&&g!==S.vt){var nm=$("veh").value.trim();
     w.innerHTML=(g==="suv"?"Ojo: <b>"+esc(nm)+"</b> parece un <b>SUV o pick-up</b>. El parabrisas de un carro alto cuesta un poco más.":"Ojo: <b>"+esc(nm)+"</b> parece un <b>sedán o hatchback</b>.")+'<br><button id="vfix">Cambiar a '+(g==="suv"?"SUV o pick-up":"sedán o hatchback")+'</button>';w.classList.add("on");
     $("vfix").onclick=function(){document.querySelector('[data-vt="'+g+'"]').click()}}
   else{w.classList.remove("on");if(g&&!S.vt){document.querySelector('[data-vt="'+g+'"]').click()}}}
-$("veh").addEventListener("input",function(){chkModel();upd()});
+var MARCAS={"Toyota":["Corolla","Corolla Cross","Yaris","Rush","Raize","RAV4","Hilux","Fortuner","Prado","Land Cruiser","4Runner","Tacoma","Camry","Prius","C-HR","Avanza"],
+ "Hyundai":["Accent","Elantra","i10","Grand i10","Creta","Venue","Kona","Tucson","Santa Fe","H1"],
+ "Nissan":["Sentra","Versa","March","Tiida","Note","Kicks","Qashqai","X-Trail","Pathfinder","Frontier","Navara","Leaf"],
+ "Kia":["Picanto","Rio","Soluto","K3","Cerato","Sonet","Seltos","Sportage","Sorento"],
+ "Suzuki":["Alto","Celerio","Swift","Dzire","Baleno","Ertiga","Jimny","Vitara","Grand Vitara","S-Cross"],
+ "Mitsubishi":["Mirage","Attrage","Lancer","ASX","Outlander","Montero","Montero Sport","L200"],
+ "Honda":["Fit","City","Civic","Accord","HR-V","CR-V","Pilot"],
+ "Mazda":["Mazda 2","Mazda 3","Mazda 6","CX-3","CX-30","CX-5","CX-9","BT-50"],
+ "Chevrolet":["Spark","Beat","Aveo","Sail","Onix","Cruze","Tracker","Captiva","Trailblazer","Colorado","Silverado"],
+ "Ford":["Fiesta","Focus","EcoSport","Escape","Explorer","Bronco","Ranger","F-150"],
+ "Volkswagen":["Gol","Polo","Virtus","Jetta","Golf","T-Cross","Tiguan","Amarok"],
+ "Isuzu":["D-Max","MU-X"],"Subaru":["Impreza","XV","Crosstrek","Forester","Outback"],
+ "Jeep":["Renegade","Compass","Cherokee","Grand Cherokee","Wrangler","Gladiator"],
+ "Daihatsu":["Terios","Bego"],"Geely":["Coolray","Azkarra","EX5"],"BYD":["Dolphin","Seal","Song","Yuan","Atto 3"],
+ "Chery":["Tiggo 2","Tiggo 4","Tiggo 7","Tiggo 8"],"Changan":["CS35","CS55","Alsvin"],"JAC":["S2","S3","T6","T8"],
+ "Great Wall / Haval":["Jolion","H6","Wingle"],"MG":["MG ZS","MG 5","HS"],"SsangYong":["Tivoli","Korando","Rexton","Musso"],
+ "Peugeot":["208","2008","3008"],"Renault":["Kwid","Logan","Sandero","Duster","Koleos","Oroch"],
+ "BMW":[],"Mercedes-Benz":[],"Audi":[],"Lexus":[],"Land Rover":[],"Volvo":[],"Tesla":["Model 3","Model Y"],"Dodge":[],"RAM":[],"Otra":[]};
+function models(){var L=MARCAS[$("mk").value]||[];$("mdl").innerHTML=L.map(function(m){return '<option value="'+esc(m)+'">'}).join("")}
+(function(){$("mk").innerHTML='<option value="">Elegí la marca…</option>'+Object.keys(MARCAS).map(function(m){return '<option>'+esc(m)+'</option>'}).join("");
+  var y=new Date().getFullYear()+1,h='<option value="">Año…</option>';for(var i=y;i>=1985;i--)h+='<option>'+i+'</option>';$("yr").innerHTML=h})();
+$("mk").addEventListener("change",function(){models();$("md").value="";syncVeh();chkModel();upd()});
+["md","yr"].forEach(function(i){$(i).addEventListener("input",function(){syncVeh();chkModel();upd()})});
+["col","pl"].forEach(function(i){$(i).addEventListener("input",function(){upd()})});
 
 /* PASO 2: servicios */
-function svcBtn(o,pr,on,attr){return '<button class="opt" '+attr+' aria-pressed="'+on+'"><span class="ic">'+o.ic+'</span><span class="tx"><b>'+o.n+(o.id==="pb"?'<span class="tag">Más pedido</span>':'')+'</b><small>'+o.s+'</small>'+(promoOn()&&o.id===PROMO.svc?'<span class="gift">🎁 + vidrio trasero y retrovisores de regalo</span>':'')+'</span><span class="pr">'+(pr?crc(pr):"")+'</span></button>'}
+function svcBtn(o,pr,on,attr){return '<button class="opt" '+attr+' aria-pressed="'+on+'"><span class="ic">'+o.ic+'</span><span class="tx"><b>'+o.n+(o.id==="combo"?'<span class="tag">Promo</span>':'')+'</b><small>'+o.s+'</small></span><span class="pr">'+(pr?crc(pr):"")+'</span></button>'}
 function buildSvc(){var vt=S.vt||"sedan";$("gl").innerHTML=GLASS.map(function(g){return svcBtn(g,g.p[vt],S.gl===g.id,'data-g="'+g.id+'"')}).join("");
-  $("fo").innerHTML=svcBtn(FOCOS,FOCOS.p,S.fo,'id="fob"');
-  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){S.gl=b.dataset.g;if(S.gl==="none")S.fo=true;buildSvc();upd()}});
-  $("fob").onclick=function(){S.fo=!S.fo;if(!S.fo&&S.gl==="none")S.gl="pb";buildSvc();upd()}}
+  $("fo").innerHTML=S.gl==="combo"?'<div class="incl">💡 Los focos ya vienen incluidos en la promo.</div>':svcBtn(FOCOS,FOCOS.p,S.fo,'id="fob"');
+  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){S.gl=b.dataset.g;if(S.gl==="none")S.fo=true;if(S.gl==="combo")S.fo=false;buildSvc();upd()}});
+  if($("fob"))$("fob").onclick=function(){S.fo=!S.fo;if(!S.fo&&S.gl==="none")S.gl="pb";buildSvc();upd()}}
 buildSvc();
 
 /* PASO 3: día y hora */
@@ -406,11 +472,11 @@ function tiles(la,lo){var z=17,n=Math.pow(2,z),xf=(lo+180)/360*n,r=la*Math.PI/18
    Con GPS se toma el lugar de la lista más cercano. Si queda a más de MAXKM de cualquiera, se trata como "no". */
 var ZF={free:0,f5:5000,f10:10000},MAXKM=10,BIGORDER=5;
 var PL=[
- ["San José centro",9.9333,-84.0833,"free","San José"],["Escazú",9.9189,-84.1390,"free","San José"],["Santa Ana",9.9320,-84.1830,"free","San José"],["Pavas",9.9480,-84.1350,"free","San José"],["La Uruca",9.9530,-84.1080,"free","San José"],["Desamparados",9.8970,-84.0630,"free","San José"],["Aserrí",9.8590,-84.0910,"free","San José"],["Alajuelita",9.9010,-84.1000,"free","San José"],["Ciudad Colón (Mora)",9.9130,-84.2420,"free","San José"],["Guadalupe (Goicoechea)",9.9500,-84.0500,"free","San José"],["Tibás",9.9590,-84.0790,"free","San José"],["Moravia",9.9620,-84.0480,"free","San José"],["San Pedro (Montes de Oca)",9.9350,-84.0510,"free","San José"],["Curridabat",9.9150,-84.0350,"free","San José"],["Coronado",9.9780,-84.0040,"free","San José"],["Acosta",9.7980,-84.1600,"f5","San José"],["Puriscal",9.8480,-84.3110,"f10","San José"],
+ ["San José centro",9.9333,-84.0833,"free","San José"],["Escazú",9.9189,-84.1390,"free","San José"],["Santa Ana",9.9320,-84.1830,"free","San José"],["Pavas",9.9480,-84.1350,"free","San José"],["La Uruca",9.9530,-84.1080,"free","San José"],["Desamparados",9.8970,-84.0630,"free","San José"],["Aserrí",9.8590,-84.0910,"free","San José"],["Alajuelita",9.9010,-84.1000,"free","San José"],["Ciudad Colón (Mora)",9.9130,-84.2420,"free","San José"],["Guadalupe (Goicoechea)",9.9500,-84.0500,"free","San José"],["Tibás",9.9590,-84.0790,"free","San José"],["Moravia",9.9620,-84.0480,"free","San José"],["San Pedro (Montes de Oca)",9.9350,-84.0510,"free","San José"],["Curridabat",9.9150,-84.0350,"free","San José"],["Coronado",9.9780,-84.0040,"free","San José"],["Acosta",9.7980,-84.1600,"no","San José"],["Puriscal",9.8480,-84.3110,"no","San José"],
  ["Heredia centro",9.9980,-84.1170,"free","Heredia"],["Barva",10.0210,-84.1230,"free","Heredia"],["Santo Domingo",9.9810,-84.0890,"free","Heredia"],["Santa Bárbara",10.0390,-84.1570,"free","Heredia"],["San Rafael de Heredia",10.0130,-84.0990,"free","Heredia"],["San Isidro de Heredia",10.0170,-84.0560,"free","Heredia"],["Belén",9.9800,-84.1830,"free","Heredia"],["Flores",9.9980,-84.1600,"free","Heredia"],["San Pablo",9.9950,-84.0960,"free","Heredia"],
- ["Alajuela centro",10.0160,-84.2110,"free","Alajuela"],["Río Segundo / Aeropuerto",10.0000,-84.1950,"free","Alajuela"],["San Rafael de Alajuela",9.9930,-84.2420,"free","Alajuela"],["La Guácima",9.9620,-84.2560,"free","Alajuela"],["Poás",10.0700,-84.2380,"free","Alajuela"],["Grecia",10.0730,-84.3110,"f5","Alajuela"],["Sarchí",10.0890,-84.3480,"f5","Alajuela"],["Naranjo",10.0990,-84.3780,"f5","Alajuela"],["Palmares",10.0570,-84.4340,"f5","Alajuela"],["Atenas",9.9780,-84.3790,"f5","Alajuela"],["San Ramón",10.0870,-84.4700,"f10","Alajuela"],["Zarcero",10.1860,-84.3920,"f10","Alajuela"],["Orotina",9.9120,-84.5240,"f10","Alajuela"],
- ["Cartago centro",9.8640,-83.9190,"f5","Cartago"],["Tres Ríos (La Unión)",9.9030,-83.9890,"f5","Cartago"],["San Rafael de Oreamuno",9.8780,-83.9050,"f5","Cartago"],["Tejar (El Guarco)",9.8480,-83.9420,"f5","Cartago"],
- ["Paraíso",9.8380,-83.8650,"no","Cartago"],["Orosi",9.7960,-83.8550,"no","Cartago"],["Pacayas",9.9160,-83.8100,"no","Cartago"],["Juan Viñas",9.8920,-83.7480,"no","Cartago"],["Turrialba",9.9040,-83.6830,"no","Cartago"],
+ ["Alajuela centro",10.0160,-84.2110,"free","Alajuela"],["Río Segundo / Aeropuerto",10.0000,-84.1950,"free","Alajuela"],["San Rafael de Alajuela",9.9930,-84.2420,"free","Alajuela"],["La Guácima",9.9620,-84.2560,"free","Alajuela"],["Poás",10.0700,-84.2380,"free","Alajuela"],["Grecia",10.0730,-84.3110,"no","Alajuela"],["Sarchí",10.0890,-84.3480,"no","Alajuela"],["Naranjo",10.0990,-84.3780,"no","Alajuela"],["Palmares",10.0570,-84.4340,"no","Alajuela"],["Atenas",9.9780,-84.3790,"no","Alajuela"],["San Ramón",10.0870,-84.4700,"no","Alajuela"],["Zarcero",10.1860,-84.3920,"no","Alajuela"],["Orotina",9.9120,-84.5240,"no","Alajuela"],
+ ["Cartago centro",9.8640,-83.9190,"free","Cartago"],["Tres Ríos (La Unión)",9.9030,-83.9890,"free","Cartago"],["San Rafael de Oreamuno",9.8780,-83.9050,"free","Cartago"],["Tejar (El Guarco)",9.8480,-83.9420,"free","Cartago"],
+ ["Paraíso",9.8380,-83.8650,"free","Cartago"],["Orosi",9.7960,-83.8550,"no","Cartago"],["Pacayas",9.9160,-83.8100,"no","Cartago"],["Juan Viñas",9.8920,-83.7480,"no","Cartago"],["Turrialba",9.9040,-83.6830,"no","Cartago"],
  ["Los Santos (Tarrazú, Dota)",9.6560,-84.0220,"no","Lejos"],["Pérez Zeledón",9.3740,-83.7030,"no","Lejos"],["San Vito (Coto Brus)",8.8210,-82.9710,"no","Lejos"],["Buenos Aires",9.1680,-83.3330,"no","Lejos"],["Ciudad Neily / Golfito",8.6450,-82.9400,"no","Lejos"],
  ["San Carlos (Ciudad Quesada)",10.3240,-84.4270,"no","Lejos"],["Aguas Zarcas / Venecia",10.3830,-84.3300,"no","Lejos"],["La Fortuna",10.4680,-84.6430,"no","Lejos"],["Los Chiles",11.0330,-84.7130,"no","Lejos"],["Upala / Guatuso",10.8970,-85.0160,"no","Lejos"],["Sarapiquí",10.4550,-84.0180,"no","Lejos"],
  ["Guanacaste (Liberia)",10.6350,-85.4380,"no","Lejos"],["Nicoya / Santa Cruz",10.1480,-85.4520,"no","Lejos"],["Cañas / Tilarán",10.4300,-85.0920,"no","Lejos"],
@@ -424,19 +490,17 @@ function zoneOk(){return !!S.zone&&S.zone.z!=="no"}
 function feeLine(){return {n:"🚗 Domicilio a "+S.zone.n,p:feeAmt()}}
 function zoneCard(){var z=S.zone,el=$("zv");if(!z){el.innerHTML="";return}
   var mis=S.gpsZone&&z.src==="sel"&&S.gpsZone.n!==z.n?'<small>Tu GPS marca cerca de '+esc(S.gpsZone.n)+'. Si el carro está en otro lugar, está bien: llegamos a donde esté el carro.</small>':'';
-  if(z.z==="no"){el.innerHTML='<div class="zc no"><b>😔 '+(z.far?'Esa ubicación queda fuera de nuestras zonas':'Por ahora no llegamos a '+esc(z.n))+'</b><small>'+(z.far?'Está a unos '+z.km+' km de '+esc(z.near)+', la zona más cercana donde trabajamos. ':'Por la distancia, esa zona no se puede agendar aquí. ')+'Si son '+BIGORDER+' carros o más, escribinos y lo coordinamos como pedido especial.</small>'+mis+
-    '<a href="'+waUrl("Hola GlassDetailingCR 👋 Quiero consultar un pedido especial"+(z.far?"":" en "+z.n)+". Cantidad de carros: ")+'" target="_blank" rel="noopener">Escribinos por WhatsApp</a>'+
+  if(z.z==="no"){el.innerHTML='<div class="zc no"><b>'+(z.far?'Esa ubicación queda fuera de la GAM':esc(z.n)+' queda fuera de la GAM')+'</b><small>'+(z.far?'Está a unos '+z.km+' km de '+esc(z.near)+'. ':'')+'Por la web agendamos solo dentro de la GAM. Escribinos por WhatsApp y vemos cómo ayudarte.</small>'+mis+
+    '<a href="'+waUrl("Hola GlassDetailingCR 👋 Quiero consultar un servicio"+(z.far?"":" en "+z.n)+". Cantidad de carros: ")+'" target="_blank" rel="noopener">Escribinos por WhatsApp</a>'+
     (z.src==="gps"?'<button type="button" id="zfix">¿El carro está en otro lugar? Elegí la zona arriba</button>':'')+'</div>';if($("zfix"))$("zfix").onclick=function(){$("zsel").focus()};return}
   el.innerHTML=z.z==="free"?'<div class="zc free"><b>✓ '+esc(z.n)+': domicilio gratis</b><small>Llegamos sin costo extra.</small>'+mis+'</div>':
     '<div class="zc fee"><b>🚗 '+esc(z.n)+': domicilio '+crc(ZF[z.z])+'</b><small>Por la distancia se suma una sola vez al total, aunque sean varios carros.</small>'+mis+'</div>'}
 function buildZones(){var G={};PL.forEach(function(p,i){(G[p[4]]=G[p[4]]||[]).push(i)});
-  $("zsel").innerHTML='<option value="">Elegí dónde está el carro…</option>'+["San José","Heredia","Alajuela","Cartago","Lejos"].map(function(g){return '<optgroup label="'+(g==="Lejos"?"Otras zonas (sin servicio por la web)":g)+'">'+G[g].map(function(i){var p=PL[i];return '<option value="'+i+'">'+esc(p[0])+' · '+(p[3]==="free"?"gratis":p[3]==="no"?"no llegamos":crc(ZF[p[3]]))+'</option>'}).join("")+'</optgroup>'}).join("")+'<option value="x">Otro lugar fuera de esta lista</option>';
+  $("zsel").innerHTML='<option value="">Elegí dónde está el carro…</option>'+["San José","Heredia","Alajuela","Cartago","Lejos"].map(function(g){return '<optgroup label="'+(g==="Lejos"?"Fuera de la GAM (solo por WhatsApp)":g)+'">'+G[g].map(function(i){var p=PL[i];return '<option value="'+i+'">'+esc(p[0])+' · '+(p[3]==="free"?"gratis":"por WhatsApp")+'</option>'}).join("")+'</optgroup>'}).join("")+'<option value="x">Otro lugar fuera de esta lista</option>';
   $("zsel").onchange=function(){var v=this.value;if(v===""){S.zone=S.gpsZone||null}else if(v==="x"){S.zone={n:"ese lugar",z:"no",src:"sel"}}else{var p=PL[+v];S.zone={n:p[0],z:p[3],src:"sel"}}err("");zoneCard();upd()};
   var by=function(z){return PL.filter(function(p){return p[3]===z&&p[4]!=="Lejos"}).map(function(p){return p[0].replace(/ \(.+\)$/,"")})};
-  $("zlist").innerHTML='<div><b><span>San José, Heredia y Alajuela (GAM)</span><span style="color:var(--ok)">Gratis</span></b><small>'+by("free").slice(0,12).join(", ")+' y alrededores</small></div>'+
-    '<div><b><span>Zonas cercanas</span><span>'+crc(ZF.f5)+'</span></b><small>'+by("f5").join(", ")+'</small></div>'+
-    '<div><b><span>Zonas más lejanas</span><span>'+crc(ZF.f10)+'</span></b><small>'+by("f10").join(", ")+'</small></div>'+
-    '<div><b><span>Más lejos</span><span style="color:var(--bad)">Solo por WhatsApp</span></b><small>San Carlos, zona norte, Guanacaste, Puntarenas, Pérez Zeledón, zona sur, Limón, Turrialba, Paraíso y Orosi: atendemos solo pedidos especiales de '+BIGORDER+' carros o más.</small></div>'}
+  $("zlist").innerHTML='<div><b><span>Toda la GAM</span><span style="color:var(--ok)">Domicilio gratis</span></b><small>San José, Heredia, Alajuela y Cartago: '+by("free").slice(0,16).join(", ")+' y alrededores.</small></div>'+
+    '<div><b><span>Fuera de la GAM</span><span>Por WhatsApp</span></b><small>Grecia, Atenas, San Ramón, Puriscal, zona norte, Guanacaste, Puntarenas, zona sur o Limón: escribinos y lo coordinamos.</small></div>'}
 $("gps").onclick=function(){if(!navigator.geolocation){$("lv").innerHTML='<div class="locbad">Tu celular no permite compartir la ubicación desde aquí. Elegí la zona y escribí la dirección abajo.</div>';return}
   var b=this;b.disabled=true;b.lastChild.textContent="Buscando tu ubicación…";
   navigator.geolocation.getCurrentPosition(function(p){b.disabled=false;b.lastChild.textContent="Actualizar mi ubicación";S.lat=+p.coords.latitude.toFixed(6);S.lng=+p.coords.longitude.toFixed(6);S.acc=Math.round(p.coords.accuracy||0);
@@ -448,42 +512,66 @@ $("gps").onclick=function(){if(!navigator.geolocation){$("lv").innerHTML='<div c
 ["addr","cli","tel"].forEach(function(i){$(i).addEventListener("input",function(){err("");upd()})});
 
 /* PASO 5: resumen y envío */
-function lines(c){c=c||curCar();var vt=c.vt,L=[],g=GLASS.find(function(x){return x.id===c.gl});if(g&&g.id!=="none")L.push({n:g.n+(g.id==="pb"?" ("+(vt==="suv"?"SUV":"sedán")+")":""),p:g.p[vt]});if(c.fo)L.push({n:FOCOS.n,p:FOCOS.p});if(hasGift(c))L.push({n:PROMO.n,p:0});return L}
+function lines(c){c=c||curCar();var vt=c.vt||"sedan",L=[],g=GLASS.find(function(x){return x.id===c.gl});if(g&&g.id!=="none")L.push({n:g.id==="combo"?LN.combo:vt==="suv"?LN.pu:LN.ps,p:g.p[vt]});if(c.fo)L.push({n:FOCOS.n,p:FOCOS.p});if(hasGift(c))L.push({n:PROMO.n,p:0});return L}
 function mapLink(){return S.lat!=null?"https://www.google.com/maps/search/?api=1&query="+S.lat+","+S.lng:""}
 function lineRows(L){return L.map(function(l){return l.p?'<div><i>✨</i><span>'+esc(l.n)+'</span><b>'+crc(l.p)+'</b></div>':'<div><i>🎁</i><span>'+esc(l.n.replace(/^🎁 /,""))+'</span><b style="color:var(--ok)">Gratis</b></div>'}).join("")}
 function renderSum(){var A=allCars(),n=A.length,len=DUR*n;
   $("sum").innerHTML='<div><i>📅</i><span><b>'+niceDay(S.day).replace(/^./,function(c){return c.toUpperCase()})+'</b><br>'+fmtH(S.h)+' a '+fmtH(S.h+len)+(n>1?' · '+n+' carros':'')+'</span></div>'+
-  A.map(function(c,k){return (n>1?'<div class="carh"><span>🚗 Carro '+(k+1)+' · '+fmtH(S.h+DUR*k)+'</span><b>'+crc(carTotal(c))+'</b></div>':'')+'<div><i>🚗</i><span>'+esc(c.veh)+' · '+vtN(c)+'</span></div>'+lineRows(lines(c))}).join("")+
+  A.map(function(c,k){return (n>1?'<div class="carh"><span>🚗 Carro '+(k+1)+' · '+fmtH(S.h+DUR*k)+'</span><b>'+crc(carTotal(c))+'</b></div>':'')+'<div><i>🚗</i><span>'+esc(c.veh)+' · '+vtN(c)+(extra(c)?'<br><small>'+esc(extra(c))+'</small>':'')+'</span></div>'+lineRows(lines(c))}).join("")+
   '<div><i>📍</i><span>'+(S.lat!=null?'Ubicación enviada'+($("addr").value.trim()?' · '+esc($("addr").value.trim()):''):esc($("addr").value.trim()))+'<br><small style="color:'+(feeAmt()?'inherit':'var(--ok)')+';font-weight:600">'+(S.zone?esc(S.zone.n)+(feeAmt()?'':' · domicilio gratis'):'')+'</small></span></div>'+(feeAmt()?'<div><i>🚗</i><span>Domicilio a '+esc(S.zone.n)+'</span><b>'+crc(feeAmt())+'</b></div>':'')+
   '<div><i>👤</i><span>'+esc($("cli").value.trim())+' · '+telN().replace(/(\d{4})(\d{4})/,"$1 $2")+'</span></div>'+
   '<div><i>💰</i><span>Total'+(n>1?' de los '+n+' carros':'')+'</span><span class="tot" style="flex:none">'+crc(total())+'</span></div>'}
+function extra(c){return [c.col?"Color "+c.col:"",c.pl?"Placa "+c.pl:""].filter(Boolean).join(" · ")}
 function waText(){var A=allCars(),n=A.length;return "Hola GlassDetailingCR 👋 Acabo de agendar "+(n>1?"una cita para "+n+" carros":"mi cita")+":\n📅 "+niceDay(S.day)+", "+fmtH(S.h)+(n>1?" a "+fmtH(S.h+DUR*n):"")+
-  A.map(function(c,k){return "\n🚗 "+(n>1?"Carro "+(k+1)+" ("+fmtH(S.h+DUR*k)+"): ":"")+c.veh+" ("+(c.vt==="suv"?"SUV":"sedán")+")\n✨ "+lines(c).map(function(l){return l.n}).join(" + ")+(n>1?"\n   "+crc(carTotal(c)):"")}).join("")+
-  (feeAmt()?"\n🚗 Domicilio a "+S.zone.n+": "+crc(feeAmt()):"")+"\n💰 Total: "+crc(total())+"\n📍 "+(S.zone?S.zone.n+" · ":"")+(mapLink()||$("addr").value.trim())+(S.lat!=null&&$("addr").value.trim()?"\n   "+$("addr").value.trim():"")+"\n👤 "+$("cli").value.trim()}
+  A.map(function(c,k){return "\n🚗 "+(n>1?"Carro "+(k+1)+" ("+fmtH(S.h+DUR*k)+"): ":"")+c.veh+" ("+(c.vt==="suv"?"SUV":"sedán")+(extra(c)?" · "+extra(c):"")+")\n✨ "+lines(c).map(function(l){return l.n}).join(" + ")+(n>1?"\n   "+crc(carTotal(c)):"")}).join("")+
+  (feeAmt()?"\n🚗 Domicilio a "+S.zone.n+": "+crc(feeAmt()):"")+"\n💰 Total: "+crc(total())+"\n📍 "+(S.zone?S.zone.n+" · ":"")+(mapLink()||$("addr").value.trim())+(S.lat!=null&&$("addr").value.trim()?"\n   "+$("addr").value.trim():"")+"\n👤 "+$("cli").value.trim()+(CX.url?"\n\nSi necesito cancelar: "+CX.url:"")}
 function submit(){var b=$("nx");if(b.disabled)return;err("");
   if($("website").value){done();return}
   if(Date.now()-T0<8000){err("Revisá los datos un momento y tocá Confirmar otra vez.");return}
   if(!DB){err("No hay conexión. Revisá tu internet o escribinos por WhatsApp.");return}
   b.disabled=true;b.textContent="Apartando tu hora…";
-  var A=allCars(),n=A.length,base=Date.now()*100+Math.floor(Math.random()*90),tel=telN(),at=Date.now();
+  var A=allCars(),n=A.length,base=Date.now()*100+Math.floor(Math.random()*90),tel=telN(),at=Date.now(),ck=newKey();
   var ub=S.lat!=null?S.lat+","+S.lng:$("addr").value.trim();
   var note0=["Zona: "+S.zone.n+(feeAmt()?" (domicilio "+crc(feeAmt())+")":" (domicilio gratis)")+(S.gpsZone&&S.zone.src==="sel"&&S.gpsZone.n!==S.zone.n?" · GPS cerca de "+S.gpsZone.n:""),S.lat!=null&&$("addr").value.trim()?"Señas: "+$("addr").value.trim():"",$("det").value.trim(),S.acc>150?"Ubicación aprox. ±"+S.acc+" m":""].filter(Boolean).join(" · ");
   var bt=DB.batch(),ids=[];
   A.forEach(function(c,k){var id=base+k,sid=String(id),L=lines(c).concat(k===0&&feeAmt()?[feeLine()]:[]),h0=S.h+DUR*k;ids.push(sid);
-    var note=((n>1?"🚗 Reserva de "+n+" carros ("+(k+1)+" de "+n+") · ":"")+note0).replace(/ · $/,"").slice(0,400);
-    bt.set(DB.doc("jobs/"+sid),{id:id,cli:$("cli").value.trim().slice(0,60),tel:tel,veh:c.veh.slice(0,60),vt:c.vt,items:L.map(function(l){return l.n}),lines:L,disc:0,total:carTotal(c)+(k===0?feeAmt():0),date:S.day,time:pad(h0)+":00",note:note,ubic:ub.slice(0,300),src:$("src").value,st:"Por confirmar",by:"web",web:true,at:at});
+    var note=((n>1?"🚗 Reserva de "+n+" carros ("+(k+1)+" de "+n+") · ":"")+(extra(c)?extra(c)+" · ":"")+note0).replace(/ · $/,"").slice(0,400);
+    bt.set(DB.doc("jobs/"+sid),{id:id,cli:$("cli").value.trim().slice(0,60),tel:tel,veh:c.veh.slice(0,60),vt:c.vt,items:L.map(function(l){return l.n}),lines:L,disc:0,total:carTotal(c)+(k===0?feeAmt():0),date:S.day,time:pad(h0)+":00",note:note,ubic:ub.slice(0,300),src:$("src").value,st:"Por confirmar",by:"web",web:true,at:at,ck:ck});
     for(var q=0;q<DUR;q++)bt.set(DB.doc("slots/"+S.day+"_"+pad(h0+q)),{date:S.day,h:h0+q,job:sid,at:at})});
   bt.set(DB.doc("holds/"+tel),{job:ids[0],date:S.day,at:at});
-  bt.commit().then(done,function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
+  bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
       if(taken){S.h=null;show(3);err("Uy, alguien acaba de tomar esa hora. Elegí otra, por favor.")}
       else err("Ya hay una cita pendiente con este número de WhatsApp. Si querés cambiarla o agendar otro carro, escribinos por WhatsApp.")})})}
-function done(){try{var _v=total(),_n=allCars().length;fbq("track","Schedule",{value:_v,currency:"CRC",num_items:_n});fbq("track","Lead",{value:_v,currency:"CRC"})}catch(e){}var t=waText();$("wa").href=waUrl(t);var A=allCars(),n=A.length;$("dt").innerHTML="<b>"+niceDay(S.day)+", "+fmtH(S.h)+"</b><br>"+(n>1?n+" carros: "+A.map(function(c){return esc(c.veh)}).join(", "):esc(A[0].veh))+" · "+crc(total());
+function done(){var t=waText();$("cxl").href=CX.url||"#";$("cxl").parentNode.hidden=!CX.url;$("wa").href=waUrl(t);var A=allCars(),n=A.length;$("dt").innerHTML="<b>"+niceDay(S.day)+", "+fmtH(S.h)+"</b><br>"+(n>1?n+" carros: "+A.map(function(c){return esc(c.veh)}).join(", "):esc(A[0].veh))+" · "+crc(total());
   var d=pd(S.day),f=function(h){return S.day.replace(/-/g,"")+"T"+pad(h)+"0000"};
   $("cal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailingCR: pulido a domicilio")+"&dates="+f(S.h)+"/"+f(S.h+DUR*n)+"&details="+encodeURIComponent(A.map(function(c){return c.veh+": "+lines(c).map(function(l){return l.n}).join(" + ")}).join(" | ")+" · "+crc(total()))+"&location="+encodeURIComponent(mapLink()||$("addr").value.trim());
   document.body.classList.remove("book");document.body.classList.add("ok");window.scrollTo(0,0);confetti()}
-function confetti(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;var C=["#0d7a85","#3fc1cd","#f2b134","#ffe08a","#1f8a4c"];
+function confetti(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;var C=["#ffb23f","#ffd88a","#141a26","#9aa4b5","#13a463"];
   for(var i=0;i<50;i++){var d=document.createElement("i");d.className="cf";d.style.left=Math.random()*100+"vw";d.style.background=C[i%C.length];d.style.setProperty("--dx",(Math.random()*160-80)+"px");d.style.setProperty("--r",(Math.random()*900-450)+"deg");d.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(d);setTimeout(function(x){x.remove()}.bind(null,d),2400)}}
-function promoUI(){$("promo").hidden=!promoOn();buildSvc()}
+function promoUI(){buildSvc()}
+/* CANCELAR CITA: el enlace lleva los ids, la clave (ck) que se guardó en la cita, el día, la hora y el WhatsApp.
+   Las reglas solo dejan pasar la cita a "Cancelada" si la clave coincide; después se liberan sus horas. */
+var CX={url:""};
+function newKey(){var a=new Uint8Array(16),c="abcdefghijkmnpqrstuvwxyz23456789",t="";crypto.getRandomValues(a);for(var i=0;i<16;i++)t+=c[a[i]%c.length];return t}
+function cxUrl(ids,ck,day,h,tel){return location.origin+location.pathname+"?cancelar="+ids.join(".")+"&k="+ck+"&d="+day+"&h="+h+"&t="+tel}
+function cxParams(){var q=new URLSearchParams(location.search),ids=(q.get("cancelar")||"").split(".").filter(function(x){return /^\d{10,20}$/.test(x)}),k=q.get("k")||"",d=q.get("d")||"",h=parseInt(q.get("h"),10),t=(q.get("t")||"").replace(/\D/g,"");
+  if(!ids.length||!/^[a-z0-9]{16}$/.test(k)||!/^\d{4}-\d{2}-\d{2}$/.test(d)||isNaN(h))return null;return {ids:ids,k:k,d:d,h:h,t:t}}
+function cxShow(){var P=cxParams();if(!P)return false;document.body.classList.add("cxm");var n=P.ids.length,when=niceDay(P.d).replace(/^./,function(c){return c.toUpperCase()})+", "+fmtH(P.h);
+  var past=pd(P.d).getTime()+P.h*36e5<Date.now();
+  $("cxc").innerHTML=past?'<h2>Esta cita ya pasó</h2><p class="sub">'+when+'. Si necesitás algo, escribinos.</p><a class="lbtn" href="'+waUrl("Hola GlassDetailingCR 👋")+'" target="_blank" rel="noopener">Escribinos por WhatsApp</a>':
+   '<h2>¿Cancelar tu cita?</h2><p class="sub">'+when+(n>1?' · '+n+' carros':'')+'</p><label for="cxw">¿Por qué la cancelás? (opcional)</label><select id="cxw"><option value="">Prefiero no decir</option><option>Me surgió un imprevisto</option><option>Quiero cambiar la fecha</option><option>Ya no necesito el servicio</option><option>Otro</option></select>'+
+   '<button class="cxgo" id="cxgo">Sí, cancelar mi cita</button><a class="lbtn" href="./">No, mantenerla</a><div class="err" id="cxe" role="alert"></div>';
+  if($("cxgo"))$("cxgo").onclick=function(){cxRun(P,this)};return true}
+function cxRun(P,b){if(!DB){$("cxe").textContent="No hay conexión. Revisá tu internet.";$("cxe").classList.add("on");return}b.disabled=true;b.textContent="Cancelando…";
+  var why=$("cxw").value,bt=DB.batch();P.ids.forEach(function(id){bt.update(DB.doc("jobs/"+id),{st:"Cancelada",cxk:P.k,cxAt:Date.now(),cxWhy:why})});
+  bt.commit().then(function(){var dels=[];P.ids.forEach(function(id,k){for(var q=0;q<DUR;q++)dels.push(DB.doc("slots/"+P.d+"_"+pad(P.h+DUR*k+q)).delete().catch(function(){}))});
+      if(P.t)dels.push(DB.doc("holds/"+P.t).delete().catch(function(){}));
+      return Promise.all(dels)}).then(function(){
+      $("cxc").innerHTML='<div class="check"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><h2>Tu cita quedó cancelada</h2><p class="sub">Ya le avisamos al equipo. Cuando quieras, agendá otra.</p><a class="cta" href="./">Agendar otra cita</a><a class="lbtn" href="'+waUrl("Hola GlassDetailingCR 👋 Acabo de cancelar mi cita del "+niceDay(P.d)+". ")+'" target="_blank" rel="noopener">Escribirnos por WhatsApp</a>'},
+    function(){b.disabled=false;b.textContent="Sí, cancelar mi cita";$("cxe").textContent="No pudimos cancelarla: puede que ya esté cancelada o que el enlace no sea el correcto. Escribinos por WhatsApp y te ayudamos.";$("cxe").classList.add("on")})}
+$("cxcopy").onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(CX.url):Promise.reject()).then(function(){b.textContent="Enlace copiado ✓"},function(){b.textContent="Mantené presionado “Cancelar mi cita” para copiarlo"})};
+$("cxwa").href=waUrl("Hola GlassDetailingCR 👋 Necesito cancelar mi cita.");
+cxShow();
 promoUI();
 buildZones();
 (function(){try{var q=location.search,r=document.referrer||"";if(/[?&](fbclid=|utm_source=(facebook|fb|ig|instagram|meta|messenger))/i.test(q)||/facebook\.|instagram\.|messenger\.|fb\.com|m\.me/i.test(r)){var s=$("src");if(s&&!s.value)s.value="Facebook / Instagram"}}catch(e){}})();
