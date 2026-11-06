@@ -1,10 +1,7 @@
 # GlassDetailingCR
 
-App del taller: agenda, clientes, productos, redes y números.
+- **App del equipo:** https://jersan06500-svg.github.io/glassdetailingcr-app/ (entrar con la cuenta de Google).
+- **Reservas para clientes:** https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/
+- **Mandar ubicación:** https://jersan06500-svg.github.io/glassdetailingcr-app/ubicacion/
 
-- `index.html`: la app.
-- `config.js`: los datos de tu proyecto de Firebase (lo único que editás).
-- `firestore.rules`: copia de las reglas de seguridad (se pegan en la consola de Firebase).
-- `manifest.json`, `sw.js` e íconos: para instalarla en el celular como app.
-
-Los datos no están en GitHub: viven en Firebase y solo los ven los correos del equipo.
+Los datos viven en Firebase (proyecto `glassdetailingcr`), no en este repositorio.

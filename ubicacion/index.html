@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es-CR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enviá tu ubicación · GlassDetailingCR</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b3c43">
+<link rel="icon" href="../icon-192.png">
+<style>
+:root{--bg:#0b3c43;--ink:#f2fdfe;--mute:#a6d9dd;--cta:#ffd36b;--wa:#25d366}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(110% 80% at 50% 30%,#0f4a52,#0b3c43 45%,#04191c);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:420px;text-align:center}
+img.lg{width:150px;height:auto;filter:drop-shadow(0 0 14px rgba(127,227,234,.3))}
+h1{font-size:26px;line-height:1.2;margin:14px 0 8px}
+p{color:var(--mute);margin:0 0 20px}
+button,.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;padding:18px;font:700 18px system-ui,sans-serif;cursor:pointer;text-decoration:none}
+#go{background:var(--cta);color:#1d1600;box-shadow:0 10px 30px rgba(255,211,107,.25)}
+#go:disabled{opacity:.7}
+.btn.wa{background:var(--wa);color:#04210f;margin-top:12px}
+.ok{display:none}.ok.on{display:block}
+.box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px;margin-top:18px;text-align:left;color:var(--mute);font-size:15px}
+.box b{color:var(--ink)}
+.err{color:#ffb4a8;margin-top:12px;font-size:15px;min-height:1em}
+</style>
+</head>
+<body>
+<main>
+<img class="lg" src="../logo-icon.png" alt="GlassDetailingCR" width="397" height="314">
+<div id="s1">
+<h1 id="hi">¡Hola! Enviá tu ubicación</h1>
+<p>Así llegamos directo a donde está el carro. Solo tocá el botón y aceptá el permiso.</p>
+<button id="go" type="button">📍 Enviar mi ubicación</button>
+<div class="err" id="err"></div>
+<div class="box" id="tip" style="display:none"><b>¿No te deja?</b><br>Volvé al chat de WhatsApp, tocá 📎 (o ＋) → <b>Ubicación</b> → <b>Enviar tu ubicación actual</b>.</div>
+</div>
+<div class="ok" id="s2">
+<h1>¡Listo! 🙌</h1>
+<p>Se abrió WhatsApp con tu ubicación. Solo tocá <b>Enviar</b>.</p>
+<a class="btn wa" id="again" href="#">Abrir WhatsApp de nuevo</a>
+</div>
+</main>
+<script>
+var WA="50670458967",q=new URLSearchParams(location.search),t=(q.get("t")||"").replace(/\D/g,"").slice(-8),n=(q.get("n")||"").slice(0,30);
+if(n)document.getElementById("hi").textContent="¡Hola "+n+"! Enviá tu ubicación";
+var link="";
+function send(la,lo){la=la.toFixed(6);lo=lo.toFixed(6);
+  var msg="📍 Mi ubicación para la cita"+(n?" ("+n+")":"")+":\nhttps://jersan06500-svg.github.io/glassdetailingcr-app/?loc="+la+","+lo+(t?"&t="+t:"")+"\n\nEn el mapa: https://maps.google.com/?q="+la+","+lo;
+  link="https://wa.me/"+WA+"?text="+encodeURIComponent(msg);
+  document.getElementById("again").href=link;
+  document.getElementById("s1").style.display="none";document.getElementById("s2").classList.add("on");
+  location.href=link}
+document.getElementById("go").onclick=function(){var b=this,e=document.getElementById("err");e.textContent="";
+  if(!navigator.geolocation){e.textContent="Tu teléfono no permite compartir la ubicación desde aquí.";document.getElementById("tip").style.display="block";return}
+  b.disabled=true;b.textContent="Buscando tu ubicación…";
+  navigator.geolocation.getCurrentPosition(function(p){send(p.coords.latitude,p.coords.longitude)},
+    function(x){b.disabled=false;b.textContent="📍 Enviar mi ubicación";e.textContent=x.code===1?"Necesitamos tu permiso de ubicación. Activalo y probá de nuevo.":"No pudimos obtener la ubicación. Probá de nuevo al aire libre.";document.getElementById("tip").style.display="block"},
+    {enableHighAccuracy:true,timeout:15000,maximumAge:0})};
+</script>
+</body>
+</html>

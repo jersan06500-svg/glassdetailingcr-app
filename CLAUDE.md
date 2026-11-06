@@ -1,117 +1,73 @@
 # GlassDetailingCR · App del taller
 
-Contexto para seguir trabajando en esta app desde Claude Code. Se armó en una conversación de Claude el 5 de noviembre de 2026.
+Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Quién la usa
 
-- Taller **GlassDetailingCR** (Costa Rica). Se dedica sobre todo a la restauración de focos y también a parabrisas.
+- Taller **GlassDetailingCR** (Costa Rica). Se dedica a la restauración de focos y parabrisas.
 - Dueño: Alejandro. **No es programador**: explicale todo en español sencillo y sin jerga. Él solo aprueba resultados.
-- Equipo de 3 personas, cada una con su usuario de Firebase: el dueño y su mamá (iPhone) y un compañero (Android).
-- Los correos del equipo **no van en este repositorio** porque es público. Están solo en Firebase Console (Authentication → Usuarios y Firestore → Reglas).
-- La usan desde el celular, instalada como app (PWA) con "Agregar a pantalla de inicio".
+- Equipo de 3 personas: el dueño y su mamá (iPhone) y un compañero (Android). Entran con su **cuenta de Google**.
+- La usan desde el celular, instalada con "Agregar a pantalla de inicio".
+
+## Historia corta
+
+- 5 nov 2026: primera versión propia (agenda, clientes, productos, números, redes, carro eléctrico).
+- **6 nov 2026: se reemplazó por la plantilla de GlassStudioCR**, adaptada a GlassDetailing. Es del mismo equipo: GlassStudioCR es el otro negocio de Esteban, el compañero. El dueño eligió **empezar en blanco**, así que los datos de la versión vieja (colecciones `clientes`, `citas`, `productos`, `servicios`, `movimientos`, `consultas`, `gastos`, `config`) quedaron guardados en Firestore. Las reglas nuevas ya no los dejan leer. **No los borres.**
+- El dueño dijo que después decide si se vuelve a agregar algo de la versión vieja: la carga del carro eléctrico (Geely EX5, 18,5 kWh/100 km), el aviso de mantenimiento a 6 meses y la sección Redes.
 
 ## Dónde vive
 
 | Qué | Dónde |
 | --- | --- |
-| App publicada | https://jersan06500-svg.github.io/glassdetailingcr-app/ |
-| Repositorio | https://github.com/jersan06500-svg/glassdetailingcr-app (público, rama `main`) |
-| Publicación | GitHub Pages, "Deploy from a branch" → `main` / `(root)` |
-| Firebase | Proyecto `glassdetailingcr`, plan gratis Spark. Auth con correo y contraseña. Firestore Standard en `nam5`, modo producción |
-| Dominios autorizados en Auth | `localhost`, `glassdetailingcr.firebaseapp.com`, `glassdetailingcr.web.app`, `jersan06500-svg.github.io` |
+| App del equipo | https://jersan06500-svg.github.io/glassdetailingcr-app/ |
+| Reservas para clientes | `/reservar/` |
+| Página para mandar ubicación | `/ubicacion/` |
+| Repositorio | https://github.com/jersan06500-svg/glassdetailingcr-app (público, rama `main`, GitHub Pages desde `main` / root, **sin dominio propio**: no agregues `CNAME` sin que el dueño compre y configure un dominio) |
+| Firebase | Proyecto `glassdetailingcr`, plan gratis Spark. Auth con Google (y correo/contraseña, que la app no usa). Firestore Standard en `nam5` |
 
 ## Archivos
 
-- `index.html`: toda la app (HTML + CSS + JS, sin frameworks ni build). Aquí pasa casi todo.
-- `config.js`: `window.FIREBASE_CONFIG` del proyecto `glassdetailingcr`. La apiKey web es pública por diseño; lo que protege los datos son las reglas.
-- `firestore.rules`: plantilla de referencia con correos de ejemplo. Solo los 3 correos del equipo leen y escriben (`request.auth.token.email in [...]`). **Las reglas vigentes, con los correos reales, viven en Firebase Console → Firestore → Reglas.** No pongas los correos reales en el repo.
-- `sw.js`: service worker. Primero busca en la red y, si no hay, usa el caché. Constante `CACHE` (va en `gdcr-v9` al 6 nov 2026).
-- `manifest.json`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png`: para instalarla como app. El ícono es la pulidora del logo de la marca.
-- `LEEME.md`: explicación corta para el dueño.
+- `index.html`: la app interna, que es HTML + JS puro con Firebase **compat** SDK 10.12.2. Trae agenda, nueva cita, clientes, notas y metas, insumos, números (finanzas y anuncios de Meta), ruta del día, avisos de viaje entre citas, pedir reseña de Google y la animación de entrada con el logo.
+- `reservar/index.html`: página pública donde el cliente agenda solo. Permite varios carros, servicios con precio por carro, ubicación por GPS, zonas con recargo y horas libres según las otras citas.
+- `ubicacion/index.html`: el cliente manda su ubicación por WhatsApp. El enlace que vuelve (`/?loc=lat,lng&t=tel`) se guarda solo en su cita.
+- `firestore.rules`: copia de las reglas vigentes. También están dentro de `index.html` como `var RULES`. Las vigentes de verdad se publican a mano en Firebase Console → Firestore → Reglas.
+- `manifest.json`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`: la app instalable. `logo-icon.png` y `reservar/logo-icon.png` son la pulidora en PNG transparente.
+- `reservar/og.jpg`: la imagen que aparece cuando se comparte el enlace de reservas.
+- `sw.js`: solo limpia el caché de la versión vieja en los celulares y se da de baja. La app nueva no lo registra.
 
-## Cómo funciona `index.html`
+## Datos (Firestore)
 
-- **Estado**: `S` guarda una lista por colección. `COLS = clientes, citas, productos, servicios, movimientos, consultas, gastos, config`. `UI` guarda el estado de la pantalla (filtros, textos a medio escribir, periodo de Números…).
-- **Datos**: `subscribeAll()` abre un `onSnapshot` por colección y llama a `render()` en cada cambio. Para escribir se usan `addDoc`, `updDoc`, `setDoc` y `delDoc`, que pasan por `window.FB.adapter`.
-  - El adaptador está en el `<script type="module">` del final. Carga Firebase JS SDK 10.12.2 desde gstatic, con caché local persistente.
-  - Si `config.js` todavía tiene `PEGA_AQUI`, la app entra en modo local (localStorage) y muestra un aviso.
-- **Sesión**: `window.onAuth(user)` muestra u oculta `#login`. `AUTHERR` traduce los errores de Firebase Auth al español.
-- **Navegación**: por hash (`#inicio`, `#agenda`, `#clientes`, `#redes`, `#productos`, `#numeros`, `#ajustes`). `render()` reconstruye `#main` con `vInicio`, `vAgenda`, `vClientes`, `vRedes`, `vProductos`, `vNumeros` y `vAjustes`.
-  - Como `render()` reemplaza todo `#main`, cualquier texto que el usuario esté escribiendo dentro de `#main` tiene que vivir en `UI`. Se hace con el atributo `data-ui="clave"`. Si no, se pierde cuando llega un snapshot.
-- **Ventanas emergentes**: `openModal(titulo, html, onSave, botonesExtra)` crea un `<form>` en `#modal-root`. Si `onSave` devuelve `false`, la ventana no se cierra. Están `modalCita`, `modalCompletar` (cobrar y descontar producto), `modalCliente`, `verCliente`, `modalProducto`, `modalMov` (compra o uso), `modalServicio`, `modalConsulta` y `modalConfig` (datos del negocio).
-- **Eventos**: un solo listener de `click` en `document` reparte según `data-act`. Los `input` y `change` actualizan `UI` mediante `data-ui`.
-- **Utilidades**: `esc`, `money` (₡, es-CR), `fdate`, `ymd`, `parse`, `addDays`, `monday`, `cap`, `num`, `fmtQty`, `byId`, `toast`, `waLink` (agrega 506 si el número tiene 8 dígitos).
-- **Redes**: fuera de Claude no hay `sample`, así que `claudeOff` es siempre true. Los botones copian el pedido (`promptReply` / `promptPost`) para pegarlo en la app de Claude. Las plantillas de respuesta rápida salen de `plantillas()`. `espaciosLibres()` calcula los horarios libres según `config/redes` (apertura, cierre, domingo).
-- **Mantenimiento**: `paraMantenimiento()` arma la tarjeta "Para mantenimiento" de Hoy, con los clientes que cumplen unos 6 meses desde su restauración de focos y un botón de WhatsApp con el mensaje listo.
-- **Gastos y carro eléctrico**: los gastos del negocio usan las categorías de `TIPOS_GASTO`. Números los resta para dar la ganancia real (`gastosCard`).
-  - La categoría "Carga del carro" (`CARGA`) calcula kWh, km y costo a partir del % de batería al salir y al llegar. Usa `carro()`: Geely EX5, 18,5 kWh/100 km de consumo real, batería de 60,22 kWh y ₡86 el kWh, editables en Ajustes. Los km del tablero son opcionales.
-  - Un gasto se puede ligar a una cita (`citaId`), y `costoViaje(citaId)` lo muestra en el historial del cliente.
-- **Ajustes**: datos del carro, logo (se reduce a 256 px y se guarda como data URL en `config/marca`), lista de servicios, copiar respaldo (JSON de `S`), importar respaldo (`importar()` hace `setDoc` por id y no duplica) y cerrar sesión.
+`jobs` (citas), `settings` (precios, notas, metas, movimientos, meta de ventas, configuración de Meta y avisos `settings/notify`), `exp` (gastos), `team` (correos autorizados, uno por documento; solo el dueño los escribe), `slots` (horas ocupadas, de lectura pública), `holds` y `pub/cfg` (configuración pública de reservas).
 
-## Modelo de datos (Firestore, colecciones en la raíz)
+- El dueño está fijo en el código: `OWNER` en `index.html` e `isOwner()` en las reglas, con su correo de Gmail. Los demás miembros se agregan desde la app (colección `team`).
+- Las reglas exigen `email_verified`, por eso se entra con Google.
+- No subas a este repositorio público los correos de la mamá ni del compañero.
 
-| Colección | Campos |
-| --- | --- |
-| `clientes` | nombre, telefono, vehiculo, placa, direccion, origen (Instagram/Facebook/WhatsApp/Referido/Google/Pasó por el taller/Otro), notas, creado (ms) |
-| `citas` | clienteId, servicioId, servicioNombre, fecha `YYYY-MM-DD`, hora `HH:MM`, precio, estado (pendiente/confirmada/completada/cancelada), metodoPago, costoProductos, notas, creado, completada |
-| `productos` | nombre, unidad, stock, minimo, costo (por unidad) |
-| `servicios` | nombre, precio, duracion (min) |
-| `movimientos` | tipo (compra/uso), productoId, productoNombre, cantidad, costoUnit, total, fecha, citaId?, creado |
-| `consultas` | nombre, red (Instagram/Facebook), contacto, interes, estado (nueva/cotizada/agendada/perdida), fecha, notas, creado |
-| `config/redes` | instagram, facebook, whatsapp, ubicacion, apertura, cierre, domingo (bool), extra |
-| `gastos` | categoria (ver `TIPOS_GASTO`), monto, fecha, metodoPago, notas, citaId?, y para cargas del carro: bateria al salir/llegar, kmCarro?, km, kwh; creado |
-| `config/marca` | logo (data URL PNG) |
-| `config/carro` | nombre, consumo (kWh/100 km), bateria (kWh), precioKwh (₡) |
+## Lo que se adaptó de la plantilla (6 nov 2026)
 
-Firestore no acepta `undefined`, así que todo campo que se guarde tiene que tener valor.
+- Marca GlassStudio → GlassDetailing en todos los textos. WhatsApp del negocio: `50670458967`. Enlaces a `citas.glassstudiocr.com` → la URL de GitHub Pages.
+- Firebase `glassstudiocr-13cf7` → `glassdetailingcr`.
+- Se quitó el píxel de Meta de GlassStudio en `reservar/`. Falta crear uno propio si el dueño lo quiere.
+- `REVURL` (reseñas de Google) quedó vacío. El mensaje de agradecimiento sale sin enlace hasta que el dueño dé el enlace de reseñas de su Perfil de Empresa.
+- El canal de avisos de ntfy se crea con el prefijo `glassdetailingcr-`.
 
-## Reglas de la casa (vienen de la skill glassdetailingcr-app)
+## Pendiente de confirmar con el dueño
 
-1. **Cambios pequeños y enfocados**: tocar solo lo que se pidió y no reescribir lo que funciona.
-2. Un solo `index.html`, sin React, npm ni bundlers.
-3. Nombres en español claro, como el resto del código. Funciones cortas.
-4. Todo texto que escribe un usuario pasa por `esc()` antes de ir a `innerHTML`.
-5. Sin código muerto, sin `console.log` olvidados y sin comentarios obvios.
-6. Reutilizar lo que ya existe (helpers, clases `.card`, `.btn`, `.kpi`, `.pill`, `.chip`, `.list`, `.empty`).
-7. Fechas y dinero en formato Costa Rica: `es-CR` y colones (₡).
-8. **No borrar ni migrar datos de Firestore sin preguntar antes.**
-9. Diseño: solo las variables CSS existentes (`--bg`, `--surface`, `--ink`, `--muted`, `--line`, `--accent`, `--cyan`, `--ok`, `--warn`, `--bad`, `--soft`, `--shine`, `--glass1`, `--glass2`).
-   - Tipografías: `--display` (Barlow Condensed) y `--body` (IBM Plex Sans).
-   - Desde el 6 nov 2026 hay **un solo tema**: verde-azulado nocturno, como vidrio de foco (fondo `#0d171a`, acento celeste `#33c3d0`, ámbar `#f2b33d` para luz y atención, verde `#2fbf6b` para WhatsApp). No hay modo claro.
-   - El momento protagonista es la tarjeta "Próxima cita" de Hoy (`proximaCard`): degradado de vidrio, un reflejo que la cruza y una cuenta regresiva que se actualiza cada 30 s sin re-renderizar.
-   - Las animaciones responden a lo que hace la persona (abrir una ventana, tocar un botón, cambiar de sección). Las barras de Números crecen solo al entrar a la sección (clase `.enter` en `main`). No agregues animaciones decorativas en cada tarjeta.
-   - No pongas `backdrop-filter` en `header.top`: el menú de abajo vive dentro del header y quedaría pegado arriba.
-   - Primero celular: botones de 44 px o más, textos cortos en español tico.
-   - El título "GlassDetailingCR" lleva un brillo animado (`@keyframes shine`).
+- **Servicios y precios**: todavía son los de GlassStudio (`var SERV` en `index.html` y `GLASS` / `FOCOS` / `PROMO` en `reservar/index.html`). Los nombres tienen que coincidir entre los dos archivos.
+- **Zonas y recargos** (`ZF`, `PL`, `MAXKM` en `reservar/`, y `ZPL` en `index.html`), **horario** (`HOURS`, `DUR`, `DAYS_AHEAD`, `LEAD_H`, `MAXC`) y el bloqueo de 120 minutos (`wantLocks`): también son los de GlassStudio.
+- Enlace de reseñas de Google y píxel de Meta propios.
 
-## Antes de entregar un cambio
+## Reglas de la casa
 
-- [ ] Probar en ancho de celular. Para probar en local: `python3 -m http.server 8000` y abrir `http://localhost:8000` (localhost ya está autorizado en Firebase Auth).
-- [ ] Revisar que la consola no tenga errores.
-- [ ] **Subir la versión de `CACHE` en `sw.js`** (gdcr-v1 → gdcr-v2 → …) para que los celulares reciban la versión nueva.
-- [ ] Si cambió algo de los datos, revisar `firestore.rules` y recordarle al dueño que las pegue en la consola.
-- [ ] Explicarle al dueño en 2 a 4 frases qué cambió y cómo probarlo desde el celular.
+1. **Cambios pequeños y enfocados**: tocar solo lo que se pidió. Antes de cambiar algo, leé cómo lo resuelve el código; la lógica de la plantilla funciona.
+2. HTML + JS puro, sin frameworks, npm ni build.
+3. Todo texto de usuarios o clientes que vaya a `innerHTML` se escapa.
+4. Sin código muerto ni `console.log` olvidados.
+5. Fechas y dinero en formato Costa Rica: `es-CR` y colones (₡).
+6. **No borrar ni migrar datos de Firestore sin preguntar.**
+7. Cada `<script>` tiene que pasar `node -e "new Function(src)"`. Probá en 390 px de ancho, sin scroll horizontal.
+8. Si un cambio toca qué datos se leen o escriben, actualizá `firestore.rules` y `var RULES`, y recordale al dueño que publique las reglas en la consola. Publicarlas lo tiene que confirmar él.
 
 ## Cómo publicar
 
-Cada push a `main` vuelve a publicar en GitHub Pages en 1 o 2 minutos. Desde Claude Code, en la compu del dueño, se hace con `git commit` y `git push`. Desde el 6 nov 2026, Claude en la web también tiene GitHub conectado y puede hacer push directo, así que el dueño ya no tiene que subir archivos a mano. No subas un `config.js` distinto al actual.
-
-## Estado actual (5 nov 2026, noche)
-
-Ya está hecho:
-
-- App publicada y funcionando, con las reglas y los 3 usuarios configurados.
-- Desde Claude Code se agregaron: la tarjeta de mantenimiento a 6 meses, el ajuste de diseño para celular (controles de 44 px, sin zoom en iPhone, Clientes en lista), los gastos del negocio con la ganancia real y la carga del carro eléctrico ligada a citas.
-
-Por confirmar con el dueño: si ya importó el respaldo desde la versión anterior (el artefacto de Claude) y si los 3 celulares ya tienen la app instalada.
-
-## Mejoras pendientes
-
-1. **Fotos de antes y después** en cada cita. Firebase Storage pide plan Blaze, así que conviene comprimir y guardar como data URL pequeño, o evaluar con el dueño.
-2. **Cotizaciones y recibos** con el logo, para compartir por WhatsApp.
-
-## Cosas a tener en cuenta
-
-- Las escrituras a Firestore sin señal no resuelven hasta reconectar. El botón Guardar queda deshabilitado mientras tanto.
-- En iPhone, para instalarla hay que abrirla en Safari, no dentro de WhatsApp.
-- La skill `redes-glassdetailingcr` existe para escribir publicaciones y respuestas de redes del taller.
+Cada push a `main` publica en GitHub Pages en 1 o 2 minutos. Claude en la web tiene GitHub conectado y puede hacer push directo. Explicale al dueño en 2 a 4 frases qué cambió y cómo probarlo desde el celular.

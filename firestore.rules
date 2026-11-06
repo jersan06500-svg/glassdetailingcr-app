@@ -1,16 +1,32 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function esDelEquipo() {
-      return request.auth != null
-        && request.auth.token.email in [
-          'correo-tuyo@gmail.com',
-          'correo-mama@gmail.com',
-          'correo-companero@gmail.com'
-        ];
+    function signed() { return request.auth != null && request.auth.token.email_verified == true; }
+    function isOwner() { return signed() && request.auth.token.email == 'jersan06500@gmail.com'; }
+    function isTeam() { return isOwner() || (signed() && exists(/databases/$(database)/documents/team/$(request.auth.token.email))); }
+    function str(v, mn, mx) { return v is string && v.size() >= mn && v.size() <= mx; }
+    function webJob() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at'])
+        && d.st == 'Por confirmar' && d.by == 'web' && d.web == true
+        && str(d.cli, 2, 60) && str(d.tel, 8, 8) && str(d.veh, 2, 60) && str(d.date, 10, 10) && str(d.time, 5, 5)
+        && str(d.note, 0, 400) && str(d.ubic, 0, 300) && str(d.src, 0, 40)
+        && d.total is number && d.total > 0 && d.total <= 200000
+        && d.items is list && d.items.size() <= 4 && d.lines is list && d.lines.size() <= 4;
     }
-    match /{document=**} {
-      allow read, write: if esDelEquipo();
+    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); }
+    match /settings/{id} { allow read, write: if isTeam(); }
+    match /exp/{id} { allow read, write: if isTeam(); }
+    match /team/{email} { allow read: if isTeam(); allow write: if isOwner(); }
+    match /slots/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['date','h','job','at']) && request.resource.data.job is string;
+      allow update, delete: if isTeam();
     }
+    match /holds/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['job','date','at']) && request.resource.data.job is string;
+      allow read, update, delete: if isTeam();
+    }
+    match /pub/{id} { allow read: if true; allow write: if isTeam(); }
   }
 }
