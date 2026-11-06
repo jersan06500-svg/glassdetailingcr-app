@@ -25,7 +25,7 @@ Contexto para seguir trabajando en esta app desde Claude Code. Se armó en una c
 - `index.html`: toda la app (HTML + CSS + JS, sin frameworks ni build). Aquí pasa casi todo.
 - `config.js`: `window.FIREBASE_CONFIG` del proyecto `glassdetailingcr`. La apiKey web es pública por diseño; lo que protege los datos son las reglas.
 - `firestore.rules`: plantilla de referencia con correos de ejemplo. Solo los 3 correos del equipo leen y escriben (`request.auth.token.email in [...]`). **Las reglas vigentes, con los correos reales, viven en Firebase Console → Firestore → Reglas.** No pongas los correos reales en el repo.
-- `sw.js`: service worker. Primero busca en la red y, si no hay, usa el caché. Constante `CACHE` (va en `gdcr-v8` al 5 nov 2026).
+- `sw.js`: service worker. Primero busca en la red y, si no hay, usa el caché. Constante `CACHE` (va en `gdcr-v9` al 6 nov 2026).
 - `manifest.json`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png`: para instalarla como app. El ícono es la pulidora del logo de la marca.
 - `LEEME.md`: explicación corta para el dueño.
 
@@ -75,15 +75,18 @@ Firestore no acepta `undefined`, así que todo campo que se guarde tiene que ten
 6. Reutilizar lo que ya existe (helpers, clases `.card`, `.btn`, `.kpi`, `.pill`, `.chip`, `.list`, `.empty`).
 7. Fechas y dinero en formato Costa Rica: `es-CR` y colones (₡).
 8. **No borrar ni migrar datos de Firestore sin preguntar antes.**
-9. Diseño: solo las variables CSS existentes (`--bg`, `--surface`, `--ink`, `--muted`, `--line`, `--accent`, `--cyan`, `--ok`, `--warn`, `--bad`, `--soft`, `--shine`).
+9. Diseño: solo las variables CSS existentes (`--bg`, `--surface`, `--ink`, `--muted`, `--line`, `--accent`, `--cyan`, `--ok`, `--warn`, `--bad`, `--soft`, `--shine`, `--glass1`, `--glass2`).
    - Tipografías: `--display` (Barlow Condensed) y `--body` (IBM Plex Sans).
-   - Paleta sobria grafito, con modo claro y oscuro.
+   - Desde el 6 nov 2026 hay **un solo tema**: verde-azulado nocturno, como vidrio de foco (fondo `#0d171a`, acento celeste `#33c3d0`, ámbar `#f2b33d` para luz y atención, verde `#2fbf6b` para WhatsApp). No hay modo claro.
+   - El momento protagonista es la tarjeta "Próxima cita" de Hoy (`proximaCard`): degradado de vidrio, un reflejo que la cruza y una cuenta regresiva que se actualiza cada 30 s sin re-renderizar.
+   - Las animaciones responden a lo que hace la persona (abrir una ventana, tocar un botón, cambiar de sección). Las barras de Números crecen solo al entrar a la sección (clase `.enter` en `main`). No agregues animaciones decorativas en cada tarjeta.
+   - No pongas `backdrop-filter` en `header.top`: el menú de abajo vive dentro del header y quedaría pegado arriba.
    - Primero celular: botones de 44 px o más, textos cortos en español tico.
    - El título "GlassDetailingCR" lleva un brillo animado (`@keyframes shine`).
 
 ## Antes de entregar un cambio
 
-- [ ] Probar en ancho de celular, en modo claro y en modo oscuro. Para probar en local: `python3 -m http.server 8000` y abrir `http://localhost:8000` (localhost ya está autorizado en Firebase Auth).
+- [ ] Probar en ancho de celular. Para probar en local: `python3 -m http.server 8000` y abrir `http://localhost:8000` (localhost ya está autorizado en Firebase Auth).
 - [ ] Revisar que la consola no tenga errores.
 - [ ] **Subir la versión de `CACHE` en `sw.js`** (gdcr-v1 → gdcr-v2 → …) para que los celulares reciban la versión nueva.
 - [ ] Si cambió algo de los datos, revisar `firestore.rules` y recordarle al dueño que las pegue en la consola.
