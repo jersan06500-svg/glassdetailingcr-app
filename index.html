@@ -121,7 +121,7 @@ th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertic
 th{color:var(--muted);font-weight:500;font-size:13px}
 td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
 .tbl-wrap{overflow-x:auto}
-tr.click{cursor:pointer} tr.click:hover td{background:var(--soft)}
+tr.click,div.click{cursor:pointer} tr.click:hover td{background:var(--soft)}
 
 .stockbar{height:6px;background:var(--soft);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
 .stockbar i{display:block;height:100%;background:var(--ok)}
@@ -328,6 +328,31 @@ const sortCitas=a=>a.slice().sort((x,y)=>(x.fecha+x.hora).localeCompare(y.fecha+
 function citasEntre(desde,hasta){return S.citas.filter(c=>c.fecha>=desde&&c.fecha<=hasta)}
 function ingresos(desde,hasta){return citasEntre(desde,hasta).filter(c=>c.estado==="completada").reduce((s,c)=>s+num(c.precio),0)}
 function lowStock(){return S.productos.filter(p=>num(p.stock)<=num(p.minimo))}
+const MANT_DIAS=180;
+function paraMantenimiento(){
+  const t=today(), limite=ymd(addDays(new Date(),-MANT_DIAS));
+  return S.clientes.map(c=>{
+    const cs=S.citas.filter(x=>x.clienteId===c.id);
+    const ultima=cs.filter(x=>x.estado==="completada"&&/foco/i.test(x.servicioNombre||"")).map(x=>x.fecha).sort().pop()||"";
+    const agendado=cs.some(x=>(x.estado==="pendiente"||x.estado==="confirmada")&&x.fecha>=t);
+    return {c,ultima,agendado};
+  }).filter(x=>x.ultima&&x.ultima<=limite&&!x.agendado&&(x.c.avisoMant||"")<x.ultima)
+    .sort((a,b)=>b.ultima.localeCompare(a.ultima));
+}
+function mantFila({c,ultima}){
+  const meses=Math.round((new Date()-parse(ultima))/2629746000);
+  const msg=`Hola ${(c.nombre||"").split(" ")[0]}, le saluda Glass Detailing CR. Ya pasaron unos ${meses} meses desde que le restauramos los focos${c.vehiculo?" de su "+c.vehiculo:""}. Le ofrecemos un mantenimiento para que se mantengan claros y protegidos. ¿Le agendamos?`;
+  return `<div class="row spread"><div class="click" data-act="verCliente" data-id="${c.id}"><b>${esc(c.nombre)}</b><div class="note">Hace ${meses} meses${c.vehiculo?" · "+esc(c.vehiculo):""}</div></div>
+    ${c.telefono?`<a class="btn sm wa" data-act="avisoMant" data-id="${c.id}" href="${waLink(c.telefono,msg)}" target="_blank" rel="noopener">WhatsApp</a>`:`<span class="note">Sin teléfono</span>`}</div>`;
+}
+function mantCard(){
+  const l=paraMantenimiento();
+  return `<section class="card"><h2>Para mantenimiento</h2>
+    ${l.length?`<div class="note">Les restauramos los focos hace 6 meses o más. Al tocar WhatsApp salen de esta lista.</div>
+      <div class="list">${l.slice(0,8).map(mantFila).join("")}</div>${l.length>8?`<div class="note">y ${l.length-8} más</div>`:""}`
+    :`<div class="note">Nadie por ahora. Aquí aparecen los clientes cuando cumplen 6 meses de la restauración de focos.</div>`}
+  </section>`;
+}
 
 /* ---------- Vista: Hoy ---------- */
 function vInicio(){
@@ -359,6 +384,7 @@ function vInicio(){
       <section class="card"><div class="row spread"><h2>Stock bajo</h2><a class="btn sm ghost" href="#productos">Productos</a></div>
         ${low.length?`<div class="list">${low.map(p=>`<div class="row spread"><span>${esc(p.nombre)}</span><span class="pill p-bajo num">${fmtQty(p.stock)} ${esc(p.unidad||"")}</span></div>`).join("")}</div>`:`<div class="note">Todo el inventario está sobre el mínimo.</div>`}
       </section>
+      ${mantCard()}
     </div>
   </div>`;
 }
@@ -865,6 +891,7 @@ document.addEventListener("click",async e=>{
   else if(a==="editCliente")modalCliente(id);
   else if(a==="logoDel"){await setDoc("config","marca",{logo:""});toast("Logo quitado")}
   else if(a==="verCliente")verCliente(id);
+  else if(a==="avisoMant")updDoc("clientes",id,{avisoMant:today()}).catch(()=>{});
   else if(a==="newProducto")modalProducto();
   else if(a==="editProducto")modalProducto(id);
   else if(a==="mov")modalMov(id,el.dataset.tipo);
