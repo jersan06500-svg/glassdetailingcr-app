@@ -896,7 +896,7 @@ function modalMov(id,tipo){
 }
 
 const CARGA="Carga del carro";
-function carro(){return Object.assign({nombre:"Geely EX5",consumo:14.5,bateria:60.22,precioKwh:86},S.config.find(x=>x.id==="carro")||{})}
+function carro(){return Object.assign({nombre:"Geely EX5",consumo:18.5,bateria:60.22,precioKwh:86},S.config.find(x=>x.id==="carro")||{})}
 function calcViaje(salida,llegada){
   const c=carro(), pct=Math.max(0,salida-llegada);
   const kwh=num(c.bateria)*pct/100;
@@ -912,6 +912,7 @@ function modalGasto(id){
     <div class="full form" id="gviaje" style="padding:0">
       <label>Batería al salir (%)<input id="gsal" name="salida" inputmode="numeric" value="${esc(g.bateriaSalida??"")}"></label>
       <label>Batería al llegar (%)<input id="glleg" name="llegada" inputmode="numeric" value="${esc(g.bateriaLlegada??"")}"></label>
+      <label class="full">Km del carro (opcional)<input id="gkm" name="kmCarro" inputmode="decimal" placeholder="Lo que marca el tablero" value="${esc(g.kmCarro||"")}"></label>
       <div class="note full" id="gcalc"></div></div>
     <label>Monto (₡)<input id="gmonto" name="monto" inputmode="numeric" required value="${esc(g.monto??"")}"></label>
     <label>Fecha<input id="gfecha" name="fecha" type="date" value="${esc(g.fecha)}"></label>
@@ -922,7 +923,8 @@ function modalGasto(id){
     if(d.categoria===CARGA){
       const s=num(val(f,"salida")),l=num(val(f,"llegada"));
       if(s<=l||s>100||l<0){toast("La batería al llegar tiene que ser menor que al salir");return false}
-      const v=calcViaje(s,l);Object.assign(d,{bateriaSalida:s,bateriaLlegada:l,km:v.km,kwh:v.kwh});
+      const v=calcViaje(s,l),kmCarro=num(val(f,"kmCarro"));
+      Object.assign(d,{bateriaSalida:s,bateriaLlegada:l,kmCarro,km:kmCarro||v.km,kwh:v.kwh});
     }
     if(d.monto<=0){toast("Poné el monto del gasto");return false}
     if(id)await updDoc("gastos",id,d);else{d.creado=Date.now();await addDoc("gastos",d)}
@@ -935,12 +937,16 @@ function modalGasto(id){
     if(s===""||l===""){$("#gcalc").textContent=`Poné la batería al salir y al llegar. Se calcula con un consumo de ${fmtQty(c.consumo)} kWh/100 km, ${fmtQty(c.bateria)} kWh y ${money(c.precioKwh)} por kWh (se cambia en Ajustes).`;return}
     const v=calcViaje(num(s),num(l));
     if(!v.pct){$("#gcalc").textContent="La batería al llegar tiene que ser menor que al salir.";return}
-    $("#gcalc").innerHTML=`Usaste <b>${fmtQty(v.pct)}%</b> de batería ≈ <b>${fmtQty(v.km)} km</b> · ${fmtQty(v.kwh)} kWh · <b>${money(v.costo)}</b>`;
+    const kmCarro=num(val(f,"kmCarro"));
+    $("#gcalc").innerHTML=kmCarro
+      ?`Usaste <b>${fmtQty(v.pct)}%</b> de batería en <b>${fmtQty(kmCarro)} km</b> · ${fmtQty(v.kwh)} kWh · <b>${money(v.costo)}</b>. Consumo real: ${fmtQty(Math.round(v.kwh/kmCarro*1000)/10)} kWh/100 km.`
+      :`Usaste <b>${fmtQty(v.pct)}%</b> de batería ≈ <b>${fmtQty(v.km)} km</b> · ${fmtQty(v.kwh)} kWh · <b>${money(v.costo)}</b>`;
     f.elements.monto.value=v.costo;
   };
   f.elements.categoria.addEventListener("change",actualizar);
   f.elements.salida.addEventListener("input",actualizar);
   f.elements.llegada.addEventListener("input",actualizar);
+  f.elements.kmCarro.addEventListener("input",actualizar);
   actualizar();
   if(id)$("#delG").onclick=async()=>{const b=$("#delG");if(b.dataset.sure){await delDoc("gastos",id);closeModal();toast("Gasto borrado")}else{b.dataset.sure=1;b.textContent="¿Seguro? Tocá otra vez"}};
 }
@@ -951,7 +957,7 @@ function modalCarro(){
     <label>Consumo medio (kWh/100 km)<input id="ccons" name="consumo" inputmode="decimal" value="${esc(c.consumo)}"></label>
     <label>Batería (kWh)<input id="cbat" name="bateria" inputmode="decimal" value="${esc(c.bateria)}"></label>
     <label class="full">Precio del kWh (₡)<input id="ckwh" name="precioKwh" inputmode="decimal" value="${esc(c.precioKwh)}"></label>
-    <div class="note full">El consumo sale en el carro: Estadísticas de viaje → Kilometraje parcial → Consumo medio de energía. El precio del kWh sale en el recibo de luz: en casa ronda ₡86 y en un cargador rápido público, ₡183.</div></div>`,async f=>{
+    <div class="note full">Consumo: 18.5 es lo que gastó en un día real de trabajo (94% → 59% en 114 km). El consumo medio del tablero sale más bajo porque no cuenta lo que gasta detenido. Si anotás los km del carro en cada carga, la app te muestra el consumo real para ajustarlo. El precio del kWh sale en el recibo de luz: en casa ronda ₡86 y en un cargador rápido público, ₡183.</div></div>`,async f=>{
     const d={nombre:val(f,"nombre")||"Carro",consumo:num(val(f,"consumo")),bateria:num(val(f,"bateria")),precioKwh:num(val(f,"precioKwh"))};
     if(!d.consumo||!d.bateria||!d.precioKwh){toast("Completá consumo, batería y precio del kWh");return false}
     await setDoc("config","carro",d);toast("Datos del carro guardados");
