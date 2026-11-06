@@ -201,13 +201,14 @@ textarea{min-height:64px;resize:vertical}
 <script>
 "use strict";
 /* ---------- Estado ---------- */
-const COLS=["clientes","citas","productos","servicios","movimientos","consultas","config"];
-const S={clientes:[],citas:[],productos:[],servicios:[],movimientos:[],consultas:[],config:[]};
+const COLS=["clientes","citas","productos","servicios","movimientos","consultas","gastos","config"];
+const S={clientes:[],citas:[],productos:[],servicios:[],movimientos:[],consultas:[],gastos:[],config:[]};
 let db=null, mode="cargando", loaded=new Set(), slow=false, sample=null, sampleOff=false, imgOk=false;
 const REDES=["Instagram","Facebook"];
 const CEST={nueva:"Nueva",cotizada:"Cotizada",agendada:"Agendada",perdida:"No se concretó"};
 const ORIGENES=["Instagram","Facebook","WhatsApp","Referido","Google","Pasó por el taller","Otro"];
 const PAGOS=["SINPE Móvil","Efectivo","Tarjeta","Transferencia"];
+const TIPOS_GASTO=["Gasolina","Alquiler","Publicidad","Luz, agua e internet","Herramientas","Otro"];
 const ESTADOS={pendiente:"Pendiente",confirmada:"Confirmada",completada:"Completada",cancelada:"Cancelada"};
 const UI={agendaWeek:0, periodo:"semana", offset:0, q:"", msg:"", msgRed:"Instagram", reply:"", replyBusy:false, replyErr:"",
   postTipo:"Antes y después", postServ:"", postRed:"Instagram", postDet:"", post:"", postBusy:false, postErr:"", postImgs:null, cfilt:"activas"};
@@ -474,6 +475,17 @@ function hbars(rows){
   const max=Math.max(1,...rows.map(r=>r[1]));
   return rows.length?`<div class="list">${rows.map(r=>`<div class="hbar"><span>${esc(r[0])}</span><span class="tr"><i style="width:${r[1]/max*100}%"></i></span><b class="num">${r[2]}</b></div>`).join("")}</div>`:`<div class="note">Sin datos en este periodo.</div>`;
 }
+function gastosCard(gastos){
+  const pt={};gastos.forEach(g=>{pt[g.categoria]=(pt[g.categoria]||0)+num(g.monto)});
+  const filas=Object.entries(pt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v,money(v)]);
+  const lista=gastos.slice().sort((a,b)=>(b.fecha+(b.creado||0)).localeCompare(a.fecha+(a.creado||0)));
+  return `<section class="card"><div class="row spread"><h2>Gastos del negocio</h2><button class="btn pri" data-act="newGasto">+ Gasto</button></div>
+    ${lista.length?`${hbars(filas)}<div class="list">${lista.map(g=>`<div class="row spread click" data-act="editGasto" data-id="${g.id}">
+      <div style="flex:1;min-width:0"><b>${esc(g.categoria)}</b><div class="note">${esc([fdate(g.fecha,{day:"numeric",month:"short"}),g.descripcion,g.metodoPago].filter(Boolean).join(" · "))}</div></div>
+      <b class="num">${money(g.monto)}</b></div>`).join("")}</div>`
+    :`<div class="empty">No hay gastos anotados en este periodo. Tocá <b>+ Gasto</b> para agregar gasolina, alquiler, publicidad…</div>`}
+  </section>`;
+}
 function vNumeros(){
   const P=periodo();
   const cs=citasEntre(P.desde,P.hasta);
@@ -482,6 +494,9 @@ function vNumeros(){
   const movs=S.movimientos.filter(m=>m.fecha>=P.desde&&m.fecha<=P.hasta);
   const uso=movs.filter(m=>m.tipo==="uso").reduce((s,m)=>s+num(m.total),0);
   const compras=movs.filter(m=>m.tipo==="compra").reduce((s,m)=>s+num(m.total),0);
+  const gastos=S.gastos.filter(g=>g.fecha>=P.desde&&g.fecha<=P.hasta);
+  const gas=gastos.reduce((s,g)=>s+num(g.monto),0);
+  const gan=ing-uso-gas;
   const canc=cs.filter(c=>c.estado==="cancelada").length;
   const nuevos=S.clientes.filter(c=>c.creado&&ymd(new Date(c.creado))>=P.desde&&ymd(new Date(c.creado))<=P.hasta).length;
   // gráfico
@@ -511,11 +526,13 @@ function vNumeros(){
   <div class="kpis">
     <div class="kpi hi"><span class="l">Ingresos cobrados</span><span class="v">${money(ing)}</span><span class="s">${plural(done.length,"trabajo completado","trabajos completados")}</span></div>
     <div class="kpi"><span class="l">Producto gastado</span><span class="v">${money(uso)}</span><span class="s">Costo de lo usado en trabajos</span></div>
-    <div class="kpi"><span class="l">Ganancia aprox.</span><span class="v" style="color:${ing-uso>=0?"var(--ok)":"var(--bad)"}">${money(ing-uso)}</span><span class="s">Ingresos − producto gastado</span></div>
+    <div class="kpi"><span class="l">Gastos del negocio</span><span class="v">${money(gas)}</span><span class="s">${plural(gastos.length,"gasto anotado","gastos anotados")}</span></div>
+    <div class="kpi"><span class="l">Ganancia</span><span class="v" style="color:${gan>=0?"var(--ok)":"var(--bad)"}">${money(gan)}</span><span class="s">Ingresos − producto − gastos</span></div>
     <div class="kpi"><span class="l">Ticket promedio</span><span class="v">${money(done.length?ing/done.length:0)}</span><span class="s">${nuevos} clientes nuevos · ${canc} canceladas</span></div>
     <div class="kpi"><span class="l">Compras de producto</span><span class="v">${money(compras)}</span><span class="s">Plata que salió en inventario</span></div>
   </div>
   <section class="card"><h2>Ingresos por ${UI.periodo==="dia"?"hora":"día"}</h2>${chart}</section>
+  ${gastosCard(gastos)}
   <div class="grid2">
     <section class="card"><h2>Por servicio</h2>${hbars(svRows)}</section>
     <section class="card"><h2>¿De dónde vienen los clientes?</h2>${hbars(ogRows)}<div class="note">Según lo que marcaste en cada cliente (Instagram, Facebook, WhatsApp…).</div></section>
@@ -874,6 +891,22 @@ function modalMov(id,tipo){
   });
 }
 
+function modalGasto(id){
+  const g=id?byId("gastos",id):{fecha:today(),categoria:TIPOS_GASTO[0],metodoPago:PAGOS[0]};
+  openModal(id?"Editar gasto":"Nuevo gasto",`<div class="form">
+    <label>Tipo<select id="gcat" name="categoria">${opts(TIPOS_GASTO,g.categoria)}</select></label>
+    <label>Monto (₡)<input id="gmonto" name="monto" inputmode="numeric" required value="${esc(g.monto??"")}"></label>
+    <label>Fecha<input id="gfecha" name="fecha" type="date" value="${esc(g.fecha)}"></label>
+    <label>Cómo se pagó<select id="gpago" name="pago">${opts(PAGOS,g.metodoPago)}</select></label>
+    <label class="full">Detalle (opcional)<input id="gdesc" name="descripcion" placeholder="ej. Anuncio en Instagram" value="${esc(g.descripcion||"")}"></label>
+    <div class="note full">Las compras de producto se anotan en Productos → + Compré, no aquí.</div></div>`,async f=>{
+    const d={categoria:val(f,"categoria"),monto:num(val(f,"monto")),fecha:val(f,"fecha")||today(),metodoPago:val(f,"pago"),descripcion:val(f,"descripcion")};
+    if(d.monto<=0){toast("Poné el monto del gasto");return false}
+    if(id)await updDoc("gastos",id,d);else{d.creado=Date.now();await addDoc("gastos",d)}
+    toast("Gasto guardado");
+  },id?`<button type="button" class="btn danger" id="delG">Borrar</button>`:"");
+  if(id)$("#delG").onclick=async()=>{const b=$("#delG");if(b.dataset.sure){await delDoc("gastos",id);closeModal();toast("Gasto borrado")}else{b.dataset.sure=1;b.textContent="¿Seguro? Tocá otra vez"}};
+}
 function modalServicio(id){
   const s=id?byId("servicios",id):{};
   openModal(id?"Editar servicio":"Nuevo servicio",`<div class="form">
@@ -904,6 +937,8 @@ document.addEventListener("click",async e=>{
   else if(a==="newProducto")modalProducto();
   else if(a==="editProducto")modalProducto(id);
   else if(a==="mov")modalMov(id,el.dataset.tipo);
+  else if(a==="newGasto")modalGasto();
+  else if(a==="editGasto")modalGasto(id);
   else if(a==="newServicio")modalServicio();
   else if(a==="editServicio")modalServicio(id);
   else if(a==="week"){const v=+el.dataset.v;UI.agendaWeek=v===0?0:UI.agendaWeek+v;render()}
