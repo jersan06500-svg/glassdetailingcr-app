@@ -732,7 +732,7 @@ function vAjustes(){
   </tbody></table></div>`:`<div class="empty">Agregá tus servicios para que el precio se llene solo al agendar.</div>`}
   </section>
   <section class="card"><div class="row spread"><h2>Carro de trabajo</h2><button class="btn" data-act="cfgCarro">Editar</button></div>
-    <div class="note">${esc(carro().nombre)} · ${fmtQty(carro().autonomia)} km de autonomía · ${fmtQty(carro().bateria)} kWh · ${money(carro().precioKwh)} por kWh. Se usa para calcular el costo de cada viaje en Números → + Gasto → Carga del carro.</div></section>
+    <div class="note">${esc(carro().nombre)} · ${fmtQty(carro().consumo)} kWh/100 km · ${fmtQty(carro().bateria)} kWh (≈ ${fmtQty(Math.round(num(carro().bateria)/num(carro().consumo)*100))} km con batería llena) · ${money(carro().precioKwh)} por kWh. Se usa para calcular el costo de cada viaje en Números → + Gasto → Carga del carro.</div></section>
   <section class="card"><h2>Respaldo</h2><div class="note">Copia todos tus datos (clientes, citas, productos) como texto para guardarlo donde quieras.</div>
     <div><button class="btn" data-act="backup">Copiar respaldo</button></div></section>
   <section class="card"><h2>Pasar datos desde la versión de Claude</h2><div class="note">En la app de Claude: Ajustes → Copiar respaldo. Después pegalo aquí y tocá Importar. Si un dato ya existe, se reemplaza; no se duplica.</div>
@@ -896,11 +896,11 @@ function modalMov(id,tipo){
 }
 
 const CARGA="Carga del carro";
-function carro(){return Object.assign({nombre:"Geely EX5",autonomia:300,bateria:60.22,precioKwh:86},S.config.find(x=>x.id==="carro")||{})}
+function carro(){return Object.assign({nombre:"Geely EX5",consumo:14.5,bateria:60.22,precioKwh:86},S.config.find(x=>x.id==="carro")||{})}
 function calcViaje(salida,llegada){
   const c=carro(), pct=Math.max(0,salida-llegada);
   const kwh=num(c.bateria)*pct/100;
-  return {pct,km:Math.round(num(c.autonomia)*pct)/100,kwh:Math.round(kwh*100)/100,costo:Math.round(kwh*num(c.precioKwh))};
+  return {pct,km:Math.round(kwh/num(c.consumo)*1000)/10,kwh:Math.round(kwh*100)/100,costo:Math.round(kwh*num(c.precioKwh))};
 }
 function textoViaje(g){return g.km?`${fmtQty(g.bateriaSalida)}% → ${fmtQty(g.bateriaLlegada)}% · ${fmtQty(g.km)} km`:""}
 function modalGasto(id){
@@ -932,7 +932,7 @@ function modalGasto(id){
     const esCarga=val(f,"categoria")===CARGA;$("#gviaje").hidden=!esCarga;$("#lpago").hidden=esCarga;
     if(!esCarga)return;
     const s=val(f,"salida"),l=val(f,"llegada");
-    if(s===""||l===""){$("#gcalc").textContent=`Poné la batería al salir y al llegar. Se calcula con ${fmtQty(c.autonomia)} km de autonomía, ${fmtQty(c.bateria)} kWh y ${money(c.precioKwh)} por kWh (se cambia en Ajustes).`;return}
+    if(s===""||l===""){$("#gcalc").textContent=`Poné la batería al salir y al llegar. Se calcula con un consumo de ${fmtQty(c.consumo)} kWh/100 km, ${fmtQty(c.bateria)} kWh y ${money(c.precioKwh)} por kWh (se cambia en Ajustes).`;return}
     const v=calcViaje(num(s),num(l));
     if(!v.pct){$("#gcalc").textContent="La batería al llegar tiene que ser menor que al salir.";return}
     $("#gcalc").innerHTML=`Usaste <b>${fmtQty(v.pct)}%</b> de batería ≈ <b>${fmtQty(v.km)} km</b> · ${fmtQty(v.kwh)} kWh · <b>${money(v.costo)}</b>`;
@@ -948,12 +948,12 @@ function modalCarro(){
   const c=carro();
   openModal("Carro de trabajo",`<div class="form">
     <label class="full">Carro<input id="cnom" name="nombre" value="${esc(c.nombre)}"></label>
-    <label>Autonomía real (km)<input id="caut" name="autonomia" inputmode="numeric" value="${esc(c.autonomia)}"></label>
+    <label>Consumo medio (kWh/100 km)<input id="ccons" name="consumo" inputmode="decimal" value="${esc(c.consumo)}"></label>
     <label>Batería (kWh)<input id="cbat" name="bateria" inputmode="decimal" value="${esc(c.bateria)}"></label>
     <label class="full">Precio del kWh (₡)<input id="ckwh" name="precioKwh" inputmode="decimal" value="${esc(c.precioKwh)}"></label>
-    <div class="note full">El precio del kWh sale en el recibo de luz. Cargando en casa ronda ₡86; en cargador rápido público, ₡183.</div></div>`,async f=>{
-    const d={nombre:val(f,"nombre")||"Carro",autonomia:num(val(f,"autonomia")),bateria:num(val(f,"bateria")),precioKwh:num(val(f,"precioKwh"))};
-    if(!d.autonomia||!d.bateria||!d.precioKwh){toast("Completá autonomía, batería y precio del kWh");return false}
+    <div class="note full">El consumo sale en el carro: Estadísticas de viaje → Kilometraje parcial → Consumo medio de energía. El precio del kWh sale en el recibo de luz: en casa ronda ₡86 y en un cargador rápido público, ₡183.</div></div>`,async f=>{
+    const d={nombre:val(f,"nombre")||"Carro",consumo:num(val(f,"consumo")),bateria:num(val(f,"bateria")),precioKwh:num(val(f,"precioKwh"))};
+    if(!d.consumo||!d.bateria||!d.precioKwh){toast("Completá consumo, batería y precio del kWh");return false}
     await setDoc("config","carro",d);toast("Datos del carro guardados");
   });
 }
