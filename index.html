@@ -208,7 +208,7 @@ const REDES=["Instagram","Facebook"];
 const CEST={nueva:"Nueva",cotizada:"Cotizada",agendada:"Agendada",perdida:"No se concretó"};
 const ORIGENES=["Instagram","Facebook","WhatsApp","Referido","Google","Pasó por el taller","Otro"];
 const PAGOS=["SINPE Móvil","Efectivo","Tarjeta","Transferencia"];
-const TIPOS_GASTO=["Gasolina","Alquiler","Publicidad","Luz, agua e internet","Herramientas","Otro"];
+const TIPOS_GASTO=["Carga del carro","Alquiler","Publicidad","Luz, agua e internet","Herramientas","Otro"];
 const ESTADOS={pendiente:"Pendiente",confirmada:"Confirmada",completada:"Completada",cancelada:"Cancelada"};
 const UI={agendaWeek:0, periodo:"semana", offset:0, q:"", msg:"", msgRed:"Instagram", reply:"", replyBusy:false, replyErr:"",
   postTipo:"Antes y después", postServ:"", postRed:"Instagram", postDet:"", post:"", postBusy:false, postErr:"", postImgs:null, cfilt:"activas"};
@@ -479,9 +479,11 @@ function gastosCard(gastos){
   const pt={};gastos.forEach(g=>{pt[g.categoria]=(pt[g.categoria]||0)+num(g.monto)});
   const filas=Object.entries(pt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v,money(v)]);
   const lista=gastos.slice().sort((a,b)=>(b.fecha+(b.creado||0)).localeCompare(a.fecha+(a.creado||0)));
+  const viajes=gastos.filter(g=>g.km), km=viajes.reduce((s,g)=>s+num(g.km),0), kwh=viajes.reduce((s,g)=>s+num(g.kwh),0), costo=viajes.reduce((s,g)=>s+num(g.monto),0);
+  const resumen=viajes.length?`<div class="note">${esc(carro().nombre)}: ${plural(viajes.length,"viaje","viajes")} · ${fmtQty(Math.round(km))} km · ${fmtQty(Math.round(kwh*10)/10)} kWh · ${money(costo/km)} por km</div>`:"";
   return `<section class="card"><div class="row spread"><h2>Gastos del negocio</h2><button class="btn pri" data-act="newGasto">+ Gasto</button></div>
-    ${lista.length?`${hbars(filas)}<div class="list">${lista.map(g=>`<div class="row spread click" data-act="editGasto" data-id="${g.id}">
-      <div style="flex:1;min-width:0"><b>${esc(g.categoria)}</b><div class="note">${esc([fdate(g.fecha,{day:"numeric",month:"short"}),g.descripcion,g.metodoPago].filter(Boolean).join(" · "))}</div></div>
+    ${lista.length?`${hbars(filas)}${resumen}<div class="list">${lista.map(g=>`<div class="row spread click" data-act="editGasto" data-id="${g.id}">
+      <div style="flex:1;min-width:0"><b>${esc(g.categoria)}</b><div class="note">${esc([fdate(g.fecha,{day:"numeric",month:"short"}),textoViaje(g),g.descripcion,g.km?"":g.metodoPago].filter(Boolean).join(" · "))}</div></div>
       <b class="num">${money(g.monto)}</b></div>`).join("")}</div>`
     :`<div class="empty">No hay gastos anotados en este periodo. Tocá <b>+ Gasto</b> para agregar gasolina, alquiler, publicidad…</div>`}
   </section>`;
@@ -729,6 +731,8 @@ function vAjustes(){
     ${sv.map(s=>`<tr><td>${esc(s.nombre)}</td><td class="r">${money(s.precio)}</td><td class="r">${s.duracion?esc(s.duracion)+" min":"—"}</td><td class="r"><button class="btn sm ghost" data-act="editServicio" data-id="${s.id}">Editar</button></td></tr>`).join("")}
   </tbody></table></div>`:`<div class="empty">Agregá tus servicios para que el precio se llene solo al agendar.</div>`}
   </section>
+  <section class="card"><div class="row spread"><h2>Carro de trabajo</h2><button class="btn" data-act="cfgCarro">Editar</button></div>
+    <div class="note">${esc(carro().nombre)} · ${fmtQty(carro().autonomia)} km de autonomía · ${fmtQty(carro().bateria)} kWh · ${money(carro().precioKwh)} por kWh. Se usa para calcular el costo de cada viaje en Números → + Gasto → Carga del carro.</div></section>
   <section class="card"><h2>Respaldo</h2><div class="note">Copia todos tus datos (clientes, citas, productos) como texto para guardarlo donde quieras.</div>
     <div><button class="btn" data-act="backup">Copiar respaldo</button></div></section>
   <section class="card"><h2>Pasar datos desde la versión de Claude</h2><div class="note">En la app de Claude: Ajustes → Copiar respaldo. Después pegalo aquí y tocá Importar. Si un dato ya existe, se reemplaza; no se duplica.</div>
@@ -891,21 +895,67 @@ function modalMov(id,tipo){
   });
 }
 
+const CARGA="Carga del carro";
+function carro(){return Object.assign({nombre:"Geely EX5",autonomia:300,bateria:60.22,precioKwh:86},S.config.find(x=>x.id==="carro")||{})}
+function calcViaje(salida,llegada){
+  const c=carro(), pct=Math.max(0,salida-llegada);
+  const kwh=num(c.bateria)*pct/100;
+  return {pct,km:Math.round(num(c.autonomia)*pct)/100,kwh:Math.round(kwh*100)/100,costo:Math.round(kwh*num(c.precioKwh))};
+}
+function textoViaje(g){return g.km?`${fmtQty(g.bateriaSalida)}% → ${fmtQty(g.bateriaLlegada)}% · ${fmtQty(g.km)} km`:""}
 function modalGasto(id){
   const g=id?byId("gastos",id):{fecha:today(),categoria:TIPOS_GASTO[0],metodoPago:PAGOS[0]};
-  openModal(id?"Editar gasto":"Nuevo gasto",`<div class="form">
-    <label>Tipo<select id="gcat" name="categoria">${opts(TIPOS_GASTO,g.categoria)}</select></label>
+  const tipos=TIPOS_GASTO.includes(g.categoria)?TIPOS_GASTO:[...TIPOS_GASTO,g.categoria];
+  const c=carro();
+  const f=openModal(id?"Editar gasto":"Nuevo gasto",`<div class="form">
+    <label>Tipo<select id="gcat" name="categoria">${opts(tipos,g.categoria)}</select></label>
+    <div class="full form" id="gviaje" style="padding:0">
+      <label>Batería al salir (%)<input id="gsal" name="salida" inputmode="numeric" value="${esc(g.bateriaSalida??"")}"></label>
+      <label>Batería al llegar (%)<input id="glleg" name="llegada" inputmode="numeric" value="${esc(g.bateriaLlegada??"")}"></label>
+      <div class="note full" id="gcalc"></div></div>
     <label>Monto (₡)<input id="gmonto" name="monto" inputmode="numeric" required value="${esc(g.monto??"")}"></label>
     <label>Fecha<input id="gfecha" name="fecha" type="date" value="${esc(g.fecha)}"></label>
-    <label>Cómo se pagó<select id="gpago" name="pago">${opts(PAGOS,g.metodoPago)}</select></label>
+    <label id="lpago">Cómo se pagó<select id="gpago" name="pago">${opts(PAGOS,g.metodoPago)}</select></label>
     <label class="full">Detalle (opcional)<input id="gdesc" name="descripcion" placeholder="ej. Anuncio en Instagram" value="${esc(g.descripcion||"")}"></label>
     <div class="note full">Las compras de producto se anotan en Productos → + Compré, no aquí.</div></div>`,async f=>{
     const d={categoria:val(f,"categoria"),monto:num(val(f,"monto")),fecha:val(f,"fecha")||today(),metodoPago:val(f,"pago"),descripcion:val(f,"descripcion")};
+    if(d.categoria===CARGA){
+      const s=num(val(f,"salida")),l=num(val(f,"llegada"));
+      if(s<=l||s>100||l<0){toast("La batería al llegar tiene que ser menor que al salir");return false}
+      const v=calcViaje(s,l);Object.assign(d,{bateriaSalida:s,bateriaLlegada:l,km:v.km,kwh:v.kwh});
+    }
     if(d.monto<=0){toast("Poné el monto del gasto");return false}
     if(id)await updDoc("gastos",id,d);else{d.creado=Date.now();await addDoc("gastos",d)}
     toast("Gasto guardado");
   },id?`<button type="button" class="btn danger" id="delG">Borrar</button>`:"");
+  const actualizar=()=>{
+    const esCarga=val(f,"categoria")===CARGA;$("#gviaje").hidden=!esCarga;$("#lpago").hidden=esCarga;
+    if(!esCarga)return;
+    const s=val(f,"salida"),l=val(f,"llegada");
+    if(s===""||l===""){$("#gcalc").textContent=`Poné la batería al salir y al llegar. Se calcula con ${fmtQty(c.autonomia)} km de autonomía, ${fmtQty(c.bateria)} kWh y ${money(c.precioKwh)} por kWh (se cambia en Ajustes).`;return}
+    const v=calcViaje(num(s),num(l));
+    if(!v.pct){$("#gcalc").textContent="La batería al llegar tiene que ser menor que al salir.";return}
+    $("#gcalc").innerHTML=`Usaste <b>${fmtQty(v.pct)}%</b> de batería ≈ <b>${fmtQty(v.km)} km</b> · ${fmtQty(v.kwh)} kWh · <b>${money(v.costo)}</b>`;
+    f.elements.monto.value=v.costo;
+  };
+  f.elements.categoria.addEventListener("change",actualizar);
+  f.elements.salida.addEventListener("input",actualizar);
+  f.elements.llegada.addEventListener("input",actualizar);
+  actualizar();
   if(id)$("#delG").onclick=async()=>{const b=$("#delG");if(b.dataset.sure){await delDoc("gastos",id);closeModal();toast("Gasto borrado")}else{b.dataset.sure=1;b.textContent="¿Seguro? Tocá otra vez"}};
+}
+function modalCarro(){
+  const c=carro();
+  openModal("Carro de trabajo",`<div class="form">
+    <label class="full">Carro<input id="cnom" name="nombre" value="${esc(c.nombre)}"></label>
+    <label>Autonomía real (km)<input id="caut" name="autonomia" inputmode="numeric" value="${esc(c.autonomia)}"></label>
+    <label>Batería (kWh)<input id="cbat" name="bateria" inputmode="decimal" value="${esc(c.bateria)}"></label>
+    <label class="full">Precio del kWh (₡)<input id="ckwh" name="precioKwh" inputmode="decimal" value="${esc(c.precioKwh)}"></label>
+    <div class="note full">El precio del kWh sale en el recibo de luz. Cargando en casa ronda ₡86; en cargador rápido público, ₡183.</div></div>`,async f=>{
+    const d={nombre:val(f,"nombre")||"Carro",autonomia:num(val(f,"autonomia")),bateria:num(val(f,"bateria")),precioKwh:num(val(f,"precioKwh"))};
+    if(!d.autonomia||!d.bateria||!d.precioKwh){toast("Completá autonomía, batería y precio del kWh");return false}
+    await setDoc("config","carro",d);toast("Datos del carro guardados");
+  });
 }
 function modalServicio(id){
   const s=id?byId("servicios",id):{};
@@ -945,6 +995,7 @@ document.addEventListener("click",async e=>{
   else if(a==="periodo"){UI.periodo=el.dataset.v;UI.offset=0;render()}
   else if(a==="off"){const v=+el.dataset.v;UI.offset=v===0?0:UI.offset+v;render()}
   else if(a==="cfgRedes")modalConfig();
+  else if(a==="cfgCarro")modalCarro();
   else if(a==="newConsulta")modalConsulta();
   else if(a==="editConsulta")modalConsulta(id);
   else if(a==="agendarConsulta"){const x=byId("consultas",id);if(x)modalCita(null,today(),"",{nombre:x.nombre,telefono:x.contacto,origen:x.red,servicio:x.interes,consultaId:id})}
