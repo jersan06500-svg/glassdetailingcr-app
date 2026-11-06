@@ -789,7 +789,7 @@ function verCliente(id){
     ${c.notas?`<div>${esc(c.notas)}</div>`:""}
     <div class="kpis"><div class="kpi"><span class="l">Visitas</span><span class="v">${s.visitas}</span></div><div class="kpi"><span class="l">Total gastado</span><span class="v">${money(s.total)}</span></div></div>
     <h3>Historial</h3>
-    <div class="list">${hist.length?hist.map(x=>`<div class="row spread"><span>${esc(fdate(x.fecha,{day:"numeric",month:"short",year:"numeric"}))} · ${esc(x.servicioNombre||"")}</span><span class="row"><span class="pill p-${x.estado}">${ESTADOS[x.estado]}</span><b class="num">${money(x.precio)}</b></span></div>`).join(""):`<div class="note">Sin citas todavía.</div>`}</div>
+    <div class="list">${hist.length?hist.map(x=>`<div class="row spread"><span>${esc(fdate(x.fecha,{day:"numeric",month:"short",year:"numeric"}))} · ${esc(x.servicioNombre||"")}${costoViaje(x.id)?` · viaje ${money(costoViaje(x.id))}`:""}</span><span class="row"><span class="pill p-${x.estado}">${ESTADOS[x.estado]}</span><b class="num">${money(x.precio)}</b></span></div>`).join(""):`<div class="note">Sin citas todavía.</div>`}</div>
     <div class="row spread">${c.telefono?`<a class="btn wa" href="${waLink(c.telefono,"Hola "+c.nombre.split(" ")[0]+", le saluda Glass Detailing CR.")}" target="_blank" rel="noopener">WhatsApp</a>`:"<span></span>"}
     <div class="row"><button class="btn" id="edC">Editar</button><button class="btn pri" id="agC">Agendar cita</button></div></div>
   </div></div>`;
@@ -902,7 +902,16 @@ function calcViaje(salida,llegada){
   const kwh=num(c.bateria)*pct/100;
   return {pct,km:Math.round(kwh/num(c.consumo)*1000)/10,kwh:Math.round(kwh*100)/100,costo:Math.round(kwh*num(c.precioKwh))};
 }
-function textoViaje(g){return g.km?`${fmtQty(g.bateriaSalida)}% → ${fmtQty(g.bateriaLlegada)}% · ${fmtQty(g.km)} km`:""}
+function textoViaje(g){
+  const ci=g.citaId&&byId("citas",g.citaId), cl=ci&&byId("clientes",ci.clienteId);
+  return [g.km?`${fmtQty(g.bateriaSalida)}% → ${fmtQty(g.bateriaLlegada)}% · ${fmtQty(g.km)} km`:"",cl?"Cita de "+cl.nombre:""].filter(Boolean).join(" · ");
+}
+const costoViaje=citaId=>S.gastos.filter(g=>g.citaId===citaId).reduce((s,g)=>s+num(g.monto),0);
+function opcionesCita(fecha,sel){
+  const cs=sortCitas(S.citas.filter(c=>c.fecha===fecha&&c.estado!=="cancelada"));
+  if(!cs.length)return `<option value="">No hay citas ese día</option>`;
+  return `<option value="">Ninguna</option>`+cs.map(c=>`<option value="${esc(c.id)}" ${c.id===sel?"selected":""}>${esc([c.hora,byId("clientes",c.clienteId)?.nombre,c.servicioNombre].filter(Boolean).join(" · "))}</option>`).join("");
+}
 function modalGasto(id){
   const g=id?byId("gastos",id):{fecha:today(),categoria:TIPOS_GASTO[0],metodoPago:PAGOS[0]};
   const tipos=TIPOS_GASTO.includes(g.categoria)?TIPOS_GASTO:[...TIPOS_GASTO,g.categoria];
@@ -917,21 +926,23 @@ function modalGasto(id){
     <label>Monto (₡)<input id="gmonto" name="monto" inputmode="numeric" required value="${esc(g.monto??"")}"></label>
     <label>Fecha<input id="gfecha" name="fecha" type="date" value="${esc(g.fecha)}"></label>
     <label id="lpago">Cómo se pagó<select id="gpago" name="pago">${opts(PAGOS,g.metodoPago)}</select></label>
-    <label class="full">Detalle (opcional)<input id="gdesc" name="descripcion" placeholder="ej. Anuncio en Instagram" value="${esc(g.descripcion||"")}"></label>
+    <label id="lcita">¿A qué cita fuiste?<select id="gcita" name="citaId">${opcionesCita(g.fecha,g.citaId)}</select></label>
+    <label class="full" id="ldesc">Detalle (opcional)<input id="gdesc" name="descripcion" placeholder="ej. Anuncio en Instagram" value="${esc(g.descripcion||"")}"></label>
     <div class="note full">Las compras de producto se anotan en Productos → + Compré, no aquí.</div></div>`,async f=>{
     const d={categoria:val(f,"categoria"),monto:num(val(f,"monto")),fecha:val(f,"fecha")||today(),metodoPago:val(f,"pago"),descripcion:val(f,"descripcion")};
     if(d.categoria===CARGA){
       const s=num(val(f,"salida")),l=num(val(f,"llegada"));
       if(s<=l||s>100||l<0){toast("La batería al llegar tiene que ser menor que al salir");return false}
       const v=calcViaje(s,l),kmCarro=num(val(f,"kmCarro"));
-      Object.assign(d,{bateriaSalida:s,bateriaLlegada:l,kmCarro,km:kmCarro||v.km,kwh:v.kwh});
-    }
+      Object.assign(d,{bateriaSalida:s,bateriaLlegada:l,kmCarro,km:kmCarro||v.km,kwh:v.kwh,citaId:val(f,"citaId")});
+    }else d.citaId="";
     if(d.monto<=0){toast("Poné el monto del gasto");return false}
     if(id)await updDoc("gastos",id,d);else{d.creado=Date.now();await addDoc("gastos",d)}
     toast("Gasto guardado");
   },id?`<button type="button" class="btn danger" id="delG">Borrar</button>`:"");
   const actualizar=()=>{
-    const esCarga=val(f,"categoria")===CARGA;$("#gviaje").hidden=!esCarga;$("#lpago").hidden=esCarga;
+    const esCarga=val(f,"categoria")===CARGA;
+    $("#gviaje").hidden=$("#lcita").hidden=!esCarga;$("#lpago").hidden=$("#ldesc").hidden=esCarga;
     if(!esCarga)return;
     const s=val(f,"salida"),l=val(f,"llegada");
     if(s===""||l===""){$("#gcalc").textContent=`Poné la batería al salir y al llegar. Se calcula con un consumo de ${fmtQty(c.consumo)} kWh/100 km, ${fmtQty(c.bateria)} kWh y ${money(c.precioKwh)} por kWh (se cambia en Ajustes).`;return}
@@ -947,6 +958,7 @@ function modalGasto(id){
   f.elements.salida.addEventListener("input",actualizar);
   f.elements.llegada.addEventListener("input",actualizar);
   f.elements.kmCarro.addEventListener("input",actualizar);
+  f.elements.fecha.addEventListener("change",()=>{f.elements.citaId.innerHTML=opcionesCita(val(f,"fecha"),val(f,"citaId"))});
   actualizar();
   if(id)$("#delG").onclick=async()=>{const b=$("#delG");if(b.dataset.sure){await delDoc("gastos",id);closeModal();toast("Gasto borrado")}else{b.dataset.sure=1;b.textContent="¿Seguro? Tocá otra vez"}};
 }
