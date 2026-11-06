@@ -1,6 +1,6 @@
 // Guarda una copia de la app para que abra rápido y sin señal.
 // Siempre busca primero la versión nueva en internet.
-const CACHE = "gdcr-v2";
+const CACHE = "gdcr-v3";
 const FILES = ["./", "./index.html", "./config.js", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
