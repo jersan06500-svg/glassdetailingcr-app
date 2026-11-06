@@ -94,7 +94,7 @@ Firestore no acepta `undefined`, así que todo campo que se guarde tiene que ten
 
 ## Cómo publicar
 
-Cada push a `main` vuelve a publicar en GitHub Pages en 1 o 2 minutos. Desde Claude Code, en la compu del dueño, se hace con `git commit` y `git push`, que ya funciona. Desde Claude en la web, el dueño sube los archivos a mano (Add file → Upload files → Commit changes). No subas un `config.js` distinto al actual.
+Cada push a `main` vuelve a publicar en GitHub Pages en 1 o 2 minutos. Desde Claude Code, en la compu del dueño, se hace con `git commit` y `git push`. Desde el 6 nov 2026, Claude en la web también tiene GitHub conectado y puede hacer push directo, así que el dueño ya no tiene que subir archivos a mano. No subas un `config.js` distinto al actual.
 
 ## Estado actual (5 nov 2026, noche)
 
