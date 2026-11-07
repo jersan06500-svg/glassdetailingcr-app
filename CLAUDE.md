@@ -107,6 +107,10 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Para seguir (pendiente al cerrar el 6 nov, 11:45 pm)
 
+- **7 nov, 6:25 am: cuenta de anuncios restringida por un pago que no se procesó.** El anuncio "Nuevo anuncio de Ventas" (id 120250980568080371) está en "Error en el pago" y no sale. Meta no deja editar nada hasta que el dueño pague (botón "Pagar" del aviso rojo; lo hace él). El dueño dijo que paga después.
+  - Cuando pague, editar ese anuncio: el mensaje automático de la pregunta "¿Cuánto cuesta el servicio del pulido de focos?" todavía dice "tradicional ₡20 000 / polímero ₡25 000". El anuncio guarda su propia copia de la plantilla, así que cambiar la plantilla no basta.
+  - Hay que poner la promo (₡25 000 → ₡20 000 agendando en la página + enlace de reservas), mostrársela al dueño y publicar con su "sí". Revisar que no quede otra respuesta con el pulido tradicional.
+
 - Preguntar si actualiza las respuestas automáticas de Facebook/Instagram con "todos los vidrios" (₡40 000) y "techo panorámico" (+₡20 000).
 - Preguntar si la app del equipo también pasa a azul marino sin verde lima (la página de reservas ya está así).
 - Rehacer con la paleta nueva lo de redes (carrusel, historias, portadas de destacadas) y `reservar/og.jpg`, si el dueño quiere.
