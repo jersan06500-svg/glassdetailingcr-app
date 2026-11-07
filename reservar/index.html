@@ -194,6 +194,16 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
 .pl .star{background:color-mix(in srgb,var(--glow) 12%,var(--card))}
 .pl .star b{color:inherit}
 .carform{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;margin-top:6px}
+.vtl{display:block;margin:14px 0 6px}
+.opt.lock{opacity:.35;filter:grayscale(1)}
+.warn.okv{background:color-mix(in srgb,var(--ok) 12%,transparent);border-color:var(--ok)}
+.svc .opt:disabled{opacity:.4}
+.svc .ic svg{width:26px;height:26px;color:var(--glow)}
+.svc .ic.two{width:58px;gap:2px}.svc .ic.two svg{width:22px;height:22px}
+.svc .opt.add{border-style:dashed}
+.svc .plus{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--glow);color:var(--card);align-items:center;justify-content:center;font-size:15px;margin-right:4px;vertical-align:-3px}
+.need{margin-top:14px;background:var(--card);border:2px solid var(--glow);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.need span{color:var(--mute)}
 .carform input{font-size:17px;padding:15px 14px}
 .forcar{background:var(--card);border-radius:14px;padding:10px 14px;margin:0 0 12px;font-size:15px;color:var(--mute)}
 .forcar:empty{display:none}
@@ -261,16 +271,17 @@ body.cxm #cx{display:block}
   <div class="top"><div class="wrap"><button class="back" id="bk" aria-label="Atrás"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="prog"><small id="pt">Paso 1 de 4</small><div class="bar"><i id="pb"></i></div></div></div></div>
   <div class="wrap">
     <div class="step" id="s1">
-      <div class="cars" id="ct1"></div><h2 id="h1t">¿Qué carro tenés?</h2><p class="sub">Elegí el tipo, así el precio te sale exacto.</p>
-      <div class="vt">
-        <button class="opt" data-vt="sedan" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 50c0-6 4-9 10-10l22-4 20-14c4-3 9-4 14-4h28c6 0 11 2 15 6l14 13 18 3c5 1 7 4 7 9v5c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 50v5c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M62 24l-12 12h44V21H74c-5 0-9 1-12 3zM100 21v15h30l-11-11c-3-3-6-4-10-4z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>Sedán o hatchback</b><small>Carro bajo: Corolla, Yaris, Civic, Accent, Mazda 3…</small></button>
-        <button class="opt" data-vt="suv" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 52V38c0-4 3-7 7-8l22-4 14-14c3-3 7-4 11-4h52c5 0 9 2 12 6l12 16 9 2c4 1 6 4 6 8v12c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 52v3c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M58 14l-14 14h50V12H64c-2 0-4 1-6 2zM100 12v16h38l-10-13c-2-2-4-3-7-3z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>SUV o pick-up</b><small>Carro alto: RAV4, CR-V, Hilux, Prado, Tucson…</small></button>
-      </div>
+      <div class="cars" id="ct1"></div><h2 id="h1t">¿Qué carro tenés?</h2><p class="sub">Escribí la marca y el modelo. Si lo reconocemos, marcamos solos si es sedán o SUV.</p>
       <input id="veh" type="hidden">
       <div class="carform">
         <div class="full"><label for="mk">Marca</label><input id="mk" list="mkl" placeholder="Escribí la marca, ej: Toyota" autocomplete="off" autocapitalize="words" maxlength="25"><datalist id="mkl"></datalist></div>
         <div><label for="md">Modelo</label><input id="md" list="mdl" placeholder="Ej: RAV4" autocomplete="off" autocapitalize="words" maxlength="30"><datalist id="mdl"></datalist></div>
         <div><label for="yr">Año <small>(opcional)</small></label><input id="yr" list="yrl" inputmode="numeric" placeholder="Ej: 2018" autocomplete="off" maxlength="4"><datalist id="yrl"></datalist></div>
+      </div>
+      <label class="vtl">Tipo de carro</label>
+      <div class="vt">
+        <button class="opt" data-vt="sedan" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 50c0-6 4-9 10-10l22-4 20-14c4-3 9-4 14-4h28c6 0 11 2 15 6l14 13 18 3c5 1 7 4 7 9v5c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 50v5c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M62 24l-12 12h44V21H74c-5 0-9 1-12 3zM100 21v15h30l-11-11c-3-3-6-4-10-4z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>Sedán o hatchback</b><small>Carro bajo: Corolla, Yaris, Civic, Accent, Mazda 3…</small></button>
+        <button class="opt" data-vt="suv" aria-pressed="false"><svg viewBox="0 0 160 70" aria-hidden="true"><path d="M8 52V38c0-4 3-7 7-8l22-4 14-14c3-3 7-4 11-4h52c5 0 9 2 12 6l12 16 9 2c4 1 6 4 6 8v12c0 3-2 5-5 5h-6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M8 52v3c0 3 2 4 5 4h9M54 59h52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M58 14l-14 14h50V12H64c-2 0-4 1-6 2zM100 12v16h38l-10-13c-2-2-4-3-7-3z" fill="color-mix(in srgb,var(--acc) 30%,transparent)"/><circle cx="38" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/><circle cx="122" cy="59" r="10" fill="var(--card)" stroke="currentColor" stroke-width="3.5"/></svg><b>SUV o pick-up</b><small>Carro alto: RAV4, CR-V, Hilux, Prado, Tucson…</small></button>
       </div>
       <div class="warn" id="vw"></div>
       <div class="hint">Si al llegar el tipo de carro es otro, el precio se ajusta al real.</div>
@@ -280,6 +291,9 @@ body.cxm #cx{display:block}
       <div class="cars" id="ct2"></div><h2 id="h2t">¿Qué le hacemos?</h2><p class="sub">Tocá una opción. Todo lleva 1 año de protección.</p>
       <div class="forcar" id="forcar"></div>
       <div class="svc" id="gl"></div>
+      <div class="need"><b>🚗 Servicio a domicilio totalmente gratis en toda la GAM</b>
+        <span>✓ Ocupamos un toma de corriente de 110 V cerca del carro</span>
+        <span>✓ De preferencia, el carro bajo techo</span></div>
       <div class="more" id="more"></div>
     </div>
 
@@ -347,10 +361,18 @@ var FBC={apiKey:"AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",authDomain:"glassdetai
    Varios carros: se apartan 2 horas por carro, seguidas. MAXC = máximo de carros por reserva web. */
 var HOURS={0:[8,15],1:[6,18],2:[6,18],3:[6,18],4:[6,18],5:[6,18],6:[6,18]},DUR=2,DAYS_AHEAD=21,LEAD_H=2,MAXC=3;
 /* SERVICIOS: todos llevan 1 año de protección. Los nombres de las líneas (LN) tienen que ser iguales a SERV en la app. */
-var GLASS=[{id:"combo",n:"Parabrisas + focos",s:"Polímero líquido + cerámico Fireball",p:{sedan:30000,suv:30000},ic:"🎁"},
-  {id:"pb",n:"Solo parabrisas",s:"Con cerámico Fireball",p:{sedan:20000,suv:25000},ic:"🛡️"},
-  {id:"none",n:"Solo focos",s:"El par, con polímero líquido",p:{sedan:0,suv:0},ic:"💡"}];
-var LN={ps:"Parabrisas sedán + cerámico Fireball",pu:"Parabrisas SUV o pick-up + cerámico Fireball",combo:"Promo parabrisas + focos con cerámico Fireball"};
+var GLASS=[{id:"combo",n:"Parabrisas + focos",s:"Parabrisas con cerámico Fireball y focos con polímero líquido",p:30000,ic:"gf"},
+  {id:"pu",n:"Parabrisas SUV o pick-up",s:"Pulido + cerámico Fireball",p:25000,vt:"suv",ic:"g"},
+  {id:"ps",n:"Parabrisas sedán",s:"Pulido + cerámico Fireball",p:20000,vt:"sedan",ic:"g"},
+  {id:"all",n:"Todos los vidrios",s:"Parabrisas, vidrio trasero y ventanas + cerámico Fireball",p:40000,ic:"g"},
+  {id:"none",n:"Pulido de focos",s:"El par, con polímero líquido",p:0,ic:"f"}];
+var TECHO={n:"Techo panorámico + cerámico Fireball",p:20000};
+var LN={ps:"Parabrisas sedán + cerámico Fireball",pu:"Parabrisas SUV o pick-up + cerámico Fireball",combo:"Promo parabrisas + focos con cerámico Fireball",all:"Todos los vidrios + cerámico Fireball"};
+/* Íconos propios: parabrisas, focos y techo. */
+var ICO={g:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 24 8 9.5Q8.8 7 11.5 7h9q2.7 0 3.5 2.5L28 24Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M11 21.5 20 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+  f:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M15 7C8 7 4 11 4 16s4 9 11 9Z" fill="currentColor"/><path d="M19 10h9M19 16h9M19 22h9" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>',
+  t:'<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="5" width="22" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="10" y="10" width="12" height="9" rx="2.5" fill="currentColor"/></svg>'};
+function icoOf(k){return k==="gf"?ICO.g+ICO.f:ICO[k]}
 /* PROMO: al agendar el parabrisas por esta página se regala el vidrio trasero y los retrovisores.
    Para apagarla: PROMO.on=false, ponerle fecha final en PROMO.end ("2026-12-31"), o guardar promo:false en pub/cfg. */
 var PROMO={on:false,end:"",svc:"pb",n:""};
@@ -379,17 +401,16 @@ $("go").onclick=function(){document.body.classList.add("book");history.pushState
 $("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(1);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
 window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(1)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
 /* VARIOS CARROS */
-function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,mk:"",md:"",yr:"",col:"",pl:""}}
+function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,tp:false,mk:"",md:"",yr:"",col:"",pl:""}}
 var CARS=[newCar()];S.ci=0;
 function vehOf(c){return [c.mk==="Otra"?"":c.mk,c.md,c.yr].filter(Boolean).join(" ").trim()}
 function syncVeh(){$("veh").value=vehOf({mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,"")})}
-function curCar(){syncVeh();return {vt:S.vt,veh:$("veh").value,gl:S.gl,fo:S.fo,mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,""),col:"",pl:""}}
+function curCar(){syncVeh();return {vt:S.vt,veh:$("veh").value,gl:S.gl,fo:S.fo,tp:!!S.tp,mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,""),col:"",pl:""}}
 function setCarFields(c){$("mk").value=c.mk||"";models();$("md").value=c.md||"";$("yr").value=c.yr||"";syncVeh()}
 function allCars(){return CARS.map(function(c,i){return i===S.ci?curCar():c})}
 function saveCar(){CARS[S.ci]=curCar()}
-function loadCar(i){saveCar();S.ci=i;var c=CARS[i];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
-  Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.setAttribute("aria-pressed",x.dataset.vt===S.vt)});$("vw").classList.remove("on");buildSvc();upd()}
-function carTotal(c){var g=GLASS.find(function(x){return x.id===c.gl}),vt=c.vt||"sedan";return (g?g.p[vt]:0)+(c.fo?FOCOS.p:0)}
+function loadCar(i){saveCar();S.ci=i;useCar(CARS[i]);upd()}
+function carTotal(c){var g=GLASS.find(function(x){return x.id===c.gl});if(!g)return 0;if(g.vt&&c.vt&&g.vt!==c.vt)return 0;return (g.id==="none"?FOCOS.p:g.p)+(c.tp?TECHO.p:0)}
 function carOk(c){return !!c.vt&&(c.mk||"").length>=2&&(c.md||"").length>=1&&carTotal(c)>0}
 function vtN(c){return c.vt==="suv"?"SUV o pick-up":"Sedán o hatchback"}
 function renderCars(){var A=allCars(),n=A.length,h="";
@@ -405,8 +426,8 @@ function renderCars(){var A=allCars(),n=A.length,h="";
 function addCar(){if(CARS.length>=MAXC||Date.now()-(S.tapT||0)<700||Date.now()-(S.addT||0)<1200)return;
   if(!carOk(curCar())){err(!S.vt||mkName().length<2||!$("md").value.trim()?"Primero completá el tipo, la marca y el modelo de este carro.":"Elegí al menos un servicio para este carro.");return}
   S.addT=Date.now();saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")}
-function useCar(c){S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
-  Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});$("vw").classList.remove("on");buildSvc()}
+function useCar(c){S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;S.tp=!!c.tp;setCarFields(c);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});chkModel();buildSvc()}
 function rmCar(k){if(CARS.length<2)return;saveCar();CARS.splice(k,1);if(k<S.ci||S.ci>=CARS.length)S.ci--;useCar(CARS[S.ci]);show(S.step>1?1:S.step);toast2("Carro quitado")}
 /* Carros que quedaron en blanco (sin tipo, marca ni modelo) se quitan solos al seguir. */
 function dropEmpty(){saveCar();var keep=CARS.filter(function(c){return c.vt||c.mk||c.md});if(!keep.length)keep=[CARS[0]];
@@ -429,14 +450,20 @@ $("nx").onclick=function(){if(!okStep()){hintStep();return}
 function hintStep(){if(S.step===0)err(!S.vt?"Tocá si tu carro es sedán o SUV.":mkName().length<2?"Escribí la marca del carro.":"Escribí el modelo del carro.");if(S.step===2)err(!S.zone?"Mandanos tu ubicación o elegí la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escribinos por WhatsApp para un pedido especial.":"Escribí la dirección con algunas señas.");if(S.step===3)err("Elegí el día y la hora.");if(S.step===4)err(!telOk()?"Revisá tu número de WhatsApp: son 8 dígitos.":"Escribí tu nombre.")}
 
 /* PASO 1: tipo de carro */
-Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(b){b.onclick=function(){S.vt=b.dataset.vt;Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.setAttribute("aria-pressed",x===b)});chkModel();buildSvc();upd()}});
+Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(b){b.onclick=function(){var g=guess();
+  if(g&&g!==b.dataset.vt){var w=$("vw");w.innerHTML="El <b>"+esc($("veh").value.trim())+"</b> es "+(g==="suv"?"<b>SUV o pick-up</b>":"<b>sedán o hatchback</b>")+", así que no se puede marcar como "+(g==="suv"?"sedán":"SUV")+".";w.classList.add("on");return}
+  setVt(b.dataset.vt);chkModel();buildSvc();upd()}});
+/* Cambia el tipo y, si el parabrisas elegido era del otro tipo, lo pasa al que corresponde. */
+function setVt(v){S.vt=v;Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.setAttribute("aria-pressed",x.dataset.vt===v)});
+  if(S.gl==="ps"&&v==="suv")S.gl="pu";if(S.gl==="pu"&&v==="sedan")S.gl="ps"}
 function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
 function hit(L,s){return L.some(function(r){return new RegExp("(^|[^a-z0-9])("+r+")([^a-z0-9]|$)").test(s)})}
 function guess(){var s=norm($("veh").value);if(s.length<2)return "";var su=hit(SUVRX,s),se=hit(SEDRX,s);return su&&!se?"suv":se&&!su?"sedan":""}
-function chkModel(){syncVeh();var g=guess(),w=$("vw");if(g&&S.vt&&g!==S.vt){var nm=$("veh").value.trim();
-    w.innerHTML=(g==="suv"?"Ojo: <b>"+esc(nm)+"</b> parece un <b>SUV o pick-up</b>. El parabrisas de un carro alto cuesta un poco más.":"Ojo: <b>"+esc(nm)+"</b> parece un <b>sedán o hatchback</b>.")+'<br><button id="vfix">Cambiar a '+(g==="suv"?"SUV o pick-up":"sedán o hatchback")+'</button>';w.classList.add("on");
-    $("vfix").onclick=function(){document.querySelector('[data-vt="'+g+'"]').click()}}
-  else{w.classList.remove("on");if(g&&!S.vt){document.querySelector('[data-vt="'+g+'"]').click()}}}
+/* Si reconocemos el modelo, el tipo se marca solo y el otro queda bloqueado. */
+function chkModel(){syncVeh();var g=guess(),w=$("vw");
+  Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(x){x.classList.toggle("lock",!!g&&x.dataset.vt!==g)});
+  if(g){if(S.vt!==g)setVt(g);w.innerHTML="✓ Lo reconocimos: el <b>"+esc($("veh").value.trim())+"</b> es "+(g==="suv"?"<b>SUV o pick-up</b>":"<b>sedán o hatchback</b>")+".";w.classList.add("on","okv")}
+  else{w.classList.remove("on","okv")}}
 var MARCAS={"Toyota":["Corolla","Corolla Cross","Yaris","Rush","Raize","RAV4","Hilux","Fortuner","Prado","Land Cruiser","4Runner","Tacoma","Camry","Prius","C-HR","Avanza"],
  "Hyundai":["Accent","Elantra","i10","Grand i10","Creta","Venue","Kona","Tucson","Santa Fe","H1"],
  "Nissan":["Sentra","Versa","March","Tiida","Note","Kicks","Qashqai","X-Trail","Pathfinder","Frontier","Navara","Leaf"],
@@ -465,14 +492,16 @@ $("mk").addEventListener("input",function(){var k=mkName();if(k!==lastMk){lastMk
 ["md","yr"].forEach(function(i){$(i).addEventListener("input",function(){syncVeh();buildSvc();chkModel();upd()})});
 
 /* PASO 2: servicios */
-function svcBtn(o,pr,on,attr,extra){return '<button class="opt" '+attr+' aria-pressed="'+on+'"><span class="ic">'+o.ic+'</span><span class="tx"><b>'+o.n+(o.id==="combo"?'<span class="tag">Promo</span>':'')+'</b><small>'+o.s+'</small>'+(extra||'')+'</span><span class="pr">'+crc(pr)+'</span></button>'}
-/* Una sola opción por carro: la promo ya trae los focos, y "Solo focos" es el pulido de focos. */
+function svcBtn(o,pr,on,attr,extra){return '<button type="button" class="opt" '+attr+' aria-pressed="'+on+'"><span class="ic'+(o.ic==="gf"?' two':'')+'">'+icoOf(o.ic)+'</span><span class="tx"><b>'+o.n+(o.id==="combo"?'<span class="tag">Promo</span>':'')+'</b><small>'+o.s+'</small>'+(extra||'')+'</span><span class="pr">'+crc(pr)+'</span></button>'}
+/* Una opción principal por carro (la promo ya trae los focos) y el techo panorámico como extra. El parabrisas del otro tipo de carro queda bloqueado. */
 function buildSvc(){var vt=S.vt||"sedan";
   $("forcar").innerHTML=S.vt?'Precios para tu '+(esc($("veh").value)||"carro")+' · <b>'+(vt==="suv"?"SUV o pick-up":"sedán")+'</b>':'';
-  $("gl").innerHTML=GLASS.map(function(g){var pr=g.id==="none"?FOCOS.p:g.p[vt],
-      ex=g.id==="pb"?'<span class="both">Sedán '+crc(g.p.sedan)+' · SUV o pick-up '+crc(g.p.suv)+'</span>':g.id==="combo"?'<span class="both">Ahorrás '+crc(GLASS[1].p[vt]+FOCOS.p-g.p[vt])+'</span>':'';
-      return svcBtn(g,pr,S.gl===g.id,'data-g="'+g.id+'"',ex)}).join("");
-  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){S.tapT=Date.now();S.gl=b.dataset.g;S.fo=S.gl==="none";buildSvc();upd()}})}
+  $("gl").innerHTML=GLASS.map(function(g){var pr=g.id==="none"?FOCOS.p:g.p,off=g.vt&&S.vt&&g.vt!==S.vt,
+      ex=off?'<span class="both">Su carro es '+(S.vt==="suv"?"SUV o pick-up":"sedán")+'</span>':g.id==="combo"?'<span class="both">Ahorra '+crc((vt==="suv"?25000:20000)+FOCOS.p-g.p)+'</span>':'';
+      return svcBtn(g,pr,S.gl===g.id&&!off,'data-g="'+g.id+'"'+(off?' disabled':''),ex)}).join("")+
+    '<button type="button" class="opt add" id="tpb" aria-pressed="'+!!S.tp+'"><span class="ic">'+ICO.t+'</span><span class="tx"><b><span class="plus">+</span> Techo panorámico</b><small>Si su carro lo tiene, lo pulimos con cerámico Fireball</small></span><span class="pr">+'+crc(TECHO.p)+'</span></button>';
+  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){if(b.disabled)return;S.tapT=Date.now();S.gl=b.dataset.g;S.fo=S.gl==="none";buildSvc();upd()}});
+  $("tpb").onclick=function(){S.tapT=Date.now();S.tp=!S.tp;buildSvc();upd()}}
 buildSvc();
 
 /* PASO 3: día y hora */
@@ -557,12 +586,13 @@ $("locno").onclick=function(){$("locdlg").hidden=true;$("zsel").focus()};
 ["addr","cli","tel"].forEach(function(i){$(i).addEventListener("input",function(){err("");upd()})});
 
 /* PASO 5: resumen y envío */
-function lines(c){c=c||curCar();var vt=c.vt||"sedan",L=[],g=GLASS.find(function(x){return x.id===c.gl});if(g&&g.id!=="none")L.push({n:g.id==="combo"?LN.combo:vt==="suv"?LN.pu:LN.ps,p:g.p[vt]});if(c.fo)L.push({n:FOCOS.n,p:FOCOS.p});if(hasGift(c))L.push({n:PROMO.n,p:0});return L}
+function lines(c){c=c||curCar();var L=[],g=GLASS.find(function(x){return x.id===c.gl});if(g&&g.id!=="none")L.push({n:LN[g.id],p:g.p});if(g&&g.id==="none")L.push({n:FOCOS.n,p:FOCOS.p});if(c.tp)L.push({n:TECHO.n,p:TECHO.p});if(hasGift(c))L.push({n:PROMO.n,p:0});return L}
 function mapLink(){return S.lat!=null?"https://www.google.com/maps/search/?api=1&query="+S.lat+","+S.lng:""}
 function lineRows(L){return L.map(function(l){return l.p?'<div><i>✨</i><span>'+esc(l.n)+'</span><b>'+crc(l.p)+'</b></div>':'<div><i>🎁</i><span>'+esc(l.n.replace(/^🎁 /,""))+'</span><b style="color:var(--ok)">Gratis</b></div>'}).join("")}
 function renderSum(){var A=allCars(),n=A.length,len=DUR*n;
   $("sum").innerHTML='<div><i>📅</i><span><b>'+niceDay(S.day).replace(/^./,function(c){return c.toUpperCase()})+'</b><br>'+fmtH(S.h)+' a '+fmtH(S.h+len)+(n>1?' · '+n+' carros':'')+'</span></div>'+
   A.map(function(c,k){return (n>1?'<div class="carh"><span>🚗 Carro '+(k+1)+' · '+fmtH(S.h+DUR*k)+'</span><b>'+crc(carTotal(c))+'</b></div>':'')+'<div><i>🚗</i><span>'+esc(c.veh)+' · '+vtN(c)+(extra(c)?'<br><small>'+esc(extra(c))+'</small>':'')+'</span></div>'+lineRows(lines(c))}).join("")+
+  '<div><i>🔌</i><span>Ocupamos un toma de 110 V y, de preferencia, el carro bajo techo</span></div>'+
   '<div><i>📍</i><span>'+(S.lat!=null?'Ubicación enviada'+($("addr").value.trim()?' · '+esc($("addr").value.trim()):''):esc($("addr").value.trim()))+'<br><small style="color:'+(feeAmt()?'inherit':'var(--ok)')+';font-weight:600">'+(S.zone?esc(S.zone.n)+(feeAmt()?'':' · domicilio gratis'):'')+'</small></span></div>'+(feeAmt()?'<div><i>🚗</i><span>Domicilio a '+esc(S.zone.n)+'</span><b>'+crc(feeAmt())+'</b></div>':'')+
   '<div><i>👤</i><span>'+esc($("cli").value.trim())+' · '+telN().replace(/(\d{4})(\d{4})/,"$1 $2")+'</span></div>'+
   '<div><i>💰</i><span>Total'+(n>1?' de los '+n+' carros':'')+'</span><span class="tot" style="flex:none">'+crc(total())+'</span></div>'}

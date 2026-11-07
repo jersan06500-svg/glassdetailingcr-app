@@ -558,7 +558,7 @@ raf=requestAnimationFrame(frame);
 </nav>
 
 <script>
-var SERV=[{id:"combo",n:"Promo parabrisas + focos con cerámico Fireball",p:30000,g:1},{id:"pu",n:"Parabrisas SUV o pick-up + cerámico Fireball",p:25000,g:1},{id:"ps",n:"Parabrisas sedán + cerámico Fireball",p:20000,g:1},{id:"focos",n:"Pulido de focos con polímero líquido",p:20000}];
+var SERV=[{id:"combo",n:"Promo parabrisas + focos con cerámico Fireball",p:30000,g:1},{id:"pu",n:"Parabrisas SUV o pick-up + cerámico Fireball",p:25000,g:1},{id:"ps",n:"Parabrisas sedán + cerámico Fireball",p:20000,g:1},{id:"all",n:"Todos los vidrios + cerámico Fireball",p:40000,g:1},{id:"techo",n:"Techo panorámico + cerámico Fireball",p:20000,g:1},{id:"focos",n:"Pulido de focos con polímero líquido",p:20000}];
 /* familia de un servicio (para metas e insumos, también con nombres viejos o de la web) */
 function sfam(n){n=String(n||"");return /^promo/i.test(n)?"parabrisas":/focos/i.test(n)?"focos":/hidrof/i.test(n)?"hidro":/parabrisas|vidrios/i.test(n)?"parabrisas":""}
 /* nombres viejos o de la página de reservas → servicio de la lista */
