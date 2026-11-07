@@ -66,6 +66,12 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
   - Letras: Archivo (ancha, 112 %) y Manrope.
   - En modo claro el botón principal es negro; en modo oscuro, amarillo olivo.
   - El momento protagonista es el haz de luz que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
+  - **Regla del dueño: de ahora en adelante todo lo de la página va en negro y amarillo olivo.** Los íconos van en amarillo, no en negro: la barra de abajo tiene íconos olivo y la pestaña activa con fondo olivo (`--olv`, `--olvink`).
+- **App del equipo (6 nov, noche)**:
+  - El inicio lleva el logo centrado con el lema "Claridad que se nota" (`.brandc`). La barra de arriba ya no repite el nombre: solo muestra la cuenta y Salir.
+  - Botón **Reservas** en la barra de abajo, al lado de Clientes (`#t-rv`). Abre una hoja (`#rvs`) con el enlace de reservas para mandarlo por WhatsApp, copiarlo, compartirlo o abrir la página.
+  - Agenda pensada para una mano: cada cita es su propia tarjeta con borde olivo (rojo si falta confirmar), botones de 44 px y flechas redondas para cambiar de semana. Se quitaron las animaciones de entrada de la plantilla.
+  - El dueño va a mandar un logo nuevo: hay que reemplazar `logo-icon.png` (y los íconos) cuando llegue.
 
 ## Pendiente de confirmar con el dueño
 
