@@ -61,9 +61,11 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - **Cancelar cita**: al reservar se guarda en cada cita una clave `ck` de 16 caracteres. El cliente recibe el enlace `reservar/?cancelar=<ids>&k=<ck>&d=<fecha>&h=<hora>&t=<tel>` en tres lugares: la pantalla final, el mensaje de WhatsApp que manda y el mensaje de confirmación del equipo (`cxLink`).
   - Las reglas (`webCancel`) solo dejan pasar la cita a `Cancelada` si la clave coincide, y luego el cliente libera sus `slots` y `holds` (`jobCancelled`).
   - En la app, las citas `Cancelada` salen de `S.jobs` y quedan en `S.cx`. Se muestran como aviso en el inicio (Escribirle / Entendido = `cxSeen`) y le llegan al dueño por ntfy (`cxNtf`).
-- **Diseño "Faro"**, para que no se parezca a GlassStudio: noche grafito (`#0d1119`) con luz de xenón ámbar (`#ffb23f`), letras Archivo (ancha, 112 %) y Manrope.
-  - En modo claro el botón principal es grafito; en modo oscuro, ámbar.
-  - El momento protagonista es el haz del foco que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
+- **Diseño**, para que no se parezca a GlassStudio. Colores elegidos por el dueño: **negro y amarillo olivo**.
+  - Negro cálido `#0d0d0b` y amarillo olivo `#c8c13a`; en modo claro se usa el olivo más oscuro `#a39c14` para que el texto se lea.
+  - Letras: Archivo (ancha, 112 %) y Manrope.
+  - En modo claro el botón principal es negro; en modo oscuro, amarillo olivo.
+  - El momento protagonista es el haz de luz que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
 
 ## Pendiente de confirmar con el dueño
 
