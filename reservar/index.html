@@ -183,9 +183,10 @@ body.ok .dock{display:none}
 .cars button{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:99px;padding:7px 12px;font-weight:700;font-size:14px}
 .cars button[aria-pressed=true]{border-color:var(--glow);background:color-mix(in srgb,var(--glow) 14%,var(--card))}
 .cars button.ok::before{content:"✓";color:var(--ok)}
-.cars .x{margin-left:2px;opacity:.6;font-weight:800}
+.cars .chip{display:inline-flex;align-items:center;gap:4px}
+.cars .x{width:44px;height:44px;justify-content:center;padding:0;font-size:16px;font-weight:800;color:var(--mute)}
 .more{margin-top:16px;background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:14px;text-align:center}
-.more button{display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:var(--accink);font-weight:700;border-radius:14px;padding:12px 16px}
+.more button{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--ink);border:2px solid var(--line);font-weight:700;border-radius:14px;padding:12px 16px}
 .more small{display:block;color:var(--mute);font-size:13px;margin-top:8px}
 .more a{color:var(--acc);font-weight:700}
 .sum .carh{font:800 16px Archivo,sans-serif;padding-top:14px}
@@ -381,7 +382,7 @@ window.addEventListener("popstate",function(){if(document.body.classList.contain
 function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,mk:"",md:"",yr:"",col:"",pl:""}}
 var CARS=[newCar()];S.ci=0;
 function vehOf(c){return [c.mk==="Otra"?"":c.mk,c.md,c.yr].filter(Boolean).join(" ").trim()}
-function syncVeh(){$("veh").value=vehOf({mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,"")});if(S.vt)buildSvc()}
+function syncVeh(){$("veh").value=vehOf({mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,"")})}
 function curCar(){syncVeh();return {vt:S.vt,veh:$("veh").value,gl:S.gl,fo:S.fo,mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,""),col:"",pl:""}}
 function setCarFields(c){$("mk").value=c.mk||"";models();$("md").value=c.md||"";$("yr").value=c.yr||"";syncVeh()}
 function allCars(){return CARS.map(function(c,i){return i===S.ci?curCar():c})}
@@ -392,18 +393,28 @@ function carTotal(c){var g=GLASS.find(function(x){return x.id===c.gl}),vt=c.vt||
 function carOk(c){return !!c.vt&&(c.mk||"").length>=2&&(c.md||"").length>=1&&carTotal(c)>0}
 function vtN(c){return c.vt==="suv"?"SUV o pick-up":"Sedán o hatchback"}
 function renderCars(){var A=allCars(),n=A.length,h="";
-  if(n>1)h=A.map(function(c,i){return '<button data-ci="'+i+'" aria-pressed="'+(i===S.ci)+'"'+(carOk(c)&&i!==S.ci?' class="ok"':'')+'>🚗 '+(c.veh?esc(c.veh.slice(0,14)):"Carro "+(i+1))+(n>1?'<span class="x" data-cx="'+i+'" aria-label="Quitar carro '+(i+1)+'">✕</span>':'')+'</button>'}).join("");
+  if(n>1)h=A.map(function(c,i){return '<span class="chip"><button type="button" data-ci="'+i+'" aria-pressed="'+(i===S.ci)+'"'+(carOk(c)&&i!==S.ci?' class="ok"':'')+'>🚗 '+(c.veh?esc(c.veh.slice(0,14)):"Carro "+(i+1))+'</button><button type="button" class="x" data-cx="'+i+'" aria-label="Quitar carro '+(i+1)+'">✕</button></span>'}).join("");
   ["ct1","ct2"].forEach(function(id){$(id).innerHTML=h});
   $("h1t").textContent=n>1?"Carro "+(S.ci+1)+": ¿cuál es?":"¿Qué carro tenés?";
   $("h2t").textContent=n>1?"Carro "+(S.ci+1)+": ¿qué le hacemos?":"¿Qué le hacemos?";
-  $("more").innerHTML=n<MAXC?'<button id="addcar"><span style="font-size:20px">＋</span> Agregar otro carro</button><small>¿Tenés otro carro? Agendalos juntos en la misma visita. Cada uno con sus propios servicios.</small>':
+  $("more").innerHTML=n<MAXC?'<button type="button" id="addcar"><span style="font-size:20px">＋</span> Agregar otro carro</button><small>¿Tenés otro carro? Agendalos juntos en la misma visita. Cada uno con sus propios servicios.</small>':
     '<small>Máximo '+MAXC+' carros por reserva aquí. ¿Son más? <a href="'+waUrl("Hola GlassDetailingCR, quiero agendar más de "+MAXC+" carros")+'" target="_blank" rel="noopener">Escribinos por WhatsApp</a>.</small>';
-  if($("addcar"))$("addcar").onclick=function(){if(!carOk(curCar())){err(!S.vt||mkName().length<2||!$("md").value.trim()?"Primero completá el tipo, la marca y el modelo de este carro.":"Elegí al menos un servicio para este carro.");return}
-    saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")};
-  Array.prototype.forEach.call(document.querySelectorAll("[data-ci]"),function(b){b.onclick=function(e){var x=e.target.getAttribute("data-cx");
-    if(x!=null){saveCar();var k=+x;CARS.splice(k,1);if(S.ci>=k&&S.ci>0)S.ci--;var c=CARS[S.ci];S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
-      Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});buildSvc();show(S.step>1?1:S.step);return}
-    var i=+b.dataset.ci;if(i===S.ci)return;loadCar(i);show(S.step>1?0:S.step)}})}
+}
+/* Un solo manejador para agregar, cambiar y quitar carros. Antes se volvía a asignar en cada tecla y,
+   en el celular, el toque podía caer en "Agregar otro carro" justo después de elegir un servicio. */
+function addCar(){if(CARS.length>=MAXC||Date.now()-(S.tapT||0)<700||Date.now()-(S.addT||0)<1200)return;
+  if(!carOk(curCar())){err(!S.vt||mkName().length<2||!$("md").value.trim()?"Primero completá el tipo, la marca y el modelo de este carro.":"Elegí al menos un servicio para este carro.");return}
+  S.addT=Date.now();saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")}
+function useCar(c){S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;setCarFields(c);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});$("vw").classList.remove("on");buildSvc()}
+function rmCar(k){if(CARS.length<2)return;saveCar();CARS.splice(k,1);if(k<S.ci||S.ci>=CARS.length)S.ci--;useCar(CARS[S.ci]);show(S.step>1?1:S.step);toast2("Carro quitado")}
+/* Carros que quedaron en blanco (sin tipo, marca ni modelo) se quitan solos al seguir. */
+function dropEmpty(){saveCar();var keep=CARS.filter(function(c){return c.vt||c.mk||c.md});if(!keep.length)keep=[CARS[0]];
+  if(keep.length===CARS.length)return;var cur=CARS[S.ci];CARS=keep;S.ci=Math.max(0,CARS.indexOf(cur));if(S.ci<0)S.ci=0;useCar(CARS[S.ci])}
+document.addEventListener("click",function(e){var t=e.target.closest?e.target:e.target.parentElement;
+  var x=t.closest("[data-cx]");if(x){e.preventDefault();rmCar(+x.dataset.cx);return}
+  var b=t.closest("[data-ci]");if(b){var i=+b.dataset.ci;if(i!==S.ci){loadCar(i);show(S.step>1?0:S.step)}return}
+  if(t.closest("#addcar"))addCar()});
 function toast2(m){var t=$("er");t.textContent=m;t.style.background="color-mix(in srgb,var(--ok) 14%,transparent)";t.style.color="var(--ok)";t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on");t.style.background="";t.style.color=""},2200)}
 function err(t){$("er").textContent=t||"";$("er").classList.toggle("on",!!t)}
 function total(){return allCars().reduce(function(a,c){return a+carTotal(c)},0)+feeAmt()}
@@ -413,7 +424,7 @@ function upd(){var n=CARS.length;$("tot").textContent=crc(total());$("totl").tex
 function telN(){var n=$("tel").value.replace(/\D/g,"");if(n.length===11&&n.indexOf("506")===0)n=n.slice(3);return n}
 function telOk(){return /^[245678]\d{7}$/.test(telN())}
 $("nx").onclick=function(){if(!okStep()){hintStep();return}
-  if(S.step===1){var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar()}
+  if(S.step===1){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar()}
   if(S.step<5)show(S.step+1);else submit()};
 function hintStep(){if(S.step===0)err(!S.vt?"Tocá si tu carro es sedán o SUV.":mkName().length<2?"Escribí la marca del carro.":"Escribí el modelo del carro.");if(S.step===2)err(!S.zone?"Mandanos tu ubicación o elegí la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escribinos por WhatsApp para un pedido especial.":"Escribí la dirección con algunas señas.");if(S.step===3)err("Elegí el día y la hora.");if(S.step===4)err(!telOk()?"Revisá tu número de WhatsApp: son 8 dígitos.":"Escribí tu nombre.")}
 
@@ -450,8 +461,8 @@ function models(){var L=MARCAS[mkName()]||[];$("mdl").innerHTML=L.map(function(m
 (function(){$("mkl").innerHTML=Object.keys(MARCAS).filter(function(m){return m!=="Otra"}).map(function(m){return '<option value="'+esc(m)+'">'}).join("");
   var y=new Date().getFullYear()+1,h="";for(var i=y;i>=1990;i--)h+='<option value="'+i+'">';$("yrl").innerHTML=h})();
 var lastMk="";
-$("mk").addEventListener("input",function(){var k=mkName();if(k!==lastMk){lastMk=k;models()}syncVeh();chkModel();upd()});
-["md","yr"].forEach(function(i){$(i).addEventListener("input",function(){syncVeh();chkModel();upd()})});
+$("mk").addEventListener("input",function(){var k=mkName();if(k!==lastMk){lastMk=k;models()}syncVeh();buildSvc();chkModel();upd()});
+["md","yr"].forEach(function(i){$(i).addEventListener("input",function(){syncVeh();buildSvc();chkModel();upd()})});
 
 /* PASO 2: servicios */
 function svcBtn(o,pr,on,attr,extra){return '<button class="opt" '+attr+' aria-pressed="'+on+'"><span class="ic">'+o.ic+'</span><span class="tx"><b>'+o.n+(o.id==="combo"?'<span class="tag">Promo</span>':'')+'</b><small>'+o.s+'</small>'+(extra||'')+'</span><span class="pr">'+crc(pr)+'</span></button>'}
@@ -461,7 +472,7 @@ function buildSvc(){var vt=S.vt||"sedan";
   $("gl").innerHTML=GLASS.map(function(g){var pr=g.id==="none"?FOCOS.p:g.p[vt],
       ex=g.id==="pb"?'<span class="both">Sedán '+crc(g.p.sedan)+' · SUV o pick-up '+crc(g.p.suv)+'</span>':g.id==="combo"?'<span class="both">Ahorrás '+crc(GLASS[1].p[vt]+FOCOS.p-g.p[vt])+'</span>':'';
       return svcBtn(g,pr,S.gl===g.id,'data-g="'+g.id+'"',ex)}).join("");
-  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){S.gl=b.dataset.g;S.fo=S.gl==="none";buildSvc();upd()}})}
+  Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){S.tapT=Date.now();S.gl=b.dataset.g;S.fo=S.gl==="none";buildSvc();upd()}})}
 buildSvc();
 
 /* PASO 3: día y hora */
