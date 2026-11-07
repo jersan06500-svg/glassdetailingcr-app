@@ -53,7 +53,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Ajustes del 6 nov 2026 (tarde)
 
-- **Servicios** (todos con 1 año de protección): promo parabrisas + focos con polímero líquido y cerámico Fireball ₡30 000, pulido de focos ₡20 000, parabrisas SUV o pick-up ₡25 000 y parabrisas sedán ₡20 000. El precio de sedán no lo dio el dueño; quedó el de la plantilla y falta confirmarlo.
+- **Servicios** (todos con 1 año de protección): promo parabrisas + focos con polímero líquido y cerámico Fireball ₡30 000, pulido de focos ₡20 000, parabrisas SUV o pick-up ₡25 000 y parabrisas sedán ₡20 000 (confirmado por el dueño).
   - En `reservar/` están en `GLASS`, `FOCOS` y `LN`; en la app, en `SERV`. Los nombres de `LN` y `SERV` tienen que ser iguales. Si se elige la promo, los focos ya vienen incluidos.
   - La promo vieja de GlassStudio (`PROMO`, regalo de vidrio trasero) quedó apagada.
 - **Zona**: toda la GAM (San José, Heredia, Alajuela y Cartago) es gratis. Fuera de la GAM no se agenda por la web: se le pide al cliente que escriba por WhatsApp.
@@ -67,7 +67,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Pendiente de confirmar con el dueño
 
-- Precio del parabrisas sedán. El horario (`HOURS`, `DUR`) sigue siendo el de GlassStudio: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm, 2 horas por carro.
+- El horario (`HOURS`, `DUR`) sigue siendo el de GlassStudio: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm, 2 horas por carro.
 - Enlace de reseñas de Google (`REVURL`) y, si lo quiere, un píxel de Meta propio.
 
 ## Reglas de la casa
