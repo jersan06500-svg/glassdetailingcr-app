@@ -75,7 +75,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
   - Negro cálido `#0d0d0b` y amarillo olivo `#c8c13a`; en modo claro se usa el olivo más oscuro `#a39c14` para que el texto se lea.
   - Letras: Archivo (ancha, 112 %) y Manrope.
   - En modo claro el botón principal es negro; en modo oscuro, amarillo olivo.
-  - El momento protagonista es el haz de luz que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
+  - **Sin efectos (decisión del dueño, 6 nov noche):** en `reservar/` se quitaron el resplandor de la portada, el confeti y todas las animaciones (`@keyframes`). Colores planos, de un solo tono. No volver a agregar brillos, degradados ni animaciones.
   - **Regla del dueño: todo lo de la página va con la paleta vigente** (hoy: grafito, lima y azul marino). Los íconos van en amarillo, no en negro: la barra de abajo tiene íconos olivo y la pestaña activa con fondo olivo (`--olv`, `--olvink`).
 - **App del equipo (6 nov, noche)**:
   - El inicio lleva el logo centrado con el lema "Claridad que se nota" (`.brandc`). La barra de arriba ya no repite el nombre: solo muestra la cuenta y Salir.
