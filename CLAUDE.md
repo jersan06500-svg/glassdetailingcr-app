@@ -105,6 +105,13 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - La bandeja de Business Suite solo muestra la caja para responder si el navegador de Claude está visible y en vista ancha (emular 1280 px).
 - **Pendiente del dueño, en el celular**: enlace de reservas en la bio de Instagram (la web no deja editar enlaces), mensaje de bienvenida en WhatsApp Business con el mismo texto de la respuesta automática, y portadas de las destacadas.
 
+## Para seguir (pendiente al cerrar el 6 nov, 11:45 pm)
+
+- Preguntar si actualiza las respuestas automáticas de Facebook/Instagram con "todos los vidrios" (₡40 000) y "techo panorámico" (+₡20 000).
+- Preguntar si la app del equipo también pasa a azul marino sin verde lima (la página de reservas ya está así).
+- Rehacer con la paleta nueva lo de redes (carrusel, historias, portadas de destacadas) y `reservar/og.jpg`, si el dueño quiere.
+- Si el celular muestra una versión vieja: agregar `?v=<número>` al final del enlace (GitHub Pages guarda ~10 min).
+
 ## Reglas de la casa
 
 1. **Cambios pequeños y enfocados**: tocar solo lo que se pidió. Antes de cambiar algo, leé cómo lo resuelve el código; la lógica de la plantilla funciona.
