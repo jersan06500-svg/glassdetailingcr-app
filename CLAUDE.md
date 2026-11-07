@@ -53,6 +53,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Ajustes del 6 nov 2026 (tarde)
 
+- **Promo de reserva en línea (6 nov, noche, decisión del dueño)**: el pulido de focos con polímero líquido "normalmente" cuesta ₡25 000, pero si el cliente agenda en la página de reservas le queda en ₡20 000 (el precio que ya muestra `reservar/`). El pulido tradicional ya no se ofrece. Así se les dice a los clientes por mensaje y así quedó la respuesta automática del anuncio de focos (plantilla "Iniciar conversaciones 26/06/2026" en el Administrador de anuncios).
 - **Servicios** (todos con 1 año de protección): promo parabrisas + focos con polímero líquido y cerámico Fireball ₡30 000, pulido de focos ₡20 000, parabrisas SUV o pick-up ₡25 000 y parabrisas sedán ₡20 000 (confirmado por el dueño).
   - En `reservar/` están en `GLASS`, `FOCOS` y `LN`; en la app, en `SERV`. Los nombres de `LN` y `SERV` tienen que ser iguales. Si se elige la promo, los focos ya vienen incluidos.
   - La promo vieja de GlassStudio (`PROMO`, regalo de vidrio trasero) quedó apagada.
