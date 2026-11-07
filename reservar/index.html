@@ -71,7 +71,7 @@ body.book #wiz{display:block}
 .prog{flex:1}
 .prog small{color:var(--mute);font-size:12px;font-weight:600}
 .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:5px}
-.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--glow),#d4ff66);border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.bar i{display:block;height:100%;width:0;background:var(--glow);border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
 .step{display:none;animation:in .35s cubic-bezier(.2,.8,.2,1)}
 .step.on{display:block}
 @keyframes in{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
@@ -499,7 +499,7 @@ function buildSvc(){var vt=S.vt||"sedan";
   $("gl").innerHTML=GLASS.map(function(g){var pr=g.id==="none"?FOCOS.p:g.p,off=g.vt&&S.vt&&g.vt!==S.vt,
       ex=off?'<span class="both">Su carro es '+(S.vt==="suv"?"SUV o pick-up":"sedán")+'</span>':g.id==="combo"?'<span class="both">Ahorra '+crc((vt==="suv"?25000:20000)+FOCOS.p-g.p)+'</span>':'';
       return svcBtn(g,pr,S.gl===g.id&&!off,'data-g="'+g.id+'"'+(off?' disabled':''),ex)}).join("")+
-    '<button type="button" class="opt add" id="tpb" aria-pressed="'+!!S.tp+'"><span class="ic">'+ICO.t+'</span><span class="tx"><b><span class="plus">+</span> Techo panorámico</b><small>Si su carro lo tiene, lo pulimos con cerámico Fireball</small></span><span class="pr">+'+crc(TECHO.p)+'</span></button>';
+    '<button type="button" class="opt add" id="tpb" aria-pressed="'+!!S.tp+'"><span class="ic">'+ICO.t+'</span><span class="tx"><b><span class="plus">+</span> Techo panorámico</b><small>Si su carro lo tiene, lo pulimos y lo cubrimos con cerámico Fireball</small></span><span class="pr">+'+crc(TECHO.p)+'</span></button>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-g]"),function(b){b.onclick=function(){if(b.disabled)return;S.tapT=Date.now();S.gl=b.dataset.g;S.fo=S.gl==="none";buildSvc();upd()}});
   $("tpb").onclick=function(){S.tapT=Date.now();S.tp=!S.tp;buildSvc();upd()}}
 buildSvc();
