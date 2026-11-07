@@ -57,7 +57,9 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
   - En `reservar/` están en `GLASS`, `FOCOS` y `LN`; en la app, en `SERV`. Los nombres de `LN` y `SERV` tienen que ser iguales. Si se elige la promo, los focos ya vienen incluidos.
   - La promo vieja de GlassStudio (`PROMO`, regalo de vidrio trasero) quedó apagada.
 - **Zona**: toda la GAM (San José, Heredia, Alajuela y Cartago) es gratis. Fuera de la GAM no se agenda por la web: se le pide al cliente que escriba por WhatsApp.
-- **Formulario de cada carro**: tipo, marca (lista `MARCAS`), modelo (con sugerencias), año, color y placa opcionales. `veh` = marca + modelo + año. El color y la placa van en la nota de la cita.
+- **Formulario de cada carro** (simplificado el 6 nov para clientes mayores): tipo, marca, modelo y año (opcional). La marca y el año se escriben con sugerencias (`mkl`, `yrl`); `mkName()` corrige la marca a como está en `MARCAS` sin importar mayúsculas ni tildes. `veh` = marca + modelo + año. Ya no se piden color ni placa.
+- **Paso 2**: una sola opción por carro, en tarjetas grandes: Parabrisas + focos (promo), Solo parabrisas (muestra sedán ₡20 000 y SUV ₡25 000) y Solo focos (₡20 000). Arriba dice para qué carro son los precios.
+- **Ubicación**: si el cliente no da permiso, sale una hoja (`#locdlg`, `locAlert`) con los pasos para activarla en iPhone o Android, el botón "Intentar de nuevo" y la opción de escribir la dirección.
 - **Cancelar cita**: al reservar se guarda en cada cita una clave `ck` de 16 caracteres. El cliente recibe el enlace `reservar/?cancelar=<ids>&k=<ck>&d=<fecha>&h=<hora>&t=<tel>` en tres lugares: la pantalla final, el mensaje de WhatsApp que manda y el mensaje de confirmación del equipo (`cxLink`).
   - Las reglas (`webCancel`) solo dejan pasar la cita a `Cancelada` si la clave coincide, y luego el cliente libera sus `slots` y `holds` (`jobCancelled`).
   - En la app, las citas `Cancelada` salen de `S.jobs` y quedan en `S.cx`. Se muestran como aviso en el inicio (Escribirle / Entendido = `cxSeen`) y le llegan al dueño por ntfy (`cxNtf`).
