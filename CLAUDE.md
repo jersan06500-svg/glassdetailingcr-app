@@ -31,7 +31,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - `reservar/index.html`: página pública donde el cliente agenda solo. Permite varios carros, servicios con precio por carro, ubicación por GPS, zonas con recargo y horas libres según las otras citas.
 - `ubicacion/index.html`: el cliente manda su ubicación por WhatsApp. El enlace que vuelve (`/?loc=lat,lng&t=tel`) se guarda solo en su cita.
 - `firestore.rules`: copia de las reglas vigentes. También están dentro de `index.html` como `var RULES`. Las vigentes de verdad se publican a mano en Firebase Console → Firestore → Reglas.
-- `manifest.json`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`: la app instalable. `logo-icon.png` y `reservar/logo-icon.png` son la pulidora en PNG transparente.
+- `manifest.json`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`: la app instalable. `logo-full.png` es el logo completo; `logo-icon.png` es el dibujo sobre un cuadro olivo.
 - `reservar/og.jpg`: la imagen que aparece cuando se comparte el enlace de reservas.
 - `sw.js`: solo limpia el caché de la versión vieja en los celulares y se da de baja. La app nueva no lo registra.
 
@@ -71,7 +71,11 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
   - El inicio lleva el logo centrado con el lema "Claridad que se nota" (`.brandc`). La barra de arriba ya no repite el nombre: solo muestra la cuenta y Salir.
   - Botón **Reservas** en la barra de abajo, al lado de Clientes (`#t-rv`). Abre una hoja (`#rvs`) con el enlace de reservas para mandarlo por WhatsApp, copiarlo, compartirlo o abrir la página.
   - Agenda pensada para una mano: cada cita es su propia tarjeta con borde olivo (rojo si falta confirmar), botones de 44 px y flechas redondas para cambiar de semana. Se quitaron las animaciones de entrada de la plantilla.
-  - El dueño va a mandar un logo nuevo: hay que reemplazar `logo-icon.png` (y los íconos) cuando llegue.
+- **Logo (6 nov, noche)**: el del dueño, con la pulidora en negro, "GLASS DETAILING CR" en amarillo olivo y el vidrio en gris como venía.
+  - `logo-full.png` (en la raíz y en `reservar/`) es el logo completo con fondo transparente. Como la pulidora es negra, sobre fondo oscuro siempre va sobre una tarjeta clara `#f4f4ef`.
+  - `logo-icon.png` es solo el dibujo, sobre un cuadro olivo con esquinas redondeadas. Los íconos de la app son el dibujo sobre fondo olivo.
+  - El nombre ya no se escribe con letras al lado del logo (así se veía igual que GlassStudio): las letras animadas de la entrada (`.lgt`) están ocultas y el pie de la página de reservas ya no repite el nombre.
+  - Los botones que eran verdes (WhatsApp, GPS, confirmar) ahora son amarillo olivo con texto negro.
 
 ## Pendiente de confirmar con el dueño
 

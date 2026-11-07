@@ -39,7 +39,7 @@ label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
 @keyframes encender{0%{opacity:0;filter:brightness(.4)}40%{opacity:1;filter:brightness(1.6)}55%{filter:brightness(.8)}100%{opacity:1;filter:none}}
 .brand{display:flex;align-items:center;gap:10px;font:800 20px Archivo,sans-serif}
 .brand svg{flex:none}
-.brand span{color:#c8c13a}
+.brand img{height:84px;width:auto;background:#f4f4ef;border-radius:14px;padding:6px 10px}
 .hero h1{font-size:36px;line-height:1.02;margin:24px 0 12px;text-wrap:balance}
 .hero h1 em{font-style:normal;color:#e4de7a}
 .hero p{margin:0;color:#cfcfc2;font-size:16px}
@@ -117,7 +117,7 @@ body.book #wiz{display:block}
 .hr{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:13px 0;font-weight:700;font-size:16px}
 .hr[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:var(--accink)}
 .hr:disabled{opacity:.35;text-decoration:line-through}
-.gps{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#1e9e57;color:#fff;font-weight:700;font-size:16px;border-radius:16px;padding:15px;margin-top:6px}
+.gps{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#c8c13a;color:#141300;font-weight:700;font-size:16px;border-radius:16px;padding:15px;margin-top:6px}
 .gps:active{transform:scale(.98)}
 .map{position:relative;height:150px;border-radius:16px;overflow:hidden;margin-top:10px;background:var(--line);border:1px solid var(--line)}
 .map .tl{position:absolute;left:50%;top:50%;width:768px;height:768px}
@@ -129,10 +129,10 @@ body.book #wiz{display:block}
 .zc{margin-top:10px;border-radius:16px;padding:12px 14px;font-size:15px;border:1.5px solid;animation:in .3s}
 .zc b{display:block;font-size:16px}
 .zc small{display:block;font-size:13px;margin-top:3px;opacity:.9}
-.zc.free{background:color-mix(in srgb,var(--ok) 12%,transparent);border-color:var(--ok)}
+.zc.free{background:color-mix(in srgb,#c8c13a 14%,transparent);border-color:#c8c13a}
 .zc.fee{background:color-mix(in srgb,var(--glow) 16%,transparent);border-color:var(--glow)}
 .zc.no{background:color-mix(in srgb,var(--bad) 10%,transparent);border-color:var(--bad)}
-.zc a{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:#1e9e57;color:#fff;font-weight:700;border-radius:12px;padding:12px;text-decoration:none}
+.zc a{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:#c8c13a;color:#141300;font-weight:700;border-radius:12px;padding:12px;text-decoration:none}
 .zc button{margin-top:8px;font-weight:700;color:var(--acc);text-decoration:underline;padding:0}
 .zones{background:var(--card);border-radius:18px;box-shadow:var(--sh);overflow:hidden;margin-top:10px}
 .zones div{padding:12px 16px;border-top:1px solid var(--line);font-size:14px}
@@ -173,8 +173,8 @@ body.ok .dock{display:none}
 @keyframes dr{to{stroke-dashoffset:0}}
 #done h2{font-size:28px}
 #done p{color:var(--mute)}
-.wbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#1e9e57;color:#fff;font-weight:700;font-size:17px;border-radius:16px;padding:16px;text-decoration:none;margin-top:16px;animation:pulse 2s 1s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(30,158,87,.5)}50%{box-shadow:0 0 0 12px rgba(30,158,87,0)}}
+.wbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#c8c13a;color:#141300;font-weight:700;font-size:17px;border-radius:16px;padding:16px;text-decoration:none;margin-top:16px;animation:pulse 2s 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,193,58,.55)}50%{box-shadow:0 0 0 12px rgba(200,193,58,0)}}
 .lbtn{display:block;width:100%;text-align:center;border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-top:10px;color:var(--ink);text-decoration:none;font-weight:600}
 .cf{position:fixed;top:-12px;width:9px;height:14px;border-radius:2px;z-index:30;pointer-events:none;animation:fall 1.8s cubic-bezier(.3,.6,.5,1) forwards}
 @keyframes fall{to{transform:translate(var(--dx),105vh) rotate(var(--r))}}
@@ -195,7 +195,7 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
 .carform{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;margin-top:6px}
 .carform .full{grid-column:1/-1}
 .carform label small{color:var(--mute);font-weight:500}
-.incl{background:color-mix(in srgb,var(--ok) 10%,var(--card));border:1.5px solid color-mix(in srgb,var(--ok) 45%,transparent);border-radius:16px;padding:14px;font-weight:600;font-size:15px}
+.incl{background:color-mix(in srgb,#c8c13a 12%,var(--card));border:1.5px solid color-mix(in srgb,#c8c13a 55%,transparent);border-radius:16px;padding:14px;font-weight:600;font-size:15px}
 .cxinfo{color:var(--mute);font-size:14px;text-align:center}
 .cxinfo a{color:var(--ink);font-weight:700}
 .cxbox{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
@@ -218,7 +218,7 @@ body.cxm #cx{display:block}
 <body>
 <section id="land">
   <div class="hero"><div class="wrap">
-    <div class="brand"><img src="logo-icon.png" alt="" width="56" height="44" style="height:44px;width:auto"><span style="color:#fff">GlassDetailing<b style="font-weight:400;color:#fff">CR</b></span></div>
+    <div class="brand"><img src="logo-full.png" alt="GlassDetailingCR" width="736" height="463"></div>
     <h1>Focos y parabrisas como nuevos, <em>sin salir de casa</em></h1>
     <p>Restauración de focos y pulido de parabrisas a domicilio, <b>gratis en toda la GAM</b>. Todos los trabajos llevan <b>1 año de protección</b>.</p>
     <div class="promo" id="promo"><i>🎁</i><span><b>Promo parabrisas + focos: ₡30 000</b><small>Con polímero líquido y cerámico Fireball. 1 año de protección.</small></span></div>
@@ -318,7 +318,7 @@ body.cxm #cx{display:block}
 </div></section>
 
 <div class="dock"><div class="wrap"><div class="t"><small id="totl">Total</small><b id="tot">₡0</b></div><button class="next" id="nx" disabled>Siguiente</button></div></div>
-<footer class="wrap">GlassDetailingCR · Pulido de parabrisas y focos a domicilio · Costa Rica</footer>
+<footer class="wrap">Restauración de focos y parabrisas a domicilio · Costa Rica</footer>
 
 <script>
 var FBC={apiKey:"AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",authDomain:"glassdetailingcr.firebaseapp.com",projectId:"glassdetailingcr",storageBucket:"glassdetailingcr.firebasestorage.app",messagingSenderId:"527384576479",appId:"1:527384576479:web:7ca94fc76a98bf9ce6046a"};

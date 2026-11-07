@@ -78,8 +78,8 @@ nav button{font-size:14px}
 
 .sm svg,.wa svg{flex:none}
 button.sm,a.sm{display:inline-flex;align-items:center;gap:6px}
-.wa{background:#1e9e57!important;color:#fff!important;border:0!important}
-.wao svg{color:#1e9e57}
+.wa{background:var(--olv)!important;color:var(--olvink)!important;border:0!important}
+.wao svg{color:var(--glow)}
 h1{position:sticky;top:0;z-index:6;margin:-14px -14px 10px;padding:14px;background:var(--bg);background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 h1>span:not(#who){background:linear-gradient(100deg,var(--acc) 38%,#c9f6f8 50%,var(--acc) 62%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
 @keyframes shine{from{background-position:130% 0}to{background-position:-130% 0}}
@@ -314,12 +314,11 @@ button.danger{background:var(--bad);color:#fff}
 main section:not(.hide)>*{animation:none}
 .hero::after{display:none}
 .brandc{display:flex;align-items:center;justify-content:center;gap:12px;margin:2px 0 14px}
-.brandc img{width:58px;height:58px;object-fit:contain;filter:brightness(0)}
-.brandc b{display:block;font:800 22px/1 Archivo,system-ui,sans-serif;font-stretch:112%;letter-spacing:-.5px}
-.brandc b span{color:var(--glow)}
-.brandc small{display:block;font-size:13px;color:var(--mute);margin-top:3px;letter-spacing:.2px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brandc img{filter:none}}
-:root[data-theme="dark"] .brandc img{filter:none}
+.brandc img{height:92px;width:auto}
+.brandc small{display:block;font:700 14px/1.25 Archivo,system-ui,sans-serif;font-stretch:112%;color:var(--glow);border-left:2px solid var(--olv);padding-left:10px}
+/* La pulidora del logo es negra: en modo oscuro el logo va sobre una tarjeta clara. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brandc img{background:#f4f4ef;border-radius:16px;padding:8px 12px}}
+:root[data-theme="dark"] .brandc img{background:#f4f4ef;border-radius:16px;padding:8px 12px}
 .hero{border-radius:22px;padding:18px;box-shadow:inset 4px 0 0 var(--olv)}
 .hero .hc{font-size:38px}
 .hero .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -359,21 +358,21 @@ h1 #who{font-size:14px;font-weight:600}
 </head>
 <body class="locked">
 <div id="intro" aria-hidden="true"><canvas id="icv"></canvas>
-<div class="lgw"><div class="lgh"></div><div class="lgi"><img src="logo-icon.png" alt="" width="397" height="314"><span class="lgsh"></span><span class="lgst"></span><span class="lgrg"></span></div>
-<div class="lgt" id="lgt"></div><div class="lgtag">Pulido de parabrisas · a domicilio</div></div>
+<div class="lgw"><div class="lgh"></div><div class="lgi"><img src="logo-full.png" alt="" width="736" height="463"><span class="lgsh"></span><span class="lgst"></span><span class="lgrg"></span></div>
+<div class="lgt" id="lgt"></div><div class="lgtag">Claridad que se nota</div></div>
 <div class="lgskip">Tocá para entrar</div></div>
 <style>
 .cxn{display:block;margin-top:8px;background:rgba(209,67,67,.18);border:1px solid rgba(255,122,122,.45);border-radius:12px;padding:9px 11px;font-size:14px;color:#fff}
 .cxn .acts{display:flex;gap:6px;margin-top:6px}
 #intro{background:radial-gradient(60% 50% at 50% 40%,rgba(200,193,58,.38),transparent 70%),#0d0d0b}
 .lgw{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:min(84vw,400px);text-align:center;z-index:2}
-.lgh{position:absolute;left:50%;top:34%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.4);border-radius:50%;background:radial-gradient(closest-side,rgba(127,227,234,.30),rgba(127,227,234,0));opacity:0;animation:lgh 2.2s .9s ease-out forwards}
-.lgi{position:relative;width:64%;margin:0 auto;aspect-ratio:397/314;-webkit-mask-image:linear-gradient(90deg,#000 42%,transparent 58%);mask-image:linear-gradient(90deg,#000 42%,transparent 58%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:lgrev 1.25s .25s cubic-bezier(.65,0,.25,1) forwards,lgfl 3.4s 1.6s ease-in-out infinite alternate}
-.lgi img{width:100%;height:auto;display:block;filter:drop-shadow(0 0 14px rgba(127,227,234,.28))}
-.lgsh{position:absolute;inset:0;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.95) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;background-repeat:no-repeat;-webkit-mask:url(logo-icon.png) center/contain no-repeat;mask:url(logo-icon.png) center/contain no-repeat;opacity:0;animation:lgsh 1.1s 1.45s ease-in-out forwards}
+.lgh{position:absolute;left:50%;top:34%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.4);border-radius:50%;background:radial-gradient(closest-side,rgba(200,193,58,.30),rgba(200,193,58,0));opacity:0;animation:lgh 2.2s .9s ease-out forwards}
+.lgi{position:relative;width:64%;margin:0 auto;aspect-ratio:736/463;-webkit-mask-image:linear-gradient(90deg,#000 42%,transparent 58%);mask-image:linear-gradient(90deg,#000 42%,transparent 58%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:lgrev 1.25s .25s cubic-bezier(.65,0,.25,1) forwards,lgfl 3.4s 1.6s ease-in-out infinite alternate}
+.lgi img{width:100%;height:auto;display:block;background:#f4f4ef;border-radius:20px;padding:6% 7%;box-sizing:border-box;filter:drop-shadow(0 0 18px rgba(200,193,58,.35))}
+.lgsh{position:absolute;inset:0;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.95) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;background-repeat:no-repeat;-webkit-mask:url(logo-full.png) center/contain no-repeat;mask:url(logo-full.png) center/contain no-repeat;opacity:0;animation:lgsh 1.1s 1.45s ease-in-out forwards}
 .lgst{position:absolute;left:31%;top:60%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%) scale(0) rotate(-30deg);background:conic-gradient(from 0deg,transparent 0 10%,#fff 12.5%,transparent 15% 35%,#fff 37.5%,transparent 40% 60%,#fff 62.5%,transparent 65% 85%,#fff 87.5%,transparent 90%);-webkit-mask:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.7) 30%,transparent 100%);mask:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.7) 30%,transparent 100%);filter:drop-shadow(0 0 6px #fff);animation:lgst 1s 1.3s cubic-bezier(.2,1.4,.4,1) forwards}
-.lgrg{position:absolute;left:31%;top:60%;width:20%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(200,250,255,.8);transform:translate(-50%,-50%) scale(.2);opacity:0;animation:lgrg 1.1s 1.35s ease-out forwards}
-.lgt{margin-top:16px;font:800 clamp(30px,9vw,44px)/1 Manrope,system-ui,sans-serif;letter-spacing:-.01em;color:#f2fdfe;white-space:nowrap}
+.lgrg{position:absolute;left:31%;top:60%;width:20%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(228,222,122,.8);transform:translate(-50%,-50%) scale(.2);opacity:0;animation:lgrg 1.1s 1.35s ease-out forwards}
+.lgt{display:none;margin-top:16px;font:800 clamp(30px,9vw,44px)/1 Manrope,system-ui,sans-serif;letter-spacing:-.01em;color:#f2fdfe;white-space:nowrap}
 .lgt span{display:inline-block;opacity:0;transform:translateY(14px);filter:blur(6px);animation:lgl .7s cubic-bezier(.2,1.3,.4,1) forwards}
 .lgt span.c{font-weight:300}
 .lgtag{margin-top:12px;font:600 11px Manrope,system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#a6eaee;opacity:0;animation:lgf .9s 2.25s forwards}
@@ -446,7 +445,7 @@ raf=requestAnimationFrame(frame);
 <div id="lk-load" class="card lk"><div class="m">Cargando…</div></div>
 
 <section id="v-ag">
-  <div class="brandc"><img src="logo-icon.png" alt="Logo de GlassDetailingCR" width="64" height="64"><div><b>Glass<span>Detailing</span>CR</b><small>Claridad que se nota</small></div></div>
+  <div class="brandc"><img src="logo-full.png" alt="GlassDetailingCR" width="736" height="463"><small>Claridad<br>que se nota</small></div>
   <div class="card hero" id="hero"></div>
   <div class="nav2"><button class="alt sm rnd" id="pw" aria-label="Semana anterior">‹</button><span id="wl"></span><button class="alt sm rnd" id="nw" aria-label="Semana siguiente">›</button></div>
   <div class="week" id="week"></div>
