@@ -81,7 +81,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Pendiente de confirmar con el dueño
 
-- El horario (`HOURS`) lo confirmó el dueño el 6 nov: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm. El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), pero `DUR` en las reservas sigue en 2 horas por carro: preguntar antes de cambiarlo.
+- El horario (`HOURS`) lo confirmó el dueño el 6 nov: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm. El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), y `DUR` se queda en 2 horas por carro a propósito, para cubrir las presas entre citas (decisión del dueño).
 - Enlace de reseñas de Google (`REVURL`) y, si lo quiere, un píxel de Meta propio.
 
 ## Redes (6 nov 2026)
