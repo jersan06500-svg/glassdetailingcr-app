@@ -22,7 +22,7 @@
 /* Identidad GlassDetailing: grafito, verde lima y azul marino, como un foco recién restaurado.
    Botón principal grafito (ámbar en oscuro), selección con anillo ámbar, tarjetas blancas limpias. */
 :root{--bg:#f5f7f2;--card:#fff;--ink:#111315;--mute:#5b636b;--line:#e1e5e9;--acc:#111315;--acc2:#b8ff00;--accink:#b8ff00;--glow:#15305e;--ok:#13a463;--bad:#d14343;--night:#111315;--sh:0 1px 2px rgba(18,18,14,.05),0 12px 28px rgba(18,18,14,.08);box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root{--glow:#b8ff00;--bg:#0b0d0f;--card:#181b1f;--ink:#f5f7f2;--mute:#9aa1a8;--line:#2a2e33;--acc:#b8ff00;--acc2:#d4ff66;--accink:#111315;--ok:#36c37f;--bad:#ff7a7a;--sh:0 12px 30px rgba(0,0,0,.4)}}
+@media (prefers-color-scheme:dark){.bar i{background:#2b5aa8!important}:root{--glow:#b8ff00;--bg:#0b0d0f;--card:#181b1f;--ink:#f5f7f2;--mute:#9aa1a8;--line:#2a2e33;--acc:#b8ff00;--acc2:#d4ff66;--accink:#111315;--ok:#36c37f;--bad:#ff7a7a;--sh:0 12px 30px rgba(0,0,0,.4)}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.45 Manrope,system-ui,sans-serif;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
@@ -71,7 +71,7 @@ body.book #wiz{display:block}
 .prog{flex:1}
 .prog small{color:var(--mute);font-size:12px;font-weight:600}
 .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:5px}
-.bar i{display:block;height:100%;width:0;background:var(--glow);border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.bar i{display:block;height:100%;width:0;background:#15305e;border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
 .step{display:none;animation:in .35s cubic-bezier(.2,.8,.2,1)}
 .step.on{display:block}
 @keyframes in{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
