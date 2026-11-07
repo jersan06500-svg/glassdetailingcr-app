@@ -231,6 +231,9 @@ body.cxm #cx{display:block}
 .cxcard .cta{margin-top:16px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
+<!-- Píxel de Meta (GlassDetailingCR, conjunto de datos 2161726007758577): PageView al abrir, InitiateCheckout al empezar a agendar, AddToCart al escoger servicios, Schedule y Lead al confirmar. No se mandan datos personales. -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","2161726007758577");fbq("track","PageView");</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=2161726007758577&ev=PageView&noscript=1"></noscript>
 </head>
 <body>
 <section id="land">
@@ -386,7 +389,8 @@ function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 var STEPS=["s1","s2","s4","s3","s4b","s5"];
 function show(i){S.step=i;STEPS.forEach(function(s,k){$(s).classList.toggle("on",k===i)});$("pt").textContent=i<5?"Paso "+(i+1)+" de 5":"Último paso";$("pb").style.width=((i+1)/6*100)+"%";
   $("nx").textContent=i===5?"Confirmar cita":"Siguiente";err("");upd();window.scrollTo(0,0);if(i===3)loadBusy();if(i===5)renderSum()}
-$("go").onclick=function(){document.body.classList.add("book");history.pushState({b:1},"");show(0)};
+function px(e,d){try{fbq("track",e,d)}catch(x){}}
+$("go").onclick=function(){px("InitiateCheckout");document.body.classList.add("book");history.pushState({b:1},"");show(0)};
 $("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(1);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
 window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(1)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
 /* VARIOS CARROS */
@@ -434,7 +438,7 @@ function upd(){var n=CARS.length;$("tot").textContent=crc(total());$("totl").tex
 function telN(){var n=$("tel").value.replace(/\D/g,"");if(n.length===11&&n.indexOf("506")===0)n=n.slice(3);return n}
 function telOk(){return /^[245678]\d{7}$/.test(telN())}
 $("nx").onclick=function(){if(!okStep()){hintStep();return}
-  if(S.step===1){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar()}
+  if(S.step===1){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar();px("AddToCart",{value:total(),currency:"CRC",num_items:allCars().length})}
   if(S.step<5)show(S.step+1);else submit()};
 function hintStep(){if(S.step===0)err(!S.vt?"Tocá si tu carro es sedán o SUV.":mkName().length<2?"Escribí la marca del carro.":"Escribí el modelo del carro.");if(S.step===2)err(!S.zone?"Mandanos tu ubicación o elegí la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escribinos por WhatsApp para un pedido especial.":"Escribí la dirección con algunas señas.");if(S.step===3)err("Elegí el día y la hora.");if(S.step===4)err(!telOk()?"Revisá tu número de WhatsApp: son 8 dígitos.":"Escribí tu nombre.")}
 
@@ -606,7 +610,7 @@ function submit(){var b=$("nx");if(b.disabled)return;err("");
   bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
       if(taken){S.h=null;show(3);err("Uy, alguien acaba de tomar esa hora. Elegí otra, por favor.")}
       else err("Ya hay una cita pendiente con este número de WhatsApp. Si querés cambiarla o agendar otro carro, escribinos por WhatsApp.")})})}
-function done(){var t=waText();$("cxl").href=CX.url||"#";$("cxl").parentNode.hidden=!CX.url;$("wa").href=waUrl(t);var A=allCars(),n=A.length;$("dt").innerHTML="<b>"+niceDay(S.day)+", "+fmtH(S.h)+"</b><br>"+(n>1?n+" carros: "+A.map(function(c){return esc(c.veh)}).join(", "):esc(A[0].veh))+" · "+crc(total());
+function done(){px("Schedule",{value:total(),currency:"CRC",num_items:allCars().length});px("Lead",{value:total(),currency:"CRC"});var t=waText();$("cxl").href=CX.url||"#";$("cxl").parentNode.hidden=!CX.url;$("wa").href=waUrl(t);var A=allCars(),n=A.length;$("dt").innerHTML="<b>"+niceDay(S.day)+", "+fmtH(S.h)+"</b><br>"+(n>1?n+" carros: "+A.map(function(c){return esc(c.veh)}).join(", "):esc(A[0].veh))+" · "+crc(total());
   var d=pd(S.day),f=function(h){return S.day.replace(/-/g,"")+"T"+pad(h)+"0000"};
   $("cal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailingCR: pulido a domicilio")+"&dates="+f(S.h)+"/"+f(S.h+DUR*n)+"&details="+encodeURIComponent(A.map(function(c){return c.veh+": "+lines(c).map(function(l){return l.n}).join(" + ")}).join(" | ")+" · "+crc(total()))+"&location="+encodeURIComponent(mapLink()||$("addr").value.trim());
   document.body.classList.remove("book");document.body.classList.add("ok");window.scrollTo(0,0)}

@@ -47,7 +47,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 - Marca GlassStudio → GlassDetailing en todos los textos. WhatsApp del negocio: `50670458967`. Enlaces a `citas.glassstudiocr.com` → la URL de GitHub Pages.
 - Firebase `glassstudiocr-13cf7` → `glassdetailingcr`.
-- Se quitó el píxel de Meta de GlassStudio en `reservar/`. Falta crear uno propio si el dueño lo quiere.
+- Se quitó el píxel de Meta de GlassStudio en `reservar/`. **7 nov: píxel propio creado** en el portfolio "Glassdetailingcr" (business 1217773779879043): conjunto de datos "Pixel GlassDetailingCR reservas", id `2161726007758577`. En `reservar/` manda PageView, InitiateCheckout (botón de empezar), AddToCart (al pasar del paso de servicios, con valor en CRC) y Schedule + Lead (al confirmar, con valor). Helper `px()`. No manda datos personales. Falta conectarlo a la cuenta publicitaria 5156973244430777, que no está dentro del portfolio.
 - `REVURL` (reseñas de Google) quedó vacío. El mensaje de agradecimiento sale sin enlace hasta que el dueño dé el enlace de reseñas de su Perfil de Empresa.
 - El canal de avisos de ntfy se crea con el prefijo `glassdetailingcr-`.
 
@@ -90,7 +90,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 ## Pendiente de confirmar con el dueño
 
 - El horario (`HOURS`) lo confirmó el dueño el 6 nov: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm. El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), y `DUR` se queda en 2 horas por carro a propósito, para cubrir las presas entre citas (decisión del dueño).
-- Enlace de reseñas de Google (`REVURL`) y, si lo quiere, un píxel de Meta propio.
+- Enlace de reseñas de Google (`REVURL`).
 
 ## Redes (6 nov 2026)
 
