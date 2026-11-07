@@ -69,6 +69,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - **PALETA NUEVA (6 nov, noche, manda sobre lo de abajo)**: grafito `#111315`, verde lima eléctrico `#b8ff00` (claro `#d4ff66`), blanco `#f5f7f2` y azul marino `#15305e` (el dueño lo pidió en vez del celeste de su referencia, que se parecía a GlassStudio). Fondos oscuros `#0b0d0f` / tarjetas `#181b1f`.
   - Modo oscuro: acentos, íconos y botones en lima con texto grafito. Modo claro: el lima no se lee sobre blanco, así que íconos, bordes de selección y texto de acento van en azul marino (`--glow`, `--olv` claro); el botón principal es grafito con letras lima.
   - Íconos de la app y `logo-icon.png`: dibujo sobre cuadro lima. En `logo-full.png` el nombre "GLASS DETAILING CR" quedó en azul marino (en lima no se leía sobre la tarjeta clara).
+  - **Página de reservas (`reservar/`), decisión del dueño 6 nov noche: sin verde lima, todo en azul marino.** Claro: `#15305e`; oscuro: `#2b5aa8` (botones) y `#3b6fd0` (selección), con letras blancas. La app del equipo sigue con lima.
   - Las variables siguen llamándose `--olv`/`--olvink` aunque ya no sean olivo. `reservar/og.jpg` y lo ya publicado en redes siguen en olivo; lo nuevo va con la paleta nueva.
 - **Diseño**, para que no se parezca a GlassStudio. Colores elegidos por el dueño: **negro y amarillo olivo** (paleta anterior).
   - Negro cálido `#0d0d0b` y amarillo olivo `#c8c13a`; en modo claro se usa el olivo más oscuro `#a39c14` para que el texto se lea.
