@@ -65,12 +65,16 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - **Cancelar cita**: al reservar se guarda en cada cita una clave `ck` de 16 caracteres. El cliente recibe el enlace `reservar/?cancelar=<ids>&k=<ck>&d=<fecha>&h=<hora>&t=<tel>` en tres lugares: la pantalla final, el mensaje de WhatsApp que manda y el mensaje de confirmación del equipo (`cxLink`).
   - Las reglas (`webCancel`) solo dejan pasar la cita a `Cancelada` si la clave coincide, y luego el cliente libera sus `slots` y `holds` (`jobCancelled`).
   - En la app, las citas `Cancelada` salen de `S.jobs` y quedan en `S.cx`. Se muestran como aviso en el inicio (Escribirle / Entendido = `cxSeen`) y le llegan al dueño por ntfy (`cxNtf`).
-- **Diseño**, para que no se parezca a GlassStudio. Colores elegidos por el dueño: **negro y amarillo olivo**.
+- **PALETA NUEVA (6 nov, noche, manda sobre lo de abajo)**: grafito `#111315`, verde lima eléctrico `#b8ff00` (claro `#d4ff66`), blanco `#f5f7f2` y azul marino `#15305e` (el dueño lo pidió en vez del celeste de su referencia, que se parecía a GlassStudio). Fondos oscuros `#0b0d0f` / tarjetas `#181b1f`.
+  - Modo oscuro: acentos, íconos y botones en lima con texto grafito. Modo claro: el lima no se lee sobre blanco, así que íconos, bordes de selección y texto de acento van en azul marino (`--glow`, `--olv` claro); el botón principal es grafito con letras lima.
+  - Íconos de la app y `logo-icon.png`: dibujo sobre cuadro lima. En `logo-full.png` el nombre "GLASS DETAILING CR" quedó en azul marino (en lima no se leía sobre la tarjeta clara).
+  - Las variables siguen llamándose `--olv`/`--olvink` aunque ya no sean olivo. `reservar/og.jpg` y lo ya publicado en redes siguen en olivo; lo nuevo va con la paleta nueva.
+- **Diseño**, para que no se parezca a GlassStudio. Colores elegidos por el dueño: **negro y amarillo olivo** (paleta anterior).
   - Negro cálido `#0d0d0b` y amarillo olivo `#c8c13a`; en modo claro se usa el olivo más oscuro `#a39c14` para que el texto se lea.
   - Letras: Archivo (ancha, 112 %) y Manrope.
   - En modo claro el botón principal es negro; en modo oscuro, amarillo olivo.
   - El momento protagonista es el haz de luz que se enciende una sola vez en la portada de reservas. No sumes animaciones decorativas en cada tarjeta.
-  - **Regla del dueño: de ahora en adelante todo lo de la página va en negro y amarillo olivo.** Los íconos van en amarillo, no en negro: la barra de abajo tiene íconos olivo y la pestaña activa con fondo olivo (`--olv`, `--olvink`).
+  - **Regla del dueño: todo lo de la página va con la paleta vigente** (hoy: grafito, lima y azul marino). Los íconos van en amarillo, no en negro: la barra de abajo tiene íconos olivo y la pestaña activa con fondo olivo (`--olv`, `--olvink`).
 - **App del equipo (6 nov, noche)**:
   - El inicio lleva el logo centrado con el lema "Claridad que se nota" (`.brandc`). La barra de arriba ya no repite el nombre: solo muestra la cuenta y Salir.
   - Botón **Reservas** en la barra de abajo, al lado de Clientes (`#t-rv`). Abre una hoja (`#rvs`) con el enlace de reservas para mandarlo por WhatsApp, copiarlo, compartirlo o abrir la página.
