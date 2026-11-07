@@ -87,7 +87,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 ## Redes (6 nov 2026)
 
 - Metricool (marca 7932743) tiene conectados Facebook (página 884212044785155) e Instagram @glassdetailingcr. Las imágenes que se programan se suben a `redes/<fecha>-<tema>/` para tener una URL pública; Metricool las copia al programar.
-- Facebook e Instagram tienen una respuesta automática (Meta Business Suite → Automatizaciones) con precios, horario y el enlace de reservas. Si cambian los precios o el horario, hay que cambiarla también (máx. 500 caracteres).
+- Facebook e Instagram tienen una respuesta automática (Meta Business Suite → Automatizaciones) con precios, horario y el enlace de reservas. También hay una "Respuesta a comentario" (Precios por comentario): si alguien comenta precio, precios, info, cuanto, cuánto, costo, cotizar o agendar, se le contesta en público y se le manda el mismo mensaje por privado. Si cambian los precios o el horario, hay que cambiar las dos (máx. 500 caracteres en la respuesta automática).
 - Opiniones de la página de Facebook apagadas por decisión del dueño. El enlace de reservas está en Información → Enlaces de la página.
 
 ## Reglas de la casa
