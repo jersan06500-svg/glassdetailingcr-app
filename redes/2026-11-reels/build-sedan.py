@@ -7,6 +7,7 @@ from kit import W, H, font, logo_card, run, tlen, join
 U = "/mnt/user-data/uploads/"
 C1 = U + "873afe91-videocarro.mp4"
 C2 = U + "ec1f2509-videocarro2_atras.mp4"
+WT = U + "aefc9087-WhatsApp_Video_2026-11-07_at_4.07.03_PM.mp4"  # prueba de agua desde adentro
 AUD = U + "bb62ab6e-WhatsApp_Video_2026-11-07_at_3.59.14_PM.mp4"
 D = "/home/claude/sedan"
 GRADE = ("eq=contrast=1.16:saturation=0.82:brightness=-0.06:gamma=0.94,"
@@ -21,12 +22,12 @@ S = [
     (C1, 6.0, 0.8, 1.04, 1.10, 0.6, "dipout"),
     (C1, 7.6, 1.0, 1.20, 1.08, 0.5, "punch"),
     (C2, 1.6, 1.0, 1.20, 1.08, 0.5, "punch"),
-    (C1, 2.0, 1.0, 1.32, 1.20, 0.4, "punch"),
-    (C2, 3.0, 1.0, 1.20, 1.08, 0.5, "punch"),
-    (C1, 9.0, 1.0, 1.20, 1.08, 0.5, "punch"),
-    (C1, 4.9, 1.0, 1.45, 1.32, 0.7, "punch"),
-    (C2, 2.3, 1.0, 1.25, 1.12, 0.5, "punch"),
-    (C1, 10.2, 1.0, 1.20, 1.08, 0.5, "punch"),
+    (WT, 0.0, 1.0, 1.18, 1.06, 0.35, "punch"),
+    (WT, 0.45, 1.0, 1.06, 1.12, 0.35, "punch"),
+    (WT, 0.95, 1.0, 1.22, 1.10, 0.30, "punch"),
+    (WT, 1.45, 1.0, 1.10, 1.16, 0.35, "punch"),
+    (WT, 2.0, 1.0, 1.25, 1.12, 0.30, "punch"),
+    (WT, 2.9, 1.0, 1.12, 1.18, 0.35, "punch"),
     (C2, 0.6, 0.7, 1.06, 1.12, 0.5, "dipout"),
     (C1, 9.4, 0.5, 1.00, 1.08, 0.5, "end"),
 ]
