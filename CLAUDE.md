@@ -47,7 +47,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 - Marca GlassStudio → GlassDetailing en todos los textos. WhatsApp del negocio: `50670458967`. Enlaces a `citas.glassstudiocr.com` → la URL de GitHub Pages.
 - Firebase `glassstudiocr-13cf7` → `glassdetailingcr`.
-- Se quitó el píxel de Meta de GlassStudio en `reservar/`. **7 nov: píxel propio creado** en el portfolio "Glassdetailingcr" (business 1217773779879043): conjunto de datos "Pixel GlassDetailingCR reservas", id `2161726007758577`. En `reservar/` manda PageView, InitiateCheckout (botón de empezar), AddToCart (al pasar del paso de servicios, con valor en CRC) y Schedule + Lead (al confirmar, con valor). Helper `px()`. No manda datos personales. Falta conectarlo a la cuenta publicitaria 5156973244430777, que no está dentro del portfolio.
+- Se quitó el píxel de Meta de GlassStudio en `reservar/`. **7 nov: píxel propio creado** en el portfolio "Glassdetailingcr" (business 1217773779879043): conjunto de datos "Pixel GlassDetailingCR reservas", id `2161726007758577`. En `reservar/` manda PageView, InitiateCheckout (botón de empezar), AddToCart (al pasar del paso de servicios, con valor en CRC) y Schedule + Lead (al confirmar, con valor). Helper `px()`. No manda datos personales. El mismo 7 nov, con el sí del dueño, la cuenta publicitaria 5156973244430777 se agregó (para siempre) al portfolio "Glassdetailingcr" y el píxel quedó conectado a ella. Ya recibe eventos.
 - `REVURL` (reseñas de Google) quedó vacío. El mensaje de agradecimiento sale sin enlace hasta que el dueño dé el enlace de reseñas de su Perfil de Empresa.
 - El canal de avisos de ntfy se crea con el prefijo `glassdetailingcr-`.
 
