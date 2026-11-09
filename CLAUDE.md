@@ -130,6 +130,8 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 ## Estado al cerrar el 9 nov (resumen del dueño)
 
+- **9 nov, tarde: arreglos en `reservar/`**: toda la página trata al cliente de **usted** (antes mezclaba "vos"; mantener "usted" en todo texto nuevo, igual que en redes). La lista de precios ahora incluye "Todos los vidrios ₡40 000" y "Techo panorámico +₡20 000". El precio de la promo ya no se parte en dos renglones.
+
 - **Estilo Azul cristal en todo**: `#0077B6` (oscuro `#03466E`, tinte `#E6F4FB`), letra Inter, fondo blanco, bordes finos, botones redondeados, sin sombras. Guía completa en `DESIGN.md`. Ya está en la app del equipo (claro y oscuro), la página de reservas (portada azul, botón blanco), los íconos de la app (dibujo del logo en tarjeta blanca sobre cuadro azul) y la imagen al compartir el enlace de reservas.
 - Para ver el ícono nuevo: borrar la app de la pantalla de inicio y volver a agregarla. Para que WhatsApp muestre la imagen nueva del enlace: mandarlo con `?v=2` (`.../reservar/?v=2`).
 - **Redes**: los 6 reels en borrador de Metricool tienen portada y cierre nuevos en Azul cristal. **Siguen pausados.** Cybertruck se movió al sáb 14 y Peugeot al dom 15, ambos a las 6:37 pm (siguen como borrador hasta que el dueño diga).
