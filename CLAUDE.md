@@ -138,6 +138,8 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - **Pendiente del dueño en el celular**: poner las 5 portadas nuevas de destacadas y cambiar las portadas de los reels ya publicados del Mercedes y del sedán.
 - **Pendiente**: que el dueño mande el video del Porsche para editarlo (estilo cine, Azul cristal) y subirlo.
 
+- **Plan para llevar `reservar/` a otro nivel (9 nov, el dueño lo hace después desde la PC)**: Claude puede hacer sin material: (1) "Próxima hora libre" arriba del botón (con `slots`), (2) preguntas frecuentes desplegables, (3) garantía del año de protección explicada, (4) botón "Agendar" que acompaña al bajar, (5) datos estructurados LocalBusiness para Google (zona, precios, horario), (6) página más liviana. Necesita del dueño: 4-6 fotos antes/después (barra deslizable), video corto de 5-10 s, capturas de opiniones de clientes, formas de pago (SINPE, tarjeta, efectivo), foto del equipo trabajando, cantidad aproximada de carros atendidos. Después: dominio propio, recordatorio el día antes, cupón de referidos.
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.
