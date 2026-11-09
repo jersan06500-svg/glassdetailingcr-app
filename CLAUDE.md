@@ -134,6 +134,8 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - **Pendiente del dueño en el celular**: enlace de reservas en la bio de Instagram (Editar perfil → Enlaces; la web lo bloquea), portadas de las 4 destacadas, mensaje de bienvenida de WhatsApp Business.
 - Business Suite (7 nov): 21 clientes potenciales nuevos, 2 mensajes y 5 comentarios sin responder. Sigue el aviso de pago pendiente de anuncios.
 
+- **Menú automático de WhatsApp (8 nov, postergado por el dueño)**: vio un anuncio de un menú con botones en WhatsApp y lo quiere a futuro. Se le comparó: (1) gratis con WhatsApp Business (bienvenida con menú numerado + respuestas rápidas); (2) SendPulse, plan gratis con botones reales (10 000 mensajes/mes, 500 contactos; pago desde ~9,60 USD/mes); (3) ManyChat Pro (~15-39 USD/mes). Con API, Meta cobra desde el 1 oct 2026: 1 000 respuestas gratis por número al mes y luego ~0,0113 USD por respuesta (Costa Rica = "Rest of Latin America"). Con "coexistencia" el número sigue en la app del celular. Recomendación: SendPulse gratis (antes verificar que acepte coexistencia). El dueño crea la cuenta y conecta el número; Claude arma el menú con los textos de las respuestas automáticas.
+
 ## Para seguir (pendiente al cerrar el 6 nov, 11:45 pm)
 
 - **7 nov, 6:25 am: cuenta de anuncios restringida por un pago que no se procesó.** El anuncio "Nuevo anuncio de Ventas" (id 120250980568080371) está en "Error en el pago" y no sale. Meta no deja editar nada hasta que el dueño pague (botón "Pagar" del aviso rojo; lo hace él). El dueño dijo que paga después.
