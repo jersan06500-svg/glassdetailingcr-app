@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GlassDetailingCR · Pulido de parabrisas y focos a domicilio</title>
+<meta name="description" content="Pulido de parabrisas y restauración de focos a domicilio, gratis en toda la GAM. Todos los servicios con 1 año de protección. Promo parabrisas + focos ₡30 000.">
+<meta property="og:title" content="GlassDetailingCR · Su carro, como cristal">
+<meta property="og:description" content="Parabrisas y focos como nuevos, sin salir de casa. Promo parabrisas + focos ₡30 000. Gratis en toda la GAM.">
+<meta property="og:image" content="https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#05070B">
+<link rel="canonical" href="https://jersan06500-svg.github.io/glassdetailingcr-app/web/">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{--azul:#0077B6;--claro:#7CC8F0;--fondo:#05070B;--texto:#EEF4F8;--suave:#A9BAC7}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--texto);font:400 16px/1.5 'Inter',system-ui,sans-serif;overflow-x:hidden}
+a{color:var(--claro)}
+img{display:block}
+h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(20px,5vw,64px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;font:600 16px/1 'Inter',sans-serif;text-decoration:none;cursor:pointer;border:0;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 200ms ease}
+.btn:active{transform:scale(.97)}
+.btn-azul{background:var(--azul);color:#fff}
+.btn-linea{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.eti{font:600 12px/1.3 'Inter',sans-serif;letter-spacing:.16em;color:var(--claro);text-transform:uppercase}
+.h2{font-weight:600;font-size:clamp(32px,4.4vw,56px);line-height:1.02;letter-spacing:-.03em;color:#fff}
+
+/* promo */
+.promo{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;min-height:44px;padding:10px 20px;background:var(--azul);color:#fff;text-decoration:none;font:500 14px/1.3 'Inter',sans-serif;text-align:center}
+.promo b{font-weight:700}
+.promo .k{font-weight:700;letter-spacing:.12em;font-size:12px}
+.promo .u{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* portada */
+.hero{position:relative;min-height:880px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45}
+.hero .velo{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,11,.92) 0%,rgba(5,7,11,.55) 45%,rgba(5,7,11,.25) 100%),linear-gradient(to top,#05070B 0%,rgba(5,7,11,0) 45%)}
+nav{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:22px}
+nav .logo img{height:52px;width:auto}
+nav .links{display:flex;gap:30px;font:500 15px/1 'Inter',sans-serif}
+nav .links a{color:#C9D6E0;text-decoration:none}
+nav .btn{min-height:44px;padding:0 20px;font-size:15px}
+.titulo{position:relative;z-index:2;display:flex;flex-direction:column;gap:22px;max-width:820px;padding-top:70px}
+.titulo h1{font-weight:700;font-size:clamp(46px,7vw,100px);line-height:.95;letter-spacing:-.035em;color:#fff}
+.titulo p{margin:0;max-width:540px;font-size:18px;line-height:1.55;color:#C3D0DA}
+.sello{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:rgba(0,119,182,.22);border:1px solid rgba(124,200,240,.45);color:#DCF1FC;font:600 15px/1.2 'Inter',sans-serif}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+
+/* tira de trabajos */
+.tira{position:relative;z-index:2;display:flex;flex-direction:column;gap:14px;padding:56px 0 44px}
+.tira .cab{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.tira .cab span:last-child{font:500 13px/1 'Inter',sans-serif;color:#9FB1BF}
+.carril{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%)}
+.pista{display:flex;gap:18px;width:max-content;padding:6px 0 6px clamp(20px,5vw,64px);animation:desliza 60s linear infinite}
+.carril:hover .pista,.pausa .pista{animation-play-state:paused}
+@keyframes desliza{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.foto{position:relative;flex:0 0 auto;width:220px;height:290px;padding:0;border:0;border-radius:16px;cursor:pointer;overflow:hidden;background:#0B1622;color:#fff;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.14)}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 400ms cubic-bezier(.23,1,.32,1)}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(5,7,11,.85) 100%)}
+.foto span{position:absolute;left:16px;right:16px;bottom:16px;z-index:1;display:flex;flex-direction:column;gap:6px}
+.foto small{font:600 10px/1.2 'Inter',sans-serif;letter-spacing:.14em;color:#B8E2F8}
+.foto strong{font:600 18px/1.1 'Space Grotesk',sans-serif}
+.foto:focus-visible{outline:2px solid var(--claro);outline-offset:4px}
+@media (hover:hover) and (pointer:fine){.foto:hover img{transform:scale(1.06)}}
+
+/* ventana de foto */
+.ven{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,7,11,.7);backdrop-filter:blur(6px)}
+.ven.on{display:flex}
+.ven .caja{width:min(880px,100%);max-height:calc(100vh - 40px);overflow:auto;display:flex;flex-wrap:wrap;gap:28px;padding:26px;border-radius:22px;background:#0A121B;box-shadow:0 40px 120px rgba(0,0,0,.7),inset 0 0 0 1px rgba(124,200,240,.28);animation:abre 420ms cubic-bezier(.23,1,.32,1) both}
+@keyframes abre{from{opacity:0;transform:scale(.95);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.ven .imgs{flex:1 1 300px;min-height:360px;display:flex;gap:10px}
+.ven .imgs div{position:relative;flex:1 1 0;border-radius:14px;overflow:hidden;background:#0B1622}
+.ven .imgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ven .info{flex:1 1 280px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.ven .info h2{font-size:38px;line-height:1;letter-spacing:-.03em;color:#fff}
+.ven .info p{margin:0;color:#B4C3CF;line-height:1.6}
+.ven .precio{font-weight:600;color:#DCEBF4}
+.chip{position:absolute;top:12px;padding:7px 12px;border-radius:999px;font:600 12px/1 'Inter',sans-serif;letter-spacing:.12em;color:#fff;z-index:1}
+.chip.a{left:12px;background:rgba(5,7,11,.75)}
+.chip.d{right:12px;background:var(--azul)}
+
+/* antes y después */
+section{scroll-margin-top:20px}
+.cab2{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px}
+.cab2 p{margin:0;max-width:390px;color:#9FB1BF;line-height:1.6}
+.pares{display:flex;flex-wrap:wrap;gap:20px}
+.comp{position:relative;flex:1 1 420px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#0B1622;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.comp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.comp .desp{clip-path:inset(0 0 0 50%)}
+.comp .linea{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.5);pointer-events:none}
+.comp .linea i{position:absolute;top:50%;left:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:#fff;color:#05070B;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.45)}
+.comp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.comp input:focus-visible + .linea i{outline:3px solid var(--claro);outline-offset:3px}
+
+/* servicios */
+.servs{display:flex;flex-wrap:wrap;gap:20px}
+.serv{flex:1 1 250px;min-height:270px;padding:28px;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));display:flex;flex-direction:column;gap:14px;transition:transform 220ms cubic-bezier(.23,1,.32,1),border-color 220ms ease}
+.serv h3{font-size:24px;line-height:1.15;color:#fff}
+.serv p{margin:0;flex-grow:1;color:var(--suave);font-size:15px;line-height:1.6}
+.serv .pr{font-weight:600;font-size:15px;color:#DCEBF4}
+.serv.dest{border-color:rgba(124,200,240,.5);background:linear-gradient(180deg,rgba(0,119,182,.22),rgba(0,119,182,.05))}
+@media (hover:hover) and (pointer:fine){.serv:hover{transform:translateY(-4px);border-color:rgba(124,200,240,.45)}}
+
+/* señales */
+.sen{display:flex;flex-wrap:wrap;gap:48px}
+.sen>div{flex:1 1 360px}
+.sen ol{list-style:none;margin:0;padding:0}
+.sen li{display:flex;gap:20px;align-items:baseline;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.1);font:500 19px/1.4 'Inter',sans-serif}
+.sen li b{font-size:14px;color:var(--claro);min-width:28px}
+
+/* pasos */
+.pasos{display:flex;flex-wrap:wrap;gap:20px}
+.paso{flex:1 1 260px;display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid rgba(124,200,240,.4)}
+.paso b{font:700 44px/1 'Space Grotesk',sans-serif;color:var(--claro)}
+.paso h3{font-size:22px;line-height:1.2;color:#fff}
+.paso p{margin:0;color:var(--suave);font-size:15px;line-height:1.6}
+
+/* cotizador */
+.cot{display:flex;flex-wrap:wrap;gap:44px;padding:clamp(28px,5vw,72px);border-radius:28px;border:1px solid rgba(124,200,240,.3);background:radial-gradient(ellipse at 85% 0%,rgba(0,119,182,.55) 0%,transparent 60%),#08111A}
+.cot .izq{flex:1 1 340px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.cot .izq h2{font-weight:700;font-size:clamp(36px,5vw,64px);line-height:.98;letter-spacing:-.035em;color:#fff}
+.cot .izq p{margin:16px 0 0;color:#B4C3CF;font-size:17px;line-height:1.6}
+.cot .der{flex:1 1 380px;display:flex;flex-direction:column;gap:20px;padding:26px;border-radius:20px;background:rgba(5,7,11,.6);border:1px solid rgba(255,255,255,.1)}
+.grupo{display:flex;flex-direction:column;gap:10px}
+.grupo>span{font:600 12px/1 'Inter',sans-serif;letter-spacing:.14em;color:#9FB1BF}
+.opc{display:flex;flex-wrap:wrap;gap:8px}
+.opc button{min-height:48px;padding:0 20px;border-radius:999px;cursor:pointer;font:600 15px/1 'Inter',sans-serif;background:transparent;color:var(--texto);border:1px solid rgba(255,255,255,.28);transition:background-color 160ms ease,color 160ms ease}
+.opc button[aria-pressed="true"]{background:var(--texto);color:#05070B;border-color:var(--texto)}
+.opc button:disabled{opacity:.35;cursor:default}
+.total{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
+.total span{color:#B4C3CF;font-size:15px;line-height:1.3}
+.total strong{font:700 34px/1 'Space Grotesk',sans-serif;color:#fff;white-space:nowrap}
+.incl{display:inline-flex;align-items:center;gap:8px;color:#9FD6F3;font-size:14px;line-height:1.3}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding-block:32px 48px;border-top:1px solid rgba(255,255,255,.08);color:#8FA2B1;font-size:14px}
+footer img{height:36px;width:auto}
+footer a{text-decoration:none}
+.wafab{position:fixed;right:18px;bottom:18px;z-index:50;width:60px;height:60px;border-radius:50%;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.18)}
+
+@media (max-width:760px){
+  nav .links{display:none}
+  nav .logo img{height:42px}
+  .hero{min-height:0}
+  .titulo{padding-top:40px}
+  .foto{width:170px;height:225px}
+  .ven .imgs{min-height:260px}
+  .sen li{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .pista{animation:none}
+  .carril{overflow-x:auto}
+  .ven .caja{animation:none}
+}
+</style>
+</head>
+<body>
+
+<a class="promo" href="../reservar/">
+  <span class="k">PROMO DEL MES</span>
+  <span>Parabrisas + focos por solo <b>₡30 000</b> · a domicilio gratis en la GAM</span>
+  <span class="u">Agendar →</span>
+</a>
+
+<header class="hero">
+  <video src="img/fondo.mp4" poster="img/fondo.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+  <div class="velo" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#inicio" aria-label="GlassDetailingCR, inicio"><img src="img/logo_white.png" alt="GlassDetailingCR" width="84" height="52"></a>
+      <div class="links">
+        <a href="#resultados">Antes y después</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#cotizar">Precios</a>
+      </div>
+      <a class="btn btn-azul" href="../reservar/">Agendar cita</a>
+    </nav>
+
+    <div class="titulo" id="inicio">
+      <span class="eti">Servicio a domicilio · gratis en toda la GAM</span>
+      <h1>Su carro,<br>como cristal.</h1>
+      <span class="sello">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        1 año de protección en todos los servicios
+      </span>
+      <p>Pulido de parabrisas y de focos en su casa u oficina. Lunes a domingo, de 9:00 a. m. a 4:00 p. m.</p>
+      <div class="acciones">
+        <a class="btn btn-azul" href="#cotizar">Cotizar y agendar</a>
+        <a class="btn btn-linea" href="#resultados">Ver antes y después</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tira">
+    <div class="wrap cab"><span class="eti" style="color:#9FB1BF">Trabajos recientes</span><span>Toque una foto para verla</span></div>
+    <div class="carril"><div class="pista" id="pista"></div></div>
+  </div>
+</header>
+
+<main>
+  <section id="resultados" class="wrap" style="padding-top:110px;display:flex;flex-direction:column;gap:40px">
+    <div class="cab2">
+      <h2 class="h2" style="max-width:640px">Antes y después. Sin filtros.</h2>
+      <p>Deslice la línea sobre cada foto y vea cómo el foco vuelve a ser transparente.</p>
+    </div>
+    <div class="pares">
+      <div class="comp">
+        <img src="img/faro_antes_sq.jpg" alt="Foco opaco antes del pulido" width="720" height="720" loading="lazy">
+        <img class="desp" src="img/faro_despues_sq.jpg" alt="El mismo foco transparente después del pulido" width="720" height="720" loading="lazy">
+        <span class="chip a">ANTES</span><span class="chip d">DESPUÉS</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del foco 1">
+        <div class="linea" aria-hidden="true"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></i></div>
+      </div>
+      <div class="comp">
+        <img src="img/rav_before.jpg" alt="Foco amarillento antes del pulido" width="720" height="720" loading="lazy">
+        <img class="desp" src="img/rav_after.jpg" alt="El mismo foco claro después del pulido" width="720" height="720" loading="lazy">
+        <span class="chip a">ANTES</span><span class="chip d">DESPUÉS</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del foco 2">
+        <div class="linea" aria-hidden="true"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="wrap" style="padding-top:110px;display:flex;flex-direction:column;gap:44px">
+    <div class="cab2">
+      <h2 class="h2" style="max-width:640px">Vidrios y focos. Hechos a la perfección.</h2>
+      <p>A domicilio sin costo en toda la GAM. Todos con 1 año de protección.</p>
+    </div>
+    <div class="servs" id="servs"></div>
+  </section>
+
+  <section class="wrap sen" style="padding-top:100px">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="eti">¿Lo necesita su carro?</span>
+      <h2 class="h2">Señales de que sus focos necesitan un pulido</h2>
+    </div>
+    <ol>
+      <li><b>01</b>Pérdida de brillo y transparencia</li>
+      <li><b>02</b>Iluminación deficiente de noche</li>
+      <li><b>03</b>Rayaduras o grietas superficiales</li>
+      <li><b>04</b>Desgaste por el clima y el sol</li>
+    </ol>
+  </section>
+
+  <section class="wrap" style="padding-block:100px;display:flex;flex-direction:column;gap:44px">
+    <h2 class="h2">Así de fácil.</h2>
+    <div class="pasos">
+      <div class="paso"><b>1</b><h3>Cotiza en un minuto</h3><p>Elige el servicio y el tipo de vehículo, y agenda en línea o por WhatsApp.</p></div>
+      <div class="paso"><b>2</b><h3>Le confirmamos</h3><p>Recibe la confirmación y los detalles por WhatsApp.</p></div>
+      <div class="paso"><b>3</b><h3>Llegamos a donde esté</h3><p>Vamos gratis a su casa u oficina en toda la GAM. Solo ocupamos un toma de 110 V y, de preferencia, el carro bajo techo.</p></div>
+    </div>
+  </section>
+
+  <section id="cotizar" class="wrap" style="padding-bottom:80px">
+    <div class="cot">
+      <div class="izq">
+        <div>
+          <h2>Cotice y agende en un minuto.</h2>
+          <p>Vamos gratis a cualquier punto de la GAM · Lunes a domingo, 9:00 a. m. a 4:00 p. m.</p>
+        </div>
+        <a class="btn btn-linea" id="waSimple" href="https://wa.me/50671421488" style="align-self:flex-start;min-height:48px;font-size:15px">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.3 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12z"/></svg>
+          WhatsApp 7142-1488
+        </a>
+      </div>
+      <div class="der">
+        <div class="grupo"><span>SERVICIO</span><div class="opc" id="optServ"></div></div>
+        <div class="grupo"><span>VEHÍCULO</span><div class="opc" id="optVeh"></div></div>
+        <div class="total"><span id="totLbl"></span><strong id="totPr"></strong></div>
+        <span class="incl"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Incluye 1 año de protección · traslado gratis en la GAM</span>
+        <a class="btn btn-azul" href="../reservar/" style="min-height:54px">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+          Elegir día y hora en línea
+        </a>
+        <a class="btn btn-linea" id="waCot" href="https://wa.me/50671421488" style="min-height:54px">Reservar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span style="display:flex;align-items:center;gap:16px"><img src="img/logo_white.png" alt="GlassDetailingCR" width="58" height="36" loading="lazy">© GlassDetailingCR</span>
+  <span style="display:flex;gap:24px"><a href="https://www.instagram.com/glassdetailingcr/">Instagram</a><a href="https://www.facebook.com/884212044785155">Facebook</a><a href="../reservar/">Agendar</a></span>
+</footer>
+
+<a class="wafab" href="https://wa.me/50671421488?text=Hola%20GlassDetailingCR%2C%20tengo%20una%20consulta" aria-label="Escríbanos por WhatsApp al 7142-1488">
+  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.3 7.9L3 21l1.1-4.6A9 9 0 1 1 21 12z"/><path d="M9 9.5c.3 1.6 1.6 3.4 3.5 4.5.8.4 1.6.6 2 .3l.8-.9-1.6-1-.7.6c-.9-.4-1.6-1.1-2-2l.6-.7-1-1.6-.9.8"/></svg>
+</a>
+
+<div class="ven" id="ven" role="dialog" aria-modal="true" aria-labelledby="venT">
+  <div class="caja">
+    <div class="imgs" id="venImgs"></div>
+    <div class="info">
+      <span class="eti" id="venE"></span>
+      <h2 id="venT"></h2>
+      <p id="venD"></p>
+      <span class="precio" id="venP"></span>
+      <div class="acciones">
+        <a class="btn btn-azul" href="../reservar/" style="min-height:48px;font-size:15px">Agendar este servicio</a>
+        <button type="button" class="btn btn-linea" id="venX" style="min-height:48px;font-size:15px">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var WA = "50671421488";
+  var SERV = [
+    {n:"01", t:"Pulido de parabrisas", d:"Eliminamos manchas de agua, opacidad y marcas del limpiaparabrisas para recuperar una visión clara.", p:"Sedán ₡20 000 · SUV o pick-up ₡25 000"},
+    {n:"02", t:"Pulido de focos", d:"Recuperamos la transparencia de los focos opacos o amarillentos y los sellamos con polímero líquido.", p:"₡20 000 · con polímero líquido"},
+    {n:"03", t:"Promo parabrisas + focos", d:"Parabrisas con cerámico Fireball y focos con polímero líquido, en una sola visita.", p:"₡30 000 · promo del mes", dest:true},
+    {n:"04", t:"Todos los vidrios", d:"Pulimos todos los vidrios del carro en una sola visita: parabrisas, laterales y trasero.", p:"₡40 000"}
+  ];
+  var FOTOS = [
+    {s:0, f:"Parabrisas de un clásico", i:"img/fairlane.jpg"},
+    {s:1, f:"Foco restaurado", i:"img/faro_despues.jpg", a:"img/faro_antes.jpg"},
+    {s:0, f:"Pulido de parabrisas", i:"img/polish.jpg"},
+    {s:1, f:"Focos como nuevos", i:"img/hood.jpg"},
+    {s:1, f:"Foco claro otra vez", i:"img/rav_after.jpg", a:"img/rav_before.jpg"},
+    {s:0, f:"Clásico terminado", i:"img/classic.jpg"},
+    {s:1, f:"Focos transparentes", i:"img/side.jpg"}
+  ];
+  function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+  // servicios
+  var sv = document.getElementById("servs");
+  SERV.forEach(function(s){
+    var c = el("article", "serv" + (s.dest ? " dest" : ""));
+    c.appendChild(el("span", "eti", s.n));
+    c.appendChild(el("h3", null, s.t));
+    c.appendChild(el("p", null, s.d));
+    c.appendChild(el("span", "pr", s.p));
+    sv.appendChild(c);
+  });
+
+  // tira de fotos (dos vueltas para que no se corte)
+  var pista = document.getElementById("pista");
+  [0, 1].forEach(function(vuelta){
+    FOTOS.forEach(function(f, k){
+      var b = el("button", "foto");
+      b.type = "button";
+      if (vuelta) { b.setAttribute("aria-hidden", "true"); b.tabIndex = -1; }
+      else b.setAttribute("aria-label", "Ver " + SERV[f.s].t + ": " + f.f);
+      var im = el("img"); im.src = f.i; im.alt = ""; im.loading = "lazy"; im.width = 720; im.height = 960;
+      var sp = el("span");
+      sp.appendChild(el("small", null, SERV[f.s].t.toUpperCase()));
+      sp.appendChild(el("strong", null, f.f));
+      b.appendChild(im); b.appendChild(sp);
+      b.addEventListener("click", function(){ abrir(k, b); });
+      pista.appendChild(b);
+    });
+  });
+
+  // ventana
+  var ven = document.getElementById("ven"), ultimo = null;
+  function marco(src, chip, cls, alt){
+    var d = el("div"); var im = el("img"); im.src = src; im.alt = alt; d.appendChild(im);
+    if (chip) d.appendChild(el("span", "chip " + cls, chip));
+    return d;
+  }
+  function abrir(k, origen){
+    var f = FOTOS[k], s = SERV[f.s], box = document.getElementById("venImgs");
+    box.textContent = "";
+    if (f.a) box.appendChild(marco(f.a, "ANTES", "a", "Antes del pulido"));
+    box.appendChild(marco(f.i, f.a ? "DESPUÉS" : "", "d", f.f));
+    document.getElementById("venE").textContent = "Servicio " + s.n;
+    document.getElementById("venT").textContent = s.t;
+    document.getElementById("venD").textContent = s.d;
+    document.getElementById("venP").textContent = s.p;
+    ultimo = origen;
+    ven.classList.add("on");
+    document.querySelector(".hero").classList.add("pausa");
+    document.getElementById("venX").focus();
+  }
+  function cerrar(){
+    ven.classList.remove("on");
+    document.querySelector(".hero").classList.remove("pausa");
+    if (ultimo) ultimo.focus();
+  }
+  document.getElementById("venX").addEventListener("click", cerrar);
+  ven.addEventListener("click", function(e){ if (e.target === ven) cerrar(); });
+  ven.addEventListener("keydown", function(e){ if (e.key === "Escape") cerrar(); });
+
+  // comparadores antes / después
+  Array.prototype.forEach.call(document.querySelectorAll(".comp"), function(c){
+    var r = c.querySelector("input"), d = c.querySelector(".desp"), l = c.querySelector(".linea");
+    function pon(){ var v = r.value; d.style.clipPath = "inset(0 0 0 " + v + "%)"; l.style.left = v + "%"; }
+    r.addEventListener("input", pon); pon();
+  });
+
+  // cotizador
+  var st = {s:"parabrisas", v:"sedan"};
+  var OS = [["parabrisas","Parabrisas"],["focos","Focos"],["promo","Promo parabrisas + focos"],["vidrios","Todos los vidrios"]];
+  var OV = [["sedan","Sedán"],["suv","SUV o pick-up"]];
+  function cot(){
+    var veh = st.v === "suv" ? "SUV" : "sedán", t, p;
+    if (st.s === "parabrisas") { t = "Pulido de parabrisas · " + veh; p = st.v === "suv" ? 25000 : 20000; }
+    else if (st.s === "focos") { t = "Pulido de focos con polímero líquido"; p = 20000; }
+    else if (st.s === "promo") { t = "Promo parabrisas + focos"; p = 30000; }
+    else { t = "Todos los vidrios"; p = 40000; }
+    var pr = "₡" + p.toLocaleString("es-CR");
+    var msg = "Hola GlassDetailingCR, quiero agendar: " + t + " (" + pr + ") para mi " + veh + ". ¿Qué día tienen disponible?";
+    return {t:t, pr:pr, msg:msg};
+  }
+  function opciones(id, lista, clave){
+    var box = document.getElementById(id); box.textContent = "";
+    lista.forEach(function(o){
+      var b = el("button", null, o[1]); b.type = "button";
+      b.setAttribute("aria-pressed", st[clave] === o[0] ? "true" : "false");
+      b.addEventListener("click", function(){ st[clave] = o[0]; pintar(); });
+      box.appendChild(b);
+    });
+  }
+  function pintar(){
+    opciones("optServ", OS, "s"); opciones("optVeh", OV, "v");
+    var c = cot();
+    document.getElementById("totLbl").textContent = c.t;
+    document.getElementById("totPr").textContent = c.pr;
+    document.getElementById("waCot").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(c.msg);
+  }
+  pintar();
+})();
+</script>
+</body>
+</html>

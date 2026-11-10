@@ -22,6 +22,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 | App del equipo | https://jersan06500-svg.github.io/glassdetailingcr-app/ |
 | Reservas para clientes | `/reservar/` |
 | Página para mandar ubicación | `/ubicacion/` |
+| Página web (portada pública) | `/web/` |
 | Repositorio | https://github.com/jersan06500-svg/glassdetailingcr-app (público, rama `main`, GitHub Pages desde `main` / root, **sin dominio propio**: no agregues `CNAME` sin que el dueño compre y configure un dominio) |
 | Firebase | Proyecto `glassdetailingcr`, plan gratis Spark. Auth con Google (y correo/contraseña, que la app no usa). Firestore Standard en `nam5` |
 
@@ -87,6 +88,13 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
   - `logo-icon.png` es solo el dibujo, sobre un cuadro olivo con esquinas redondeadas. Los íconos de la app son el dibujo sobre fondo olivo.
   - El nombre ya no se escribe con letras al lado del logo (así se veía igual que GlassStudio): las letras animadas de la entrada (`.lgt`) están ocultas y el pie de la página de reservas ya no repite el nombre.
   - Los botones que eran verdes (WhatsApp, GPS, confirmar) ahora son amarillo olivo con texto negro.
+
+## Página web `/web/` (9 nov 2026, noche)
+
+- Portada pública oscura con video de fondo (primer plano de foco y capó), franja "Promo del mes" (parabrisas + focos ₡30 000), sello de 1 año de protección, tira de fotos que se desliza sola (al tocar una se abre con antes/después), comparadores deslizables de antes y después, servicios con precio, "Señales de que sus focos necesitan un pulido", "Así de fácil" y un cotizador (servicio + vehículo) que arma el mensaje de WhatsApp. Botón flotante de WhatsApp.
+- HTML + JS puro en `web/index.html`; fotos, logo blanco y video en `web/img/`. El diseño editable está en Claude (artefacto "GlassDetailingCR — Portada web").
+- Textos con **usted**. Todos los botones de agendar van a `../reservar/`.
+- **Ojo**: el dueño dio el 9 nov, para esta página, el WhatsApp **7142-1488** (`50671421488`) y el horario **lunes a domingo 9 a. m. a 4 p. m.** Eso no coincide con `reservar/`, Google y las respuestas automáticas (7045-8967; L-S 6-6, D 8-3). Confirmar con el dueño cuál vale y unificar.
 
 ## Pendiente de confirmar con el dueño
 
