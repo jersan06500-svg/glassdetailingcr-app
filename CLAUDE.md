@@ -96,6 +96,13 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - Textos con **usted**. Todos los botones de agendar van a `../reservar/`.
 - **9 nov, noche, confirmado por el dueño**: WhatsApp **7045-8967** (el 7142-1488 que se usó un rato fue un error) y horario **lunes a domingo, 8 a. m. a 4 p. m.** Quedó igual en `web/`, `reservar/` (`HOURS` = 8 a 16 todos los días, última cita 2 pm; JSON-LD) y el texto de la app. **Falta cambiarlo en el Perfil de Google y en las respuestas automáticas de Facebook/Instagram** (ahí siguen L-S 6-6 y D 8-3).
 
+## Estado al cerrar el 9 nov, 10 pm
+
+- **Web publicada** en `/web/` (ver sección de arriba). Diseño editable en Claude: artefacto "GlassDetailingCR — Portada web".
+- **WhatsApp único: 7045-8967. Horario único: lunes a domingo, 8 am a 4 pm** (última cita 2 pm en `reservar/`). Ya está en `web/`, `reservar/` y la app.
+- **Pendiente**: cambiar el horario en el Perfil de Google y en las respuestas automáticas y "Preguntas frecuentes" de Facebook/Instagram (siguen con L-S 6-6, D 8-3). Preguntar al dueño si la última cita debe ser a las 2 pm o a las 4 pm.
+- **Ideas para la web que quedaron pendientes**: reseñas reales de clientes (capturas con permiso), preguntas frecuentes (duración, qué cubre el año de protección, formas de pago) y dominio propio.
+
 ## Pendiente de confirmar con el dueño
 
 - El horario (`HOURS`): desde el 9 nov, lunes a domingo de 8 am a 4 pm (antes L-S 6-6 y D 8-3). El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), y `DUR` se queda en 2 horas por carro a propósito, para cubrir las presas entre citas (decisión del dueño).
