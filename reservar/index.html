@@ -15,8 +15,11 @@
 <meta name="theme-color" content="#0077B6">
 <link rel="icon" href="../icon-192.png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="canonical" href="https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"GlassDetailingCR","description":"Restauración de focos y pulido de parabrisas a domicilio con cerámico Fireball, gratis en toda la GAM. Todos los trabajos con 1 año de protección.","url":"https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/","image":"https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/og.jpg","logo":"https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/logo-full.png","telephone":"+506 7045 8967","priceRange":"₡20 000 - ₡40 000","currenciesAccepted":"CRC","areaServed":[{"@type":"AdministrativeArea","name":"San José, Costa Rica"},{"@type":"AdministrativeArea","name":"Heredia, Costa Rica"},{"@type":"AdministrativeArea","name":"Alajuela, Costa Rica"},{"@type":"AdministrativeArea","name":"Cartago, Costa Rica"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"06:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"08:00","closes":"15:00"}],"sameAs":["https://www.instagram.com/glassdetailingcr/","https://www.facebook.com/884212044785155"],"makesOffer":[{"@type":"Offer","price":"30000","priceCurrency":"CRC","itemOffered":{"@type":"Service","name":"Promo parabrisas + focos con cerámico Fireball"}},{"@type":"Offer","price":"20000","priceCurrency":"CRC","itemOffered":{"@type":"Service","name":"Pulido de focos con polímero líquido"}},{"@type":"Offer","price":"25000","priceCurrency":"CRC","itemOffered":{"@type":"Service","name":"Pulido de parabrisas SUV o pick-up + cerámico Fireball"}},{"@type":"Offer","price":"20000","priceCurrency":"CRC","itemOffered":{"@type":"Service","name":"Pulido de parabrisas sedán + cerámico Fireball"}},{"@type":"Offer","price":"40000","priceCurrency":"CRC","itemOffered":{"@type":"Service","name":"Todos los vidrios + cerámico Fireball"}}]}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Identidad GlassDetailing: grafito, verde lima y azul marino, como un foco recién restaurado.
@@ -262,7 +265,30 @@ input:focus,textarea:focus,select:focus{box-shadow:none;border-color:var(--acc);
 /* Botón flotante de WhatsApp (9 nov): solo en la portada, en Azul cristal como manda DESIGN.md */
 .wafab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:58px;height:58px;border-radius:50%;background:#0077B6;border:2px solid #fff;display:flex;align-items:center;justify-content:center}
 .wafab:active{transform:scale(.95)}
-#land{padding-bottom:80px}
+#land{padding-bottom:96px}
+/* 9 nov: próxima hora libre, garantía, preguntas frecuentes y barra "Agendar" que acompaña al bajar */
+.nxt{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px;font-weight:600;margin:-4px 0 12px}
+.nxt[hidden]{display:none}
+.nxt i{width:9px;height:9px;border-radius:50%;background:#7CE3A5;flex:none}
+.gar{display:grid;gap:8px}
+.gar div{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14px;color:var(--mute)}
+.gar i{font-style:normal;font-size:22px;line-height:1.2}
+.gar b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+.faq{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq details+details{border-top:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 16px;font-weight:600;font-size:15px;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;font-weight:400;color:var(--acc2);flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq p{padding:0 16px 15px;color:var(--mute);font-size:14px;line-height:1.5}
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:7;background:var(--card);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .2s}
+.stick .wrap{display:flex;align-items:center;gap:12px;padding-right:86px}
+.stick span{flex:1;min-width:0}
+.stick small{display:block;color:var(--mute);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stick b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stick button{background:#0077B6;color:#fff;border:0;border-radius:999px;font:700 16px Inter,sans-serif;padding:13px 18px;flex:none}
+body.stk .stick{transform:none}
+body.stk .wafab{bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:9}
 </style>
 <!-- Píxel de Meta (GlassDetailingCR, conjunto de datos 2161726007758577): PageView al abrir, InitiateCheckout al empezar a agendar, AddToCart al escoger servicios, Schedule y Lead al confirmar. No se mandan datos personales. -->
 <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","2161726007758577");fbq("track","PageView");</script>
@@ -270,13 +296,15 @@ input:focus,textarea:focus,select:focus{box-shadow:none;border-color:var(--acc);
 </head>
 <body>
 <section id="land">
+<div class="stick" id="stick" aria-hidden="true"><div class="wrap"><span><small>Desde ₡20 000 · a domicilio</small><b id="stickt">Agende en 1 minuto</b></span><button type="button" id="go2" tabindex="-1">Agendar</button></div></div>
 <a class="wafab" id="wafab" href="#" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg></a>
   <div class="hero"><div class="wrap">
-    <div class="brand"><img src="logo-full.png" alt="GlassDetailingCR" width="736" height="463"></div>
+    <div class="brand"><img src="logo-full.png" alt="GlassDetailingCR" width="320" height="201" fetchpriority="high"></div>
     <h1>Focos y parabrisas como nuevos, <em>sin salir de casa</em></h1>
     <p>Restauración de focos y pulido de parabrisas a domicilio, <b>gratis en toda la GAM</b>. Todos los trabajos llevan <b>1 año de protección</b>.</p>
     <div class="promo" id="promo"><i>🎁</i><span><b>Promo parabrisas + focos: <span style="white-space:nowrap">₡30 000</span></b><small>Con polímero líquido y cerámico Fireball. 1 año de protección.</small></span></div>
     <div class="chips"><span>📍 Gratis en toda la GAM</span><span>🛡️ 1 año de protección</span><span>🚙🚗 Varios carros en una visita</span><span>⏱️ Agende en 1 minuto</span></div>
+    <div class="nxt" id="nxt" hidden><i></i><span id="nxtt"></span></div>
     <button class="cta" id="go">Agendar mi cita <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></div>
   <div class="wrap">
@@ -289,6 +317,22 @@ input:focus,textarea:focus,select:focus{box-shadow:none;border-color:var(--acc);
       <div><span>Todos los vidrios + cerámico Fireball<small>Parabrisas, trasero y ventanas · 1 año de protección</small></span><b>₡40 000</b></div>
       <div><span>Techo panorámico + cerámico Fireball<small>Se suma a cualquier servicio · 1 año de protección</small></span><b>+₡20 000</b></div>
       <div><span>Servicio a domicilio en toda la GAM</span><b style="color:var(--ok)">Gratis</b></div>
+    </div></div>
+    <div class="sec"><h2>Su año de protección</h2><div class="gar">
+      <div><i>🛡️</i><span><b>Todos los trabajos llevan 1 año de protección</b>Los focos llevan polímero líquido y los vidrios cerámico Fireball. No es una cera que se va con la primera lavada.</span></div>
+      <div><i>📸</i><span><b>Si algo no queda bien, escríbanos</b>Mándenos una foto por WhatsApp dentro de ese año y lo revisamos con usted.</span></div>
+      <div><i>🧾</i><span><b>Precio cerrado</b>El precio que ve al agendar es el que paga. El domicilio en la GAM no se cobra.</span></div>
+    </div></div>
+    <div class="sec"><h2>Preguntas frecuentes</h2><div class="faq">
+      <details><summary>¿Qué es el cerámico Fireball?</summary><p>Es un recubrimiento cerámico que se pega al vidrio. El agua de la lluvia resbala sola, de noche se ve mucho mejor y la suciedad se pega menos. Dura alrededor de un año.</p></details>
+      <details><summary>¿Y el polímero líquido de los focos?</summary><p>Primero pulimos el foco para quitarle lo amarillo y lo opaco. Después le ponemos polímero líquido, que lo sella y lo protege del sol para que no se vuelva a poner amarillo pronto.</p></details>
+      <details><summary>¿Por qué no usar pasta de dientes en los focos?</summary><p>La pasta los deja brillando unos días, pero no les quita el daño de fondo ni los protege del sol. Al poco tiempo se vuelven a opacar, y a veces quedan peor.</p></details>
+      <details><summary>¿Cuánto duran?</summary><p>Unos 45 minutos por carro: trabajamos dos personas al mismo tiempo. En la agenda apartamos 2 horas por carro para llegar a tiempo a cada cita.</p></details>
+      <details><summary>¿Qué ocupan para trabajar?</summary><p>Un tomacorriente de 110 V cerca del carro y, de preferencia, que el carro esté bajo techo. Todo lo demás lo llevamos nosotros.</p></details>
+      <details><summary>¿Y si llueve?</summary><p>Si el carro está bajo techo, trabajamos igual. Si está al aire libre y llueve, le escribimos por WhatsApp para coordinar otra hora.</p></details>
+      <details><summary>¿Hasta dónde llegan?</summary><p>A toda la GAM (San José, Heredia, Alajuela y Cartago) sin cobrar el traslado. Para otras zonas, escríbanos por WhatsApp y lo coordinamos.</p></details>
+      <details><summary>¿Puedo agendar varios carros?</summary><p>Sí, hasta 3 carros en la misma visita desde esta página, cada uno con sus propios servicios. Si son más, escríbanos por WhatsApp.</p></details>
+      <details><summary>¿Cómo cancelo o cambio mi cita?</summary><p>Al agendar le damos un enlace para cancelar usted mismo, sin escribirnos. Para cambiar la fecha, escríbanos por WhatsApp.</p></details>
     </div></div>
     <div class="sec"><h2>¿Hasta dónde llegamos?</h2><div class="zones" id="zlist"></div></div>
     <div class="sec cxinfo">¿Necesita cancelar su cita? Use el enlace <b>“Cancelar mi cita”</b> que le dimos al agendar, o <a id="cxwa" href="#" target="_blank" rel="noopener">escríbanos por WhatsApp</a>.</div>
@@ -417,7 +461,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function fmtH(h){return (h%12||12)+":00 "+(h<12?"am":"pm")}
 function pd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
 function niceDay(s){var d=pd(s),t=ymd(new Date()),m=ymd(new Date(Date.now()+864e5));return (s===t?"hoy, ":s===m?"mañana, ":"")+DN[d.getDay()]+" "+d.getDate()+" de "+MNL[d.getMonth()]}
-try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed()}).catch(function(){})}catch(e){}
+try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed();landFree()}).catch(function(){landFree()})}catch(e){}
 function closed(){$("go").outerHTML='<a class="cta" href="https://wa.me/'+CFG.wa+'?text='+encodeURIComponent("Hola GlassDetailingCR, quiero agendar un pulido")+'">Escríbanos por WhatsApp para agendar</a>'}
 function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 
@@ -673,6 +717,14 @@ function cxRun(P,b){if(!DB){$("cxe").textContent="No hay conexión. Revise su in
     function(){b.disabled=false;b.textContent="Sí, cancelar mi cita";$("cxe").textContent="No pudimos cancelarla: puede que ya esté cancelada o que el enlace no sea el correcto. Escríbanos por WhatsApp y le ayudamos.";$("cxe").classList.add("on")})}
 $("cxcopy").onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(CX.url):Promise.reject()).then(function(){b.textContent="Enlace copiado ✓"},function(){b.textContent="Mantenga presionado “Cancelar mi cita” para copiarlo"})};
 $("cxwa").href=waUrl("Hola GlassDetailingCR 👋 Necesito cancelar mi cita.");$("wafab").href=waUrl("Hola GlassDetailingCR 👋 Tengo una consulta.");
+/* Portada: próxima hora libre (con las mismas reglas de la agenda, para 1 carro) */
+function landFree(){if(!DB||!CFG.open)return;var a=ymd(new Date()),e=new Date();e.setDate(e.getDate()+DAYS_AHEAD);
+  DB.collection("slots").where("date",">=",a).where("date","<=",ymd(e)).get().then(function(sn){BUSY={};sn.forEach(function(d){var x=d.data();BUSY[d.id]=(x&&x.z)||1});
+    for(var i=0;i<DAYS_AHEAD;i++){var d=new Date();d.setDate(d.getDate()+i);var k=ymd(d),f=slotsOf(k).filter(function(x){return x.free})[0];
+      if(f){var w=i===0?"hoy":i===1?"mañana":DN[d.getDay()]+" "+d.getDate(),t=w+", "+fmtH(f.h);$("nxtt").textContent="Próxima hora libre: "+t;$("nxt").hidden=false;$("stickt").textContent="Libre: "+w+" "+(f.h%12||12)+(f.h<12?" am":" pm");return}}},function(){})}
+/* Portada: barra "Agendar" cuando el botón de arriba ya no se ve */
+$("go2").onclick=function(){$("go").click()};
+if("IntersectionObserver" in window)new IntersectionObserver(function(en){var off=!en[0].isIntersecting&&en[0].boundingClientRect.top<0;document.body.classList.toggle("stk",off);$("stick").setAttribute("aria-hidden",!off);$("go2").tabIndex=off?0:-1}).observe($("go"));
 cxShow();
 promoUI();
 buildZones();
