@@ -417,6 +417,122 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-off
 .lgi img{filter:none}
 .lgrg{border-color:rgba(255,255,255,.8)}
 .lgtag{color:#E6F4FB}
+/* REDISEÑO TABLERO (10 nov 2026): misma paleta Azul cristal, más orden y presencia.
+   Encabezado compacto, "Próxima cita" como tablero, citas en línea de tiempo con el estado a color
+   y lo que casi no se usa (editar, calendario, borrar) dentro de "Más opciones". */
+:root{--amb:#B26A00;--ambt:#FFF4E0;--okt:#E7F5EC;--badt:#FDECEA}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--amb:#F2B134;--ambt:#33270F;--okt:#11301F;--badt:#3A1714}}
+:root[data-theme="dark"]{--amb:#F2B134;--ambt:#33270F;--okt:#11301F;--badt:#3A1714}
+h1{display:flex;align-items:center;justify-content:flex-start;gap:0;font:700 19px/1 Inter,system-ui,sans-serif;font-stretch:100%;letter-spacing:-.3px;border-bottom:1px solid var(--line)}
+h1>span:not(#who){animation:none;background:none;color:var(--acc);-webkit-text-fill-color:currentColor}
+h1 .h1i{width:30px;height:30px;border-radius:8px;flex:none;margin-right:9px}
+h1 #whoe{display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;max-width:96px;font-size:12px;font-weight:500;color:var(--mute)}
+#who{margin-left:auto;padding-left:10px}
+.brandc{display:none}
+#mot{font-weight:500;font-size:14px;color:var(--mute);margin:2px 2px 12px}
+/* Tablero de la próxima cita */
+.hero{position:relative;overflow:hidden;padding:20px 18px 18px}
+.hero::after{content:"";position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;border:22px solid rgba(255,255,255,.07);pointer-events:none}
+.hero .hg{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600;opacity:.75}
+.hero .hn{font-weight:600;font-size:16px;margin:10px 0 2px}
+.hero .hc{font-size:40px;font-weight:700;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.hero .bar{height:6px;background:rgba(255,255,255,.22)}
+.hero .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hero .row>*:last-child:nth-child(odd){grid-column:1/-1}
+.hero .row>*{justify-content:center;min-height:46px}
+.hero>.hnote,.hero>.hnote.wa{background:#fff!important;color:#03466E!important;border:0!important;font-weight:600;min-height:46px}
+/* Semana */
+.nav2{margin:16px 2px 8px}
+.week button{background:transparent;border-color:transparent;min-height:56px}
+.week button[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:none}
+.week i{background:var(--acc);color:#fff;top:-5px;right:-3px;font-size:10px;line-height:16px;min-width:16px;padding:0 4px;border:2px solid var(--bg)}
+.week button[aria-pressed=true] i{background:#fff;color:var(--acc)}
+/* Día: línea de tiempo */
+.dayc{background:transparent;border:0;padding:0}
+.dayc h2{font:600 15px Inter,system-ui,sans-serif;color:var(--mute);margin:4px 2px 10px}
+.dayc .job,.dayc .job:first-child{position:relative;display:grid;grid-template-columns:56px 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.dayc .job::before{content:"";position:absolute;left:-1px;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--line)}
+.hr{font:700 22px/1 Inter,system-ui,sans-serif;color:var(--ink);min-width:0;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.hr small{display:block;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0;margin-top:3px}
+.jb{min-width:0}
+.stp{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px;margin-bottom:6px;background:var(--tint);color:var(--deep)}
+.job .n{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:17px}
+.job .n .jp{font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap}
+.k-Pendiente::before{background:var(--amb)!important}.k-Pendiente .stp{background:var(--ambt);color:var(--amb)}
+.k-Hecho::before{background:var(--acc)!important}
+.k-Pagado::before{background:var(--ok)!important}.k-Pagado .stp{background:var(--okt);color:var(--ok)}
+.k-Porconfirmar::before{background:var(--bad)!important}.k-Porconfirmar .stp{background:var(--badt);color:var(--bad)}
+.job .acts{margin-top:12px}
+.job .acts>*{min-height:40px}
+.job .acts select{border-radius:999px;padding:8px 12px;font-weight:600}
+.mas{margin-top:6px}
+.mas summary{list-style:none;cursor:pointer;color:var(--mute);font-size:13px;font-weight:500;padding:8px 0;display:inline-block}
+.mas summary::-webkit-details-marker{display:none}
+.mas summary::after{content:" ▾"}.mas[open] summary::after{content:" ▴"}
+.mas .acts{margin-top:2px}
+/* Barra de abajo: pestaña activa como pastilla suave, no bloque lleno */
+nav{background:var(--card);background:color-mix(in srgb,var(--card) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+nav button[aria-selected=true]{background:transparent;color:var(--acc);font-weight:700}
+nav button svg{padding:3px 14px;width:50px;height:27px;box-sizing:border-box;border-radius:99px}
+nav button[aria-selected=true] svg{background:var(--tint)}
+/* Inicio: tablero con una sola cosa (la próxima cita) y avisos aparte */
+.hero .hg{display:flex;justify-content:space-between;gap:8px}
+.hero .bar{margin:10px 0 2px}
+.hero .hn{font-size:14px;font-weight:500;opacity:.85;margin:14px 0 0}
+.hero .hs{font-size:15px;opacity:.95;margin-top:6px}
+.hero .hs b{font-weight:600}
+.hero .row{margin-top:16px}
+.hero .hp{background:#fff!important;color:#03466E!important;border:0!important}
+.hero .hp svg{color:#03466E}
+.avisos{display:flex;flex-direction:column;gap:8px;margin:10px 0 0}
+.avisos:empty{display:none}
+.avisos>button,.avisos>.cxn,.avisos>.rtbx{margin:0;width:100%;background:var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:14px;padding:12px 14px;min-height:48px;justify-content:flex-start!important;text-align:left;font-weight:600;font-size:14px}
+.avisos>button::after{content:"›";margin-left:auto;color:var(--mute);font-size:20px;line-height:1}
+.avisos>button.wa{border-left:3px solid var(--acc)!important}
+.avisos>button svg{color:var(--acc)}
+.avisos>.cxn{border-left:3px solid var(--bad)!important;font-weight:500}
+.rtbx summary{list-style:none;cursor:pointer;display:flex;align-items:center}
+.rtbx summary::-webkit-details-marker{display:none}
+.rtbx summary::after{content:"▾";margin-left:auto;color:var(--mute)}
+.rtbx[open] summary::after{content:"▴"}
+.rtbx.late{border-left:3px solid var(--amb)!important}
+.rtbx .rtl li{border-top-color:var(--line);font-weight:400}
+.rtbx .lt{color:var(--bad);font-weight:600}
+.rtbx a{margin-top:8px}
+/* Paso siguiente de cada cita */
+.job .nx{background:var(--acc)!important;color:#fff!important;border:0!important}
+/* Hoja "Más" */
+#mass{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+#mass[hidden]{display:none}
+#mass .box{width:100%;max-width:520px;background:var(--card);border-radius:22px 22px 0 0;padding:14px 12px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:4px}
+#mass .box>button:not(.alt){display:flex;align-items:center;gap:14px;background:transparent;color:var(--ink);border:0;border-radius:14px;padding:12px;text-align:left;font-weight:600;font-size:16px;position:relative}
+#mass .box>button:not(.alt):active{background:var(--tint)}
+#mass .box>button svg{width:42px;height:42px;padding:10px;border-radius:12px;background:var(--tint);color:var(--acc);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;box-sizing:border-box}
+#mass small{display:block;font-weight:400;font-size:13px;color:var(--mute);margin-top:2px}
+#mass .bdg{position:static;margin-left:auto;background:var(--bad);color:#fff;border-radius:99px;font-size:12px;padding:0 7px;line-height:20px}
+#mass .box>button.alt{margin-top:8px;min-height:46px}
+nav button{flex:1}
+/* Nueva cita en pasos */
+.nst{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 14px}
+.nst button{background:transparent;color:var(--mute);border:0;border-top:3px solid var(--line);border-radius:0;padding:8px 2px 0;font-size:12px;font-weight:600;text-align:left;min-height:0}
+.nst button[aria-current=true]{color:var(--acc);border-top-color:var(--acc)}
+.nst button.ok{color:var(--ink);border-top-color:var(--acc)}
+.nfoot{position:sticky;bottom:calc(64px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);margin:16px -16px -16px;padding:12px 16px;border-radius:0 0 12px 12px;z-index:3}
+.nfoot .total{margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+.nfoot .total b{font-size:22px}
+.nfoot .row{margin:0}
+.nfoot .row>button{flex:1;min-height:48px}
+.nfoot .row>#nprev{flex:0 0 auto;padding:0 18px}
+/* Clientes y Números con la misma línea */
+#v-cli .card,#v-num .card,#v-not .card,#v-ins .card{border:1px solid var(--line)}
+#v-cli h2,#v-num h2,#v-not h2,#v-ins h2,.nw h2{font:700 20px Inter,system-ui,sans-serif;letter-spacing:-.3px}
+#cll .job{display:block;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px}
+#cll .job:first-child{border-top:1px solid var(--line)}
+#cll .n{display:block;font-size:16px}
+#cll .n .m{font-weight:500}
+.nw[data-s="1"] .nfoot .total{display:none}
+#q{border-radius:999px;padding-left:16px;min-height:46px}
+.seg{border-radius:999px}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -448,7 +564,7 @@ raf=requestAnimationFrame(frame);
 })();
 </script>
 <main>
-<h1>Glass<span>Detailing</span>CR <span id="who" class="hide"><span id="whoe"></span><button class="alt sm" id="out">Salir</button></span></h1>
+<h1><img class="h1i" src="logo-icon.png" alt="" width="30" height="30">Glass<span>Detailing</span>CR <span id="who" class="hide"><span id="whoe"></span><button class="alt sm" id="out">Salir</button></span></h1>
 <button id="mot" type="button" aria-label="Mensaje del día. Tocá para ver otro"></button>
 <div id="lk-login" class="card lk hide">
   <h2>Entrar</h2><div class="m">Agenda del equipo de GlassDetailingCR. Solo entran los correos autorizados.</div>
@@ -475,28 +591,38 @@ raf=requestAnimationFrame(frame);
 <section id="v-ag">
   <div class="brandc"><img src="logo-full.png" alt="GlassDetailingCR" width="736" height="463"><small>Claridad<br>que se nota</small></div>
   <div class="card hero" id="hero"></div>
+  <div class="avisos" id="avisos"></div>
   <div class="nav2"><button class="alt sm rnd" id="pw" aria-label="Semana anterior">‹</button><span id="wl"></span><button class="alt sm rnd" id="nw" aria-label="Semana siguiente">›</button></div>
   <div class="week" id="week"></div>
   <div class="m" id="pc" style="margin:0 2px 8px"></div><div class="card dayc"><h2 id="dh"></h2><div id="dl"></div><div class="row"><button class="alt sm" id="cp">Compartir agenda del día</button></div></div>
 </section>
 
 <section id="v-new" class="hide">
-  <div class="card">
+  <div class="card nw">
     <h2 id="nh">Nueva cita</h2>
+    <div class="nst" id="nst"><button type="button" data-n="1">1 · Cliente</button><button type="button" data-n="2">2 · Servicio</button><button type="button" data-n="3">3 · Día y lugar</button></div>
+    <div class="nstep" data-s="1">
     <label for="cli">Cliente</label><input id="cli" list="cl" autocomplete="off"><datalist id="cl"></datalist>
     <div class="two"><div><label for="tel">WhatsApp</label><input id="tel" type="tel"></div><div><label for="veh">Vehículo</label><input id="veh"></div></div>
+    <label for="src">¿Cómo nos conoció?</label><select id="src"><option value="">—</option><option>Facebook / Instagram</option><option>WhatsApp</option><option>Recomendación</option><option>Google</option><option>Cliente que vuelve</option><option>Otro</option></select>
+    </div>
+    <div class="nstep" data-s="2">
+    <div style="margin-top:10px" id="svcs"></div>
+    <div class="two"><div><label for="otn">Otro servicio</label><input id="otn" placeholder="Parabrisas trasero"></div><div><label for="ota">Monto (₡)</label><input id="ota" type="number" inputmode="numeric" min="0"></div></div>
+    <label for="desc">Descuento (₡)</label><input id="desc" type="number" inputmode="numeric" value="0" min="0">
+    </div>
+    <div class="nstep" data-s="3">
     <div class="two"><div><label for="fecha">Día</label><input id="fecha" type="date"></div><div><label for="hora">Hora</label><input id="hora" type="time" value="09:00"></div></div>
     <div class="hw hide" id="hw" role="status"></div>
     <label for="ubic">Ubicación del cliente</label><div class="row" style="margin-top:0"><input id="ubic" placeholder="Pegá el enlace o las coordenadas" autocomplete="off"><button class="alt sm" id="ubp" type="button">Pegar</button></div><div class="m" id="ubm"></div><button class="sm wa" id="ubask" type="button" style="margin-top:8px;width:100%">📍 Pedirle la ubicación por WhatsApp</button><div class="m" style="margin-top:4px">Le llega un enlace: con un toque te manda su ubicación exacta, y al tocarla en tu WhatsApp se guarda sola en la cita.</div><div id="ubprev"></div>
     <label for="zsel2">Zona del carro</label><select id="zsel2" aria-label="Zona del carro"></select>
     <div class="trw hide" id="trw" role="status"></div>
     <label for="note">Notas (detalles)</label><input id="note">
-    <label for="src">¿Cómo nos conoció?</label><select id="src"><option value="">—</option><option>Facebook / Instagram</option><option>WhatsApp</option><option>Recomendación</option><option>Google</option><option>Cliente que vuelve</option><option>Otro</option></select>
-    <div style="margin-top:10px" id="svcs"></div>
-    <div class="two"><div><label for="otn">Otro servicio</label><input id="otn" placeholder="Parabrisas trasero"></div><div><label for="ota">Monto (₡)</label><input id="ota" type="number" inputmode="numeric" min="0"></div></div>
-    <label for="desc">Descuento (₡)</label><input id="desc" type="number" inputmode="numeric" value="0" min="0">
+    </div>
+    <div class="nfoot">
     <div class="total"><span>Total</span><b id="tot">₡0</b></div>
-    <div class="row"><button id="save">Agendar cita</button></div>
+      <div class="row"><button class="alt" id="nprev" type="button">Atrás</button><button id="nnext" type="button">Siguiente</button><button id="save">Agendar cita</button></div>
+    </div>
     <div class="row"><button id="cx" class="alt hide">Cancelar edición</button></div>
   </div>
 </section>
@@ -574,14 +700,17 @@ raf=requestAnimationFrame(frame);
   <button class="alt" id="rv-x">Cerrar</button></div></div>
 <div id="undo" role="status"><span id="undot"></span><button id="undob">Deshacer</button></div>
 <nav role="tablist">
-<button id="t-ag" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</button>
+<button id="t-ag" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Hoy</button>
 <button id="t-new" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Nueva</button>
 <button id="t-cli" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.7 3 2.4 3.5 5.2"/></svg>Clientes</button>
-<button id="t-rv" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Reservas</button>
-<button id="t-not" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v10l-6 6H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M21 15h-4a2 2 0 0 0-2 2v4M7 8h10M7 12h6"/></svg>Notas</button>
-<button id="t-ins" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v5L5.5 17A3 3 0 0 0 8.2 21h7.6a3 3 0 0 0 2.7-4L14 8V3M7.3 14h9.4"/></svg>Insumos</button>
 <button id="t-num" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-7M2 20h20"/></svg>Números</button>
+<button id="t-mas" aria-haspopup="dialog" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Más</button>
 </nav>
+<div id="mass" role="dialog" aria-modal="true" aria-label="Más" hidden><div class="box">
+<button id="t-rv" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Enlace de reservas<small>Mandarlo por WhatsApp o copiarlo</small></span></button>
+<button id="t-not" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v10l-6 6H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M21 15h-4a2 2 0 0 0-2 2v4M7 8h10M7 12h6"/></svg><span>Notas y metas<small>Pendientes del equipo</small></span></button>
+<button id="t-ins" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v5L5.5 17A3 3 0 0 0 8.2 21h7.6a3 3 0 0 0 2.7-4L14 8V3M7.3 14h9.4"/></svg><span>Insumos<small>Lo que queda de cada producto</small></span></button>
+<button class="alt" id="mas-x">Cerrar</button></div></div>
 
 <script>
 var SERV=[{id:"combo",n:"Promo parabrisas + focos con cerámico Fireball",p:30000,g:1},{id:"pu",n:"Parabrisas SUV o pick-up + cerámico Fireball",p:25000,g:1},{id:"ps",n:"Parabrisas sedán + cerámico Fireball",p:20000,g:1},{id:"all",n:"Todos los vidrios + cerámico Fireball",p:40000,g:1},{id:"techo",n:"Techo panorámico + cerámico Fireball",p:20000,g:1},{id:"focos",n:"Pulido de focos con polímero líquido",p:20000}];
@@ -619,10 +748,13 @@ function renderAg(){
   var tot=L.reduce(function(a,j){return a+j.total},0);
   $("dh").textContent=(sel===today?"Hoy":DN[sd.getDay()]+" "+sd.getDate()+" "+MN[sd.getMonth()])+" · "+L.length+(L.length===1?" cita":" citas")+(L.length?" · "+crc(tot):"");
   var LK=sel+"|"+wOff;$("dl").classList.toggle("fresh",LK!==LASTK);LASTK=LK;$("dl").innerHTML=L.length?L.map(function(j){
-    return '<div class="job'+(j.st==="Por confirmar"?' pc':'')+'"><div class="hr">'+fmtT(j.time)+'</div><div class="jb">'+(j.st==="Por confirmar"?webBox(j):'')+'<div class="n">'+esc(j.cli)+' <span class="m">· '+crc(j.total)+'</span></div><div class="m">'+esc(j.veh)+'</div><div class="m">'+j.items.map(esc).join(", ")+'</div>'+(locOf(j)?mapThumb(locOf(j)):'')+(j.note?'<div class="m">📝 '+esc(j.note)+'</div>':'')+pendNotes(j.cli).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+'</div>'}).join("")+
-    '<div class="acts">'+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a><button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>'+(j.st==="Pendiente"?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'<button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button>'+
-    '<select data-id="'+j.id+'" class="st-'+j.st+'" aria-label="Estado">'+(j.st==="Por confirmar"?["Por confirmar"]:[]).concat(["Pendiente","Hecho","Pagado"]).map(function(s){return "<option"+(s===j.st?" selected":"")+">"+s+"</option>"}).join("")+'</select><button class="alt sm" data-del="'+j.id+'">Borrar</button></div></div></div>'}).join(""):'<div class="empty">No hay citas este día.</div>';
+    var hm=fmtT(j.time).split(" ");
+    return '<div class="job k-'+j.st.replace(/ /g,"")+(j.st==="Por confirmar"?' pc':'')+'"><div class="hr">'+hm[0]+'<small>'+(hm[1]||"")+'</small></div><div class="jb"><span class="stp">'+j.st+'</span>'+(j.st==="Por confirmar"?webBox(j):'')+'<div class="n">'+esc(j.cli)+'<b class="jp">'+crc(j.total)+'</b></div><div class="m">'+[j.veh,j.items.join(", ")].filter(Boolean).map(esc).join(" · ")+'</div>'+(locOf(j)?mapThumb(locOf(j)):'')+(j.note?'<div class="m">📝 '+esc(j.note)+'</div>':'')+pendNotes(j.cli).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+'</div>'}).join("")+
+    '<div class="acts">'+nextBtn(j)+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a>'+(j.date>today&&!isDone(j)?'<button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>':'')+(j.st==="Pendiente"&&j.date===today?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'</div>'+
+    '<details class="mas"><summary>Más opciones</summary><div class="acts"><select data-id="'+j.id+'" class="st-'+j.st+'" aria-label="Estado">'+(j.st==="Por confirmar"?["Por confirmar"]:[]).concat(["Pendiente","Hecho","Pagado"]).map(function(s){return "<option"+(s===j.st?" selected":"")+">"+s+"</option>"}).join("")+'</select><button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button><button class="alt sm" data-del="'+j.id+'">Borrar</button></div></details></div></div>'}).join(""):'<div class="empty">No hay citas este día.</div>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"),function(b){b.onclick=function(){remind(b.dataset.wa)}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nx]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.nx});if(j.st==="Hecho"){j.st="Pagado";if(DB)DB.doc("jobs/"+j.id).update({st:"Pagado"}).catch(dberr);toast("¡Pagado! 💸");renderAg()}else markDone(j)}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cb]"),function(b){b.onclick=function(){cobrar(S.jobs.find(function(x){return x.id==b.dataset.cb}))}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ed]"),function(b){b.onclick=function(){editJob(b.dataset.ed)}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-cal]"),function(b){b.onclick=function(){window.open(calUrl(S.jobs.find(function(x){return x.id==b.dataset.cal})),"_blank")}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ty]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.ty});revSend(j)}});
@@ -631,6 +763,11 @@ function renderAg(){
 }
 $("pw").onclick=function(){wOff--;renderAg()};
 $("nw").onclick=function(){wOff++;renderAg()};
+/* Siguiente paso de cada cita: hecha → cobrar → pagada */
+function nextBtn(j){if(j.st==="Pendiente"&&j.date<=today)return '<button class="sm nx" data-nx="'+j.id+'">✓ Marcar hecha</button>';
+  if(j.st==="Hecho")return '<button class="sm nx" data-nx="'+j.id+'">✓ Ya pagó</button>'+(j.tel?'<button class="alt sm wao" data-cb="'+j.id+'">'+ICWA+'Cobrar</button>':'');return ""}
+function cobrar(j){waTo(j.tel,"Hola "+j.cli+" 👋 ¡Gracias por confiar en GlassDetailingCR! El total es "+crc(j.total)+"."+PAGO)}
+function markDone(j){j.st="Hecho";if(DB)DB.doc("jobs/"+j.id).update({st:"Hecho"}).catch(dberr);toast("Cita marcada como hecha ✓");renderAg();if(j.tel&&!j.rv)askRev(j)}
 function remind(id){
   var j=S.jobs.find(function(x){return x.id==id}),n=j.tel.replace(/\D/g,"");if(n.length===8)n="506"+n;
   var diff=Math.round((pd(j.date)-pd(today))/864e5),d=pd(j.date);
@@ -888,14 +1025,16 @@ function renderHero(){today=ymd(new Date());var n=new Date(),h=n.getHours(),g=h<
   var nx=T.find(function(j){return j.st==="Pendiente"&&(j.time||"99")>=nowT})||T.find(function(j){return j.st==="Pendiente"});
   var big="",line="",sub="";
   if(nx){var p=(nx.time||"00:00").split(":"),dt=new Date();dt.setHours(+p[0],+p[1],0,0);var mn=Math.round((dt-n)/6e4);
-    line="Próxima: "+esc(nx.cli)+" a las "+fmtT(nx.time);big=mn<=0?(mn>-30?"Es ahora":"Atrasada "+Math.floor(-mn/60)+" h "+(-mn%60)+" min"):mn<60?"En "+mn+" min":"En "+Math.floor(mn/60)+" h "+(mn%60?mn%60+" min":"");
-    sub=[nx.veh,nx.items.join(", ")].filter(Boolean).map(esc).join(" · ")}
+    var pasada=mn<-60;line=(pasada?"Cita de las ":"Próxima · ")+fmtT(nx.time);big=pasada?"¿Ya se hizo?":mn<=0?(mn>-30?"Es ahora":"Atrasada "+(-mn)+" min"):mn<60?"En "+mn+" min":"En "+Math.floor(mn/60)+" h"+(mn%60?" "+mn%60+" min":"");
+    sub='<b>'+esc(nx.cli)+'</b>'+[nx.veh,nx.items.join(", ")].filter(Boolean).map(function(x){return " · "+esc(x)}).join("")}
   else if(T.length){line="Terminaste las citas de hoy";big="¡Buen trabajo! 🎉"}
   else{line="No tenés citas hoy";big="Día libre";sub="Buen momento para escribirle a clientes en la pestaña Clientes"}
-  var dinero=isOwn()?" · "+crc(T.reduce(function(a,j){return a+j.total},0)):"",ru=routeUrl(T.filter(function(j){return j.st==="Pendiente"}));
-  $("hero").innerHTML='<div class="hg">'+g+' · '+DN[n.getDay()]+" "+n.getDate()+" "+MN[n.getMonth()]+'</div><div class="hn">'+line+'</div><div class="hc">'+big+'</div>'+(sub?'<div class="hs">'+sub+'</div>':'')+(nx&&locOf(nx)?mapThumb(locOf(nx)):'')+
-   (T.length?'<div class="bar"><i id="hb"></i></div><div class="hs">'+done+' de '+T.length+' hechas'+dinero+'</div>':'')+
-   '<div class="row">'+(nx&&locOf(nx)?'<a class="sm" target="_blank" rel="noopener" href="'+esc(gmaps(locOf(nx)))+'">'+ICPIN+'Cómo llegar</a>':'')+(nx&&nx.tel?'<button class="sm" data-go="'+nx.id+'">'+ICWA+'Voy en camino</button>':'')+(ru?'<a class="sm" target="_blank" rel="noopener" href="'+esc(ru)+'">Ruta del día</a>':'')+'</div>';
+  var dinero=isOwn()?" · "+crc(T.reduce(function(a,j){return a+j.total},0)):"";
+  $("avisos").innerHTML="";var pas=nx&&big==="¿Ya se hizo?";
+  $("hero").innerHTML='<div class="hg"><span>'+g+' · '+DN[n.getDay()]+" "+n.getDate()+" "+MN[n.getMonth()]+'</span>'+(T.length?'<span>'+done+'/'+T.length+' hechas'+dinero+'</span>':'')+'</div>'+(T.length?'<div class="bar"><i id="hb"></i></div>':'')+'<div class="hn">'+line+'</div><div class="hc">'+big+'</div>'+(sub?'<div class="hs">'+sub+'</div>':'')+
+   '<div class="row">'+(pas?'<button class="sm hp" data-dn="'+nx.id+'">✓ Sí, marcar como hecha</button><button class="sm" data-ed2="'+nx.id+'">Cambiar la hora</button>':
+   (nx&&nx.tel?'<button class="sm hp" data-go="'+nx.id+'">'+ICWA+'Voy en camino</button>':'')+(nx&&locOf(nx)?'<a class="sm" target="_blank" rel="noopener" href="'+esc(gmaps(locOf(nx)))+'">'+ICPIN+'Cómo llegar</a>':''))+'</div>';
+  var dn=$("hero").querySelector("[data-dn]");if(dn)dn.onclick=function(){markDone(nx)};var e2=$("hero").querySelector("[data-ed2]");if(e2)e2.onclick=function(){editJob(nx.id)};
   var hb=$("hb");if(hb)requestAnimationFrame(function(){requestAnimationFrame(function(){hb.style.width=(T.length?done/T.length*100:0)+"%"})});
   bindGo($("hero"))}
 function bindGo(root){Array.prototype.forEach.call(root.querySelectorAll("[data-go]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.go});waTo(j.tel,"Hola "+j.cli+", te escribo de GlassDetailingCR. Ya voy en camino para tu cita, llego en unos 20 minutos. ¡Nos vemos!")}})}
@@ -1005,7 +1144,20 @@ setNMode(NMODE);
 var TABS=["ag","new","cli","not","ins","num"];
 function show(v){if(v==="ag")LASTK=null;if(v==="num"&&!OWN)v="ag";CUR=v;TABS.forEach(function(k){$("v-"+k).classList.toggle("hide",k!==v);$("t-"+k).setAttribute("aria-selected",k===v)});
   if(v==="ag")renderAg();if(v==="new"){$("fecha").value=sel;clients();updClash()}if(v==="cli")renderCli();if(v==="num"){$("gf").value=today;renderNum();adLoad(false)}if(v==="not"){renderNotes();if(NMODE==="g")renderGoals()}if(v==="ins")renderIns();window.scrollTo(0,0)}
-TABS.forEach(function(k){$("t-"+k).onclick=function(){if(k==="new"&&EID)resetForm();show(k)}});
+TABS.forEach(function(k){$("t-"+k).onclick=function(){masClose();if(k==="new"&&EID)resetForm();show(k)}});
+/* Nueva cita en 3 pasos: cliente, servicio, día y lugar. Los campos son los mismos de siempre. */
+var NSTEP=1;
+function nGo(n){NSTEP=n;Array.prototype.forEach.call(document.querySelectorAll(".nstep"),function(d){d.classList.toggle("hide",+d.dataset.s!==n)});
+  Array.prototype.forEach.call($("nst").children,function(b){b.setAttribute("aria-current",+b.dataset.n===n);b.classList.toggle("ok",+b.dataset.n<n)});
+  $("nprev").classList.toggle("hide",n===1);document.querySelector(".nw").dataset.s=n;$("nnext").classList.toggle("hide",n===3);$("save").classList.toggle("hide",n!==3);window.scrollTo(0,0)}
+function nOk(n){if(n>1&&!$("cli").value.trim()){toast("Escribí el nombre del cliente.");nGo(1);$("cli").focus();return false}
+  if(n>2&&!picked().length){toast("Marcá al menos un servicio.");nGo(2);return false}return true}
+$("nnext").onclick=function(){if(nOk(NSTEP+1))nGo(NSTEP+1)};$("nprev").onclick=function(){nGo(NSTEP-1)};
+Array.prototype.forEach.call($("nst").children,function(b){b.onclick=function(){if(nOk(+b.dataset.n))nGo(+b.dataset.n)}});
+/* Barra de abajo con 4 pestañas; lo que se usa menos va en la hoja "Más" */
+function masClose(){$("mass").hidden=true}
+$("t-mas").onclick=function(){$("mass").hidden=false};$("mas-x").onclick=masClose;$("mass").onclick=function(e){if(e.target===this)masClose()};
+var _show=show;show=function(v){_show(v);if(v==="new")nGo(1);$("t-mas").setAttribute("aria-selected",v==="not"||v==="ins")};
 /* CONFIRMAR ANTES DE BORRAR + DESHACER */
 var DLGF=null,UNDO=null;
 function confirmDel(o,fn){$("dlt").textContent=o.t||"¿Seguro que querés borrar esto?";$("dlw").innerHTML=o.w||"";$("dlw").classList.toggle("hide",!o.w);
@@ -1031,7 +1183,7 @@ function dueTxt(d){if(!d)return "";var x=Math.round((pd(d)-pd(today))/864e5);ret
 function noteSort(a,b){if(!!a.done!==!!b.done)return a.done?1:-1;if(a.done)return (b.doneAt||0)-(a.doneAt||0);var ad=a.due||"9999",bd=b.due||"9999";if(ad!==bd)return ad<bd?-1:1;return (b.at||0)-(a.at||0)}
 function forMe(n){var me=myEmail();return !n.para||n.para===me}
 function urgentCount(){return NOTES.filter(function(n){return !n.done&&n.due&&n.due<=today&&forMe(n)}).length}
-function updBadge(){var t=$("t-not"),c=urgentCount(),b=t.querySelector(".bdg");if(c){if(!b){b=document.createElement("span");b.className="bdg";t.appendChild(b)}b.textContent=c}else if(b)b.remove()}
+function updBadge(){var c=urgentCount();["t-not","t-mas"].forEach(function(id){var t=$(id),b=t.querySelector(".bdg");if(c){if(!b){b=document.createElement("span");b.className="bdg";t.appendChild(b)}b.textContent=c}else if(b)b.remove()})}
 function teamOpts(){var L=[OWNER].concat(TEAM.filter(function(e){return e!==OWNER}));return '<option value="">Todo el equipo</option>'+L.map(function(e){return '<option value="'+esc(e)+'">'+esc(whoN(e))+(e===myEmail()?" (vos)":"")+'</option>'}).join("")}
 function renderNotes(){
   var np=$("npa"),cur=np.value;np.innerHTML=teamOpts();np.value=cur;
@@ -1059,7 +1211,7 @@ $("nadd").onclick=function(){var t=$("ntx").value.trim();if(!t){toast("Escribí 
   DB.doc("settings/note-"+id).set(n).catch(dberr);
   notify("📌 Nota nueva"+(n.cli?" · "+n.cli:""),t+(n.due?"\nPara: "+fmtD(n.due):"")+"\nLa escribió "+whoN(myEmail())+(n.para?" para "+whoN(n.para):""));
   $("ntx").value="";$("ncl").value="";$("ndu").value="";NF="p";toast("Nota guardada ✓")};
-var _rh=renderHero;renderHero=function(){_rh();var L=porRecordar();if(L.length){var b=document.createElement("button");b.className="sm wa hnote";b.innerHTML=ICWA+"Recordarle a "+esc(L[0].cli.split(" ")[0])+" su cita de mañana"+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){remind(L[0].id)};$("hero").appendChild(b)}var c=urgentCount();if(c){var d=document.createElement("button");d.className="sm hnote";d.textContent="📌 "+c+(c===1?" recordatorio para hoy":" recordatorios para hoy")+" ›";d.onclick=function(){NF="p";$("nq").value="";show("not")};$("hero").appendChild(d)}};
+var _rh=renderHero;renderHero=function(){_rh();var L=porRecordar();if(L.length){var b=document.createElement("button");b.className="sm wa hnote";b.innerHTML=ICWA+"Recordarle a "+esc(L[0].cli.split(" ")[0])+" su cita de mañana"+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){remind(L[0].id)};$("avisos").appendChild(b)}var c=urgentCount();if(c){var d=document.createElement("button");d.className="sm hnote";d.textContent="📌 "+c+(c===1?" recordatorio para hoy":" recordatorios para hoy");d.onclick=function(){NF="p";$("nq").value="";show("not")};$("avisos").appendChild(d)}};
 
 /* INSUMOS */
 var IEID=null,IOPEN={},QA=["Polish","Pasta pulidora","Pads / esponjas","Discos de lija","Lijas al agua","Cerámico","Hidrofóbico","Cinta de enmascarar","Microfibras","Limpiavidrios"];
@@ -1267,7 +1419,7 @@ var BOOKURL=location.origin+location.pathname.replace(/[^\/]*$/,"")+"reservar/";
 var RULES="rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    function signed() { return request.auth != null && request.auth.token.email_verified == true; }\n    function isOwner() { return signed() && request.auth.token.email == 'jersan06500@gmail.com'; }\n    function isTeam() { return isOwner() || (signed() && exists(/databases/$(database)/documents/team/$(request.auth.token.email))); }\n    function str(v, mn, mx) { return v is string && v.size() >= mn && v.size() <= mx; }\n    function webJob() {\n      let d = request.resource.data;\n      return d.keys().hasOnly(['id','cli','tel','veh','vt','items','lines','disc','total','date','time','note','ubic','src','st','by','web','at','ck'])\n        && (!('ck' in d) || str(d.ck, 16, 16))\n        && d.st == 'Por confirmar' && d.by == 'web' && d.web == true\n        && str(d.cli, 2, 60) && str(d.tel, 8, 8) && str(d.veh, 2, 60) && str(d.date, 10, 10) && str(d.time, 5, 5)\n        && str(d.note, 0, 400) && str(d.ubic, 0, 300) && str(d.src, 0, 40)\n        && d.total is number && d.total > 0 && d.total <= 200000\n        && d.items is list && d.items.size() <= 4 && d.lines is list && d.lines.size() <= 4;\n    }\n    // El cliente cancela su propia cita con la clave (ck) que recibió al agendar.\n    function webCancel() {\n      let d = request.resource.data;\n      let o = resource.data;\n      return o.web == true && o.ck is string && d.cxk == o.ck\n        && o.st in ['Por confirmar', 'Pendiente'] && d.st == 'Cancelada'\n        && d.diff(o).affectedKeys().hasOnly(['st', 'cxk', 'cxAt', 'cxWhy'])\n        && d.cxAt is number && str(d.cxWhy, 0, 60);\n    }\n    function jobCancelled(job) { return get(/databases/$(database)/documents/jobs/$(job)).data.st == 'Cancelada'; }\n    match /jobs/{id} { allow read, write: if isTeam(); allow create: if webJob(); allow update: if webCancel(); }\n    match /settings/{id} { allow read, write: if isTeam(); }\n    match /exp/{id} { allow read, write: if isTeam(); }\n    match /team/{email} { allow read: if isTeam(); allow write: if isOwner(); }\n    match /slots/{id} {\n      allow read: if true;\n      allow create: if request.resource.data.keys().hasOnly(['date','h','job','at']) && request.resource.data.job is string;\n      allow update, delete: if isTeam();\n      allow delete: if jobCancelled(resource.data.job);\n    }\n    match /holds/{id} {\n      allow create: if request.resource.data.keys().hasOnly(['job','date','at']) && request.resource.data.job is string;\n      allow read, update, delete: if isTeam();\n      allow delete: if jobCancelled(resource.data.job);\n    }\n    match /pub/{id} { allow read: if true; allow write: if isTeam(); }\n  }\n}";
 function rvOpen(){var u=BOOKURL;$("rvu").textContent=u;$("rv-op").href=u;$("rvs").hidden=false;$("rv-wa").focus()}
 function rvClose(){$("rvs").hidden=true}
-$("t-rv").onclick=rvOpen;$("rv-x").onclick=rvClose;$("rvs").onclick=function(e){if(e.target===this)rvClose()};
+$("t-rv").onclick=function(){masClose();rvOpen()};$("rv-x").onclick=rvClose;$("rvs").onclick=function(e){if(e.target===this)rvClose()};
 $("rv-wa").onclick=function(){window.open("https://wa.me/?text="+encodeURIComponent("¡Hola! 👋 Agendá tu cita con GlassDetailingCR aquí, en 1 minuto. Domicilio gratis en toda la GAM:\n"+BOOKURL),"_blank")};
 $("rv-cp").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(BOOKURL):Promise.reject()).then(function(){toast("Enlace copiado ✓")},function(){toast("No se pudo copiar")})};
 $("rv-sh").onclick=function(){if(navigator.share)navigator.share({title:"GlassDetailingCR",text:"Agendá tu cita con GlassDetailingCR",url:BOOKURL}).catch(function(){});else $("rv-cp").click()};
@@ -1287,9 +1439,9 @@ var _rh2=renderHero;renderHero=function(){_rh2();var P=S.jobs.filter(function(j)
   (S.cx||[]).forEach(function(j){var c=document.createElement("div");c.className="cxn";
     c.innerHTML='❌ <b>'+esc(j.cli)+'</b> canceló su cita del '+fmtD(j.date)+(j.time?' · '+fmtT(j.time):'')+(j.cxWhy?' · '+esc(j.cxWhy):'')+'<div class="acts"><button class="sm" data-cxw="'+j.id+'">Escribirle</button><button class="alt sm" data-cxs="'+j.id+'">Entendido</button></div>';
     c.querySelector("[data-cxw]").onclick=function(){waTo(j.tel,"Hola "+j.cli+" 👋 Vimos que cancelaste tu cita del "+fmtD(j.date)+". ¿Querés que te ayudemos a buscar otro día?")};
-    c.querySelector("[data-cxs]").onclick=function(){if(DB)DB.doc("jobs/"+j.id).update({cxSeen:true}).catch(dberr)};$("hero").appendChild(c)});
-  if(P.length){var d=document.createElement("button");d.className="sm hnote";d.textContent="🌐 "+P.length+(P.length===1?" reserva web por confirmar":" reservas web por confirmar")+" ›";
-    d.onclick=function(){sel=P[0].date;wOff=Math.round((monday(pd(sel))-monday(new Date()))/6048e5);renderAg();$("dl").scrollIntoView({behavior:"smooth"})};$("hero").appendChild(d)}};
+    c.querySelector("[data-cxs]").onclick=function(){if(DB)DB.doc("jobs/"+j.id).update({cxSeen:true}).catch(dberr)};$("avisos").appendChild(c)});
+  if(P.length){var d=document.createElement("button");d.className="sm hnote";d.textContent="🌐 "+P.length+(P.length===1?" reserva web por confirmar":" reservas web por confirmar");
+    d.onclick=function(){sel=P[0].date;wOff=Math.round((monday(pd(sel))-monday(new Date()))/6048e5);renderAg();$("dl").scrollIntoView({behavior:"smooth"})};$("avisos").appendChild(d)}};
 function wantLocks(){var W={};S.jobs.forEach(function(j){if(!j.time||!j.date||j.date<today)return;var p=j.time.split(":"),m=(+p[0])*60+(+p[1]||0),e=m+120,zp=jobPos(j);
   for(var h=Math.floor(m/60);h*60<e&&h<24;h++)W[j.date+"_"+pad(h)]={date:j.date,h:h,job:String(j.id),z:zp?zp.n:""}});return W}
 function reconcile(){clearTimeout(RCT);RCT=setTimeout(function(){if(!DB||!OWN||!JOBS_READY||!SLOTS_READY)return;
@@ -1368,10 +1520,10 @@ var _ra3=renderAg;renderAg=function(){_ra3();var D=dayLegs(sel);Array.prototype.
   Array.prototype.forEach.call(document.querySelectorAll("[data-late]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.late});if(!j)return;var a=+b.dataset.arr,mins=Math.max(5,Math.round((a-tmin(j.time))/5)*5);
     waTo(j.tel,"Hola "+j.cli+" 👋 Te escribimos de GlassDetailingCR. Vamos con un atraso de unos "+durTxt(mins)+" por la cita anterior: llegaríamos aproximadamente a las "+hm(a)+". Disculpá la molestia. Si esa hora no te sirve, avisanos y la movemos.")}})};
 var _rh3=renderHero;renderHero=function(){_rh3();var D=dayLegs(today),late=D.list.filter(function(j){return D.legs[j.id]&&D.legs[j.id].late}),unk=D.list.filter(function(j){return D.legs[j.id]&&D.legs[j.id].unk}).length;
-  if(D.list.length<2)return;var box=document.createElement("div");box.className="rtbx";
-  box.innerHTML='<div style="margin-top:10px;font-weight:700">'+(late.length?'⚠️ '+late.length+(late.length===1?' traslado no da tiempo hoy':' traslados no dan tiempo hoy'):'🧭 Ruta de hoy: los traslados dan tiempo')+(unk?' · '+unk+' sin ubicación':'')+'</div><ul class="rtl">'+
-    D.list.map(function(j){var g=D.legs[j.id],p=jobPos(j);return '<li><b>'+fmtT(j.time)+'</b><span>'+esc(j.cli)+(p?' · '+esc(p.n):'')+(g&&!g.unk?(g.late?' · <span style="color:#ffb4ad">llegás ~'+hm(g.arr)+' ('+durTxt(g.late)+' tarde)</span>':' · ~'+durTxt(g.min)+' de viaje'):'')+'</span></li>'}).join("")+'</ul>';
-  $("hero").appendChild(box)};
+  if(D.list.length<2)return;var box=document.createElement("details");box.className="rtbx"+(late.length?" late":"");var ru=routeUrl(D.list.filter(function(j){return j.st==="Pendiente"}));
+  box.innerHTML='<summary>'+(late.length?'⚠️ '+late.length+(late.length===1?' traslado no da tiempo hoy':' traslados no dan tiempo hoy'):'🧭 Ruta de hoy: los traslados dan tiempo')+(unk?' · '+unk+' sin ubicación':'')+'</summary><ul class="rtl">'+
+    D.list.map(function(j){var g=D.legs[j.id],p=jobPos(j);return '<li><b>'+fmtT(j.time)+'</b><span>'+esc(j.cli)+(p?' · '+esc(p.n):'')+(g&&!g.unk?(g.late?' · <span class="lt">llegás ~'+hm(g.arr)+' ('+durTxt(g.late)+' tarde)</span>':' · ~'+durTxt(g.min)+' de viaje'):'')+'</span></li>'}).join("")+'</ul>'+(ru?'<a class="alt sm" target="_blank" rel="noopener" href="'+esc(ru)+'">Abrir ruta en Maps</a>':'');
+  $("avisos").appendChild(box)};
 /* Nueva cita: zona y aviso de traslado antes de guardar */
 (function(){var z=$("zsel2");if(!z)return;var G={};ZPL.forEach(function(p){(G[p[4]]=G[p[4]]||[]).push(p)});
   z.innerHTML='<option value="">Sin zona (se toma del enlace de ubicación)</option>'+["San José","Heredia","Alajuela","Cartago","Lejos"].map(function(g){return '<optgroup label="'+(g==="Lejos"?"Lejos":g)+'">'+G[g].map(function(p){return '<option value="'+esc(p[0])+'">'+esc(p[0])+'</option>'}).join("")+'</optgroup>'}).join("")})();

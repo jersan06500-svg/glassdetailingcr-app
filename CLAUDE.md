@@ -165,6 +165,18 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - Formas de pago (dueño, 9 nov): SINPE Móvil al 7045-8967 (mismo número del WhatsApp, a nombre de Jersan Alejandro Gutiérrez Ocampo), transferencia o efectivo (no tarjeta). En la app, `PAGO` se agrega al mensaje de confirmación. Ya están en las preguntas frecuentes y el JSON-LD de `reservar/`.
 - Pendiente de preguntar al dueño: unir o separar `web/` y `reservar/`.
 
+## Rediseño de la app del equipo (9-10 nov, noche, aprobado: "la app todavía no se usa, se puede rehacer las veces que haga falta")
+
+Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvil). Misma paleta Azul cristal; bloques "REDISEÑO TABLERO" y siguientes al final del `<style>` de la intro.
+- **Encabezado** delgado con `logo-icon.png` + nombre; el logo grande (`.brandc`) quedó oculto.
+- **Tablero** (`renderHero`): solo la próxima cita (tiempo grande, cliente, "Voy en camino" en blanco). Si pasó hace más de 1 h: "¿Ya se hizo?" con "Sí, marcar como hecha" (`markDone`) o "Cambiar la hora".
+- **Avisos** en `#avisos` debajo del tablero (no dentro): recordatorio de mañana, notas para hoy, cancelaciones, reservas web por confirmar y la ruta del día como `<details>` con "Abrir ruta en Maps". `renderHero` limpia `#avisos` y los envoltorios `_rh`, `_rh2`, `_rh3` agregan ahí.
+- **Citas**: línea de tiempo con raya de color por estado (`k-Pendiente` naranja, `k-Hecho` azul, `k-Pagado` verde, `k-Porconfirmar` rojo) y etiqueta `.stp`. Botón del siguiente paso (`nextBtn`): Pendiente de hoy o antes → "Marcar hecha"; Hecho → "Ya pagó" + "Cobrar" (`cobrar`, WhatsApp con total y `PAGO`). "Recordar" solo en citas futuras; "En camino" solo hoy. Estado manual, Editar, Calendario y Borrar en "Más opciones".
+- **Barra de abajo**: Hoy, Nueva, Clientes, Números y Más. La hoja `#mass` tiene Enlace de reservas (`t-rv`), Notas (`t-not`) e Insumos (`t-ins`); el aviso rojo de notas sale también en Más.
+- **Nueva cita en 3 pasos** (`nGo`, `nOk`): 1 Cliente (nombre, WhatsApp, vehículo, cómo nos conoció), 2 Servicio, 3 Día y lugar. Pie fijo con total, Atrás, Siguiente y Agendar. Los campos e ids son los mismos.
+- Clientes y Números: tarjetas con borde, buscador redondo.
+- Ideas de las apps grandes que faltan: fotos antes/después por cita (Firebase Storage pide plan de pago; alternativa gratis: guardar el enlace), cobro en el sitio, rutas optimizadas.
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.
