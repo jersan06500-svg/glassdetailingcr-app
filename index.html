@@ -1309,7 +1309,7 @@ function renderRv(){var el=$("rvb");if(!el)return;var P=PUB||{},wa=String(P.wa||
     '<label for="rvwa">Tu WhatsApp para confirmaciones</label><div class="row" style="margin-top:0"><input id="rvwa" type="tel" inputmode="tel" value="'+esc(wa)+'"><button class="alt sm" id="rvws" style="padding:10px 14px">Guardar</button></div>'+
     '<label for="rvd">Bloquear un día (feriado, vacaciones)</label><div class="row" style="margin-top:0"><input id="rvd" type="date" min="'+today+'"><button class="alt sm" id="rvda" style="padding:10px 14px">Bloquear</button></div>'+
     (off.length?'<div class="chips2">'+off.map(function(d){return '<span>'+fmtD(d)+'<button class="alt" data-rvx="'+d+'" aria-label="Desbloquear">✕</button></span>'}).join("")+'</div>':'')}
-  h+='<div class="m" style="margin-top:8px">Horario en la página: lunes a sábado con última cita a las 4 pm, domingo con última cita a la 1 pm. 2 horas por carro; si reservan varios carros, se apartan seguidos.</div>';
+  h+='<div class="m" style="margin-top:8px">Horario en la página: lunes a domingo de 8 am a 4 pm, última cita a las 2 pm. 2 horas por carro; si reservan varios carros, se apartan seguidos.</div>';
   el.innerHTML=h;
   var cp=function(t,m){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){toast(m)},function(){toast("No se pudo copiar")})};
   if($("rvr"))$("rvr").onclick=function(){cp(RULES,"Reglas copiadas ✓ Pegalas en Firebase")};

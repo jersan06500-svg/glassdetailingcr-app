@@ -94,11 +94,11 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - Portada pública oscura con video de fondo (primer plano de foco y capó), franja "Promo del mes" (parabrisas + focos ₡30 000), sello de 1 año de protección, tira de fotos que se desliza sola (al tocar una se abre con antes/después), comparadores deslizables de antes y después, servicios con precio, "Señales de que sus focos necesitan un pulido", "Así de fácil" y un cotizador (servicio + vehículo) que arma el mensaje de WhatsApp. Botón flotante de WhatsApp.
 - HTML + JS puro en `web/index.html`; fotos, logo blanco y video en `web/img/`. El diseño editable está en Claude (artefacto "GlassDetailingCR — Portada web").
 - Textos con **usted**. Todos los botones de agendar van a `../reservar/`.
-- **Ojo**: el dueño dio el 9 nov, para esta página, el WhatsApp **7142-1488** (`50671421488`) y el horario **lunes a domingo 9 a. m. a 4 p. m.** Eso no coincide con `reservar/`, Google y las respuestas automáticas (7045-8967; L-S 6-6, D 8-3). Confirmar con el dueño cuál vale y unificar.
+- **9 nov, noche, confirmado por el dueño**: WhatsApp **7045-8967** (el 7142-1488 que se usó un rato fue un error) y horario **lunes a domingo, 8 a. m. a 4 p. m.** Quedó igual en `web/`, `reservar/` (`HOURS` = 8 a 16 todos los días, última cita 2 pm; JSON-LD) y el texto de la app. **Falta cambiarlo en el Perfil de Google y en las respuestas automáticas de Facebook/Instagram** (ahí siguen L-S 6-6 y D 8-3).
 
 ## Pendiente de confirmar con el dueño
 
-- El horario (`HOURS`) lo confirmó el dueño el 6 nov: lunes a sábado de 6 am a 6 pm, domingo de 8 am a 3 pm. El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), y `DUR` se queda en 2 horas por carro a propósito, para cubrir las presas entre citas (decisión del dueño).
+- El horario (`HOURS`): desde el 9 nov, lunes a domingo de 8 am a 4 pm (antes L-S 6-6 y D 8-3). El dueño dice que el trabajo dura unos 45 min (son 2 pulidores), y `DUR` se queda en 2 horas por carro a propósito, para cubrir las presas entre citas (decisión del dueño).
 - Enlace de reseñas de Google (`REVURL`).
 
 ## Redes (6 nov 2026)
