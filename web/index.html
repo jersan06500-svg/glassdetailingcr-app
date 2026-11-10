@@ -63,12 +63,23 @@ nav .btn{min-height:44px;padding:0 20px;font-size:15px}
 @keyframes desliza{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 .foto{position:relative;flex:0 0 auto;width:220px;height:290px;padding:0;border:0;border-radius:16px;cursor:pointer;overflow:hidden;background:#0B1622;color:#fff;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.14)}
 .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 400ms cubic-bezier(.23,1,.32,1)}
-.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(5,7,11,.85) 100%)}
-.foto span{position:absolute;left:16px;right:16px;bottom:16px;z-index:1;display:flex;flex-direction:column;gap:6px}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(5,7,11,.85) 100%);transition:background-color 260ms ease}
+.foto>span{position:absolute;left:16px;right:16px;bottom:16px;z-index:1;display:flex;flex-direction:column;gap:6px}
 .foto small{font:600 10px/1.2 'Inter',sans-serif;letter-spacing:.14em;color:#B8E2F8}
 .foto strong{font:600 18px/1.1 'Space Grotesk',sans-serif}
+.foto .mas{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 300ms cubic-bezier(.23,1,.32,1),opacity 220ms ease}
+.foto .mas>em{overflow:hidden;display:flex;flex-direction:column;gap:8px;font-style:normal}
+.foto .mas p{margin:4px 0 0;font:400 13px/1.45 'Inter',sans-serif;color:#D5E1EA}
+.foto .mas b{font:600 13px/1.3 'Inter',sans-serif;color:#fff}
+.foto .mas i{font:600 13px/1 'Inter',sans-serif;font-style:normal;color:#7CC8F0}
 .foto:focus-visible{outline:2px solid var(--claro);outline-offset:4px}
-@media (hover:hover) and (pointer:fine){.foto:hover img{transform:scale(1.06)}}
+@media (hover:hover) and (pointer:fine){
+  .foto{cursor:default}
+  .foto:hover img,.foto:focus-visible img{transform:scale(1.06)}
+  .foto:hover::after,.foto:focus-visible::after{background-color:rgba(5,7,11,.72)}
+  .foto:hover .mas,.foto:focus-visible .mas{grid-template-rows:1fr;opacity:1}
+  .carril:focus-within .pista{animation-play-state:paused}
+}
 
 /* ventana de foto */
 .ven{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,7,11,.7);backdrop-filter:blur(6px)}
@@ -200,7 +211,7 @@ footer a{text-decoration:none}
   </div>
 
   <div class="tira">
-    <div class="wrap cab"><span class="eti" style="color:#9FB1BF">Trabajos recientes</span><span>Toque una foto para verla</span></div>
+    <div class="wrap cab"><span class="eti" style="color:#9FB1BF">Trabajos recientes</span><span id="ayuda">Toque una foto para verla</span></div>
     <div class="carril"><div class="pista" id="pista"></div></div>
   </div>
 </header>
@@ -329,7 +340,10 @@ footer a{text-decoration:none}
     {s:0, f:"Clásico terminado", i:"img/classic.jpg"},
     {s:1, f:"Focos transparentes", i:"img/side.jpg"}
   ];
+  var PC = window.matchMedia("(hover: hover) and (pointer: fine)");
   function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+  if (PC.matches) document.getElementById("ayuda").textContent = "Pase el puntero sobre una foto para ver el detalle";
 
   // servicios
   var sv = document.getElementById("servs");
@@ -354,8 +368,14 @@ footer a{text-decoration:none}
       var sp = el("span");
       sp.appendChild(el("small", null, SERV[f.s].t.toUpperCase()));
       sp.appendChild(el("strong", null, f.f));
+      var mas = el("span", "mas"), em = el("em");
+      em.appendChild(el("p", null, SERV[f.s].d));
+      em.appendChild(el("b", null, SERV[f.s].p));
+      if (f.a) em.appendChild(el("i", null, "Clic para ver el antes y el después"));
+      mas.appendChild(em); sp.appendChild(mas);
       b.appendChild(im); b.appendChild(sp);
-      b.addEventListener("click", function(){ abrir(k, b); });
+      // en computadora la información sale al pasar el puntero; en el celular, al tocar
+      b.addEventListener("click", function(){ if (!PC.matches || f.a) abrir(k, b); });
       pista.appendChild(b);
     });
   });
