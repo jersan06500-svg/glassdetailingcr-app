@@ -263,7 +263,7 @@ input,textarea,select{background:var(--card);border-width:1px;border-radius:10px
 input:focus,textarea:focus,select:focus{box-shadow:none;border-color:var(--acc);outline:2px solid color-mix(in srgb,var(--acc) 30%,transparent)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 /* Botón flotante de WhatsApp (9 nov): solo en la portada, en Azul cristal como manda DESIGN.md */
-.wafab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:58px;height:58px;border-radius:50%;background:#0077B6;border:2px solid #fff;display:flex;align-items:center;justify-content:center}
+.wafab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;width:52px;height:52px;border-radius:50%;background:#0077B6;border:2px solid #fff;display:flex;align-items:center;justify-content:center}
 .wafab:active{transform:scale(.95)}
 #land{padding-bottom:96px}
 /* 9 nov: próxima hora libre, garantía, preguntas frecuentes y barra "Agendar" que acompaña al bajar */
@@ -289,6 +289,19 @@ input:focus,textarea:focus,select:focus{box-shadow:none;border-color:var(--acc);
 .stick button{background:#0077B6;color:#fff;border:0;border-radius:999px;font:700 16px Inter,sans-serif;padding:13px 18px;flex:none}
 body.stk .stick{transform:none}
 body.stk .wafab{bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:9}
+/* antes y después */
+.bah{margin:-6px 0 12px;color:var(--mute);font-size:14px}
+.ba{display:grid;gap:12px}
+.comp{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#0B1622;border:1px solid var(--line);user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.comp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.comp .desp{clip-path:inset(0 0 0 50%)}
+.comp .tg{position:absolute;top:10px;z-index:1;background:rgba(0,0,0,.55);color:#fff;font:700 11px Inter,sans-serif;letter-spacing:.06em;padding:5px 9px;border-radius:999px;pointer-events:none}
+.comp .tg.a{left:10px}.comp .tg.d{right:10px;background:#0077B6}
+.comp .linea{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#fff;pointer-events:none}
+.comp .linea i{position:absolute;top:50%;left:50%;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;background:#fff;border:2px solid #0077B6}
+.comp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+@media(min-width:620px){.ba{grid-template-columns:1fr 1fr}}
+#land>.wrap{padding-bottom:90px}
 </style>
 <!-- Píxel de Meta (GlassDetailingCR, conjunto de datos 2161726007758577): PageView al abrir, InitiateCheckout al empezar a agendar, AddToCart al escoger servicios, Schedule y Lead al confirmar. No se mandan datos personales. -->
 <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","2161726007758577");fbq("track","PageView");</script>
@@ -302,26 +315,30 @@ body.stk .wafab{bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:9}
     <div class="brand"><img src="logo-full.png" alt="GlassDetailingCR" width="320" height="201" fetchpriority="high"></div>
     <h1>Focos y parabrisas como nuevos, <em>sin salir de casa</em></h1>
     <p>Restauración de focos y pulido de parabrisas a domicilio, <b>gratis en toda la GAM</b>. Todos los trabajos llevan <b>1 año de protección</b>.</p>
-    <div class="promo" id="promo"><i>🎁</i><span><b>Promo parabrisas + focos: <span style="white-space:nowrap">₡30 000</span></b><small>Con polímero líquido y cerámico Fireball. 1 año de protección.</small></span></div>
-    <div class="chips"><span>📍 Gratis en toda la GAM</span><span>🛡️ 1 año de protección</span><span>🚙🚗 Varios carros en una visita</span><span>⏱️ Agende en 1 minuto</span></div>
+    <div class="promo" id="promo"><i>🎁</i><span><b>Promo parabrisas + focos: <span style="white-space:nowrap">₡30 000</span></b><small>Con polímero líquido y cerámico Fireball.</small></span></div>
+    <div class="chips"><span>🚙 Varios carros</span><span>⏱️ Agende en 1 minuto</span></div>
     <div class="nxt" id="nxt" hidden><i></i><span id="nxtt"></span></div>
     <button class="cta" id="go">Agendar mi cita <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div></div>
   <div class="wrap">
+    <div class="sec"><h2>Antes y después</h2><p class="bah">Deslice la línea sobre la foto.</p><div class="ba">
+      <div class="comp"><img src="../web/img/faro_antes_sq.jpg" alt="Foco opaco antes del pulido" width="720" height="720"><img class="desp" src="../web/img/faro_despues_sq.jpg" alt="El mismo foco transparente después del pulido" width="720" height="720"><span class="tg a">ANTES</span><span class="tg d">DESPUÉS</span><input type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del foco 1"><div class="linea" aria-hidden="true"><i></i></div></div>
+      <div class="comp"><img src="../web/img/rav_before.jpg" alt="Foco amarillento antes del pulido" width="720" height="720" loading="lazy"><img class="desp" src="../web/img/rav_after.jpg" alt="El mismo foco claro después del pulido" width="720" height="720" loading="lazy"><span class="tg a">ANTES</span><span class="tg d">DESPUÉS</span><input type="range" min="0" max="100" value="50" aria-label="Comparar antes y después del foco 2"><div class="linea" aria-hidden="true"><i></i></div></div>
+    </div></div>
     <div class="sec"><h2>Así de fácil</h2><div class="how"><div><i>📅</i><b>Elija día y hora</b>Solo ve horas libres</div><div><i>📍</i><b>Mande su ubicación</b>Con un toque</div><div><i>✨</i><b>Llegamos y listo</b>Usted sigue en lo suyo</div></div></div>
     <div class="sec"><h2>Precios</h2><div class="pl">
-      <div class="star"><span>Promo parabrisas + focos<small>Polímero líquido + cerámico Fireball · 1 año de protección</small></span><b>₡30 000</b></div>
-      <div><span>Pulido de focos con polímero líquido<small>El par · 1 año de protección</small></span><b>₡20 000</b></div>
-      <div><span>Pulido de parabrisas + cerámico Fireball<small>SUV o pick-up · 1 año de protección</small></span><b>₡25 000</b></div>
-      <div><span>Pulido de parabrisas + cerámico Fireball<small>Sedán o hatchback · 1 año de protección</small></span><b>₡20 000</b></div>
-      <div><span>Todos los vidrios + cerámico Fireball<small>Parabrisas, trasero y ventanas · 1 año de protección</small></span><b>₡40 000</b></div>
-      <div><span>Techo panorámico + cerámico Fireball<small>Se suma a cualquier servicio · 1 año de protección</small></span><b>+₡20 000</b></div>
+      <div class="star"><span>Promo parabrisas + focos<small>Polímero líquido + cerámico Fireball</small></span><b>₡30 000</b></div>
+      <div><span>Pulido de focos con polímero líquido<small>El par</small></span><b>₡20 000</b></div>
+      <div><span>Pulido de parabrisas + cerámico Fireball<small>SUV o pick-up</small></span><b>₡25 000</b></div>
+      <div><span>Pulido de parabrisas + cerámico Fireball<small>Sedán o hatchback</small></span><b>₡20 000</b></div>
+      <div><span>Todos los vidrios + cerámico Fireball<small>Parabrisas, trasero y ventanas</small></span><b>₡40 000</b></div>
+      <div><span>Techo panorámico + cerámico Fireball<small>Se suma a cualquier servicio</small></span><b>+₡20 000</b></div>
       <div><span>Servicio a domicilio en toda la GAM</span><b style="color:var(--ok)">Gratis</b></div>
     </div></div>
     <div class="sec"><h2>Su año de protección</h2><div class="gar">
-      <div><i>🛡️</i><span><b>Todos los trabajos llevan 1 año de protección</b>Los focos llevan polímero líquido y los vidrios cerámico Fireball. No es una cera que se va con la primera lavada.</span></div>
+      <div><i>🛡️</i><span><b>No es una cera</b>Los focos llevan polímero líquido y los vidrios cerámico Fireball: dura todo el año, no se va con la primera lavada.</span></div>
       <div><i>📸</i><span><b>Si algo no queda bien, escríbanos</b>Mándenos una foto por WhatsApp dentro de ese año y lo revisamos con usted.</span></div>
-      <div><i>🧾</i><span><b>Precio cerrado</b>El precio que ve al agendar es el que paga. El domicilio en la GAM no se cobra.</span></div>
+      <div><i>🧾</i><span><b>Precio cerrado</b>El precio que ve al agendar es el que paga.</span></div>
     </div></div>
     <div class="sec"><h2>Preguntas frecuentes</h2><div class="faq">
       <details><summary>¿Qué es el cerámico Fireball?</summary><p>Es un recubrimiento cerámico que se pega al vidrio. El agua de la lluvia resbala sola, de noche se ve mucho mejor y la suciedad se pega menos. Dura alrededor de un año.</p></details>
@@ -716,6 +733,7 @@ function cxRun(P,b){if(!DB){$("cxe").textContent="No hay conexión. Revise su in
       $("cxc").innerHTML='<div class="check"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><h2>Su cita quedó cancelada</h2><p class="sub">Ya le avisamos al equipo. Cuando guste, agende otra.</p><a class="cta" href="./">Agendar otra cita</a><a class="lbtn" href="'+waUrl("Hola GlassDetailingCR 👋 Acabo de cancelar mi cita del "+niceDay(P.d)+". ")+'" target="_blank" rel="noopener">Escribirnos por WhatsApp</a><a class="lbtn" href="./">Volver al inicio</a>'},
     function(){b.disabled=false;b.textContent="Sí, cancelar mi cita";$("cxe").textContent="No pudimos cancelarla: puede que ya esté cancelada o que el enlace no sea el correcto. Escríbanos por WhatsApp y le ayudamos.";$("cxe").classList.add("on")})}
 $("cxcopy").onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(CX.url):Promise.reject()).then(function(){b.textContent="Enlace copiado ✓"},function(){b.textContent="Mantenga presionado “Cancelar mi cita” para copiarlo"})};
+document.querySelectorAll(".comp").forEach(function(c){var r=c.querySelector("input"),d=c.querySelector(".desp"),l=c.querySelector(".linea");function pon(){d.style.clipPath="inset(0 0 0 "+r.value+"%)";l.style.left=r.value+"%"}r.addEventListener("input",pon);pon()});
 $("cxwa").href=waUrl("Hola GlassDetailingCR 👋 Necesito cancelar mi cita.");$("wafab").href=waUrl("Hola GlassDetailingCR 👋 Tengo una consulta.");
 /* Portada: próxima hora libre (con las mismas reglas de la agenda, para 1 carro) */
 function landFree(){if(!DB||!CFG.open)return;var a=ymd(new Date()),e=new Date();e.setDate(e.getDate()+DAYS_AHEAD);

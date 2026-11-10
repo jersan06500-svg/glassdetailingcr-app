@@ -158,6 +158,12 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 - **Uso de Claude (9 nov, noche)**: el dueño quiere gastar menos. Se le recomendó: un chat nuevo por tema (este archivo guarda todo), Sonnet para tareas del día a día y Opus solo para lo grande, pedir todo junto en un mensaje, mandar videos ya recortados, revisar Configuración → Uso y ponerle tope a los créditos de uso, y bajar de plan si casi no llega al límite (eso lo hace él). Desde aquí abre sesiones nuevas en el mismo lugar con el repositorio `glassdetailingcr-app`. OmniRoute (lo preguntó) no aplica: es un proxy para Claude Code con otros modelos, no oficial; se le desaconsejó.
 
+## Mejoras del 9 nov, 11 pm (aprobadas por el dueño)
+
+- `reservar/`: sección "Antes y después" justo debajo de la portada, con 2 comparadores deslizables (fotos de `../web/img/`, `.comp`). Se quitaron repeticiones: chips solo "Varios carros" y "Agende en 1 minuto", "1 año de protección" ya no va en cada precio (lo explica "Su año de protección"). Botón de WhatsApp a 52 px y espacio al final para que no tape contenido.
+- App: el inicio muestra "Recordarle a <cliente> su cita de mañana (faltan N)". Al tocarlo (o "Recordar" en la cita) abre WhatsApp con el recordatorio (incluye toma de 110 V y bajo techo) y marca la cita con `rc:1` ("Recordada ✓"). No cambió `firestore.rules`.
+- Pendiente de preguntar al dueño: formas de pago (SINPE, tarjeta, efectivo) para las preguntas frecuentes; unir o separar `web/` y `reservar/`.
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.

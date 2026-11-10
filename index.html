@@ -620,7 +620,7 @@ function renderAg(){
   $("dh").textContent=(sel===today?"Hoy":DN[sd.getDay()]+" "+sd.getDate()+" "+MN[sd.getMonth()])+" · "+L.length+(L.length===1?" cita":" citas")+(L.length?" · "+crc(tot):"");
   var LK=sel+"|"+wOff;$("dl").classList.toggle("fresh",LK!==LASTK);LASTK=LK;$("dl").innerHTML=L.length?L.map(function(j){
     return '<div class="job'+(j.st==="Por confirmar"?' pc':'')+'"><div class="hr">'+fmtT(j.time)+'</div><div class="jb">'+(j.st==="Por confirmar"?webBox(j):'')+'<div class="n">'+esc(j.cli)+' <span class="m">· '+crc(j.total)+'</span></div><div class="m">'+esc(j.veh)+'</div><div class="m">'+j.items.map(esc).join(", ")+'</div>'+(locOf(j)?mapThumb(locOf(j)):'')+(j.note?'<div class="m">📝 '+esc(j.note)+'</div>':'')+pendNotes(j.cli).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+'</div>'}).join("")+
-    '<div class="acts">'+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a><button class="sm wa" data-wa="'+j.id+'">'+ICWA+'Recordar</button>'+(j.st==="Pendiente"?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'<button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button>'+
+    '<div class="acts">'+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a><button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>'+(j.st==="Pendiente"?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'<button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button>'+
     '<select data-id="'+j.id+'" class="st-'+j.st+'" aria-label="Estado">'+(j.st==="Por confirmar"?["Por confirmar"]:[]).concat(["Pendiente","Hecho","Pagado"]).map(function(s){return "<option"+(s===j.st?" selected":"")+">"+s+"</option>"}).join("")+'</select><button class="alt sm" data-del="'+j.id+'">Borrar</button></div></div></div>'}).join(""):'<div class="empty">No hay citas este día.</div>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"),function(b){b.onclick=function(){remind(b.dataset.wa)}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ed]"),function(b){b.onclick=function(){editJob(b.dataset.ed)}});
@@ -635,9 +635,12 @@ function remind(id){
   var j=S.jobs.find(function(x){return x.id==id}),n=j.tel.replace(/\D/g,"");if(n.length===8)n="506"+n;
   var diff=Math.round((pd(j.date)-pd(today))/864e5),d=pd(j.date);
   var cuando=diff===0?"hoy":diff===1?"mañana":"el "+DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()];
-  var t="Hola "+j.cli+", te recuerdo tu cita en GlassDetailingCR "+cuando+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". ¡Te espero!";
+  var t="Hola "+j.cli+" 👋 Te recuerdo tu cita con GlassDetailingCR "+cuando+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". Ocupamos un toma de 110 V cerca del carro y, si se puede, que esté bajo techo. ¡Nos vemos!";
   window.open("https://wa.me/"+n+"?text="+encodeURIComponent(t),"_blank");
+  // Se marca como recordada para que el aviso del inicio pase al siguiente cliente.
+  if(!j.rc){j.rc=1;if(DB)DB.doc("jobs/"+j.id).update({rc:1}).catch(dberr);setTimeout(renderAg,300)}
 }
+function porRecordar(){var m=ymd(addD(new Date(),1));return S.jobs.filter(function(j){return j.date===m&&j.tel&&!j.rc&&!isDone(j)}).sort(function(a,b){return a.time<b.time?-1:1})}
 
 /* NUEVA CITA */
 function buildSvcs(){
@@ -1055,7 +1058,7 @@ $("nadd").onclick=function(){var t=$("ntx").value.trim();if(!t){toast("Escribí 
   DB.doc("settings/note-"+id).set(n).catch(dberr);
   notify("📌 Nota nueva"+(n.cli?" · "+n.cli:""),t+(n.due?"\nPara: "+fmtD(n.due):"")+"\nLa escribió "+whoN(myEmail())+(n.para?" para "+whoN(n.para):""));
   $("ntx").value="";$("ncl").value="";$("ndu").value="";NF="p";toast("Nota guardada ✓")};
-var _rh=renderHero;renderHero=function(){_rh();var c=urgentCount();if(c){var d=document.createElement("button");d.className="sm hnote";d.textContent="📌 "+c+(c===1?" recordatorio para hoy":" recordatorios para hoy")+" ›";d.onclick=function(){NF="p";$("nq").value="";show("not")};$("hero").appendChild(d)}};
+var _rh=renderHero;renderHero=function(){_rh();var L=porRecordar();if(L.length){var b=document.createElement("button");b.className="sm wa hnote";b.innerHTML=ICWA+"Recordarle a "+esc(L[0].cli.split(" ")[0])+" su cita de mañana"+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){remind(L[0].id)};$("hero").appendChild(b)}var c=urgentCount();if(c){var d=document.createElement("button");d.className="sm hnote";d.textContent="📌 "+c+(c===1?" recordatorio para hoy":" recordatorios para hoy")+" ›";d.onclick=function(){NF="p";$("nq").value="";show("not")};$("hero").appendChild(d)}};
 
 /* INSUMOS */
 var IEID=null,IOPEN={},QA=["Polish","Pasta pulidora","Pads / esponjas","Discos de lija","Lijas al agua","Cerámico","Hidrofóbico","Cinta de enmascarar","Microfibras","Limpiavidrios"];
