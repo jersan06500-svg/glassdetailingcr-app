@@ -162,7 +162,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 
 - `reservar/`: sección "Antes y después" justo debajo de la portada, con 2 comparadores deslizables (fotos de `../web/img/`, `.comp`). Se quitaron repeticiones: chips solo "Varios carros" y "Agende en 1 minuto", "1 año de protección" ya no va en cada precio (lo explica "Su año de protección"). Botón de WhatsApp a 52 px y espacio al final para que no tape contenido.
 - App: el inicio muestra "Recordarle a <cliente> su cita de mañana (faltan N)". Al tocarlo (o "Recordar" en la cita) abre WhatsApp con el recordatorio (incluye toma de 110 V y bajo techo) y marca la cita con `rc:1` ("Recordada ✓"). No cambió `firestore.rules`.
-- Formas de pago (dueño, 9 nov): SINPE Móvil al 7045-8967 (mismo número del WhatsApp), transferencia o efectivo (no tarjeta). En la app, `PAGO` se agrega al mensaje de confirmación. Ya están en las preguntas frecuentes y el JSON-LD de `reservar/`.
+- Formas de pago (dueño, 9 nov): SINPE Móvil al 7045-8967 (mismo número del WhatsApp, a nombre de Jersan Alejandro Gutiérrez Ocampo), transferencia o efectivo (no tarjeta). En la app, `PAGO` se agrega al mensaje de confirmación. Ya están en las preguntas frecuentes y el JSON-LD de `reservar/`.
 - Pendiente de preguntar al dueño: unir o separar `web/` y `reservar/`.
 
 ## Estado al cerrar el 7 nov, 4:45 pm

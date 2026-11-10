@@ -748,7 +748,7 @@ $("gadd").onclick=function(){var a=+$("ga").value;if(!a||!$("gd").value){toast("
 function calUrl(j){var d=pd(j.date),t=(j.time||"09:00").split(":");d.setHours(+t[0],+t[1]);var e=new Date(d.getTime()+90*6e4);
   var f=function(x){return x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+"T"+pad(x.getHours())+pad(x.getMinutes())+"00"};
   return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailing: "+j.cli+(j.veh?" - "+j.veh:""))+"&dates="+f(d)+"/"+f(e)+"&details="+encodeURIComponent(j.items.join(", ")+" · "+crc(j.total)+(j.tel?" · Tel "+j.tel:""))+"&location="+encodeURIComponent(j.note||"")}
-var PAGO="\nPodés pagar por SINPE Móvil al 7045-8967, transferencia o efectivo.";
+var PAGO="\nPodés pagar por SINPE Móvil al 7045-8967 (a nombre de Jersan Alejandro Gutiérrez Ocampo), transferencia o efectivo.";
 function waTo(tel,t){var n=(tel||"").replace(/\D/g,"");if(n.length===8)n="506"+n;window.open("https://wa.me/"+n+"?text="+encodeURIComponent(t),"_blank")}
 $("cp").onclick=function(){var L=S.jobs.filter(function(j){return j.date===sel}).sort(function(a,b){return a.time<b.time?-1:1}),d=pd(sel);
   var t="Agenda "+DN[d.getDay()]+" "+d.getDate()+" "+MN[d.getMonth()]+":\n"+L.map(function(j){return fmtT(j.time)+" - "+j.cli+(j.veh?" ("+j.veh+")":"")+" · "+j.items.join(", ")+" · "+crc(j.total)+(j.tel?" · "+j.tel:"")+(j.note?" · "+j.note:"")}).join("\n");
