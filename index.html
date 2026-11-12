@@ -625,7 +625,7 @@ raf=requestAnimationFrame(frame);
     <div class="two"><div><label for="fecha">Día</label><input id="fecha" type="date"></div><div><label for="hora">Hora</label><input id="hora" type="time" value="09:00"></div></div>
     <div class="hw hide" id="hw" role="status"></div>
     <label for="ubic">Ubicación del cliente</label><div class="row" style="margin-top:0"><input id="ubic" placeholder="Pegá el enlace o las coordenadas" autocomplete="off"><button class="alt sm" id="ubp" type="button">Pegar</button></div><div class="m" id="ubm"></div><button class="sm wa" id="ubask" type="button" style="margin-top:8px;width:100%">📍 Pedirle la ubicación por WhatsApp</button><div class="m" style="margin-top:4px">Le llega un enlace: con un toque te manda su ubicación exacta, y al tocarla en tu WhatsApp se guarda sola en la cita.</div><div id="ubprev"></div>
-    <label for="who">¿Quién la atiende?</label><select id="who"></select>
+    <label for="atn">¿Quién la atiende?</label><select id="atn"></select>
     <label for="zsel2">Zona del carro</label><select id="zsel2" aria-label="Zona del carro"></select>
     <div class="trw hide" id="trw" role="status"></div>
     <label for="note">Notas (detalles)</label><input id="note">
@@ -847,7 +847,7 @@ $("save").onclick=function(){
   var chk=t?DB.collection("jobs").where("date","==",f).get({source:"server"}).then(function(sn){return sn.docs.map(function(d){return d.data()}).filter(function(j){return j.st!=="Cancelada"})},function(){return null}):Promise.resolve(null);
   chk.then(function(L){b.disabled=false;if(EID!==id)return;
     var c2=L&&clash(f,t,id,L);if(c2){toast(clashMsg(c2));updClash();return}
-    var nj={zone:$("zsel2").value,cli:$("cli").value,tel:$("tel").value,veh:$("veh").value,items:it.map(function(x){return x.n}),lines:it,disc:+$("desc").value||0,total:calc(),date:f,time:t,note:$("note").value,ubic:$("ubic").value,src:$("src").value,who:$("who").value},oj=null;
+    var nj={zone:$("zsel2").value,cli:$("cli").value,tel:$("tel").value,veh:$("veh").value,items:it.map(function(x){return x.n}),lines:it,disc:+$("desc").value||0,total:calc(),date:f,time:t,note:$("note").value,ubic:$("ubic").value,src:$("src").value,who:$("atn").value},oj=null;
     if(EID){nj.id=EID;oj=S.jobs.find(function(x){return x.id==EID});nj.st=oj?oj.st:"Pendiente";nj.by=oj&&oj.by||myEmail();if(oj){nj=Object.assign({},oj,nj);if(oj.date!==f)delete nj.rc}}else{nj.id=Date.now();nj.st="Pendiente";nj.by=myEmail()}
     DB.doc("jobs/"+nj.id).set(nj).catch(dberr);if(!EID)S.jobs.push(nj);
     var cu=fmtD(f)+(t?" · "+fmtT(t):"");
@@ -1604,10 +1604,10 @@ var MINE=false;try{MINE=localStorage.getItem("gdcr_mine")==="1"}catch(e){}
 function mineOk(j){return !MINE||!j.who||j.who===myEmail()}
 function mineBtns(){Array.prototype.forEach.call($("mine").children,function(b){b.setAttribute("aria-pressed",(b.dataset.m==="1")===MINE)})}
 Array.prototype.forEach.call($("mine").children,function(b){b.onclick=function(){MINE=b.dataset.m==="1";try{localStorage.setItem("gdcr_mine",MINE?"1":"0")}catch(e){}mineBtns();renderAg()}});mineBtns();
-function fillWho(v){var s=$("who");s.innerHTML='<option value="">Sin asignar</option>'+members().map(function(e){return '<option value="'+esc(e)+'">'+esc(whoN(e))+'</option>'}).join("");s.value=v||""}
+function fillWho(v){var s=$("atn");s.innerHTML='<option value="">Sin asignar</option>'+members().map(function(e){return '<option value="'+esc(e)+'">'+esc(whoN(e))+'</option>'}).join("");s.value=v||""}
 var _rf=resetForm;resetForm=function(){_rf();fillWho(myEmail())};
 var _ej=editJob;editJob=function(id){_ej(id);var j=S.jobs.find(function(x){return x.id==id});if(j)fillWho(j.who||"")};
-var _sh=show;show=function(v){_sh(v);if(v==="per")renderPer();if(v==="new"&&!EID)fillWho($("who").value||myEmail())};
+var _sh=show;show=function(v){_sh(v);if(v==="per")renderPer();if(v==="new"&&!EID)fillWho($("atn").value||myEmail())};
 /* Modo de pantalla: solo en este celular */
 function themeGet(){try{return localStorage.getItem("gdcr_theme")||""}catch(e){return ""}}
 function themeBtns(){var t=themeGet();Array.prototype.forEach.call($("pf_t").children,function(b){b.setAttribute("aria-pressed",b.dataset.t===t)})}
