@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GlassDetailingCR</title>
 <meta name="theme-color" content="#0077B6">
+<script>try{var t=localStorage.getItem("gdcr_theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -533,6 +534,15 @@ nav button{flex:1}
 .nw[data-s="1"] .nfoot .total{display:none}
 #q{border-radius:999px;padding-left:16px;min-height:46px}
 .seg{border-radius:999px}
+/* PERSONALIZAR */
+.pcol{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.pcol button{width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;background:var(--pc);border:3px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.pcol button[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.who{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--mute);margin-left:8px;vertical-align:middle}
+.who::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--wc)}
+#mine button,#pf_t button{flex:1}
+#v-per textarea{width:100%;margin-top:4px}
+#v-per [data-mr]{margin-top:6px}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -594,7 +604,7 @@ raf=requestAnimationFrame(frame);
   <div class="avisos" id="avisos"></div>
   <div class="nav2"><button class="alt sm rnd" id="pw" aria-label="Semana anterior">‹</button><span id="wl"></span><button class="alt sm rnd" id="nw" aria-label="Semana siguiente">›</button></div>
   <div class="week" id="week"></div>
-  <div class="m" id="pc" style="margin:0 2px 8px"></div><div class="card dayc"><h2 id="dh"></h2><div id="dl"></div><div class="row"><button class="alt sm" id="cp">Compartir agenda del día</button></div></div>
+  <div class="m" id="pc" style="margin:0 2px 8px"></div><div class="seg" id="mine"><button type="button" data-m="0">Todas</button><button type="button" data-m="1">Mis citas</button></div><div class="card dayc"><h2 id="dh"></h2><div id="dl"></div><div class="row"><button class="alt sm" id="cp">Compartir agenda del día</button></div></div>
 </section>
 
 <section id="v-new" class="hide">
@@ -615,6 +625,7 @@ raf=requestAnimationFrame(frame);
     <div class="two"><div><label for="fecha">Día</label><input id="fecha" type="date"></div><div><label for="hora">Hora</label><input id="hora" type="time" value="09:00"></div></div>
     <div class="hw hide" id="hw" role="status"></div>
     <label for="ubic">Ubicación del cliente</label><div class="row" style="margin-top:0"><input id="ubic" placeholder="Pegá el enlace o las coordenadas" autocomplete="off"><button class="alt sm" id="ubp" type="button">Pegar</button></div><div class="m" id="ubm"></div><button class="sm wa" id="ubask" type="button" style="margin-top:8px;width:100%">📍 Pedirle la ubicación por WhatsApp</button><div class="m" style="margin-top:4px">Le llega un enlace: con un toque te manda su ubicación exacta, y al tocarla en tu WhatsApp se guarda sola en la cita.</div><div id="ubprev"></div>
+    <label for="who">¿Quién la atiende?</label><select id="who"></select>
     <label for="zsel2">Zona del carro</label><select id="zsel2" aria-label="Zona del carro"></select>
     <div class="trw hide" id="trw" role="status"></div>
     <label for="note">Notas (detalles)</label><input id="note">
@@ -652,6 +663,23 @@ raf=requestAnimationFrame(frame);
   <div class="card"><h2>Respaldo</h2><div class="m">Pegá aquí el respaldo de tu app (APK o la versión anterior) para pasar tus citas, clientes y gastos. Solo se agregan, no se borra nada. También podés crear un respaldo de todo lo que hay aquí.</div><textarea id="bt" rows="3" aria-label="Respaldo"></textarea><div class="row"><button class="alt" id="bk">Crear respaldo</button><button class="alt" id="rs">Importar</button></div></div>
 </section>
 
+<section id="v-per" class="hide">
+  <div class="card"><h2>Tu perfil</h2><div class="m">Así te ven los demás en la agenda.</div>
+    <label for="pf_n">Nombre</label><input id="pf_n" autocomplete="given-name" maxlength="30">
+    <label>Color</label><div class="pcol" id="pf_c"></div>
+    <div class="row"><button id="pf_s">Guardar perfil</button></div></div>
+  <div class="card"><h2>Modo de pantalla</h2><div class="m">Solo cambia en este celular.</div>
+    <div class="seg" id="pf_t"><button type="button" data-t="">Automático</button><button type="button" data-t="light">Claro</button><button type="button" data-t="dark">Oscuro</button></div></div>
+  <div id="pf_boss">
+  <div class="card"><h2>Frase del inicio</h2><div class="m">Dejala en blanco para que cambie sola cada día.</div>
+    <input id="pf_f" aria-label="Frase del inicio" maxlength="120"><div class="row"><button id="pf_fs">Guardar frase</button></div></div>
+  <div class="card"><h2>Datos de pago</h2><div class="m">Salen al final de los mensajes de confirmación y cobro.</div>
+    <div class="two"><div><label for="pf_sp">SINPE Móvil</label><input id="pf_sp" type="tel" inputmode="numeric"></div><div><label for="pf_ti">A nombre de</label><input id="pf_ti"></div></div>
+    <div class="row"><button id="pf_ps">Guardar datos de pago</button></div></div>
+  <div class="card"><h2>Mensajes de WhatsApp</h2><div class="m">Las palabras entre llaves se cambian solas: {cliente}, {fecha}, {hora}, {vehiculo}, {total} y, en el recordatorio, {cuando}.</div>
+    <div id="pf_ms"></div><div class="row"><button id="pf_mss">Guardar mensajes</button></div></div>
+  </div>
+</section>
 <section id="v-not" class="hide">
   <div class="seg" id="nmd"><button data-m="n" aria-pressed="true">📝 Notas</button><button data-m="g" aria-pressed="false">🎯 Metas</button></div>
   <div id="gwrapM" class="hide">
@@ -712,6 +740,7 @@ raf=requestAnimationFrame(frame);
 <button id="t-rv" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Enlace de reservas<small>Mandarlo por WhatsApp o copiarlo</small></span></button>
 <button id="t-not" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v10l-6 6H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M21 15h-4a2 2 0 0 0-2 2v4M7 8h10M7 12h6"/></svg><span>Notas y metas<small>Pendientes del equipo</small></span></button>
 <button id="t-ins" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v5L5.5 17A3 3 0 0 0 8.2 21h7.6a3 3 0 0 0 2.7-4L14 8V3M7.3 14h9.4"/></svg><span>Insumos<small>Lo que queda de cada producto</small></span></button>
+<button id="t-per" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Personalizar<small>Tu nombre, colores, mensajes y pago</small></span></button>
 <button class="alt" id="mas-x">Cerrar</button></div></div>
 
 <script>
@@ -741,17 +770,17 @@ function fmtT(t){if(!t)return"--:--";var p=t.split(":"),h=+p[0];return (h%12||12
 function renderAg(){
   var m=addD(monday(new Date()),wOff*7),h="";
   $("wl").textContent=m.getDate()+" "+MN[m.getMonth()]+" – "+addD(m,6).getDate()+" "+MN[addD(m,6).getMonth()];
-  for(var i=0;i<7;i++){var d=addD(m,i),k=ymd(d),c=S.jobs.filter(function(j){return j.date===k}).length;
+  for(var i=0;i<7;i++){var d=addD(m,i),k=ymd(d),c=S.jobs.filter(function(j){return j.date===k&&mineOk(j)}).length;
     h+='<button data-d="'+k+'" aria-pressed="'+(k===sel)+'">'+(c?"<i>"+c+"</i>":"")+DN[d.getDay()]+"<b>"+d.getDate()+"</b></button>"}
   $("week").innerHTML=h;
   Array.prototype.forEach.call($("week").children,function(b){b.onclick=function(){sel=b.dataset.d;renderAg()}});
   var pcv=S.jobs.filter(function(j){return j.st==="Hecho"}).reduce(function(a,j){return a+j.total},0);$("pc").textContent=OWN&&pcv?"Trabajos hechos sin cobrar: "+crc(pcv):"";
-  var L=S.jobs.filter(function(j){return j.date===sel}).sort(function(a,b){return a.time<b.time?-1:1}),sd=pd(sel);
+  var L=S.jobs.filter(function(j){return j.date===sel&&mineOk(j)}).sort(function(a,b){return a.time<b.time?-1:1}),sd=pd(sel);
   var tot=L.reduce(function(a,j){return a+j.total},0);
   $("dh").textContent=(sel===today?"Hoy":DN[sd.getDay()]+" "+sd.getDate()+" "+MN[sd.getMonth()])+" · "+L.length+(L.length===1?" cita":" citas")+(L.length?" · "+crc(tot):"");
   var LK=sel+"|"+wOff;$("dl").classList.toggle("fresh",LK!==LASTK);LASTK=LK;$("dl").innerHTML=L.length?L.map(function(j){
     var hm=fmtT(j.time).split(" ");
-    return '<div class="job k-'+j.st.replace(/ /g,"")+(j.st==="Por confirmar"?' pc':'')+'"><div class="hr">'+hm[0]+'<small>'+(hm[1]||"")+'</small></div><div class="jb"><span class="stp">'+j.st+'</span>'+(j.st==="Por confirmar"?webBox(j):'')+'<div class="n">'+esc(j.cli)+'<b class="jp">'+crc(j.total)+'</b></div><div class="m">'+[j.veh,j.items.join(", ")].filter(Boolean).map(esc).join(" · ")+'</div>'+(locOf(j)?mapThumb(locOf(j)):'')+(j.note?'<div class="m">📝 '+esc(j.note)+'</div>':'')+pendNotes(j.cli).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+'</div>'}).join("")+
+    return '<div class="job k-'+j.st.replace(/ /g,"")+(j.st==="Por confirmar"?' pc':'')+'"><div class="hr">'+hm[0]+'<small>'+(hm[1]||"")+'</small></div><div class="jb"><span class="stp">'+j.st+'</span>'+whoChip(j)+(j.st==="Por confirmar"?webBox(j):'')+'<div class="n">'+esc(j.cli)+'<b class="jp">'+crc(j.total)+'</b></div><div class="m">'+[j.veh,j.items.join(", ")].filter(Boolean).map(esc).join(" · ")+'</div>'+(locOf(j)?mapThumb(locOf(j)):'')+(j.note?'<div class="m">📝 '+esc(j.note)+'</div>':'')+pendNotes(j.cli).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+'</div>'}).join("")+
     '<div class="acts">'+nextBtn(j)+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a>'+(j.date>today&&!isDone(j)?'<button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>':'')+(j.st==="Pendiente"&&j.date===today?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'</div>'+
     '<details class="mas"><summary>Más opciones</summary><div class="acts"><select data-id="'+j.id+'" class="st-'+j.st+'" aria-label="Estado">'+(j.st==="Por confirmar"?["Por confirmar"]:[]).concat(["Pendiente","Hecho","Pagado"]).map(function(s){return "<option"+(s===j.st?" selected":"")+">"+s+"</option>"}).join("")+'</select><button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button><button class="alt sm" data-del="'+j.id+'">Borrar</button></div></details></div></div>'}).join(""):'<div class="empty">No hay citas este día.</div>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"),function(b){b.onclick=function(){remind(b.dataset.wa)}});
@@ -768,7 +797,7 @@ $("nw").onclick=function(){wOff++;renderAg()};
 /* Siguiente paso de cada cita: hecha → cobrar → pagada */
 function nextBtn(j){if(j.st==="Pendiente"&&j.date<=today)return '<button class="sm nx" data-nx="'+j.id+'">✓ Marcar hecha</button>';
   if(j.st==="Hecho")return '<button class="sm nx" data-nx="'+j.id+'">✓ Ya pagó</button>'+(j.tel?'<button class="alt sm wao" data-cb="'+j.id+'">'+ICWA+'Cobrar</button>':'');return ""}
-function cobrar(j){waTo(j.tel,"Hola "+j.cli+" 👋 ¡Gracias por confiar en GlassDetailingCR! El total es "+crc(j.total)+"."+PAGO)}
+function cobrar(j){waTo(j.tel,msg("cob",j)+PAGO)}
 var PMS=["SINPE Móvil","Transferencia","Efectivo"];
 function pickPago(ok,cancel){var d=$("pgd");d.innerHTML='<div class="box"><h3>¿Cómo pagó?</h3><div class="m">Así sale después en Números.</div><div class="row" style="margin-top:16px;flex-direction:column;align-items:stretch">'+PMS.map(function(m){return '<button type="button" data-pm="'+m+'">'+m+'</button>'}).join("")+'<button type="button" class="alt" data-pm-x>Cancelar</button></div></div>';d.classList.add("on");
   Array.prototype.forEach.call(d.querySelectorAll("[data-pm]"),function(b){b.onclick=function(){d.classList.remove("on");ok(b.dataset.pm)}});
@@ -779,7 +808,7 @@ function remind(id){
   var j=S.jobs.find(function(x){return x.id==id}),n=j.tel.replace(/\D/g,"");if(n.length===8)n="506"+n;
   var diff=Math.round((pd(j.date)-pd(today))/864e5),d=pd(j.date);
   var cuando=diff===0?"hoy":diff===1?"mañana":"el "+DN[d.getDay()]+" "+d.getDate()+" de "+MN[d.getMonth()];
-  var t="Hola "+j.cli+" 👋 Te recuerdo tu cita con GlassDetailingCR "+cuando+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". Ocupamos un toma de 110 V cerca del carro y, si se puede, que esté bajo techo. ¡Nos vemos!";
+  var t=msg("rec",j,{cuando:cuando});
   window.open("https://wa.me/"+n+"?text="+encodeURIComponent(t),"_blank");
   // Se marca como recordada para que el aviso del inicio pase al siguiente cliente.
   if(!j.rc){j.rc=1;if(DB)DB.doc("jobs/"+j.id).update({rc:1}).catch(dberr);setTimeout(renderAg,300)}
@@ -804,7 +833,7 @@ function updClash(){var f=$("fecha").value||today,t=$("hora").value,c=clash(f,t,
   if(c){w.textContent="⚠ "+clashMsg(c);w.className="hw"}else if(L.length){w.textContent="Horas ocupadas ese día: "+L.map(function(j){return fmtT(j.time)}).join(", ");w.className="hw ok"}else{w.className="hw hide"}}
 $("fecha").addEventListener("input",updClash);$("hora").addEventListener("input",updClash);
 function isDone(j){return j.st==="Hecho"||j.st==="Pagado"}
-function whoN(e){if(e==="web")return "Un cliente (web)";if((e||"").toLowerCase()==="jersan06500@gmail.com")return "Alejandro";e=(e||"").split("@")[0].replace(/[._\d]+/g," ").trim().split(" ")[0]||"alguien";return e.charAt(0).toUpperCase()+e.slice(1)}
+function whoN(e){var pn=pName((e||"").toLowerCase());if(pn)return pn;if(e==="web")return "Un cliente (web)";if((e||"").toLowerCase()==="jersan06500@gmail.com")return "Alejandro";e=(e||"").split("@")[0].replace(/[._\d]+/g," ").trim().split(" ")[0]||"alguien";return e.charAt(0).toUpperCase()+e.slice(1)}
 function myEmail(){return (AUTH&&AUTH.currentUser&&AUTH.currentUser.email||"").toLowerCase()}
 function fmtD(f){var d=pd(f);return DN[d.getDay()]+" "+d.getDate()+" "+MN[d.getMonth()]}
 $("save").onclick=function(){
@@ -818,8 +847,8 @@ $("save").onclick=function(){
   var chk=t?DB.collection("jobs").where("date","==",f).get({source:"server"}).then(function(sn){return sn.docs.map(function(d){return d.data()}).filter(function(j){return j.st!=="Cancelada"})},function(){return null}):Promise.resolve(null);
   chk.then(function(L){b.disabled=false;if(EID!==id)return;
     var c2=L&&clash(f,t,id,L);if(c2){toast(clashMsg(c2));updClash();return}
-    var nj={zone:$("zsel2").value,cli:$("cli").value,tel:$("tel").value,veh:$("veh").value,items:it.map(function(x){return x.n}),lines:it,disc:+$("desc").value||0,total:calc(),date:f,time:t,note:$("note").value,ubic:$("ubic").value,src:$("src").value},oj=null;
-    if(EID){nj.id=EID;oj=S.jobs.find(function(x){return x.id==EID});nj.st=oj?oj.st:"Pendiente";nj.by=oj&&oj.by||myEmail()}else{nj.id=Date.now();nj.st="Pendiente";nj.by=myEmail()}
+    var nj={zone:$("zsel2").value,cli:$("cli").value,tel:$("tel").value,veh:$("veh").value,items:it.map(function(x){return x.n}),lines:it,disc:+$("desc").value||0,total:calc(),date:f,time:t,note:$("note").value,ubic:$("ubic").value,src:$("src").value,who:$("who").value},oj=null;
+    if(EID){nj.id=EID;oj=S.jobs.find(function(x){return x.id==EID});nj.st=oj?oj.st:"Pendiente";nj.by=oj&&oj.by||myEmail();if(oj){nj=Object.assign({},oj,nj);if(oj.date!==f)delete nj.rc}}else{nj.id=Date.now();nj.st="Pendiente";nj.by=myEmail()}
     DB.doc("jobs/"+nj.id).set(nj).catch(dberr);if(!EID)S.jobs.push(nj);
     var cu=fmtD(f)+(t?" · "+fmtT(t):"");
     if(!oj)notify("Nueva cita · "+nj.cli,cu+"\n"+nj.items.join(", ")+"\nLa agendó "+whoN(myEmail()));
@@ -895,7 +924,7 @@ $("gadd").onclick=function(){var a=+$("ga").value;if(!a||!$("gd").value){toast("
 function calUrl(j){var d=pd(j.date),t=(j.time||"09:00").split(":");d.setHours(+t[0],+t[1]);var e=new Date(d.getTime()+90*6e4);
   var f=function(x){return x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+"T"+pad(x.getHours())+pad(x.getMinutes())+"00"};
   return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailing: "+j.cli+(j.veh?" - "+j.veh:""))+"&dates="+f(d)+"/"+f(e)+"&details="+encodeURIComponent(j.items.join(", ")+" · "+crc(j.total)+(j.tel?" · Tel "+j.tel:""))+"&location="+encodeURIComponent(j.note||"")}
-var PAGO="\nPodés pagar por SINPE Móvil al 7045-8967 (a nombre de Jersan Alejandro Gutiérrez Ocampo), transferencia o efectivo.";
+var PAGO="\nPuede pagar por SINPE Móvil al 7045-8967 (a nombre de Jersan Alejandro Gutiérrez Ocampo), transferencia o efectivo.";
 function waTo(tel,t){var n=(tel||"").replace(/\D/g,"");if(n.length===8)n="506"+n;window.open("https://wa.me/"+n+"?text="+encodeURIComponent(t),"_blank")}
 $("cp").onclick=function(){var L=S.jobs.filter(function(j){return j.date===sel}).sort(function(a,b){return a.time<b.time?-1:1}),d=pd(sel);
   var t="Agenda "+DN[d.getDay()]+" "+d.getDate()+" "+MN[d.getMonth()]+":\n"+L.map(function(j){return fmtT(j.time)+" - "+j.cli+(j.veh?" ("+j.veh+")":"")+" · "+j.items.join(", ")+" · "+crc(j.total)+(j.tel?" · "+j.tel:"")+(j.note?" · "+j.note:"")}).join("\n");
@@ -909,7 +938,7 @@ function renderCli(){var M={};S.jobs.forEach(function(j){var k=j.cli.trim().toLo
   $("cll").innerHTML=CA.length?CA.map(function(c,i){var mo=c.last?Math.round((new Date()-pd(c.last))/2.6e9):0;
     return '<div class="job"><div class="jb"><div class="n">'+esc(c.n)+' <span class="m">· '+esc(c.veh)+'</span></div><div class="m">'+c.v+(c.v===1?" visita":" visitas")+(OWN?' · '+crc(c.t):'')+(c.last?' · última '+pd(c.last).getDate()+" "+MN[pd(c.last).getMonth()]:'')+'</div>'+(c.ubic?mapThumb(c.ubic,true):'')+(c.od?'<div class="m down">Hace '+mo+' meses que no viene</div>':'')+pendNotes(c.n).slice(0,3).map(function(n){return '<div class="cn">📌 '+esc(n.txt)+(n.due?' <span class="m">· '+dueTxt(n.due)+'</span>':'')+'</div>'}).join("")+
     '<div class="acts">'+(c.ubic?locBtns(c.ubic):'')+(c.tel?'<button class="sm wa" data-cw="'+i+'">'+ICWA+(c.od?"Escribirle":"WhatsApp")+'</button>':'')+'<button class="alt sm" data-ca="'+i+'">Agendar</button><button class="alt sm" data-cn="'+i+'">+ Nota</button></div></div></div>'}).join(""):'<div class="empty">Cuando agendés citas, tus clientes aparecen aquí.</div>';
-  Array.prototype.forEach.call(document.querySelectorAll("[data-cw]"),function(b){b.onclick=function(){var c=CA[b.dataset.cw];waTo(c.tel,"Hola "+c.n+", ¿cómo estás? Hace unos meses pulimos tu "+(c.veh||"vehículo")+" en GlassDetailingCR. Con el sol los focos y el parabrisas se vuelven a opacar, si querés te hago un retoque. ¿Te agendo esta semana?")}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-cw]"),function(b){b.onclick=function(){var c=CA[b.dataset.cw];waTo(c.tel,"Hola "+c.n+", ¿cómo está? Hace unos meses pulimos su "+(c.veh||"vehículo")+" en GlassDetailingCR. Con el sol los focos y el parabrisas se vuelven a opacar; si gusta, le hacemos un retoque. ¿Le agendo esta semana?")}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-cn]"),function(b){b.onclick=function(){var c=CA[b.dataset.cn];show("not");$("ncl").value=c.n;$("ntx").focus()}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ca]"),function(b){b.onclick=function(){var c=CA[b.dataset.ca];show("new");$("cli").value=c.n;$("tel").value=c.tel;$("veh").value=c.veh;$("ubic").value=c.ubic||"";updUbm()}});
 }
@@ -1030,7 +1059,7 @@ function animNums(root){Array.prototype.forEach.call(root.querySelectorAll("b"),
 function byT(a,b){return (a.time||"")<(b.time||"")?-1:1}
 function routeUrl(L){var P=L.map(function(j){var p=parseLoc(locOf(j));return !p?null:p.ll?p.ll:(p.q||null)}).filter(Boolean);if(!P.length)return null;
   var u="https://www.google.com/maps/dir/?api=1&travelmode=driving&destination="+encodeURIComponent(P[P.length-1]);if(P.length>1)u+="&waypoints="+encodeURIComponent(P.slice(0,-1).join("|"));return u}
-function renderHero(){today=ymd(new Date());var n=new Date(),h=n.getHours(),g=h<12?"Buenos días":h<18?"Buenas tardes":"Buenas noches",nowT=pad(h)+":"+pad(n.getMinutes());
+function renderHero(){today=ymd(new Date());var n=new Date(),h=n.getHours(),g=(h<12?"Buenos días":h<18?"Buenas tardes":"Buenas noches")+hiName(),nowT=pad(h)+":"+pad(n.getMinutes());
   var T=S.jobs.filter(function(j){return j.date===today}).sort(byT),done=T.filter(function(j){return isDone(j)}).length;
   var nx=T.find(function(j){return j.st==="Pendiente"&&(j.time||"99")>=nowT})||T.find(function(j){return j.st==="Pendiente"});
   var big="",line="",sub="";
@@ -1047,7 +1076,7 @@ function renderHero(){today=ymd(new Date());var n=new Date(),h=n.getHours(),g=h<
   var dn=$("hero").querySelector("[data-dn]");if(dn)dn.onclick=function(){markDone(nx)};var e2=$("hero").querySelector("[data-ed2]");if(e2)e2.onclick=function(){editJob(nx.id)};
   var hb=$("hb");if(hb)requestAnimationFrame(function(){requestAnimationFrame(function(){hb.style.width=(T.length?done/T.length*100:0)+"%"})});
   bindGo($("hero"))}
-function bindGo(root){Array.prototype.forEach.call(root.querySelectorAll("[data-go]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.go});waTo(j.tel,"Hola "+j.cli+", te escribo de GlassDetailingCR. Ya voy en camino para tu cita, llego en unos 20 minutos. ¡Nos vemos!")}})}
+function bindGo(root){Array.prototype.forEach.call(root.querySelectorAll("[data-go]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.go});waTo(j.tel,msg("cam",j))}})}
 function saveGoal(v){S.goal=v;if(typeof DB!=="undefined"&&DB){DB.doc("settings/goal").set({v:v}).catch(dberr)}else persist()}
 function renderGoal(){var n=new Date(),a=ymd(new Date(n.getFullYear(),n.getMonth(),1)),b=ymd(new Date(n.getFullYear(),n.getMonth()+1,0)),inc=sums(a,b).inc,G=+S.goal||0;
   var C=263.9,pct=G?Math.min(1,inc/G):0,dl=new Date(n.getFullYear(),n.getMonth()+1,0).getDate()-n.getDate()+1;
@@ -1151,7 +1180,7 @@ $("gadd2").onclick=function(){var t=$("gty").value,v=+$("gtv").value;if(!v||v<1)
   addGoal({type:t,target:v,title:t==="manual"?$("gtt").value.trim():""});$("gtv").value="";$("gtt").value=""};
 Array.prototype.forEach.call($("gseg").children,function(b){b.onclick=function(){GP=b.dataset.p;renderGoals()}});
 setNMode(NMODE);
-var TABS=["ag","new","cli","not","ins","num"];
+var TABS=["ag","new","cli","not","ins","num","per"];
 function show(v){if(v==="ag")LASTK=null;if(v==="num"&&!OWN)v="ag";CUR=v;TABS.forEach(function(k){$("v-"+k).classList.toggle("hide",k!==v);$("t-"+k).setAttribute("aria-selected",k===v)});
   if(v==="ag")renderAg();if(v==="new"){$("fecha").value=sel;clients();updClash()}if(v==="cli")renderCli();if(v==="num"){$("gf").value=today;renderNum();adLoad(false)}if(v==="not"){renderNotes();if(NMODE==="g")renderGoals()}if(v==="ins")renderIns();window.scrollTo(0,0)}
 TABS.forEach(function(k){$("t-"+k).onclick=function(){masClose();if(k==="new"&&EID)resetForm();show(k)}});
@@ -1184,8 +1213,8 @@ function delDocs(docs,msg){if(!DB)return;Promise.all(docs.map(function(x){return
 
 /* NOTAS Y RECORDATORIOS */
 var NOTES=[],INS=[],MOVS=[],NF="p";
-function onSettings(sn){GOALS=[];NOTES=[];INS=[];MOVS=[];var hadM=!!(META&&META.token);META=null;sn.docs.forEach(function(d){var x=d.data();if(!x)return;if(d.id==="meta")META=x;if(x.kind==="goal")GOALS.push(x);else if(x.kind==="note")NOTES.push(x);else if(x.kind==="ins")INS.push(x);else if(x.kind==="mov")MOVS.push(x)});
-  if(CUR==="num"&&!!(META&&META.token)!==hadM)adLoad(true);updBadge();if(CUR==="not"){renderNotes();if(NMODE==="g")renderGoals()}if(CUR==="ins")renderIns();if(CUR==="ag")renderAg();if(CUR==="cli")renderCli()}
+function onSettings(sn){GOALS=[];NOTES=[];INS=[];MOVS=[];var hadM=!!(META&&META.token);META=null;window.PERSO={};sn.docs.forEach(function(d){var x=d.data();if(!x)return;if(d.id==="meta")META=x;if(d.id==="perso")window.PERSO=x;if(x.kind==="goal")GOALS.push(x);else if(x.kind==="note")NOTES.push(x);else if(x.kind==="ins")INS.push(x);else if(x.kind==="mov")MOVS.push(x)});
+  applyPerso();if(CUR==="num"&&!!(META&&META.token)!==hadM)adLoad(true);updBadge();if(CUR==="not"){renderNotes();if(NMODE==="g")renderGoals()}if(CUR==="ins")renderIns();if(CUR==="ag")renderAg();if(CUR==="cli")renderCli()}
 function cliList(){var u={};S.jobs.forEach(function(j){if(j.cli)u[j.cli.trim()]=1});return Object.keys(u).sort(function(a,b){return a.localeCompare(b)})}
 function cliTel(n){n=(n||"").trim().toLowerCase();var j=S.jobs.filter(function(x){return (x.cli||"").trim().toLowerCase()===n&&x.tel}).pop();return j?j.tel:""}
 function pendNotes(cli){var k=(cli||"").trim().toLowerCase();if(!k)return [];return NOTES.filter(function(n){return !n.done&&n.cli&&n.cli.trim().toLowerCase()===k}).sort(noteSort)}
@@ -1210,7 +1239,7 @@ function renderNotes(){
   var gN=function(id){return NOTES.find(function(x){return x.id==id})};
   Array.prototype.forEach.call(document.querySelectorAll("[data-nk]"),function(b){b.onclick=function(){var n=gN(b.dataset.nk);if(!n||!DB)return;var dn=!n.done;
     DB.doc("settings/note-"+n.id).update({done:dn,doneBy:dn?myEmail():"",doneAt:dn?Date.now():0}).catch(dberr);if(dn){toast("¡Hecho! ✓");try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}}}});
-  Array.prototype.forEach.call(document.querySelectorAll("[data-nw]"),function(b){b.onclick=function(){var n=gN(b.dataset.nw);waTo(cliTel(n.cli),"Hola "+n.cli+", te escribo de GlassDetailingCR. ")}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nw]"),function(b){b.onclick=function(){var n=gN(b.dataset.nw);waTo(cliTel(n.cli),"Hola "+n.cli+", le escribo de GlassDetailingCR. ")}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-nc]"),function(b){b.onclick=function(){var n=gN(b.dataset.nc);$("q").value=n.cli;show("cli")}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-nd]"),function(b){b.onclick=function(){var n=gN(b.dataset.nd);if(!n)return;
     confirmDel({t:"¿Borrar esta nota?",w:esc(n.txt)+(n.cli?'<div class="m">👤 '+esc(n.cli)+'</div>':'')},function(){delDocs([["settings/note-"+n.id,n]],"Nota borrada")})}})}
@@ -1433,22 +1462,22 @@ $("t-rv").onclick=function(){masClose();rvOpen()};$("rv-x").onclick=rvClose;$("r
 $("rv-wa").onclick=function(){window.open("https://wa.me/?text="+encodeURIComponent("¡Hola! 👋 Agendá tu cita con GlassDetailingCR aquí, en 1 minuto. Domicilio gratis en toda la GAM:\n"+BOOKURL),"_blank")};
 $("rv-cp").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(BOOKURL):Promise.reject()).then(function(){toast("Enlace copiado ✓")},function(){toast("No se pudo copiar")})};
 $("rv-sh").onclick=function(){if(navigator.share)navigator.share({title:"GlassDetailingCR",text:"Agendá tu cita con GlassDetailingCR",url:BOOKURL}).catch(function(){});else $("rv-cp").click()};
-function cxLink(G){var j=G[0];if(!j||!j.ck)return "";return "\n\nSi no podés, cancelá aquí: "+location.origin+location.pathname.replace(/[^/]*$/,"")+"reservar/?cancelar="+G.map(function(x){return x.id}).join(".")+"&k="+j.ck+"&d="+j.date+"&h="+parseInt(j.time,10)+"&t="+j.tel}
+function cxLink(G){var j=G[0];if(!j||!j.ck)return "";return "\n\nSi no puede, cancele aquí: "+location.origin+location.pathname.replace(/[^/]*$/,"")+"reservar/?cancelar="+G.map(function(x){return x.id}).join(".")+"&k="+j.ck+"&d="+j.date+"&h="+parseInt(j.time,10)+"&t="+j.tel}
 function webGroup(j){if(!j.web||!j.at)return [j];return S.jobs.filter(function(x){return x.web&&x.tel===j.tel&&x.at===j.at&&x.date===j.date}).sort(function(a,b){return (a.time||"")<(b.time||"")?-1:1})}
 function webBox(j){var G=webGroup(j),gi=G.indexOf(j);return '<div class="webb">'+(G.length>1?'🚗🚗 <b>Reserva web de '+G.length+' carros</b> ('+(gi+1)+' de '+G.length+') · total '+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+' · falta confirmar':'🌐 <b>Reserva desde la web</b> · falta confirmar')+(j.vt?' · '+(j.vt==="suv"?"SUV o pick-up":"Sedán"):'')+'<div class="acts"><button class="sm" data-wc="'+j.id+'">✓ Confirmar</button><button class="alt sm" data-wr="'+j.id+'">Rechazar</button></div></div>'}
 function bindWeb(root){var gJ=function(id){return S.jobs.find(function(x){return x.id==id})};
   Array.prototype.forEach.call(root.querySelectorAll("[data-wc]"),function(b){b.onclick=function(){var j=gJ(b.dataset.wc);if(!j||!DB)return;var G=webGroup(j).filter(function(x){return x.st==="Por confirmar"});
     G.forEach(function(x){DB.doc("jobs/"+x.id).update({st:"Pendiente"}).catch(dberr)});toast(G.length>1?"Reserva de "+G.length+" carros confirmada ✓":"Cita confirmada ✓");
-    if(G.length>1)waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" para tus "+G.length+" carros:\n"+G.map(function(x){return "• "+fmtT(x.time)+" · "+(x.veh||"")+" · "+crc(x.total)}).join("\n")+"\nTotal: "+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+". El día anterior te escribimos para recordarte. ¡Nos vemos!"+PAGO+cxLink(G));
-    else waTo(j.tel,"Hola "+j.cli+" 👋 Te confirmo tu cita con GlassDetailingCR el "+fmtD(j.date)+" a las "+fmtT(j.time)+(j.veh?" para tu "+j.veh:"")+". Total: "+crc(j.total)+". El día anterior te escribimos para recordarte. ¡Nos vemos!"+PAGO+cxLink(G))}});
+    if(G.length>1)waTo(j.tel,"Hola "+j.cli+" 👋 Le confirmo su cita con GlassDetailingCR el "+fmtD(j.date)+" para sus "+G.length+" carros:\n"+G.map(function(x){return "• "+fmtT(x.time)+" · "+(x.veh||"")+" · "+crc(x.total)}).join("\n")+"\nTotal: "+crc(G.reduce(function(a,x){return a+(+x.total||0)},0))+". El día anterior le escribimos para recordarle. ¡Nos vemos!"+PAGO+cxLink(G));
+    else waTo(j.tel,msg("conf",j)+PAGO+cxLink(G))}});
   Array.prototype.forEach.call(root.querySelectorAll("[data-wr]"),function(b){b.onclick=function(){var j=gJ(b.dataset.wr);if(!j)return;var G=webGroup(j).filter(function(x){return x.st==="Por confirmar"}),n=G.length;
     confirmDel({t:n>1?"¿Rechazar la reserva de "+n+" carros?":"¿Rechazar esta reserva?",w:esc(j.cli)+' <span class="m">· '+fmtD(j.date)+" · "+fmtT(G[0].time)+(n>1?" · "+n+" carros":"")+'</span>',m:"Se borra"+(n>1?"n las citas":" la cita")+" y esas horas quedan libres otra vez. Después te abro WhatsApp por si querés avisarle al cliente.",ok:"Sí, rechazar"},
-      function(){delDocs(G.map(function(x){return ["jobs/"+x.id,x]}),n>1?"Reserva de "+n+" carros rechazada":"Reserva rechazada");if(j.tel)waTo(j.tel,"Hola "+j.cli+", te escribimos de GlassDetailingCR por tu reserva del "+fmtD(j.date)+" a las "+fmtT(G[0].time)+". ")})}})}
+      function(){delDocs(G.map(function(x){return ["jobs/"+x.id,x]}),n>1?"Reserva de "+n+" carros rechazada":"Reserva rechazada");if(j.tel)waTo(j.tel,"Hola "+j.cli+", le escribimos de GlassDetailingCR por su reserva del "+fmtD(j.date)+" a las "+fmtT(G[0].time)+". ")})}})}
 var _ra2=renderAg;renderAg=function(){_ra2();bindWeb($("dl"))};
 var _rh2=renderHero;renderHero=function(){_rh2();var P=S.jobs.filter(function(j){return j.st==="Por confirmar"}).sort(function(a,b){return (a.date+a.time)<(b.date+b.time)?-1:1});
   (S.cx||[]).forEach(function(j){var c=document.createElement("div");c.className="cxn";
     c.innerHTML='❌ <b>'+esc(j.cli)+'</b> canceló su cita del '+fmtD(j.date)+(j.time?' · '+fmtT(j.time):'')+(j.cxWhy?' · '+esc(j.cxWhy):'')+'<div class="acts"><button class="sm" data-cxw="'+j.id+'">Escribirle</button><button class="alt sm" data-cxs="'+j.id+'">Entendido</button></div>';
-    c.querySelector("[data-cxw]").onclick=function(){waTo(j.tel,"Hola "+j.cli+" 👋 Vimos que cancelaste tu cita del "+fmtD(j.date)+". ¿Querés que te ayudemos a buscar otro día?")};
+    c.querySelector("[data-cxw]").onclick=function(){waTo(j.tel,"Hola "+j.cli+" 👋 Vimos que canceló su cita del "+fmtD(j.date)+". ¿Le ayudamos a buscar otro día?")};
     c.querySelector("[data-cxs]").onclick=function(){if(DB)DB.doc("jobs/"+j.id).update({cxSeen:true}).catch(dberr)};$("avisos").appendChild(c)});
   if(P.length){var d=document.createElement("button");d.className="sm hnote";d.textContent="🌐 "+P.length+(P.length===1?" reserva web por confirmar":" reservas web por confirmar");
     d.onclick=function(){sel=P[0].date;wOff=Math.round((monday(pd(sel))-monday(new Date()))/6048e5);renderAg();$("dl").scrollIntoView({behavior:"smooth"})};$("avisos").appendChild(d)}};
@@ -1528,7 +1557,7 @@ function legHtml(g,j){if(!g)return "";if(g.unk)return '<div class="trv">🚗 Sin
   return '<div class="trv'+(g.tight?' tight':'')+'">'+t+(g.tight?' · justo a tiempo':' ✓')+'</div>'}
 var _ra3=renderAg;renderAg=function(){_ra3();var D=dayLegs(sel);Array.prototype.forEach.call(document.querySelectorAll("#dl .job"),function(c){var e=c.querySelector("[data-ed]");if(!e)return;var j=S.jobs.find(function(x){return x.id==e.dataset.ed});if(!j)return;var h=legHtml(D.legs[j.id],j);if(!h)return;var jb=c.querySelector(".jb")||c;jb.insertAdjacentHTML("afterbegin",h)});
   Array.prototype.forEach.call(document.querySelectorAll("[data-late]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.late});if(!j)return;var a=+b.dataset.arr,mins=Math.max(5,Math.round((a-tmin(j.time))/5)*5);
-    waTo(j.tel,"Hola "+j.cli+" 👋 Te escribimos de GlassDetailingCR. Vamos con un atraso de unos "+durTxt(mins)+" por la cita anterior: llegaríamos aproximadamente a las "+hm(a)+". Disculpá la molestia. Si esa hora no te sirve, avisanos y la movemos.")}})};
+    waTo(j.tel,"Hola "+j.cli+" 👋 Te escribimos de GlassDetailingCR. Vamos con un atraso de unos "+durTxt(mins)+" por la cita anterior: llegaríamos aproximadamente a las "+hm(a)+". Disculpe la molestia. Si esa hora no le sirve, avísenos y la movemos.")}})};
 var _rh3=renderHero;renderHero=function(){_rh3();var D=dayLegs(today),late=D.list.filter(function(j){return D.legs[j.id]&&D.legs[j.id].late}),unk=D.list.filter(function(j){return D.legs[j.id]&&D.legs[j.id].unk}).length;
   if(D.list.length<2)return;var box=document.createElement("details");box.className="rtbx"+(late.length?" late":"");var ru=routeUrl(D.list.filter(function(j){return j.st==="Pendiente"}));
   box.innerHTML='<summary>'+(late.length?'⚠️ '+late.length+(late.length===1?' traslado no da tiempo hoy':' traslados no dan tiempo hoy'):'🧭 Ruta de hoy: los traslados dan tiempo')+(unk?' · '+unk+' sin ubicación':'')+'</summary><ul class="rtl">'+
@@ -1550,6 +1579,54 @@ function updTravel(){var w=$("trw"),f=$("fecha").value||today,t=$("hora").value,
 $("ubic").addEventListener("input",function(){var u=$("ubic").value,pl=u?parseLoc(u):null;if(pl&&pl.ll){var c=pl.ll.split(",");$("zsel2").value=zNear(+c[0],+c[1])}});
 $("cli").addEventListener("change",function(){if($("zsel2").value)return;var n=$("cli").value.trim().toLowerCase(),j=S.jobs.filter(function(x){return (x.cli||"").trim().toLowerCase()===n}).pop(),p=j&&jobPos(j);if(p){$("zsel2").value=p.n;updTravel()}});
 var _sv=$("save").onclick,ACK=0;$("save").onclick=function(e){updTravel();if(TRACK&&Date.now()-ACK>15000){ACK=Date.now();toast("⚠️ El traslado no da tiempo. Tocá Agendar otra vez para guardar igual.");$("trw").scrollIntoView&&$("trw").scrollIntoView({block:"center",behavior:"smooth"});return}ACK=0;return _sv.call(this,e)};
+/* PERSONALIZAR: perfil y color de cada uno, frase, pago y mensajes (settings/perso) */
+var PCOL=[["#0077B6","Azul"],["#2E9E6A","Verde"],["#E07A1F","Naranja"],["#7B5CC4","Morado"],["#D04E7E","Rosado"]],MOT0=MOT.slice(),LASTF=null,PCSEL="",
+  MSGN={conf:"Confirmación de la cita",rec:"Recordatorio",cam:"Voy en camino",cob:"Cobro"};
+function P(){return window.PERSO||{}}
+function msg0(k){return {
+  conf:"Hola {cliente} 👋 Le confirmo su cita con GlassDetailingCR el {fecha} a las {hora} para su {vehiculo}. Total: {total}. El día anterior le escribimos para recordarle. ¡Nos vemos!",
+  rec:"Hola {cliente} 👋 Le recuerdo su cita con GlassDetailingCR {cuando} a las {hora} para su {vehiculo}. Ocupamos un toma de 110 V cerca del carro y, si se puede, que esté bajo techo. ¡Nos vemos!",
+  cam:"Hola {cliente}, le escribo de GlassDetailingCR. Ya voy en camino para su cita, llego en unos 20 minutos. ¡Nos vemos!",
+  cob:"Hola {cliente} 👋 ¡Gracias por confiar en GlassDetailingCR! El total es {total}."}[k]}
+function nk(w){return String(w).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim()}
+function msg(k,j,x){var t=(P().msg||{})[k]||msg0(k),o=Object.assign({cliente:j.cli||"",fecha:fmtD(j.date),hora:j.time?fmtT(j.time):"",vehiculo:j.veh||"vehículo",total:crc(+j.total||0)},x||{});
+  return t.replace(/\{([^{}]+)\}/g,function(m,w){var v=o[nk(w)];return v!=null?v:m})}
+function members(){var L=[OWNER].concat(TEAM||[]).map(function(e){return String(e).toLowerCase()});return L.filter(function(e,i){return e&&L.indexOf(e)===i})}
+function pName(e){var p=(P().people||{})[e];return p&&p.n?String(p.n):""}
+function pColor(e){var p=(P().people||{})[e];if(p&&/^#[0-9a-f]{6}$/i.test(p.c||""))return p.c;var i=members().indexOf(e);return PCOL[(i<0?0:i)%PCOL.length][0]}
+function hiName(){var e=myEmail();if(!e)return "";var u=AUTH&&AUTH.currentUser,n=pName(e)||(u&&u.displayName||"").split(" ")[0]||whoN(e);return n?", "+n:""}
+function whoChip(j){return j.who?'<span class="who" style="--wc:'+pColor(j.who)+'">'+esc(whoN(j.who))+'</span>':""}
+function applyPerso(){var x=P(),sp=String(x.sinpe||"70458967"),ti=x.titular||"Jersan Alejandro Gutiérrez Ocampo";
+  PAGO="\nPuede pagar por SINPE Móvil al "+sp.slice(0,4)+"-"+sp.slice(4)+" (a nombre de "+ti+"), transferencia o efectivo.";
+  var f=(x.frase||"").trim();if(f!==LASTF){LASTF=f;MOT=f?[f]:MOT0;showMot(f?0:dayNum()*37)}}
+/* Mis citas: las asignadas a mí y las que nadie tiene (ej. reservas web) */
+var MINE=false;try{MINE=localStorage.getItem("gdcr_mine")==="1"}catch(e){}
+function mineOk(j){return !MINE||!j.who||j.who===myEmail()}
+function mineBtns(){Array.prototype.forEach.call($("mine").children,function(b){b.setAttribute("aria-pressed",(b.dataset.m==="1")===MINE)})}
+Array.prototype.forEach.call($("mine").children,function(b){b.onclick=function(){MINE=b.dataset.m==="1";try{localStorage.setItem("gdcr_mine",MINE?"1":"0")}catch(e){}mineBtns();renderAg()}});mineBtns();
+function fillWho(v){var s=$("who");s.innerHTML='<option value="">Sin asignar</option>'+members().map(function(e){return '<option value="'+esc(e)+'">'+esc(whoN(e))+'</option>'}).join("");s.value=v||""}
+var _rf=resetForm;resetForm=function(){_rf();fillWho(myEmail())};
+var _ej=editJob;editJob=function(id){_ej(id);var j=S.jobs.find(function(x){return x.id==id});if(j)fillWho(j.who||"")};
+var _sh=show;show=function(v){_sh(v);if(v==="per")renderPer();if(v==="new"&&!EID)fillWho($("who").value||myEmail())};
+/* Modo de pantalla: solo en este celular */
+function themeGet(){try{return localStorage.getItem("gdcr_theme")||""}catch(e){return ""}}
+function themeBtns(){var t=themeGet();Array.prototype.forEach.call($("pf_t").children,function(b){b.setAttribute("aria-pressed",b.dataset.t===t)})}
+Array.prototype.forEach.call($("pf_t").children,function(b){b.onclick=function(){var t=b.dataset.t;try{localStorage.setItem("gdcr_theme",t)}catch(e){}
+  if(t)document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;themeBtns()}});
+function renderPer(){var e=myEmail(),x=P();
+  $("pf_n").value=pName(e);$("pf_n").placeholder=whoN(e);PCSEL=pColor(e);colBtns();themeBtns();
+  $("pf_boss").classList.toggle("hide",!BOSS);if(!BOSS)return;
+  $("pf_f").value=x.frase||"";$("pf_sp").value=x.sinpe||"70458967";$("pf_ti").value=x.titular||"Jersan Alejandro Gutiérrez Ocampo";
+  $("pf_ms").innerHTML=Object.keys(MSGN).map(function(k){return '<label for="pf_m_'+k+'">'+MSGN[k]+'</label><textarea id="pf_m_'+k+'" rows="4">'+esc((x.msg||{})[k]||msg0(k))+'</textarea><button type="button" class="alt sm" data-mr="'+k+'">Volver al original</button>'}).join("");
+  Array.prototype.forEach.call(document.querySelectorAll("[data-mr]"),function(b){b.onclick=function(){$("pf_m_"+b.dataset.mr).value=msg0(b.dataset.mr)}})}
+function colBtns(){$("pf_c").innerHTML=PCOL.map(function(c){return '<button type="button" data-c="'+c[0]+'" style="--pc:'+c[0]+'" aria-label="'+c[1]+'" aria-pressed="'+(c[0]===PCSEL)+'"></button>'}).join("");
+  Array.prototype.forEach.call($("pf_c").children,function(b){b.onclick=function(){PCSEL=b.dataset.c;colBtns()}})}
+function saveP(o,ok){if(!DB){toast("Sin conexión con el sistema compartido.");return}DB.doc("settings/perso").set(o,{merge:true}).then(function(){toast(ok)}).catch(dberr)}
+$("pf_s").onclick=function(){var o={people:{}};o.people[myEmail()]={n:$("pf_n").value.trim(),c:PCSEL};saveP(o,"Perfil guardado ✓")};
+$("pf_fs").onclick=function(){if(BOSS)saveP({frase:$("pf_f").value.trim()},"Frase guardada ✓")};
+$("pf_ps").onclick=function(){if(!BOSS)return;var sp=$("pf_sp").value.replace(/\D/g,""),t=$("pf_ti").value.trim();
+  if(sp.length!==8){toast("El número de SINPE tiene 8 dígitos.");return}if(!t){toast("Escribí a nombre de quién está el SINPE.");return}saveP({sinpe:sp,titular:t},"Datos de pago guardados ✓")};
+$("pf_mss").onclick=function(){if(!BOSS)return;var m={};Object.keys(MSGN).forEach(function(k){var v=$("pf_m_"+k).value.trim();m[k]=v&&v!==msg0(k)?v:""});saveP({msg:m},"Mensajes guardados ✓")};
 </script>
 
 <script>
@@ -1558,7 +1635,7 @@ var REVURL="";
 function revMsg(j){var z="";try{var p=jobPos(j);z=p&&p.n?p.n.replace(/\s*\(.*\)/,"").replace(/ centro$/i,""):""}catch(e){}
   var sv=(j.items&&j.items[0]?String(j.items[0]).split(/[·(]/)[0].trim().toLowerCase():"pulido de parabrisas");
   var nm=String(j.cli||"").split(" ")[0];
-  return "¡Hola "+nm+"! Gracias por confiar en GlassDetailingCR 🙌\n\nSi algo no te quedó perfecto, avisame y lo arreglamos."+(REVURL?"\n\nY si quedaste contento, ¿nos ayudás con una reseña en Google? Es 1 minuto y nos ayuda muchísimo a que más gente nos encuentre ⭐\n"+REVURL+"\n\nSi podés, contá qué te hicimos"+(z?" y la zona":"")+", por ejemplo: «"+sv+(z?" en "+z:"")+", quedó como nuevo». ":"\n\n")+"¡Muchas gracias!"}
+  return "¡Hola "+nm+"! Gracias por confiar en GlassDetailingCR 🙌\n\nSi algo no le quedó perfecto, avíseme y lo arreglamos."+(REVURL?"\n\nY si quedó contento, ¿nos ayuda con una reseña en Google? Es 1 minuto y nos ayuda muchísimo a que más gente nos encuentre ⭐\n"+REVURL+"\n\nSi puede, cuente qué le hicimos"+(z?" y la zona":"")+", por ejemplo: «"+sv+(z?" en "+z:"")+", quedó como nuevo». ":"\n\n")+"¡Muchas gracias!"}
 function revSend(j){if(!j||!j.tel)return;waTo(j.tel,revMsg(j));if(!j.rv){j.rv=1;if(DB)DB.doc("jobs/"+j.id).update({rv:1}).catch(function(){});setTimeout(renderAg,300)}}
 function askRev(j){var o=document.getElementById("revAsk");if(o)o.remove();o=document.createElement("div");o.id="revAsk";
   o.style.cssText="position:fixed;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;max-width:460px;margin:0 auto;background:var(--card,#fff);color:var(--ink,#111);border:1px solid var(--line,#ddd);border-radius:16px;padding:14px 14px 12px;box-shadow:0 12px 40px rgba(0,0,0,.28);font-size:15px";
@@ -1575,7 +1652,7 @@ function cleanLoc(t){t=String(t||"").trim();var c=t.match(/(-?\d{1,2}\.\d{3,})\s
 (function(){var el=$("ubic");if(!el)return;el.addEventListener("paste",function(){setTimeout(function(){var v=cleanLoc(el.value);if(v!==el.value){el.value=v;updUbm()}},0)})})();
 $("ubask").onclick=function(){var tel=($("tel").value||"").replace(/\D/g,"");if(tel.length<8){toast("Primero poné el WhatsApp del cliente");$("tel").focus();return}
   var nm=($("cli").value||"").trim().split(" ")[0];
-  waTo(tel,"¡Hola"+(nm?" "+nm:"")+"! 👋 Para llegar sin perdernos, tocá este enlace y después «Enviar mi ubicación» 📍\nhttps://jersan06500-svg.github.io/glassdetailingcr-app/ubicacion/?t="+tel.slice(-8)+(nm?"&n="+encodeURIComponent(nm):"")+"\n\nSi preferís, también podés mandarla por aquí: 📎 → Ubicación.")};
+  waTo(tel,"¡Hola"+(nm?" "+nm:"")+"! 👋 Para llegar sin perdernos, toque este enlace y después «Enviar mi ubicación» 📍\nhttps://jersan06500-svg.github.io/glassdetailingcr-app/ubicacion/?t="+tel.slice(-8)+(nm?"&n="+encodeURIComponent(nm):"")+"\n\nSi prefiere, también puede mandarla por aquí: 📎 → Ubicación.")};
 /* al abrir un enlace ?loc=lat,lng&t=tel desde WhatsApp, se guarda en la cita de ese cliente */
 (function(){var q=new URLSearchParams(location.search),lc=q.get("loc"),tl=q.get("t");
   if(lc){try{sessionStorage.setItem("gsLoc",JSON.stringify({loc:lc,t:tl||""}))}catch(e){}try{history.replaceState(null,"",location.pathname)}catch(e){}}
