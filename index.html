@@ -362,6 +362,13 @@ h1 #who{font-size:14px;font-weight:600}
 </style>
 </head>
 <body class="locked">
+<video id="bgv" autoplay muted loop playsinline preload="auto" poster="web/img/fondo.jpg" aria-hidden="true"><source src="web/img/fondo.mp4" type="video/mp4"></video><div id="bgvv"></div>
+<script>(function(){var v=document.getElementById("bgv"),q=matchMedia("(prefers-reduced-motion:reduce)").matches,t=0;
+if(q){v.removeAttribute("autoplay");v.pause()}
+function f(){t=0;v.style.transform="translate3d(0,"+(-Math.min(scrollY,1600)*.12)+"px,0) scale(1.04)"}
+if(!q)addEventListener("scroll",function(){if(!t)t=requestAnimationFrame(f)},{passive:true});
+document.addEventListener("visibilitychange",function(){if(document.hidden)v.pause();else if(!q)v.play().catch(function(){})})})()</script>
+
 <div id="intro" aria-hidden="true"><canvas id="icv"></canvas>
 <div class="lgw"><div class="lgh"></div><div class="lgi"><img src="logo-full.png" alt="" width="736" height="463"><span class="lgsh"></span><span class="lgst"></span><span class="lgrg"></span></div>
 <div class="lgt" id="lgt"></div><div class="lgtag">Claridad que se nota</div></div>
@@ -661,6 +668,14 @@ body.locked .lk{border:0;border-radius:28px;padding:24px 20px;box-shadow:0 20px 
 #lk-login.mail #lmail{display:none}
 #lmail{margin-top:10px}
 @media (prefers-reduced-motion:no-preference){body.locked #lkbrand img{animation:gpop .5s cubic-bezier(.2,.8,.2,1)}body.locked .lk:not(.hide){animation:gup .35s .1s cubic-bezier(.2,.8,.2,1) both}}
+/* VIDEO DE FONDO (12 nov, aprobado) */
+#bgv{position:fixed;inset:-8% 0 auto 0;width:100%;height:116%;object-fit:cover;z-index:-2;pointer-events:none;will-change:transform}
+#bgvv{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 40%,transparent),color-mix(in srgb,var(--bg) 72%,transparent) 55%,color-mix(in srgb,var(--bg) 92%,transparent))}
+body,body:not(.locked){background:transparent!important}
+html{background:var(--bg)}
+.card:not(.hero),.acc,.avs{background:color-mix(in srgb,var(--card) 88%,transparent)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+header,nav{background:color-mix(in srgb,var(--bg) 78%,transparent)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.locked #bgvv{background:color-mix(in srgb,#0077B6 72%,transparent)}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
