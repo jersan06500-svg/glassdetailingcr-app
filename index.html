@@ -555,6 +555,22 @@ nav button{flex:1}
 .nsum{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;font-size:14px}
 .nsum b{display:block;font-size:16px;margin-bottom:2px}
 .nsum div{margin-top:4px}
+/* ANIMACIONES DE BOTONES (app del equipo) */
+#vtp button.lock{opacity:.35;text-decoration:line-through}
+.svc{border-radius:12px;transition:background-color .2s}
+.svc:has(input:checked){background:color-mix(in srgb,var(--acc) 9%,transparent)}
+@media (prefers-reduced-motion:no-preference){
+  button,a.sm,.week button,.svc input[type=checkbox]{transition:transform .16s cubic-bezier(.2,.8,.2,1),background-color .2s,color .2s,border-color .2s,opacity .2s}
+  button:active:not(:disabled),a.sm:active{transform:scale(.95)}
+  .seg button[aria-pressed=true],.week button[aria-pressed=true],.pcol button[aria-pressed=true],nav button[aria-selected=true] svg{animation:gpop .3s cubic-bezier(.2,.8,.2,1)}
+  .svc input[type=checkbox]:checked{animation:gpop .28s cubic-bezier(.2,.8,.2,1)}
+  .nstep:not(.hide),#v-per:not(.hide) .card{animation:gup .28s cubic-bezier(.2,.8,.2,1) both}
+  #tot.bump{animation:gbump .35s cubic-bezier(.2,.8,.2,1)}
+  #vok:not(:empty){animation:gup .25s ease both}
+}
+@keyframes gpop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes gup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes gbump{0%{transform:scale(1)}40%{transform:scale(1.14);color:var(--acc)}100%{transform:scale(1)}}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -1685,7 +1701,9 @@ function mkFix(){var v=$("vmk").value.trim(),k=Object.keys(MARCAS).find(function
 function vehSync(){$("veh").value=[$("vmk").value.trim(),$("vmd").value.trim(),$("vyr").value.trim()].filter(Boolean).join(" ")}
 function setVT(v,man){VT=v;if(man)VTMAN=true;Array.prototype.forEach.call($("vtp").children,function(b){b.setAttribute("aria-pressed",b.dataset.vt===v)});svcType()}
 function vehChange(){mkFix();vehSync();var g=vtGuess();
-  if(g&&!VTMAN)setVT(g);$("vok").textContent=g&&g===VT?"✓ Lo reconocimos como "+VTN[g]+".":""}
+  /* Si reconocemos el modelo, el tipo queda fijo y los otros se bloquean */
+  Array.prototype.forEach.call($("vtp").children,function(b){var lk=!!g&&b.dataset.vt!==g;b.classList.toggle("lock",lk);b.disabled=lk});
+  if(g&&VT!==g)setVT(g);$("vok").textContent=g?"✓ Es "+VTN[g]+": los otros tipos quedan bloqueados.":""}
 /* Al cambiar el tipo, los servicios del otro tipo se apagan y lo marcado se pasa al que corresponde */
 function svcType(){var w=VT==="pickup"?"suv":VT;SERV.forEach(function(s){var r=$("r-"+s.id);if(!r)return;var off=!!(w&&s.t&&s.t!==w);r.classList.toggle("off",off);$("c-"+s.id).disabled=off;
     if(off&&$("c-"+s.id).checked&&!VLOAD){$("c-"+s.id).checked=false;$("c-"+PAIR[s.id]).checked=true}});calc()}
@@ -1699,7 +1717,7 @@ function vehLoad(v,vt){v=String(v||"").trim();var m=v.match(/\s((19|20)\d\d)$/),
   var k=Object.keys(MARCAS).sort(function(a,b){return b.length-a.length}).find(function(x){var n=nrm(v);return n===nrm(x)||n.indexOf(nrm(x)+" ")===0});
   if(!k&&v){var w=v.split(" ");k=w.length>1?w[0]:"";}
   $("vmk").value=k||"";$("vmd").value=k?v.slice(k.length).trim():v;$("vyr").value=yr;VTMAN=!!vt;VT="";VLOAD=true;if(vt)setVT(vt);vehChange();if(!VT)setVT("");VLOAD=false}
-function vehReset(){["vmk","vmd","vyr"].forEach(function(i){$(i).value=""});VTMAN=false;$("vok").textContent="";setVT("")}
+function vehReset(){["vmk","vmd","vyr"].forEach(function(i){$(i).value=""});VTMAN=false;vehChange();setVT("")}
 /* Cliente que vuelve: con el nombre o con el WhatsApp se llena lo demás */
 function lastOf(f){return S.jobs.filter(f).sort(function(a,b){return a.date<b.date?1:-1})[0]}
 function cliFill(){var n=$("cli").value.trim().toLowerCase();if(!n)return;var j=lastOf(function(x){return (x.cli||"").trim().toLowerCase()===n});if(!j)return;
@@ -1707,7 +1725,7 @@ function cliFill(){var n=$("cli").value.trim().toLowerCase();if(!n)return;var j=
 $("tel").addEventListener("change",function(){var d=$("tel").value.replace(/\D/g,"").slice(-8);if(d.length!==8||$("cli").value.trim())return;
   var j=lastOf(function(x){return (x.tel||"").replace(/\D/g,"").slice(-8)===d});if(!j)return;$("cli").value=j.cli;$("cli").onchange();toast("Cliente encontrado: "+j.cli)});
 ["vmk","vmd","vyr"].forEach(function(i){$(i).addEventListener("input",vehChange);$(i).addEventListener("change",vehChange)});
-Array.prototype.forEach.call($("vtp").children,function(b){b.onclick=function(){setVT(b.dataset.vt,true);$("vok").textContent=""}});
+Array.prototype.forEach.call($("vtp").children,function(b){b.onclick=function(){if(!b.disabled)setVT(b.dataset.vt,true)}});
 $("vmkl").innerHTML=Object.keys(MARCAS).map(function(m){return '<option value="'+esc(m)+'">'}).join("");
 (function(){var y=new Date().getFullYear()+1,h="";for(var i=y;i>=1990;i--)h+='<option value="'+i+'">';$("vyrl").innerHTML=h})();
 var _rf2=resetForm;resetForm=function(){_rf2();vehReset()};
@@ -1722,6 +1740,8 @@ function renderSum(){var it=picked(),f=$("fecha").value||today;
     (garTxt({items:it.map(function(x){return x.n}),date:f})?'<div class="m">'+garTxt({items:it.map(function(x){return x.n}),date:f})+'</div>':'')}
 var _ng=nGo;nGo=function(n){_ng(n);if(n===3)renderSum()};
 $("fecha").addEventListener("change",function(){if(NSTEP===3)renderSum()});
+/* El total salta un poquito cuando cambia */
+var LASTT=null,_calc=calc;calc=function(){var t=_calc(),e=$("tot");if(LASTT!==null&&t!==LASTT&&e){e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")}LASTT=t;return t};
 setVT("");
 </script>
 
