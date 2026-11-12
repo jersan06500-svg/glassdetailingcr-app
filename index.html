@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Inter:wght@400;500;600;700;800&display=swap">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GlassDetailingCR</title>
@@ -625,17 +625,13 @@ nav button{flex:1}
   .avs[open] .avb{animation:gup .25s cubic-bezier(.2,.8,.2,1) both}
   .avs>summary b{animation:gpop .35s cubic-bezier(.2,.8,.2,1)}
 }
-/* LETRA ÚNICA: Michroma en toda la app (12 nov, pedido del dueño). Es muy ancha: se achica un poco y se quita el espaciado extra */
-*,*::before,*::after{font-family:"Michroma","Inter",system-ui,sans-serif!important;font-stretch:100%!important}
-html{font-size-adjust:.5}
-body,input,select,textarea,button{letter-spacing:0!important}
-h1,h2,h3,.hero .hc,.acc>summary span,.avs>summary span,.svh{font-weight:400!important;letter-spacing:.02em!important}
-h2,.hero .hn{text-transform:uppercase}
-h1>span:not(#who){background:none!important;-webkit-text-fill-color:currentColor!important;color:var(--acc)!important}
-nav button{font-size:10px!important}
-h1{font-size:16px!important}
+/* LETRA (12 nov, elegida por el dueño): Shrikhand en el nombre y los títulos; Inter en todo lo demás */
+h1,h2,.hero .hc,.acc>summary span,.avs>summary span,.svh,#fab{font-family:"Shrikhand",cursive!important;font-weight:400!important;letter-spacing:0!important;text-transform:none!important}
+h1{font-size:22px!important}
+h2{font-size:19px!important}
+.hero .hc{font-size:38px!important}
 #who{min-width:0;flex-shrink:1}
-#whoe{display:inline-block;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;font-size:9px!important}
+#whoe{display:inline-block;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;font-size:10px!important}
 #out{flex:none}
 /* BOTÓN FLOTANTE: agendar cita desde cualquier pestaña */
 #fab{position:fixed;right:16px;bottom:calc(82px + env(safe-area-inset-bottom,0px));z-index:20;display:inline-flex;align-items:center;gap:8px;height:56px;padding:0 20px 0 16px;border-radius:999px;border:0;background:var(--acc);color:var(--accink);font-size:13px;box-shadow:0 8px 24px color-mix(in srgb,var(--acc) 45%,transparent);transition:transform .2s cubic-bezier(.2,.8,.2,1),opacity .2s,box-shadow .2s}
