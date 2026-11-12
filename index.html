@@ -571,6 +571,35 @@ nav button{flex:1}
 @keyframes gpop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes gup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes gbump{0%{transform:scale(1)}40%{transform:scale(1.14);color:var(--acc)}100%{transform:scale(1)}}
+/* NÚMEROS EN BOTONES */
+#v-num .acc{padding:0;overflow:hidden}
+#v-num .acc>summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:56px;padding:12px 16px;cursor:pointer;font-weight:600;font-size:16px;-webkit-tap-highlight-color:transparent}
+#v-num .acc>summary::-webkit-details-marker{display:none}
+#v-num .acc>summary .av{margin-left:auto;font-weight:600;font-size:15px;color:var(--acc);white-space:nowrap}
+#v-num .acc>summary::after{content:"";flex:none;width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);margin:0 2px 4px 6px;transition:transform .2s}
+#v-num .acc[open]>summary::after{transform:rotate(-135deg);margin-bottom:-4px}
+#v-num .acc[open]>summary{border-bottom:1px solid var(--line)}
+#v-num .accb{padding:12px 16px 16px}
+#v-num .accb>h2{display:none}
+#v-num .acsep{font-size:13px;color:var(--mute);margin:18px 4px 8px}
+@media (prefers-reduced-motion:no-preference){#v-num .acc[open] .accb{animation:gup .25s cubic-bezier(.2,.8,.2,1) both}}
+/* NÚMEROS: efectos de los botones */
+#v-num .acc>summary{transition:background-color .2s,transform .16s cubic-bezier(.2,.8,.2,1)}
+#v-num .acc>summary .aci{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--acc) 10%,transparent);font-size:17px;flex:none;transition:transform .25s cubic-bezier(.2,.8,.2,1),background-color .2s}
+#v-num .acc[open]>summary{background:color-mix(in srgb,var(--acc) 6%,transparent)}
+#v-num .acc[open]>summary .aci{background:var(--acc)}
+@media (hover:hover){#v-num .acc>summary:hover{background:color-mix(in srgb,var(--acc) 5%,transparent)}}
+@media (prefers-reduced-motion:no-preference){
+  #v-num .acc>summary:active{transform:scale(.98)}
+  #v-num .acc>summary:active .aci{transform:scale(.85)}
+  #v-num .acc[open]>summary .aci{animation:gpop .35s cubic-bezier(.2,.8,.2,1)}
+  #v-num .acc[open]>summary .av{animation:gbump .35s cubic-bezier(.2,.8,.2,1)}
+  #v-num:not(.hide) .acc{animation:gup .32s cubic-bezier(.2,.8,.2,1) both}
+  #v-num:not(.hide) .acc:nth-of-type(2){animation-delay:.03s}#v-num:not(.hide) .acc:nth-of-type(3){animation-delay:.06s}
+  #v-num:not(.hide) .acc:nth-of-type(4){animation-delay:.09s}#v-num:not(.hide) .acc:nth-of-type(5){animation-delay:.12s}
+  #v-num:not(.hide) .acc:nth-of-type(6){animation-delay:.15s}#v-num:not(.hide) .acc:nth-of-type(n+7){animation-delay:.18s}
+  #v-num .accb .stats>div,#v-num .accb #pgs>.row{animation:gup .3s cubic-bezier(.2,.8,.2,1) both}
+}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -1742,6 +1771,26 @@ var _ng=nGo;nGo=function(n){_ng(n);if(n===3)renderSum()};
 $("fecha").addEventListener("change",function(){if(NSTEP===3)renderSum()});
 /* El total salta un poquito cuando cambia */
 var LASTT=null,_calc=calc;calc=function(){var t=_calc(),e=$("tot");if(LASTT!==null&&t!==LASTT&&e){e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")}LASTT=t;return t};
+/* NÚMEROS en botones: cada parte se abre al tocarla; lo que dejaste abierto se recuerda en este celular */
+var NACC=[["pgs","💳 Cómo pagaron"],["stats","📊 Resumen"],["chart","📈 Ingresos y gastos"],["gring","🎯 Meta del mes"],["cmp","↔️ Comparado con antes"],["gl","🧾 Gastos y materiales"],
+  ["",""],["bpl","🏷️ Precios base"],["adb","📣 Publicidad en Meta"],["rvb","🗓️ Ajustes de reservas"],["tml","👥 Equipo"],["ntb","🔔 Avisos al celular"],["bt","💾 Respaldo"]],NOPEN={};
+try{NOPEN=JSON.parse(localStorage.getItem("gdcr_nopen")||"{}")}catch(e){}
+(function(){var sec=$("v-num");NACC.forEach(function(a){
+  if(!a[0]){var t=document.createElement("div");t.className="acsep";t.textContent="Ajustes";sec.appendChild(t);return}
+  var el=$(a[0]),card=el&&el.closest(".card");if(!card)return;
+  var d=document.createElement("details"),b=document.createElement("div");d.className=card.className+" acc";if(card.id){d.id=card.id;card.removeAttribute("id")}
+  var sp=a[1].indexOf(" ");d.innerHTML='<summary><i class="aci" aria-hidden="true">'+a[1].slice(0,sp)+'</i><span>'+a[1].slice(sp+1)+'</span><b class="av" id="av-'+a[0]+'"></b></summary>';b.className="accb";
+  while(card.firstChild)b.appendChild(card.firstChild);d.appendChild(b);card.remove();sec.appendChild(d);
+  if(NOPEN[a[0]])d.open=true;
+  d.addEventListener("toggle",function(){NOPEN[a[0]]=d.open;try{localStorage.setItem("gdcr_nopen",JSON.stringify(NOPEN))}catch(e){}})})})();
+function accSum(){if(!$("av-pgs"))return;var r=range(per,0),c=sums(r[0],r[1]),paid=0,owe=0,n=new Date(),G=+S.goal||0;
+  S.jobs.forEach(function(j){if(j.date<r[0]||j.date>r[1])return;if(j.st==="Pagado")paid+=+j.total||0;else if(j.st==="Hecho")owe+=+j.total||0});
+  var mi=sums(ymd(new Date(n.getFullYear(),n.getMonth(),1)),ymd(new Date(n.getFullYear(),n.getMonth()+1,0))).inc;
+  $("av-pgs").textContent=crc(paid)+(owe?" · falta "+crc(owe):"");$("av-stats").textContent="Ganancia "+crc(c.gan);$("av-chart").textContent=crc(c.inc);
+  $("av-gring").textContent=G?Math.min(999,Math.round(mi/G*100))+"%":"Poner meta";$("av-gl").textContent=crc(c.ex)}
+var _rn3=renderNum;renderNum=function(){_rn3();accSum()};
+/* El enlace de reservas ya está en Más; aquí solo quedan los ajustes */
+var _rrv=renderRv;renderRv=function(){_rrv();var l=document.querySelector("#rvb .rvl");if(!l)return;var nx=l.nextElementSibling,pv=l.previousElementSibling;if(nx&&nx.classList.contains("row"))nx.remove();if(pv&&pv.classList.contains("m"))pv.remove();l.remove()};
 setVT("");
 </script>
 
