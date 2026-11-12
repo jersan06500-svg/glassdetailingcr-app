@@ -637,6 +637,18 @@ h1{font-size:16px!important}
 #who{min-width:0;flex-shrink:1}
 #whoe{display:inline-block;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;font-size:9px!important}
 #out{flex:none}
+/* BOTÓN FLOTANTE: agendar cita desde cualquier pestaña */
+#fab{position:fixed;right:16px;bottom:calc(82px + env(safe-area-inset-bottom,0px));z-index:20;display:inline-flex;align-items:center;gap:8px;height:56px;padding:0 20px 0 16px;border-radius:999px;border:0;background:var(--acc);color:var(--accink);font-size:13px;box-shadow:0 8px 24px color-mix(in srgb,var(--acc) 45%,transparent);transition:transform .2s cubic-bezier(.2,.8,.2,1),opacity .2s,box-shadow .2s}
+#fab svg{width:22px;height:22px;flex:none;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+#fab.off{opacity:0;transform:scale(.6) translateY(20px);pointer-events:none}
+body.locked #fab{display:none}
+#v-ag,#v-cli,#v-num,#v-not,#v-ins{padding-bottom:72px}
+@media (prefers-reduced-motion:no-preference){
+  #fab:not(.off){animation:gpop .45s cubic-bezier(.2,.8,.2,1)}
+  #fab:active{transform:scale(.92)}
+  #fab:active svg{transform:rotate(90deg)}
+  @media (hover:hover){#fab:hover svg{transform:rotate(90deg)}}
+}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -1852,6 +1864,11 @@ var _rh4=renderHero;renderHero=function(){_rh4();var a=$("avisos"),n=a.children.
   var d=document.createElement("details"),b=document.createElement("div");d.className="card avs";d.open=AVOPEN;b.className="avb";
   d.innerHTML='<summary><span>🔔 Pendientes</span><b>'+n+'</b></summary>';while(a.firstChild)b.appendChild(a.firstChild);d.appendChild(b);a.appendChild(d);
   d.addEventListener("toggle",function(){AVOPEN=d.open;try{localStorage.setItem("gdcr_avopen",AVOPEN?"1":"0")}catch(e){}})};
+/* BOTÓN FLOTANTE "Agendar cita": se esconde en Nueva y al bajar mucho la lista no estorba */
+(function(){var f=document.createElement("button");f.id="fab";f.type="button";f.setAttribute("aria-label","Agendar cita");
+  f.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agendar cita';
+  f.onclick=function(){masClose();if(EID)resetForm();show("new")};document.body.appendChild(f)})();
+var _sh2=show;show=function(v){_sh2(v);$("fab").classList.toggle("off",v==="new"||v==="per")};$("fab").classList.toggle("off",CUR==="new");
 /* El enlace de reservas ya está en Más; aquí solo quedan los ajustes */
 var _rrv=renderRv;renderRv=function(){_rrv();var l=document.querySelector("#rvb .rvl");if(!l)return;var nx=l.nextElementSibling,pv=l.previousElementSibling;if(nx&&nx.classList.contains("row"))nx.remove();if(pv&&pv.classList.contains("m"))pv.remove();l.remove()};
 setVT("");
