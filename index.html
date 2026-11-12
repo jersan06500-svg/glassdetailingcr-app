@@ -191,14 +191,14 @@ nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding
 nav button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 nav .bdg{position:absolute;top:2px;left:calc(50% + 5px);background:var(--bad);color:#fff;border-radius:99px;font-size:10px;padding:0 5px;line-height:16px;font-weight:700;animation:pop .4s both}
 /* CONFIRMAR BORRADO */
-#dlg{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,14,15,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
-#dlg.on{opacity:1;visibility:visible}
-#dlg .box{background:var(--card);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0px));width:100%;max-width:520px;transform:translateY(40px);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-#dlg.on .box{transform:none}
+#dlg,#pgd{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,14,15,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+#dlg.on,#pgd.on{opacity:1;visibility:visible}
+#dlg .box,#pgd .box{background:var(--card);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0px));width:100%;max-width:520px;transform:translateY(40px);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+#dlg.on .box,#pgd.on .box{transform:none}
 .dic{width:50px;height:50px;border-radius:50%;background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
 #dlg.on .dic{animation:shk .45s .15s both}
 @keyframes shk{0%,100%{transform:none}25%{transform:rotate(-12deg)}50%{transform:rotate(10deg)}75%{transform:rotate(-6deg)}}
-#dlg h3{font:700 20px Inter,system-ui,sans-serif;margin:0 0 6px}
+#dlg h3,#pgd h3{font:700 20px Inter,system-ui,sans-serif;margin:0 0 6px}
 .dwhat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0 8px;font-weight:600;word-break:break-word}
 button.danger{background:var(--bad);color:#fff}
 #undo{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);opacity:0;visibility:hidden;z-index:21;display:flex;gap:14px;align-items:center;background:var(--ink);color:var(--bg);padding:7px 7px 7px 16px;border-radius:99px;font-weight:600;font-size:14px;transition:all .3s cubic-bezier(.2,.8,.2,1);white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -633,6 +633,7 @@ raf=requestAnimationFrame(frame);
   <div class="card"><h2 id="ph"></h2><div class="stats" id="stats"></div></div>
   <div class="card"><h2>Meta del mes</h2><div id="gring"></div><label for="goal">Mi meta de ingresos (₡)</label><input id="goal" type="number" inputmode="numeric" min="0" placeholder="Ej: 800000"></div>
   <div class="card"><h2>Ingresos y gastos</h2><div id="chart"></div><div class="leg"><span><i style="background:var(--acc)"></i>Ingresos</span><span><i style="background:var(--glow)"></i>Gastos</span></div></div>
+  <div class="card"><h2>Cómo pagaron</h2><div id="pgs"></div></div>
   <div class="card"><h2>Comparado con el periodo anterior</h2><div id="cmp"></div></div>
   <div class="card" id="adcard"><h2>Publicidad en Meta</h2><div id="adb"></div></div>
   <div class="card"><h2>Materiales y gastos</h2>
@@ -693,6 +694,7 @@ raf=requestAnimationFrame(frame);
 </section>
 </main>
 <div id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlt"><div class="box"><div class="dic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></div><h3 id="dlt"></h3><div class="dwhat" id="dlw"></div><div class="m" id="dlm"></div><div class="row" style="margin-top:16px"><button class="alt" id="dln">Cancelar</button><button class="danger" id="dly">Sí, borrar</button></div></div></div>
+<div id="pgd" role="dialog" aria-modal="true"></div>
 <div id="rvs" role="dialog" aria-modal="true" aria-labelledby="rvst" hidden><div class="box">
   <h3 id="rvst">Reservas en línea</h3><div class="m">Mandale este enlace al cliente y agenda solo.</div>
   <div class="rvurl" id="rvu"></div>
@@ -753,12 +755,12 @@ function renderAg(){
     '<div class="acts">'+nextBtn(j)+(locOf(j)?locBtns(locOf(j)):'')+(j.tel?'<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a>'+(j.date>today&&!isDone(j)?'<button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>':'')+(j.st==="Pendiente"&&j.date===today?'<button class="alt sm wao" data-go="'+j.id+'">'+ICWA+'En camino</button>':'')+'':'')+(j.tel&&isDone(j)?'<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>':'')+'</div>'+
     '<details class="mas"><summary>Más opciones</summary><div class="acts"><select data-id="'+j.id+'" class="st-'+j.st+'" aria-label="Estado">'+(j.st==="Por confirmar"?["Por confirmar"]:[]).concat(["Pendiente","Hecho","Pagado"]).map(function(s){return "<option"+(s===j.st?" selected":"")+">"+s+"</option>"}).join("")+'</select><button class="alt sm" data-ed="'+j.id+'">Editar</button><button class="alt sm" data-cal="'+j.id+'">Calendario</button><button class="alt sm" data-del="'+j.id+'">Borrar</button></div></details></div></div>'}).join(""):'<div class="empty">No hay citas este día.</div>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-wa]"),function(b){b.onclick=function(){remind(b.dataset.wa)}});
-  Array.prototype.forEach.call(document.querySelectorAll("[data-nx]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.nx});if(j.st==="Hecho"){j.st="Pagado";if(DB)DB.doc("jobs/"+j.id).update({st:"Pagado"}).catch(dberr);toast("¡Pagado! 💸");renderAg()}else markDone(j)}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nx]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.nx});if(j.st==="Hecho"){pickPago(function(m){setPagado(j,m,false)})}else markDone(j)}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-cb]"),function(b){b.onclick=function(){cobrar(S.jobs.find(function(x){return x.id==b.dataset.cb}))}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ed]"),function(b){b.onclick=function(){editJob(b.dataset.ed)}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-cal]"),function(b){b.onclick=function(){window.open(calUrl(S.jobs.find(function(x){return x.id==b.dataset.cal})),"_blank")}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-ty]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.ty});revSend(j)}});
-  Array.prototype.forEach.call(document.querySelectorAll("select[data-id]"),function(e){e.onchange=function(){if(e.value==="Pagado"){confetti();toast("¡Pagado! 💸")}if(!DB)return;var j0=S.jobs.find(function(x){return x.id==e.dataset.id});j0.st=e.value;DB.doc("jobs/"+j0.id).update({st:e.value}).catch(dberr);renderAg();if((e.value==="Hecho"||e.value==="Pagado")&&j0.tel&&!j0.rv)askRev(j0)}});
+  Array.prototype.forEach.call(document.querySelectorAll("select[data-id]"),function(e){e.onchange=function(){var j0=S.jobs.find(function(x){return x.id==e.dataset.id});if(e.value==="Pagado"){if(!DB)return;pickPago(function(m){confetti();setPagado(j0,m,true)},function(){renderAg()});return}if(!DB)return;j0.st=e.value;DB.doc("jobs/"+j0.id).update({st:e.value}).catch(dberr);renderAg();if(e.value==="Hecho"&&j0.tel&&!j0.rv)askRev(j0)}});
   Array.prototype.forEach.call(document.querySelectorAll("[data-del]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.del});if(!j)return;confirmDel({t:"¿Borrar esta cita?",w:esc(j.cli)+' <span class="m">· '+fmtD(j.date)+(j.time?" · "+fmtT(j.time):"")+'</span><div class="m">'+j.items.map(esc).join(", ")+" · "+crc(j.total)+'</div>'},function(){delDocs([["jobs/"+j.id,j]],"Cita borrada")})}});
 }
 $("pw").onclick=function(){wOff--;renderAg()};
@@ -767,6 +769,11 @@ $("nw").onclick=function(){wOff++;renderAg()};
 function nextBtn(j){if(j.st==="Pendiente"&&j.date<=today)return '<button class="sm nx" data-nx="'+j.id+'">✓ Marcar hecha</button>';
   if(j.st==="Hecho")return '<button class="sm nx" data-nx="'+j.id+'">✓ Ya pagó</button>'+(j.tel?'<button class="alt sm wao" data-cb="'+j.id+'">'+ICWA+'Cobrar</button>':'');return ""}
 function cobrar(j){waTo(j.tel,"Hola "+j.cli+" 👋 ¡Gracias por confiar en GlassDetailingCR! El total es "+crc(j.total)+"."+PAGO)}
+var PMS=["SINPE Móvil","Transferencia","Efectivo"];
+function pickPago(ok,cancel){var d=$("pgd");d.innerHTML='<div class="box"><h3>¿Cómo pagó?</h3><div class="m">Así sale después en Números.</div><div class="row" style="margin-top:16px;flex-direction:column;align-items:stretch">'+PMS.map(function(m){return '<button type="button" data-pm="'+m+'">'+m+'</button>'}).join("")+'<button type="button" class="alt" data-pm-x>Cancelar</button></div></div>';d.classList.add("on");
+  Array.prototype.forEach.call(d.querySelectorAll("[data-pm]"),function(b){b.onclick=function(){d.classList.remove("on");ok(b.dataset.pm)}});
+  d.querySelector("[data-pm-x]").onclick=function(){d.classList.remove("on");if(cancel)cancel()}}
+function setPagado(j,pm,askR){j.st="Pagado";j.pm=pm;if(DB)DB.doc("jobs/"+j.id).update({st:"Pagado",pm:pm}).catch(dberr);toast("¡Pagado! 💸");renderAg();if(askR&&j.tel&&!j.rv)askRev(j)}
 function markDone(j){j.st="Hecho";if(DB)DB.doc("jobs/"+j.id).update({st:"Hecho"}).catch(dberr);toast("Cita marcada como hecha ✓");renderAg();if(j.tel&&!j.rv)askRev(j)}
 function remind(id){
   var j=S.jobs.find(function(x){return x.id==id}),n=j.tel.replace(/\D/g,"");if(n.length===8)n="506"+n;
@@ -874,6 +881,9 @@ function renderNum(){
   $("chart").innerHTML='<svg viewBox="0 0 '+W+' '+(H+16)+'" width="100%" role="img" aria-label="Gráfico de ingresos y gastos">'+s+'</svg>';
   var lab={w:"semana pasada",m:"mes pasado",y:"año pasado"}[per];
   $("cmp").innerHTML='<div class="stats"><div><small>Ingresos</small><b>'+crc(p.inc)+'</b> '+delta(c.inc,p.inc)+'</div><div><small>Gastos</small><b>'+crc(p.ex)+'</b> '+delta(c.ex,p.ex,1)+'</div><div><small>Ganancia</small><b>'+crc(p.gan)+'</b> '+delta(c.gan,p.gan)+'</div><div><small>Trabajos</small><b>'+p.cnt+'</b> '+delta(c.cnt,p.cnt)+'</div></div><div class="m" style="margin-top:6px">Valores de '+lab+'; el porcentaje compara con el periodo actual.</div>';
+  var PG={};S.jobs.forEach(function(j){if(!isDone(j)||j.date<r[0]||j.date>r[1])return;var k=j.pm||(j.st==="Pagado"?"Sin registrar":"Por cobrar");PG[k]=(PG[k]||0)+(+j.total||0)});
+  var PK=PMS.concat(["Sin registrar","Por cobrar"]).filter(function(k){return PG[k]});
+  $("pgs").innerHTML=PK.length?PK.map(function(k){return '<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:8px"><span>'+esc(k)+'</span><b>'+crc(PG[k])+'</b></div>'}).join(""):'<div class="empty">Sin trabajos en este periodo.</div>';
   var L=S.exp.filter(function(e){return e.d>=r[0]&&e.d<=r[1]}).sort(function(a,b){return a.d<b.d?1:-1});
   $("gl").innerHTML=L.length?L.map(function(e){return '<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:8px"><span>'+esc(e.desc)+'<span class="m"> · '+pd(e.d).getDate()+" "+MN[pd(e.d).getMonth()]+'</span></span><span>'+crc(e.amt)+' <button class="alt sm" data-ge="'+e.id+'" aria-label="Borrar gasto">✕</button></span></div>'}).join(""):'<div class="empty">Sin gastos en este periodo.</div>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-ge]"),function(b){b.onclick=function(){var e=S.exp.find(function(x){return x.id==b.dataset.ge});if(!e)return;confirmDel({t:"¿Borrar este gasto?",w:esc(e.desc)+' <span class="m">· '+fmtD(e.d)+'</span><div style="font:800 22px Bricolage Grotesque,system-ui,sans-serif;margin-top:2px">'+crc(e.amt)+'</div>'},function(){delDocs([["exp/"+e.id,e]],"Gasto borrado")})}});
