@@ -3,7 +3,7 @@
 <head>
 <base href="../">
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Pinyon+Script&family=Jost:wght@500;600;700&family=Italianno&family=Great+Vibes&family=Yellowtail&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Pinyon+Script&family=Jost:wght@500;600;700&family=Italianno&family=Great+Vibes&family=Yellowtail&family=Instrument+Serif:ital@0;1&family=Michroma&family=Oswald:wght@500;600;700&family=Mrs+Saint+Delafield&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Monsieur+La+Doulaise&display=swap">
 <style>
 /* PRUEBA DE LETRAS: t = títulos, s = letra de mano para el nombre y la frase */
 html[data-f] h1,html[data-f] h2,html[data-f] h3,html[data-f] .hero .hc,html[data-f] .hero .hn,html[data-f] .acc>summary span,html[data-f] .svh,html[data-f] .avs>summary span{font-family:var(--ft)!important;letter-spacing:0!important;font-stretch:100%!important}
@@ -15,9 +15,20 @@ html[data-f="1"]{--ft:"Playfair Display",serif;--fs:"Pinyon Script",cursive;--fs
 html[data-f="2"]{--ft:"Jost",sans-serif;--fs:"Italianno",cursive;--fsz:36px;--msz:28px}
 html[data-f="3"]{--ft:"Inter",sans-serif;--fs:"Great Vibes",cursive;--fsz:32px;--msz:24px}
 html[data-f="4"]{--ft:"Inter",sans-serif;--fs:"Yellowtail",cursive;--fsz:30px;--msz:22px}
+html[data-f="5"]{--ft:"Instrument Serif",serif;--fs:"Instrument Serif",serif;--fsz:30px;--msz:21px}
+html[data-f="5"] h1,html[data-f="5"] #mot>span:last-child{font-style:italic}
+html[data-f="5"] h2,html[data-f="5"] .hero .hc,html[data-f="5"] .acc>summary span{font-weight:400!important}
+html[data-f="5"] .hero .hc{font-size:44px!important}
+html[data-f="6"]{--ft:"Michroma",sans-serif;--fs:"Michroma",sans-serif;--fsz:15px;--msz:13px}
+html[data-f="6"] h2,html[data-f="6"] .hero .hc,html[data-f="6"] h1{text-transform:uppercase;letter-spacing:.06em!important}
+html[data-f="6"] .hero .hc{font-size:26px!important}html[data-f="6"] h2,html[data-f="6"] .acc>summary span{font-size:13px!important}
+html[data-f="7"]{--ft:"Oswald",sans-serif;--fs:"Mrs Saint Delafield",cursive;--fsz:36px;--msz:28px}
+html[data-f="7"] h2,html[data-f="7"] .hero .hc{text-transform:uppercase;letter-spacing:.03em!important}
+html[data-f="7"] .hero .hc{font-size:42px!important}
+html[data-f="8"]{--ft:"Fraunces",serif;--fs:"Monsieur La Doulaise",cursive;--fsz:34px;--msz:26px}
 html[data-f="2"] h2,html[data-f="2"] .hero .hc{text-transform:uppercase;letter-spacing:.04em!important}
 #fsw{position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:99;display:flex;gap:4px;background:#111315;padding:6px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3)}
-#fsw button{flex:1;min-height:40px;border-radius:999px;background:transparent;color:#fff;border:0;font:600 13px Inter,system-ui,sans-serif}
+#fsw button{flex:1;min-width:0;min-height:40px;padding:0;border-radius:999px;background:transparent;color:#fff;border:0;font:600 13px Inter,system-ui,sans-serif}
 #fsw button[aria-pressed=true]{background:#0077B6}
 body{padding-top:56px}
 </style>
@@ -1904,7 +1915,7 @@ $("ubask").onclick=function(){var tel=($("tel").value||"").replace(/\D/g,"");if(
       toast("📍 Ubicación lista: completá la cita y guardala")}
   },250)})();
 </script>
-<div id="fsw"><button data-f="">Actual</button><button data-f="1">1</button><button data-f="2">2</button><button data-f="3">3</button><button data-f="4">4</button></div>
-<script>(function(){var b=document.querySelectorAll("#fsw button");function set(f){if(f)document.documentElement.dataset.f=f;else delete document.documentElement.dataset.f;b.forEach(function(x){x.setAttribute("aria-pressed",x.dataset.f===f)})}b.forEach(function(x){x.onclick=function(){set(x.dataset.f)}});set("1")})();</script>
+<div id="fsw"><button data-f="">Actual</button><button data-f="1">1</button><button data-f="2">2</button><button data-f="3">3</button><button data-f="4">4</button><button data-f="5">5</button><button data-f="6">6</button><button data-f="7">7</button><button data-f="8">8</button></div>
+<script>(function(){var b=document.querySelectorAll("#fsw button");function set(f){if(f)document.documentElement.dataset.f=f;else delete document.documentElement.dataset.f;b.forEach(function(x){x.setAttribute("aria-pressed",x.dataset.f===f)})}b.forEach(function(x){x.onclick=function(){set(x.dataset.f)}});set("5")})();</script>
 </body>
 </html>
