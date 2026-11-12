@@ -177,6 +177,17 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - Clientes y Números: tarjetas con borde, buscador redondo.
 - Ideas de las apps grandes que faltan: fotos antes/después por cita (Firebase Storage pide plan de pago; alternativa gratis: guardar el enlace), cobro en el sitio, rutas optimizadas.
 
+## Personalizar y forma de pago (12 nov 2026, aprobado por el dueño)
+
+- **Forma de pago**: "Ya pagó" (o pasar a Pagado en Más opciones) abre la hoja `#pgd` ("¿Cómo pagó?": SINPE Móvil, Transferencia, Efectivo) y guarda `pm` en la cita. Números tiene la tarjeta "Cómo pagaron" (`#pgs`); las pagadas sin `pm` salen como "Sin registrar" y las hechas sin pagar como "Por cobrar".
+- **Personalizar** (Más → Personalizar, sección `v-per`), guardado en `settings/perso` (las reglas de `settings` ya lo cubren):
+  - Cada miembro: nombre y color (`people[correo] = {n, c}`); `whoN()` usa ese nombre primero. Modo Automático/Claro/Oscuro solo en ese celular (`localStorage gdcr_theme`, aplicado en el `<head>` con `data-theme`).
+  - Solo el dueño: frase del inicio (`frase`, vacía = cambia sola), datos de pago (`sinpe`, `titular`, arman `PAGO`) y mensajes de WhatsApp (`msg.conf/rec/cam/cob`, vacío = texto original de `msg0()`). Comodines: {cliente} {fecha} {hora} {vehiculo} {total} {cuando}.
+- **Quién atiende**: campo `who` (correo) en cada cita, elegido en el paso 3 de Nueva cita (`#atn`; ojo, `#who` es el encabezado). La cita muestra un punto con el color y el nombre (`whoChip`). Filtro "Todas / Mis citas" arriba de la lista del día (`#mine`, `localStorage gdcr_mine`); "Mis citas" también muestra las que no tienen a nadie (reservas web).
+- Al editar una cita ahora se conservan los datos que no están en el formulario (`pm`, `rv`, `ck`, `web`…); `rc` se borra si cambia el día.
+- **Todos los mensajes a clientes en "usted"** (confirmación, recordatorio, en camino, cobro, atraso, cancelación, retoque, reseña, pedir ubicación). La app hacia el equipo sigue en "vos".
+- Pendiente: que la mamá y Esteban pongan su nombre en Personalizar (si no, la app los llama por el inicio del correo).
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.
