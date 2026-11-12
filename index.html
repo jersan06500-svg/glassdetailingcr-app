@@ -643,6 +643,8 @@ h1{font-size:16px!important}
 #fab.off{opacity:0;transform:scale(.6) translateY(20px);pointer-events:none}
 body.locked #fab{display:none}
 #v-ag,#v-cli,#v-num,#v-not,#v-ins{padding-bottom:72px}
+/* Se agenda solo con el botón flotante: la pestaña Nueva sale de la barra (sigue existiendo por dentro) */
+nav #t-new{display:none!important}
 @media (prefers-reduced-motion:no-preference){
   #fab:not(.off){animation:gpop .45s cubic-bezier(.2,.8,.2,1)}
   #fab:active{transform:scale(.92)}
