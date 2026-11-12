@@ -574,33 +574,33 @@ nav button{flex:1}
 @keyframes gup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes gbump{0%{transform:scale(1)}40%{transform:scale(1.14);color:var(--acc)}100%{transform:scale(1)}}
 /* NÚMEROS EN BOTONES */
-#v-num .acc{padding:0;overflow:hidden}
-#v-num .acc>summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:56px;padding:12px 16px;cursor:pointer;font-weight:600;font-size:16px;-webkit-tap-highlight-color:transparent}
-#v-num .acc>summary::-webkit-details-marker{display:none}
-#v-num .acc>summary .av{margin-left:auto;font-weight:600;font-size:15px;color:var(--acc);white-space:nowrap}
-#v-num .acc>summary::after{content:"";flex:none;width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);margin:0 2px 4px 6px;transition:transform .2s}
-#v-num .acc[open]>summary::after{transform:rotate(-135deg);margin-bottom:-4px}
-#v-num .acc[open]>summary{border-bottom:1px solid var(--line)}
-#v-num .accb{padding:12px 16px 16px}
-#v-num .accb>h2{display:none}
+.acc{padding:0;overflow:hidden}
+.acc>summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:56px;padding:12px 16px;cursor:pointer;font-weight:600;font-size:16px;-webkit-tap-highlight-color:transparent}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary .av{margin-left:auto;font-weight:600;font-size:15px;color:var(--acc);white-space:nowrap}
+.acc>summary::after{content:"";flex:none;width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);margin:0 2px 4px 6px;transition:transform .2s}
+.acc[open]>summary::after{transform:rotate(-135deg);margin-bottom:-4px}
+.acc[open]>summary{border-bottom:1px solid var(--line)}
+.accb{padding:12px 16px 16px}
+.accb>h2{display:none}
 #v-num .acsep{font-size:13px;color:var(--mute);margin:18px 4px 8px}
-@media (prefers-reduced-motion:no-preference){#v-num .acc[open] .accb{animation:gup .25s cubic-bezier(.2,.8,.2,1) both}}
+@media (prefers-reduced-motion:no-preference){.acc[open] .accb{animation:gup .25s cubic-bezier(.2,.8,.2,1) both}}
 /* NÚMEROS: efectos de los botones */
-#v-num .acc>summary{transition:background-color .2s,transform .16s cubic-bezier(.2,.8,.2,1)}
-#v-num .acc>summary .aci{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--acc) 10%,transparent);font-size:17px;flex:none;transition:transform .25s cubic-bezier(.2,.8,.2,1),background-color .2s}
-#v-num .acc[open]>summary{background:color-mix(in srgb,var(--acc) 6%,transparent)}
-#v-num .acc[open]>summary .aci{background:var(--acc)}
-@media (hover:hover){#v-num .acc>summary:hover{background:color-mix(in srgb,var(--acc) 5%,transparent)}}
+.acc>summary{transition:background-color .2s,transform .16s cubic-bezier(.2,.8,.2,1)}
+.acc>summary .aci{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--acc) 10%,transparent);font-size:17px;flex:none;transition:transform .25s cubic-bezier(.2,.8,.2,1),background-color .2s}
+.acc[open]>summary{background:color-mix(in srgb,var(--acc) 6%,transparent)}
+.acc[open]>summary .aci{background:var(--acc)}
+@media (hover:hover){.acc>summary:hover{background:color-mix(in srgb,var(--acc) 5%,transparent)}}
 @media (prefers-reduced-motion:no-preference){
-  #v-num .acc>summary:active{transform:scale(.98)}
-  #v-num .acc>summary:active .aci{transform:scale(.85)}
-  #v-num .acc[open]>summary .aci{animation:gpop .35s cubic-bezier(.2,.8,.2,1)}
-  #v-num .acc[open]>summary .av{animation:gbump .35s cubic-bezier(.2,.8,.2,1)}
+  .acc>summary:active{transform:scale(.98)}
+  .acc>summary:active .aci{transform:scale(.85)}
+  .acc[open]>summary .aci{animation:gpop .35s cubic-bezier(.2,.8,.2,1)}
+  .acc[open]>summary .av{animation:gbump .35s cubic-bezier(.2,.8,.2,1)}
   #v-num:not(.hide) .acc{animation:gup .32s cubic-bezier(.2,.8,.2,1) both}
   #v-num:not(.hide) .acc:nth-of-type(2){animation-delay:.03s}#v-num:not(.hide) .acc:nth-of-type(3){animation-delay:.06s}
   #v-num:not(.hide) .acc:nth-of-type(4){animation-delay:.09s}#v-num:not(.hide) .acc:nth-of-type(5){animation-delay:.12s}
   #v-num:not(.hide) .acc:nth-of-type(6){animation-delay:.15s}#v-num:not(.hide) .acc:nth-of-type(n+7){animation-delay:.18s}
-  #v-num .accb .stats>div,#v-num .accb #pgs>.row{animation:gup .3s cubic-bezier(.2,.8,.2,1) both}
+  .accb .stats>div,.accb #pgs>.row{animation:gup .3s cubic-bezier(.2,.8,.2,1) both}
 }
 /* HOY: chips del día, botón según el momento y avisos agrupados */
 .dchips{display:flex;gap:6px;overflow-x:auto;margin:-4px 2px 10px;padding-bottom:2px;scrollbar-width:none}
@@ -647,6 +647,20 @@ nav #t-new{display:none!important}
   #fab:active svg{transform:rotate(90deg)}
   @media (hover:hover){#fab:hover svg{transform:rotate(90deg)}}
 }
+/* PANTALLA DE ENTRADA con la marca */
+#lkbrand{display:none}
+body.locked{background:#0077B6!important}
+body.locked main>h1,body.locked #mot{display:none!important}
+body.locked #lkbrand{display:flex;flex-direction:column;align-items:center;gap:8px;margin:44px auto 18px;text-align:center}
+#lkbrand img{width:84px;height:84px;border-radius:24px;background:#fff;padding:10px;box-sizing:border-box}
+#lkbrand b{font-family:"Shrikhand",cursive;font-weight:400;font-size:34px;color:#fff;margin-top:6px}
+#lkbrand span{color:#E6F4FB;font-size:15px}
+body.locked .lk{border:0;border-radius:28px;padding:24px 20px;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+#lk-login .gbtn{width:100%;min-height:52px;font-size:16px}
+#lk-login:not(.mail) .or,#lk-login:not(.mail) label,#lk-login:not(.mail) input,#lk-login:not(.mail)>.row:has(#li),#lk-login:not(.mail) #lf{display:none}
+#lk-login.mail #lmail{display:none}
+#lmail{margin-top:10px}
+@media (prefers-reduced-motion:no-preference){body.locked #lkbrand img{animation:gpop .5s cubic-bezier(.2,.8,.2,1)}body.locked .lk:not(.hide){animation:gup .35s .1s cubic-bezier(.2,.8,.2,1) both}}
 </style>
 <script>
 /* INTRO: aparece el logo oficial, la pulidora saca un destello del vidrio y se escribe el nombre */
@@ -680,6 +694,7 @@ raf=requestAnimationFrame(frame);
 <main>
 <h1><img class="h1i" src="logo-icon.png" alt="" width="30" height="30">Glass<span>Detailing</span>CR <span id="who" class="hide"><span id="whoe"></span><button class="alt sm" id="out">Salir</button></span></h1>
 <button id="mot" type="button" aria-label="Mensaje del día. Tocá para ver otro"></button>
+<div id="lkbrand"><img src="logo-icon.png" alt="" width="84" height="84"><b>GlassDetailingCR</b><span>Claridad que se nota</span></div>
 <div id="lk-login" class="card lk hide">
   <h2>Entrar</h2><div class="m">Agenda del equipo de GlassDetailingCR. Solo entran los correos autorizados.</div>
   <div id="gwrap"><div class="row"><button class="gbtn" id="lg"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.2z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.6-3.8-12.3-9H4.4v5.7C8 41.1 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.3c-.4-1.3-.7-2.8-.7-4.3s.3-3 .7-4.3V14H4.4C2.9 17 2 20.4 2 24s.9 7 2.4 10z"/><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 8 6.9 4.4 14l7.3 5.7c1.7-5.2 6.6-9 12.3-9z"/></svg>Entrar con Google</button></div>
@@ -688,6 +703,7 @@ raf=requestAnimationFrame(frame);
   <label for="lp">Contraseña</label><input id="lp" type="password" autocomplete="current-password" minlength="6">
   <div class="row"><button id="li">Entrar</button><button class="alt" id="lc">Crear cuenta</button></div>
   <button class="lnk" id="lf">Olvidé mi contraseña</button>
+  <button class="lnk" id="lmail" type="button">Entrar con correo y contraseña</button>
   <div class="lmsg" id="lmsg" role="status"></div>
 </div>
 <div id="lk-verify" class="card lk hide">
@@ -1859,6 +1875,16 @@ var _ra4=renderAg;renderAg=function(){_ra4();renderChips();
 $("week").addEventListener("click",function(){if(DF){DF="";setTimeout(renderAg,0)}},true);
 /* HOY: todos los avisos en un solo botón */
 var AVOPEN=false;try{AVOPEN=localStorage.getItem("gdcr_avopen")==="1"}catch(e){}
+/* GARANTÍA POR VENCER: desde un mes antes de que venza (parabrisas 3 meses, focos 5), ofrecer revisión o retoque */
+function garEnd(j){var it=(j.items||[]).join(" "),m=/parabrisas|vidrios|techo/i.test(it)?3:/focos/i.test(it)?5:0;if(!m||!j.date)return "";var d=pd(j.date);d.setMonth(d.getMonth()+m);return ymd(d)}
+function porGarantia(){var lim=ymd(addD(new Date(),30)),tope=ymd(addD(new Date(),-15)),seen={},L=[];
+  S.jobs.filter(function(j){return isDone(j)&&j.tel}).sort(function(a,b){return a.date<b.date?1:-1}).forEach(function(j){var k=String(j.tel).replace(/\D/g,"").slice(-8);if(seen[k])return;seen[k]=1;if(j.mt)return;var e=garEnd(j);if(e&&e<=lim&&e>=tope)L.push({j:j,e:e})});
+  return L.sort(function(a,b){return a.e<b.e?-1:1})}
+function garMsg(j,e){var f=/parabrisas|vidrios|techo/i.test((j.items||[]).join(" "));
+  waTo(j.tel,"Hola "+j.cli+" 👋 Le escribimos de GlassDetailingCR. La garantía de "+(f?"su parabrisas":"sus focos")+" vence el "+fmtD(e)+". ¿Le agendamos una revisión o un retoque para que siga como nuevo? Puede escoger el día aquí: "+BOOKURL);
+  j.mt=1;if(DB)DB.doc("jobs/"+j.id).update({mt:1}).catch(dberr);setTimeout(renderAg,300)}
+var _rh5=renderHero;renderHero=function(){_rh5();var L=porGarantia();if(!L.length)return;var g=L[0],b=document.createElement("button");b.className="sm wa hnote";
+  b.innerHTML=ICWA+"Garantía por vencer: escribirle a "+esc(String(g.j.cli).split(" ")[0])+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){garMsg(g.j,g.e)};$("avisos").appendChild(b)};
 var _rh4=renderHero;renderHero=function(){_rh4();var a=$("avisos"),n=a.children.length;if(!n)return;
   var d=document.createElement("details"),b=document.createElement("div");d.className="card avs";d.open=AVOPEN;b.className="avb";
   d.innerHTML='<summary><span>🔔 Pendientes</span><b>'+n+'</b></summary>';while(a.firstChild)b.appendChild(a.firstChild);d.appendChild(b);a.appendChild(d);
@@ -1867,6 +1893,21 @@ var _rh4=renderHero;renderHero=function(){_rh4();var a=$("avisos"),n=a.children.
 (function(){var f=document.createElement("button");f.id="fab";f.type="button";f.setAttribute("aria-label","Agendar cita");
   f.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agendar cita';
   f.onclick=function(){masClose();if(EID)resetForm();show("new")};document.body.appendChild(f)})();
+/* NOTAS, METAS E INSUMOS en botones que se abren (como Números) */
+function mkAcc(card,key,label){var d=document.createElement("details"),b=document.createElement("div"),sp=label.indexOf(" ");d.className=card.className+" acc";if(card.id){d.id=card.id;card.removeAttribute("id")}
+  d.innerHTML='<summary><i class="aci" aria-hidden="true">'+label.slice(0,sp)+'</i><span>'+label.slice(sp+1)+'</span><b class="av" id="av-'+key+'"></b></summary>';b.className="accb";
+  card.parentNode.insertBefore(d,card);while(card.firstChild)b.appendChild(card.firstChild);d.appendChild(b);card.remove();if(NOPEN[key])d.open=true;
+  d.addEventListener("toggle",function(){NOPEN[key]=d.open;try{localStorage.setItem("gdcr_nopen",JSON.stringify(NOPEN))}catch(e){}});return d}
+(function(){var c=function(id){var e=$(id);return e&&e.closest(".card")};
+  mkAcc(c("ntx"),"ntx","➕ Nueva nota");var dl=mkAcc(c("nl"),"nl","📌 Notas");dl.querySelector(".accb").insertBefore($("nseg"),dl.querySelector(".accb").firstChild);
+  mkAcc(c("glist"),"glist","🎯 Metas del equipo");mkAcc(c("gsugl"),"gsugl","✨ Sugerencias");mkAcc(c("gty"),"gty","➕ Nueva meta");
+  var w=document.createElement("div");w.className="card";$("inl").parentNode.insertBefore(w,$("inl"));w.appendChild($("inl"));mkAcc(w,"inl","📦 Mis insumos");mkAcc($("ifc"),"ifc","➕ Agregar insumo")})();
+$("isum").addEventListener("click",function(e){if(e.target.closest("#igo"))$("ifc").open=true},true);
+$("in_save").addEventListener("click",function(){var d=$("inl").closest("details");if(d)d.open=true},true);
+var _ie=insEdit;insEdit=function(I){$("ifc").open=true;_ie(I)};
+function accCounts(){var n=NOTES.filter(function(x){return !x.done}).length,a=$("av-nl"),b=$("av-inl"),g=$("av-glist");if(a)a.textContent=n?n+" pendientes":"";if(b)b.textContent=INS.length?INS.length+"":"";if(g)g.textContent=GOALS.length?GOALS.length+"":""}
+var _rno=renderNotes;renderNotes=function(){_rno();accCounts()};var _rin=renderIns;renderIns=function(){_rin();accCounts()};
+$("lmail").onclick=function(){$("lk-login").classList.add("mail");$("le").focus()};
 var _sh2=show;show=function(v){_sh2(v);$("fab").classList.toggle("off",v==="new"||v==="per")};$("fab").classList.toggle("off",CUR==="new");
 /* El enlace de reservas ya está en Más; aquí solo quedan los ajustes */
 var _rrv=renderRv;renderRv=function(){_rrv();var l=document.querySelector("#rvb .rvl");if(!l)return;var nx=l.nextElementSibling,pv=l.previousElementSibling;if(nx&&nx.classList.contains("row"))nx.remove();if(pv&&pv.classList.contains("m"))pv.remove();l.remove()};
