@@ -188,6 +188,15 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - **Todos los mensajes a clientes en "usted"** (confirmación, recordatorio, en camino, cobro, atraso, cancelación, retoque, reseña, pedir ubicación). La app hacia el equipo sigue en "vos".
 - Pendiente: que la mamá y Esteban pongan su nombre en Personalizar (si no, la app los llama por el inicio del correo).
 
+## Nueva cita rehecha (12 nov 2026, mediodía, pedido del dueño)
+
+- **Servicios y garantías que dio el dueño (12 nov)**: restauración premium de focos ₡20 000 el par (lo principal, va primero; garantía 5 meses, el polímero dura 18 meses); promo parabrisas + focos ₡30 000; parabrisas SUV ₡25 000, pick-up ₡25 000, sedán ₡20 000; todos los vidrios SUV ₡40 000 y sedán ₡35 000 (todo con cerámico). **Garantía del servicio de parabrisas/vidrios: 3 meses**; el cerámico dura 1 año según la ficha técnica. Ojo: `reservar/`, `web/`, la bio de Instagram y las respuestas automáticas todavía dicen "1 año de protección" y "todos los vidrios ₡40 000" para todos: falta que el dueño decida cómo cambiarlo.
+- `SERV` nuevo (app): `focos` ("Restauración premium de focos con polímero líquido"), `combo`, `pu`, `ps`, `all` ("Todos los vidrios SUV o pick-up…" ₡40 000), `alls` (nuevo, "Todos los vidrios sedán…" ₡35 000) y `techo` (extra, ya no excluye a los demás). Cada uno con `sec` (título), `d` (garantía) y `t` (tipo). `salias` pasa los nombres viejos o de la web ("Pulido de focos…", "Todos los vidrios + cerámico…") al servicio nuevo. Los nombres de `LN` en `reservar/` ya no son iguales a `SERV` para focos y vidrios.
+- **Paso 1**: Marca (lista), Modelo (lista según marca), Año y Tipo Sedán/SUV/Pick-up. El tipo se marca solo con `vtGuess()` (`PICKRX`, `SUVRX`, `SEDRX`, `MARCAS` copiados de `reservar/`), se puede cambiar a mano. `#veh` quedó oculto y se arma solo (marca + modelo + año). La cita guarda `vt` (`sedan`/`suv`/`pickup`). Con el nombre o el WhatsApp de un cliente que ya vino se llena el resto (`cliFill`, `vehLoad`). "¿Cómo nos conoció?" tiene TikTok.
+- **Paso 2**: orden Focos (Principal) → Promo → Parabrisas → Todos los vidrios → Extra. Los del otro tipo se apagan (`svcType`) y lo marcado pasa al par (`PAIR`). Focos + parabrisas se cambia solo a la promo (`svcPick`). Otro servicio y descuento van plegados.
+- **Paso 3**: resumen arriba (`#nsum`, `renderSum`) con vehículo, servicios, total y garantía.
+- Garantía en mensajes: comodín `{garantia}` (`garTxt`: parabrisas +3 meses, focos +5 meses desde el día de la cita); el mensaje de cobro por defecto la incluye.
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.
