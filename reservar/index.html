@@ -490,7 +490,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function fmtH(h){return (h%12||12)+":00 "+(h<12?"am":"pm")}
 function pd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
 function niceDay(s){var d=pd(s),t=ymd(new Date()),m=ymd(new Date(Date.now()+864e5));return (s===t?"hoy, ":s===m?"mañana, ":"")+DN[d.getDay()]+" "+d.getDate()+" de "+MNL[d.getMonth()]}
-try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed();landFree()}).catch(function(){landFree()})}catch(e){}
+try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.offh&&typeof x.offh==="object")CFG.offh=x.offh;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed();landFree()}).catch(function(){landFree()})}catch(e){}
 function closed(){$("go").outerHTML='<a class="cta" href="https://wa.me/'+CFG.wa+'?text='+encodeURIComponent("Hola GlassDetailingCR, quiero agendar un pulido")+'">Escríbanos por WhatsApp para agendar</a>'}
 function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 
@@ -608,7 +608,7 @@ buildSvc();
 
 /* PASO 3: día y hora */
 function slotsOf(day){var d=pd(day),hh=HOURS[d.getDay()];if(!hh||CFG.off.indexOf(day)>-1)return [];var L=[],now=new Date(),min=new Date(now.getTime()+LEAD_H*36e5);
-  var len=DUR*CARS.length,me=myPos();for(var h=hh[0];h+len<=hh[1];h++){var t=new Date(d);t.setHours(h,0,0,0);if(t<min)continue;var free=true;for(var k=0;k<len;k++)if(BUSY[day+"_"+pad(h+k)])free=false;var tr=false;if(free&&me&&!fits(day,h,len,me)){free=false;tr=true}L.push({h:h,free:free,tr:tr})}return L}
+  var len=DUR*CARS.length,me=myPos();for(var h=hh[0];h+len<=hh[1];h++){var t=new Date(d);t.setHours(h,0,0,0);if(t<min)continue;var free=true;for(var k=0;k<len;k++)if(BUSY[day+"_"+pad(h+k)]||(CFG.offh&&(CFG.offh[day]||[]).indexOf(h+k)>-1))free=false;var tr=false;if(free&&me&&!fits(day,h,len,me)){free=false;tr=true}L.push({h:h,free:free,tr:tr})}return L}
 /* TRASLADOS: no ofrece horas a las que no da tiempo de llegar desde la cita anterior ni de llegar a la siguiente */
 var GRACE=10;
 function plPos(n){var p=PL.find(function(x){return x[0]===n});return p?{la:p[1],lo:p[2]}:null}
