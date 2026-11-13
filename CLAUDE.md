@@ -56,7 +56,7 @@ Lo que sigue en este archivo es el historial día por día. Si algo de abajo cho
 **Pendientes**
 
 1. Pagar la cuenta de anuncios de Meta (pago sin procesar desde el 7 nov; lo hace el dueño). Después: montar la campaña con `anuncio-parabrisas-A.mp4` y `-B.mp4` (música de la biblioteca de Meta) y corregir la respuesta del anuncio de focos, que todavía dice "1 año de protección" y "₡25 000 → ₡20 000".
-2. Perfil de Google: cambiar horario y descripción (sigue L-S 6-6, D 8-3 y "1 año") y verificarlo.
+2. Perfil de Google: **verificación enviada el 13 nov** (dirección privada + video del dueño); estado "Procesando", Google tarda hasta 5 días. No tocar nombre, categoría ni zona mientras revisa. Cuando salga verificado: cambiar horario a L-D 8 am-4 pm y la descripción (sigue L-S 6-6, D 8-3 y "1 año"), y subir las fotos.
 3. Que la mamá y Esteban pongan su nombre en Personalizar.
 4. Elegir mascota (A faro o B pulidora); el lienzo de logos está en pausa.
 5. Plantilla "Cliente feliz" con creación masiva de Canva (faltan 4-5 fotos de antes y después de clientes).
