@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es-CR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Certificado de garantía · GlassDetailingCR</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0077B6">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Questrial&family=Roboto+Slab:wght@400;600;700&display=swap">
+<style>
+/* Certificado de garantía: los datos vienen en el enlace (después del #), no se guardan en ningún lado */
+:root{--b:#0077B6;--bd:#03466E;--t:#E6F4FB;--ink:#10202b;--mute:#5b6b76;--line:#d9e3ea;--ok:#2E9E6A;--bad:#C2410C;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 "Roboto Slab",Georgia,serif}
+header{background:var(--b);color:#fff;text-align:center;padding:28px 20px 30px}
+header img{width:170px;height:auto}
+h1,h2,.q{font-family:Questrial,system-ui,sans-serif;font-weight:400}
+h1{font-size:28px;line-height:1.15;margin:14px 0 4px}
+header p{margin:0;opacity:.9;font-size:15px}
+main{max-width:460px;margin:0 auto;padding:20px 16px 40px}
+.card{border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+.dl dt{color:var(--mute);font-size:14px}
+.dl dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+h2{font-size:21px;margin:0 0 10px}
+.cv{border-top:1px solid var(--line);padding:14px 0 2px}
+.cv:first-of-type{border-top:0;padding-top:0}
+.cv b{display:block;font-size:17px}
+.cv .m{color:var(--mute);font-size:14px}
+.st{display:inline-block;margin-top:8px;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:600}
+.st.on{background:#E3F4EC;color:var(--ok)}
+.st.off{background:#FDECE3;color:var(--bad)}
+.tip{background:var(--t);border:0}
+.tip p{margin:0}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;border-radius:999px;padding:12px 20px;font:600 17px "Roboto Slab",Georgia,serif;text-decoration:none;margin-top:12px}
+.btn.p{background:var(--b);color:#fff}
+.btn.s{border:1px solid var(--b);color:var(--b)}
+.btn svg{width:22px;height:22px;flex:none}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:0 16px 32px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+  <img src="../web/img/logo_white.png" alt="GlassDetailingCR" width="718" height="443">
+  <h1>Certificado de garantía</h1>
+  <p class="q">Claridad que se nota</p>
+</header>
+<main>
+  <div id="ok" class="hide">
+    <div class="card"><dl class="dl">
+      <dt>Cliente</dt><dd id="g-n"></dd>
+      <dt>Vehículo</dt><dd id="g-v"></dd>
+      <dt>Servicio</dt><dd id="g-f"></dd>
+    </dl></div>
+    <div class="card"><h2>Lo que cubre</h2><div id="g-s"></div></div>
+    <div class="card tip"><p><b>¿Algo no quedó bien?</b> Mándenos una foto por WhatsApp mientras la garantía esté vigente y lo revisamos con usted.</p></div>
+  </div>
+  <div id="no" class="card hide"><h2>No encontramos los datos</h2><p style="margin:0">Este enlace no trae los datos de la garantía. Escríbanos por WhatsApp y se la mandamos de nuevo.</p></div>
+  <a class="btn p" id="wa" href="https://wa.me/50670458967" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>Escribir por WhatsApp</a>
+  <a class="btn s" href="../reservar/">Agendar otra cita</a>
+</main>
+<footer>GlassDetailingCR · 7045-8967 · A domicilio en toda la GAM</footer>
+<script>
+(function(){
+  var C={f:["Focos","Restauración premium con polímero líquido · el polímero dura hasta 18 meses",5],
+    p:["Parabrisas","Cerámico Fireball · el cerámico dura hasta 1 año",3],
+    v:["Todos los vidrios","Cerámico Fireball · el cerámico dura hasta 1 año",3],
+    t:["Techo panorámico","Cerámico Fireball · el cerámico dura hasta 1 año",3]};
+  var q=new URLSearchParams(location.hash.slice(1)),n=(q.get("n")||"").trim(),v=(q.get("v")||"").trim(),f=q.get("f")||"",s=(q.get("s")||"").split("").filter(function(k,i,a){return C[k]&&a.indexOf(k)===i});
+  var $=function(i){return document.getElementById(i)};
+  if(!/^\d{4}-\d\d-\d\d$/.test(f)||!s.length){$("no").classList.remove("hide");return}
+  var p=f.split("-"),d0=new Date(+p[0],+p[1]-1,+p[2]),hoy=new Date();hoy.setHours(0,0,0,0);
+  var fm=function(d){return d.toLocaleDateString("es-CR",{day:"numeric",month:"long",year:"numeric"})};
+  $("g-n").textContent=n||"—";$("g-v").textContent=v||"—";$("g-f").textContent=fm(d0);
+  s.forEach(function(k){var c=C[k],e=new Date(d0);e.setMonth(e.getMonth()+c[2]);var on=e>=hoy,el=document.createElement("div"),b=document.createElement("b"),m=document.createElement("div"),t=document.createElement("span");
+    el.className="cv";b.textContent=c[0]+" · "+c[2]+" meses";m.className="m";m.textContent=c[1];t.className="st "+(on?"on":"off");t.textContent=(on?"Vigente hasta el ":"Venció el ")+fm(e);
+    el.appendChild(b);el.appendChild(m);el.appendChild(t);$("g-s").appendChild(el)});
+  $("ok").classList.remove("hide");
+  $("wa").href="https://wa.me/50670458967?text="+encodeURIComponent("Hola, tengo una consulta sobre mi garantía"+(v?" ("+v+", servicio del "+fm(d0)+")":"")+".");
+})();
+</script>
+</body>
+</html>

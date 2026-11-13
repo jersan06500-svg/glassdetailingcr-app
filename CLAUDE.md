@@ -41,7 +41,8 @@ Lo que sigue en este archivo es el historial día por día. Si algo de abajo cho
 - Barra de abajo: Hoy, Reservas, Clientes, Números y Más. Se agenda **solo** con el botón flotante "Agendar cita".
 - Pantalla de entrada azul con el logo y solo "Entrar con Google".
 - Fondo con 12 fotos (`img/fondos/`) que cambian con la frase del día; tocar la frase cambia las dos.
-- Hoy con filtros del día, un botón principal por cita (Empecé → Marcar hecha → Ya pagó / Cobrar), duración y avisos en "Pendientes" (incluye "Garantía por vencer": focos a los 4 meses, parabrisas a los 2).
+- Hoy con filtros del día, un botón principal por cita (Empecé → Marcar hecha → Ya pagó / Cobrar), duración y avisos en "Pendientes" (incluye "Garantía por vencer": focos a los 4 meses, parabrisas a los 2; y "Toca repetir": parabrisas a los 11 meses, focos a los 12).
+- Certificado de garantía digital (`garantia/`): va en el mensaje de cobro y en Más opciones → "Mandar garantía" (ver "Garantía digital y Toca repetir").
 - Números, Notas, Metas e Insumos en botones que se abren y cierran. Forma de pago guardada en cada cita ("Cómo pagaron").
 - Personalizar: nombre y color de cada miembro, modo claro u oscuro; solo el dueño: frase, datos de pago y mensajes de WhatsApp.
 - Animaciones de botones solo en la app del equipo; en `reservar/` sigue la regla de sin animaciones.
@@ -271,6 +272,13 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - **12 nov, 2 pm (aprobado: "de las 3 a la 5")**: (1) **Entrada con la marca**: fondo azul cristal, logo en tarjeta blanca, nombre en Questrial (antes Shrikhand) y "Claridad que se nota" (`#lkbrand`, solo con `body.locked`); solo se ve "Entrar con Google"; correo y contraseña quedan detrás de "Entrar con correo y contraseña" (`#lmail`, clase `.mail`). (2) **Garantía por vencer**: desde 1 mes antes de que venza (parabrisas/vidrios/techo 3 meses → aviso a los 2; focos 5 → a los 4), en Pendientes sale "Garantía por vencer: escribirle a <cliente>" (`porGarantia`, `garEnd`, `garMsg`). Usa la última cita hecha de cada cliente (por teléfono), deja de salir 15 días después de vencida, abre WhatsApp con oferta de revisión o retoque + enlace de reservas y marca la cita con `mt:1`. (3) **Notas, Metas e Insumos en botones** como Números (`mkAcc`, mismo `gdcr_nopen`; estilos `.acc`/`.accb` ya son generales). "+ Agregar insumo" y Editar abren su botón solos.
 - **Fondo con fotos + frase del día (12 nov, 4:40 pm, elegido por el dueño en vez del video)**: `#bgv` es un `div` con una de las 12 fotos de `img/fondos/` (8 de Unsplash, licencia libre; 4 `ia-*` creadas con Canva IA), velo `#bgvv` y efecto de profundidad al deslizar. La foto cambia con la frase (`showMot` → `FOND[(MOTI+dayNum())%FOND.length]`); tocar la frase cambia las dos. `MOT` = 20 frases escritas por Claude y aprobadas. `#mot` va grande en Questrial blanco (antes Shrikhand). `web/img/fondo.mp4` ya no se usa en la app (sí en `web/`).
 - Garantía en mensajes: comodín `{garantia}` (`garTxt`: parabrisas +3 meses, focos +5 meses desde el día de la cita); el mensaje de cobro por defecto la incluye.
+
+## Garantía digital y Toca repetir (13 nov 2026, pedido del dueño)
+
+- **`garantia/index.html`**: página pública (sin animaciones, `noindex`) con el certificado: cliente, vehículo, fecha del servicio y, por cada cosa cubierta, "Vigente hasta…" o "Venció el…" (focos 5 meses, parabrisas, todos los vidrios y techo 3 meses), botón de WhatsApp y Agendar otra cita. **Los datos van en el enlace después del `#`** (`#n=cliente&v=vehículo&f=AAAA-MM-DD&s=fpvt`, letras: f focos, p parabrisas, v todos los vidrios, t techo): no se lee Firestore ni se guarda nada, y lo que va después del `#` no llega al servidor. No lleva teléfono.
+- App: `garUrl(j)` arma el enlace. El comodín `{garantia}` ahora agrega "Vea su certificado de garantía: <enlace>", así que sale en el mensaje de cobro (si un mensaje personalizado no tiene `{garantia}`, no sale). En "Más opciones" de las citas hechas o pagadas hay "Mandar garantía".
+- **Toca repetir** (`repEnd`, `porRepetir`, `repMsg`): en Pendientes sale "Toca repetir: escribirle a <cliente>" cuando pasaron 11 meses del parabrisas o vidrios (el cerámico dura 1 año) o 12 meses de los focos (el polímero dura hasta 18). Usa la última cita hecha de cada cliente, se deja de mostrar 60 días después, no sale si el cliente ya tiene una cita pendiente, abre WhatsApp con oferta de mantenimiento y enlace de reservas y marca la cita con `rp:1`. Los meses los eligió Claude: confirmar con el dueño si los quiere distintos.
+- No cambió `firestore.rules` (el equipo ya puede escribir cualquier campo de `jobs`).
 
 ## Reels con Remotion (12 nov 2026, noche)
 

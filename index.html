@@ -1743,7 +1743,7 @@ function msg0(k){return {
   cam:"Hola {cliente}, le escribo de GlassDetailingCR. Ya voy en camino para su cita, llego en unos 20 minutos. ¡Nos vemos!",
   cob:"Hola {cliente} 👋 ¡Gracias por confiar en GlassDetailingCR! El total es {total}.\n{garantia}"}[k]}
 function nk(w){return String(w).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim()}
-function msg(k,j,x){var t=(P().msg||{})[k]||msg0(k),o=Object.assign({cliente:j.cli||"",fecha:fmtD(j.date),hora:j.time?fmtT(j.time):"",vehiculo:j.veh||"vehículo",total:crc(+j.total||0),garantia:garTxt(j)},x||{});
+function msg(k,j,x){var t=(P().msg||{})[k]||msg0(k),o=Object.assign({cliente:j.cli||"",fecha:fmtD(j.date),hora:j.time?fmtT(j.time):"",vehiculo:j.veh||"vehículo",total:crc(+j.total||0),garantia:garTxt(j)+(garUrl(j)?"\nVea su certificado de garantía: "+garUrl(j):"")},x||{});
   return t.replace(/\{([^{}]+)\}/g,function(m,w){var v=o[nk(w)];return v!=null?v:m}).replace(/\n+$/,"")}
 function members(){var L=[OWNER].concat(TEAM||[]).map(function(e){return String(e).toLowerCase()});return L.filter(function(e,i){return e&&L.indexOf(e)===i})}
 function pName(e){var p=(P().people||{})[e];return p&&p.n?String(p.n):""}
@@ -1847,6 +1847,9 @@ var _ej2=editJob;editJob=function(id){_ej2(id);var j=S.jobs.find(function(x){ret
 function garTxt(j){var it=(j.items||[]).join(" "),f=/focos/i.test(it),g=/parabrisas|vidrios|techo/i.test(it);if(!j.date||(!f&&!g))return "";
   var e=function(m){var d=pd(j.date);d.setMonth(d.getMonth()+m);return d.getDate()+" "+MN[d.getMonth()]+" "+d.getFullYear()};
   return "Garantía: "+[g?"parabrisas hasta el "+e(3):"",f?"focos hasta el "+e(5):""].filter(Boolean).join(" · ")+"."}
+/* Certificado de garantía: página garantia/ con los datos en el enlace (después del #, no se guardan en ningún lado) */
+function garUrl(j){var it=(j.items||[]).join(" "),s=(/focos/i.test(it)?"f":"")+(/parabrisas/i.test(it)?"p":"")+(/todos los vidrios/i.test(it)?"v":"")+(/techo/i.test(it)?"t":"");
+  if(!s||!j.date)return "";var q=new URLSearchParams({n:j.cli||"",v:j.veh||"",f:j.date,s:s});return location.origin+location.pathname.replace(/[^\/]*$/,"")+"garantia/#"+q}
 function renderSum(){var it=picked(),f=$("fecha").value||today;
   $("nsum").innerHTML='<b>'+esc($("cli").value.trim()||"Cliente")+'</b>'+($("veh").value?'<div>🚗 '+esc($("veh").value)+(VT?' · '+VTN[VT]:'')+'</div>':'')+
     '<div>'+it.map(function(x){return esc(x.n)+' · '+crc(x.p)}).join("<br>")+'</div><div><b style="display:inline">Total '+crc(calc())+'</b></div>'+
@@ -1880,7 +1883,8 @@ function helpBtns(j){var h="";if(j.st==="Pendiente"&&j.date===today&&!j.ini){if(
   else if(j.st==="Pendiente"&&j.date>today&&j.tel)h+='<button class="sm wa" data-wa="'+j.id+'">'+ICWA+(j.rc?'Recordada ✓':'Recordar')+'</button>';
   else if(j.st==="Pagado"&&j.tel)h+='<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>';return h}
 function moreBtns(j){var h="";if(j.tel)h+='<a class="alt sm" href="tel:'+esc(j.tel.replace(/[^\d+]/g,""))+'" style="border:1px solid var(--line);color:var(--ink)">Llamar</a>';
-  if(locOf(j))h+=locBtns(locOf(j));if(j.st==="Hecho"&&j.tel)h+='<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>';return h}
+  if(locOf(j))h+=locBtns(locOf(j));if(j.st==="Hecho"&&j.tel)h+='<button class="alt sm wao" data-ty="'+j.id+'">'+ICWA+(j.rv?'Reseña ✓':'Pedir reseña')+'</button>';
+  if(isDone(j)&&j.tel&&garUrl(j))h+='<button class="alt sm wao" data-gw="'+j.id+'">'+ICWA+'Mandar garantía</button>';return h}
 function durTag(j){if(!j.ini||!j.fin||j.fin<=j.ini)return "";var m=Math.round((j.fin-j.ini)/6e4);return '<div class="dur">⏱ Duró '+(m>=60?Math.floor(m/60)+" h "+(m%60?m%60+" min":""):m+" min")+'</div>'}
 function startJob(j){j.ini=Date.now();if(DB)DB.doc("jobs/"+j.id).update({ini:j.ini}).catch(dberr);toast("¡A darle! Empezó a las "+hmS(j.ini));renderAg()}
 function renderChips(){var D=S.jobs.filter(function(j){return j.date===sel&&mineOk(j)}),el=$("dchips");if(!el)return;
@@ -1889,7 +1893,8 @@ function renderChips(){var D=S.jobs.filter(function(j){return j.date===sel&&mine
     return '<button type="button" data-df="'+f[0]+'" aria-pressed="'+(DF===f[0])+'"'+(f[2]?' style="--c:'+f[2]+'"':'')+'>'+(f[2]?'<i></i>':'')+f[1]+' '+n+'</button>'}).join("");
   Array.prototype.forEach.call(el.children,function(b){b.onclick=function(){DF=DF===b.dataset.df?"":b.dataset.df;renderAg()}})}
 var _ra4=renderAg;renderAg=function(){_ra4();renderChips();
-  Array.prototype.forEach.call(document.querySelectorAll("[data-ini]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.ini});if(j)startJob(j)}})};
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ini]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.ini});if(j)startJob(j)}});
+  Array.prototype.forEach.call(document.querySelectorAll("[data-gw]"),function(b){b.onclick=function(){var j=S.jobs.find(function(x){return x.id==b.dataset.gw});if(j)waTo(j.tel,"Hola "+j.cli+" 👋 Le escribimos de GlassDetailingCR. Aquí tiene su certificado de garantía: "+garUrl(j))}})};
 /* Al cambiar de día se quita el filtro */
 $("week").addEventListener("click",function(){if(DF){DF="";setTimeout(renderAg,0)}},true);
 /* HOY: todos los avisos en un solo botón */
@@ -1904,6 +1909,17 @@ function garMsg(j,e){var f=/parabrisas|vidrios|techo/i.test((j.items||[]).join("
   j.mt=1;if(DB)DB.doc("jobs/"+j.id).update({mt:1}).catch(dberr);setTimeout(renderAg,300)}
 var _rh5=renderHero;renderHero=function(){_rh5();var L=porGarantia();if(!L.length)return;var g=L[0],b=document.createElement("button");b.className="sm wa hnote";
   b.innerHTML=ICWA+"Garantía por vencer: escribirle a "+esc(String(g.j.cli).split(" ")[0])+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){garMsg(g.j,g.e)};$("avisos").appendChild(b)};
+/* TOCA REPETIR: el cerámico dura 1 año y el polímero hasta 18 meses; ofrecer el servicio de nuevo (parabrisas a los 11 meses, focos a los 12) */
+function repEnd(j){var it=(j.items||[]).join(" "),m=/parabrisas|vidrios|techo/i.test(it)?11:/focos/i.test(it)?12:0;if(!m||!j.date)return "";var d=pd(j.date);d.setMonth(d.getMonth()+m);return ymd(d)}
+function porRepetir(){var hoy=ymd(new Date()),tope=ymd(addD(new Date(),-60)),seen={},L=[],k8=function(t){return String(t||"").replace(/\D/g,"").slice(-8)};
+  S.jobs.filter(function(j){return isDone(j)&&j.tel}).sort(function(a,b){return a.date<b.date?1:-1}).forEach(function(j){var k=k8(j.tel);if(seen[k])return;seen[k]=1;if(j.rp)return;
+    var e=repEnd(j);if(!e||e>hoy||e<tope)return;if(S.jobs.some(function(x){return x.st==="Pendiente"&&x.date>=j.date&&k8(x.tel)===k}))return;L.push({j:j,e:e})});
+  return L.sort(function(a,b){return a.e<b.e?-1:1})}
+function repMsg(j){var it=(j.items||[]).join(" "),f=/focos/i.test(it),g=/parabrisas|vidrios|techo/i.test(it),q=g&&f?"el parabrisas y los focos":g?"el parabrisas":"los focos";
+  waTo(j.tel,"Hola "+j.cli+" 👋 Le escribimos de GlassDetailingCR. Ya pasó casi un año desde que le tratamos "+q+(j.veh?" de su "+j.veh:"")+". Para que siga viéndose como nuevo, ¿le agendamos el mantenimiento? Puede escoger el día aquí: "+BOOKURL);
+  j.rp=1;if(DB)DB.doc("jobs/"+j.id).update({rp:1}).catch(dberr);setTimeout(renderAg,300)}
+var _rh6=renderHero;renderHero=function(){_rh6();var L=porRepetir();if(!L.length)return;var g=L[0],b=document.createElement("button");b.className="sm wa hnote";
+  b.innerHTML=ICWA+"Toca repetir: escribirle a "+esc(String(g.j.cli).split(" ")[0])+(L.length>1?" (faltan "+L.length+")":"");b.onclick=function(){repMsg(g.j)};$("avisos").appendChild(b)};
 var _rh4=renderHero;renderHero=function(){_rh4();var a=$("avisos"),n=a.children.length;if(!n)return;
   var d=document.createElement("details"),b=document.createElement("div");d.className="card avs";d.open=AVOPEN;b.className="avb";
   d.innerHTML='<summary><span>🔔 Pendientes</span><b>'+n+'</b></summary>';while(a.firstChild)b.appendChild(a.firstChild);d.appendChild(b);a.appendChild(d);
