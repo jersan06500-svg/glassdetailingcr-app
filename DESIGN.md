@@ -43,8 +43,9 @@ Estilo limpio y ordenado: fondo blanco, líneas grises finas y **un solo color f
 
 ## 3. Tipografía
 
-- **Fuente:** Inter (gratis, en Google Fonts). Alternativa: Manrope.
-- **Pesos:** solo 400 (normal) y 500 (medio). Nada de negritas pesadas.
+- **Títulos:** Questrial (nombre, títulos, frase del día). **Texto:** Roboto Slab (todo lo demás). Las dos son gratis en Google Fonts. Elegidas por el dueño el 12 nov 2026 (opción 9 de su imagen de Canva); son las mismas del Kit de Marca de Canva "GlassDetailingCR".
+- Las letras de pago de Canva solo se usan dentro de Canva.
+- **Pesos:** 400 (normal) y 500 (medio) en el texto. Nada de negritas pesadas.
 - **Títulos grandes** con letras un poco más juntas (`letter-spacing: -0.02em`).
 - Mayúscula solo al inicio de la frase: "Agendar cita", no "Agendar Cita" ni "AGENDAR CITA".
 
@@ -97,7 +98,7 @@ Pares de fotos lado a lado con la etiqueta "Antes" en gris y "Después" en Azul 
 Tarjeta blanca con la frase del cliente, el nombre y el tipo de carro. Solo testimonios reales.
 
 ### Franja final
-Bloque Azul cristal de ancho completo con "¿Listo para que tu carro brille?" y botones "Agendar cita" y "Escribir por WhatsApp".
+Bloque Azul cristal de ancho completo con "¿Listo para que su carro brille?" y botones "Agendar cita" y "Escribir por WhatsApp".
 
 ### Pie de página
 Fondo Gris niebla en 4 columnas: Servicios, Zona de cobertura, Horario y Redes.
@@ -110,7 +111,9 @@ Fondo Gris niebla en 4 columnas: Servicios, Zona de cobertura, Horario y Redes.
 - **Agenda:** cada cita es una fila con hora, cliente, carro, servicio y etiqueta de estado (con los colores de estado de arriba).
 - **Pestañas activas y navegación:** el ícono y el texto en Azul cristal y el resto en Gris texto.
 - **Números y totales del día:** tarjetas con una etiqueta pequeña gris y la cifra grande en Carbón.
-- **Botón flotante "Nueva cita":** el único elemento Azul cristal relleno en pantalla.
+- **Botón flotante "Agendar cita":** el único elemento Azul cristal relleno en pantalla y la única forma de crear citas.
+- **Fondo de la app:** una de las 12 fotos de `img/fondos/` con un velo, que cambia con la frase del día.
+- **Animaciones:** solo en la app del equipo (botones que se hunden, selección que rebota). En la página de reservas, nada de animaciones.
 
 ---
 
@@ -119,8 +122,9 @@ Fondo Gris niebla en 4 columnas: Servicios, Zona de cobertura, Horario y Redes.
 - **Formato:** 1080×1080 (post) y 1080×1920 (historia).
 - **Fondo:** blanco o foto real del trabajo, nunca fondos de colores saturados.
 - **Color:** el Azul cristal solo en el precio, la oferta o una franja inferior con el logo.
-- **Texto:** Inter, máximo 2 líneas grandes y 1 línea pequeña.
-- **Logo:** siempre en la misma esquina (abajo a la derecha).
+- **Texto:** títulos en Questrial y texto en Roboto Slab, máximo 2 líneas grandes y 1 línea pequeña.
+- **Reels:** plantilla de Remotion con subtítulos palabra por palabra (la palabra activa en Azul cristal), logo arriba a la derecha y cierre azul con logo, precio y llamado a la acción. Sin voz.
+- **Logo:** siempre en la misma esquina: abajo a la derecha en publicaciones, arriba a la derecha en reels.
 - **Fotos:** reales, bien iluminadas, mostrando reflejos y acabado. Nada de fotos de banco.
 
 ---
@@ -135,8 +139,9 @@ Fondo Gris niebla en 4 columnas: Servicios, Zona de cobertura, Horario y Redes.
 
 ## 9. Tono de voz
 
-- **Cercano y claro:** se tutea al cliente ("Tu carro", "Agendá" o "Agenda", según cómo hable la marca; elegir uno y mantenerlo).
-- **Frases cortas** que van al grano: "Pulido + cerámico, ₡___. Vamos a domicilio."
+- **Cercano y claro, de usted:** al cliente siempre se le habla de usted ("Su carro", "Agende aquí"), en la web, las reservas, las redes y los mensajes de WhatsApp. La app del equipo, hacia el equipo, va de vos.
+- **Frases cortas** que van al grano: "Restauración de focos, ₡20 000 el par. Vamos a domicilio."
+- **Garantía:** "5 meses en focos y 3 meses en parabrisas". Ya no se dice "1 año de protección".
 - Sin exceso de signos de exclamación ni mayúsculas.
 - **Botones** que empiezan con verbo: "Agendar cita", "Ver precios", "Escribir por WhatsApp".
 
@@ -159,7 +164,8 @@ Fondo Gris niebla en 4 columnas: Servicios, Zona de cobertura, Horario y Redes.
   --pendiente: #B26A00; --pendiente-fondo: #FFF4E0;
   --cancelado: #C0352B; --cancelado-fondo: #FDECEA;
 
-  --fuente: "Inter", system-ui, sans-serif;
+  --fuente-titulos: "Questrial", system-ui, sans-serif;
+  --fuente: "Roboto Slab", Georgia, serif;
   --radio-tarjeta: 12px;
   --radio-hero: 20px;
   --radio-boton: 999px;
