@@ -11,7 +11,7 @@ Contexto para seguir trabajando en esta app desde Claude (web o Claude Code).
 - Dueño: Jersan Alejandro Gutiérrez Ocampo (Alejandro). Hablarle de "tú", en español sencillo. A los clientes, de **usted**. La app hacia el equipo, de **vos**.
 - Preferencias del dueño: diseños limpios y minimalistas, sin relleno; nada que se vea genérico "hecho por IA" (usar su marca y fotos reales); proponer mejoras con pros y contras; si falta un acceso o herramienta, pedirlo en vez de buscarle la vuelta.
 
-## Vigente hoy (12 nov 2026, noche) · manda sobre todo lo de abajo
+## Vigente hoy (13 nov 2026) · manda sobre todo lo de abajo
 
 Lo que sigue en este archivo es el historial día por día. Si algo de abajo choca con esta sección, vale esta.
 
