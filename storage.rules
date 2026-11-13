@@ -1,0 +1,16 @@
+rules_version = '2';
+// Reglas de Firebase Storage para las fotos de la app nueva (v2).
+// Se publican a mano en Firebase Console → Storage → Reglas, después de activar el plan Blaze.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isTeam() {
+      return request.auth != null && request.auth.token.email_verified == true
+        && (request.auth.token.email == 'jersan06500@gmail.com'
+            || firestore.exists(/databases/(default)/documents/team/$(request.auth.token.email)));
+    }
+    match /r_fotos/{parada}/{foto} {
+      allow read: if isTeam();
+      allow write: if isTeam() && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
