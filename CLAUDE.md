@@ -62,6 +62,10 @@ Lo que sigue en este archivo es el historial día por día. Si algo de abajo cho
 5. Plantilla "Cliente feliz" con creación masiva de Canva (faltan 4-5 fotos de antes y después de clientes).
 6. Carrusel de focos con el efecto de letras, cuando haya una foto adecuada (foco de frente, de cerca, encendido, con fondo liso o desmontado).
 
+**Archivos del negocio en la compu del dueño**
+
+- Todo está en `Documentos/GlassDetailingCR/` (orden explicado en su `LEEME.md`): 00-Contexto, 01-Marca, 02-Codigo (este repositorio), 03-Fotos, 04-Videos, 05-Redes-sociales, 06-Publicidad, 07-Administracion, 98-Archivo y 99-Por-revisar. Lo nuevo que se baje a Descargas se pasa ahí.
+
 **Lo que no funcionó (no repetir)**
 
 - Recortar el foco del Mazda pegado a la carrocería: ni Canva ni las herramientas de Claude lo separan limpio.
@@ -274,7 +278,7 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - Plantilla de reels hecha con **Remotion** (`npx create-video`, plantilla TikTok) en el espacio de trabajo de Claude: `/home/claude/videos/glassdetailing-reels/` (se pierde entre sesiones: si hace falta, reinstalar con `npx create-video@latest --yes --tiktok glassdetailing-reels` y rehacer `src/GDReel.tsx`). `remotion.config.ts` usa `/usr/bin/google-chrome` (la descarga de Chrome de Remotion está bloqueada). Render con `--concurrency=2`.
 - `GDReel`: clips verticales 1080x1920 con subtítulos palabra por palabra (Questrial, palabra activa en caja `#0077B6`), logo en tarjeta blanca arriba a la derecha, acercamiento con rebote a una zona (`zoom: {x, y, at, scale}`), canción opcional (`audio`, apaga el sonido de los clips) y cierre azul oscuro con logo, precio, detalle y botón (`cta`). Cortes acomodados a los golpes de la canción (librosa).
 - **Publicado en Instagram el 12 nov, 6:27 pm**: reel del Porsche Macan (parabrisas, videos originales 4K del dueño en OneDrive `Documents/porshe macan`, placa recortada, audio que mandó el dueño): https://www.instagram.com/reel/DfqV6j8AM2K/ . Archivos en `redes/2026-11-reels/porsche-macan*`.
-- Versiones para anuncio de Meta en Descargas del dueño (`anuncio-parabrisas-A/B.mp4`): gancho A "¿Su parabrisas se ve así?", B "¿Llueve y no ve nada?", prueba de agua real (sedán), cierre "Escríbanos por WhatsApp", **sin música** (elegir de la biblioteca de Meta). Pendiente: que el dueño pague la cuenta de anuncios.
+- Versiones para anuncio de Meta en la compu del dueño, `Documentos/GlassDetailingCR/06-Publicidad/2026-11-anuncios-parabrisas/` (`anuncio-parabrisas-A/B.mp4`): gancho A "¿Su parabrisas se ve así?", B "¿Llueve y no ve nada?", prueba de agua real (sedán), cierre "Escríbanos por WhatsApp", **sin música** (elegir de la biblioteca de Meta). Pendiente: que el dueño pague la cuenta de anuncios.
 - Tarjeta de garantía de imprenta (logo del dueño, 9 × 5 cm, PDF, cartulina mate) hecha en HTML; la de Canva salió mal. Frente azul con logo y "Claridad que se nota"; reverso "Certificado de garantía" con líneas para cliente, vehículo, servicio, fecha y "válida hasta", recuadros Focos 5 meses / Parabrisas 3 meses, QR a reservas, Instagram y WhatsApp. Kit de Marca de Canva "GlassDetailingCR" (kAHavc9GxCg): títulos Questrial, texto Roboto Slab. Canva Pro en prueba por 1 mes.
 
 ## Estado al cerrar el 7 nov, 4:45 pm
