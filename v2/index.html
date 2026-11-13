@@ -289,7 +289,7 @@ var IC={
  wa:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.8z"/><path d="M9 9.5c.3 2.6 2.6 4.9 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.5-1.8-1.3-2.3-2.3l.8-.8-1-2z"/></svg>',
  waze:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15.5c-1.5-.6-2.2-1.8-2-3 1 .3 1.7-.3 1.8-1.3C5.3 6.9 8.3 4 12.3 4 16.5 4 20 7.2 20 11.4c0 3.6-2.7 6-6 6.4H10c-1.5 0-3.4-.7-5-1.9z"/><circle cx="10" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M10 13.2c1.1 1 2.9 1 4 0"/><circle cx="8" cy="19.5" r="1.6"/><circle cx="15" cy="19.5" r="1.6"/></svg>',
  car:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EDF1F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="13" r="1"/><circle cx="16.5" cy="13" r="1"/></svg>',
- pin:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ pin:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF4D6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
  bat:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4D6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10v4"/><path d="M10 9l-2 3h4l-2 3"/></svg>',
  cloud:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B7A6AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 8a4.5 4.5 0 0 1 .5 9z"/></svg>',
  rain:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CC3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 15a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 6a4.5 4.5 0 0 1 .5 9z"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2"/></svg>',
@@ -301,7 +301,7 @@ var IC={
 function msgCamino(p,m){return "¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Ya vamos en camino y llegamos en unos "+m+" minutos. Le agradecemos tener el carro a mano y un tomacorriente de 110 V cerca. ¡Nos vemos!"}
 function msgLlegamos(p){return "¡Hola, "+first(p.cli)+"! Ya llegamos. Estamos afuera para empezar con su "+(p.veh||"vehículo")+"."}
 function waUrl(p,t){var tel=String(p.tel||"").replace(/\D/g,"");if(tel.length===8)tel="506"+tel;return "https://wa.me/"+tel+"?text="+encodeURIComponent(t)}
-function wazeUrl(p){if(p.lat!=null&&p.lng!=null)return "https://waze.com/ul?ll="+p.lat+","+p.lng+"&navigate=yes";return "https://waze.com/ul?q="+encodeURIComponent(p.dir||p.zona||"")+"&navigate=yes"}
+function wazeUrl(p){var ci=p.tel?CDATA[String(p.tel).replace(/\D/g,"").slice(-8)]:null;if(p.lat==null&&ci&&ci.lat!=null)p={lat:ci.lat,lng:ci.lng};if(p.lat!=null&&p.lng!=null)return "https://waze.com/ul?ll="+p.lat+","+p.lng+"&navigate=yes";return "https://waze.com/ul?q="+encodeURIComponent(p.dir||p.zona||"")+"&navigate=yes"}
 
 /* DATOS DE EJEMPLO */
 function demoData(){var t=new Date(),out=[],mon=monday(t);
@@ -467,6 +467,7 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   var thumb=photos(p,"fa")[0];thumb=thumb&&(thumb.u||thumb);
   var h='<div class="vhead"><button class="back press" id="pback" aria-label="Volver a la ruta">'+IC.back+'</button><span class="tt">Parada '+n+' · '+esc(first(p.cli))+'</span><span class="timer hide" id="ptimer"><i></i><span></span></span></div><div class="vin">'+
   '<div class="carhd">'+(thumb?'<img class="ph" src="'+esc(thumb)+'" alt="">':'<span class="ph">'+IC.car+'</span>')+'<div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="q" style="font-size:22px">'+esc(p.veh||"Vehículo")+'</span><span class="m" style="font-size:12px">'+esc([p.svc,crc(p.total)].filter(Boolean).join(" · "))+'</span></div></div>'+
+  ((CDATA[ckey(p)]||{}).notas?'<div class="note" style="color:var(--c);white-space:pre-line"><span class="m" style="font-size:11px;letter-spacing:.1em;display:block;margin-bottom:4px">NOTAS DE LA CASA</span>'+esc(CDATA[ckey(p)].notas)+'</div>':'')+
   '<div class="steps">'+steps.map(function(s,i){return '<div class="st'+(s[1]?" ok":(i===on?" on":""))+'"><span class="b">'+(s[1]?IC.chk:"")+'</span><span class="l">'+s[0]+'</span><span class="s">'+esc(s[2])+'</span></div>'}).join("")+'</div>'+
   '<div class="sec"><div class="sech"><b>Fotos de antes</b><span class="m" style="font-size:12px">el carro como lo encontramos</span></div>'+phGrid(p,"fa","Antes")+'</div>';
   if(tk.length)h+='<div class="sec"><b class="q" style="font-weight:400;font-size:17px">Lo que falta</b>'+tk.map(function(t){return '<button class="ck press'+(hech[t[0]]?" on":"")+'" data-t="'+t[0]+'"><span class="bx">'+(hech[t[0]]?IC.chk:"")+'</span><span>'+t[1]+'</span></button>'}).join("")+'</div>';
@@ -559,17 +560,29 @@ function loadAll(){if(DEMO){ALL=demoData().concat(demoHist());return Promise.res
   return DB.collection(COL).orderBy("date","desc").limit(2000).get().then(function(sn){ALL=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}).catch(function(){ALL=ALL||S.week.slice()})}
 function allP(){var m={};(ALL||[]).forEach(function(p){m[p.id]=p});S.week.forEach(function(p){m[p.id]=p});return Object.keys(m).map(function(k){return m[k]})}
 function zonaDe(p){var z=String(p.zona||p.dir||"").split(",").map(function(x){return x.trim()}).filter(Boolean);return z.length?z[z.length-1]:"Sin zona"}
-function clientes(){var m={};allP().forEach(function(p){var k=String(p.tel||"").replace(/\D/g,"")||("n:"+String(p.cli||"").toLowerCase());(m[k]=m[k]||{key:k,ps:[]}).ps.push(p)});
-  var hoy=parse(ymd(new Date()));
-  return Object.keys(m).map(function(k){var c=m[k];c.ps.sort(function(a,b){return a.date<b.date?1:-1});var last=c.ps[0];c.cli=last.cli;c.tel=last.tel;c.veh=last.veh;c.zona=zonaDe(last);
-    c.hechas=c.ps.filter(done);var u=c.hechas[0];c.last=u;c.badge="";c.bc="var(--c)";
-    if(u){var s=svcOf(u),ends=[];if(s.f)ends.push(addMonths(u.date,5));if(s.p||s.v||s.t)ends.push(addMonths(u.date,3));
-      var rep=null;if(s.p||s.v||s.t)rep=addMonths(u.date,11);if(s.f){var rf=addMonths(u.date,12);rep=rep&&rep<rf?rep:rf}
-      var pend=c.ps.some(function(p){return !done(p)&&p.date>=ymd(new Date())});
-      var gEnd=ends.length?new Date(Math.max.apply(null,ends)):null,dd=gEnd?(gEnd-hoy)/864e5:-999;
-      if(rep&&!pend&&hoy>=rep&&(hoy-rep)/864e5<=60){c.badge="Toca repetir";c.bc="var(--r)";c.tag="rep"}
-      else if(gEnd&&dd>=-15&&dd<=30){c.badge="Garantía por vencer";c.bc="var(--r)";c.tag="gar"}
-      else if(gEnd&&dd>30){c.badge="Garantía";c.tag="ok"}}
+function ckey(p){return String(p.tel||"").replace(/\D/g,"").slice(-8)||("n:"+String(p.cli||"").toLowerCase())}
+function vkey(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim()||"sin carro"}
+/* Estado de garantía y "toca repetir" de un carro, con su última parada hecha */
+function carStatus(ps){var hoy=parse(ymd(new Date())),hechas=ps.filter(done),u=hechas[0],r={last:u,hechas:hechas,badge:"",bc:"var(--c)",tag:""};if(!u)return r;
+  var s=svcOf(u),ends=[];if(s.f)ends.push(addMonths(u.date,5));if(s.p||s.v||s.t)ends.push(addMonths(u.date,3));
+  var rep=null;if(s.p||s.v||s.t)rep=addMonths(u.date,11);if(s.f){var rf=addMonths(u.date,12);rep=rep&&rep<rf?rep:rf}
+  var pend=ps.some(function(p){return !done(p)&&p.date>=ymd(new Date())});
+  var gEnd=ends.length?new Date(Math.max.apply(null,ends)):null,dd=gEnd?(gEnd-hoy)/864e5:-999;
+  r.rep=rep;r.gEnd=gEnd;
+  if(rep&&!pend&&!u.rp&&hoy>=rep&&(hoy-rep)/864e5<=60){r.badge="Toca repetir";r.bc="var(--r)";r.tag="rep"}
+  else if(gEnd&&!u.mt&&dd>=-15&&dd<=30){r.badge="Garantía por vencer";r.bc="var(--r)";r.tag="gar"}
+  else if(gEnd&&dd>30){r.badge="Garantía";r.tag="ok"}
+  return r}
+function clientes(){var m={};allP().forEach(function(p){var k=ckey(p);(m[k]=m[k]||{key:k,ps:[]}).ps.push(p)});
+  var ord={rep:3,gar:2,ok:1,"":0};
+  return Object.keys(m).map(function(k){var c=m[k];c.ps.sort(function(a,b){return a.date<b.date?1:-1});var last=c.ps[0];
+    c.cli=last.cli;c.tel=last.tel;c.veh=last.veh;c.zona=zonaDe(last);c.info=CDATA[k]||{};
+    var cm={};c.ps.forEach(function(p){var v=vkey(p.veh);(cm[v]=cm[v]||{key:v,veh:p.veh,ps:[]}).ps.push(p)});
+    c.cars=Object.keys(cm).map(function(v){var car=cm[v];Object.assign(car,carStatus(car.ps));return car}).sort(function(a,b){return a.ps[0].date<b.ps[0].date?1:-1});
+    c.hechas=c.ps.filter(done);c.last=c.hechas[0];
+    var top=c.cars.slice().sort(function(a,b){return ord[b.tag]-ord[a.tag]})[0];c.badge=top.badge;c.bc=top.bc;c.tag=top.tag;c.tcar=top;
+    c.gastado=c.ps.filter(function(p){return p.st==="Pagada"}).reduce(function(a,p){return a+(p.total||0)},0);
+    c.desde=c.ps[c.ps.length-1].date;c.frec=c.hechas.length>=3;
     return c})}
 function hashC(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return AVC[Math.abs(h)%AVC.length]}
 function ini(n){return String(n||"?").trim().split(/\s+/).slice(0,2).map(function(w){return w[0]}).join("").toUpperCase()}
@@ -583,50 +596,94 @@ function renderCli(){var el=$("vcli"),L=clientes(),con=L.filter(function(c){retu
   '<label class="srch">'+IC.search+'<input id="cq" type="search" placeholder="Nombre, carro o teléfono" value="'+esc(CQ)+'" aria-label="Buscar cliente"></label>'+
   '<div class="chips">'+[["todos","Todos"],["rep","Toca repetir"],["gar","Garantía por vencer"]].map(function(x){var n=x[0]==="todos"?L.length:L.filter(function(c){return c.tag===x[0]}).length;return '<button class="press'+(CF===x[0]?" on":"")+'" data-cf="'+x[0]+'">'+x[1]+(x[0]!=="todos"&&n?" · "+n:"")+'</button>'}).join("")+'</div></div>'+
   '<div class="vin" style="padding-top:calc(196px + var(--safe-t))" id="clist">';
+  var cola=F.filter(function(c){return (CF==="gar"?c.tag==="gar":c.tag==="rep")&&c.tel});
+  if(CF!=="todos"&&cola.length)h+='<button class="btn press" id="fila">'+IC.wa+' Escribirle a '+(cola.length>1?'los '+cola.length:'1 cliente')+' en fila</button>';
   if(!F.length)h+='<div class="note">'+(L.length?"Ningún cliente coincide con la búsqueda.":"Todavía no hay clientes. Se crean solos con cada parada que se agenda.")+'</div>';
   zk.forEach(function(z){h+='<div class="zona"><div class="zh"><i></i><b>'+esc(z)+'</b><span class="m" style="font-size:12px">'+Z[z].length+' cliente'+(Z[z].length>1?"s":"")+'</span></div>'+
-    Z[z].map(function(c){return '<div style="display:flex;align-items:center;gap:8px"><button class="cl press" data-ck="'+esc(c.key)+'"><span class="av" style="background:'+hashC(c.key)+'">'+esc(ini(c.cli))+'</span><span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span class="nm">'+esc(c.cli)+'</span><span class="sb">'+esc(c.veh||"")+(c.badge?' · <span style="color:'+c.bc+'">'+c.badge+'</span>':'')+'</span></span></button>'+
+    Z[z].map(function(c){return '<div style="display:flex;align-items:center;gap:8px"><button class="cl press" data-ck="'+esc(c.key)+'"><span class="av" style="background:'+hashC(c.key)+'">'+esc(ini(c.cli))+'</span><span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span class="nm">'+esc(c.cli)+'</span><span class="sb">'+(c.frec?'<span style="color:var(--r)">★</span> ':'')+esc(c.veh||"")+(c.cars.length>1?' · +'+(c.cars.length-1)+' carro'+(c.cars.length>2?'s':''):'')+(c.badge?' · <span style="color:'+c.bc+'">'+c.badge+'</span>':'')+'</span></span></button>'+
       (c.tel?'<a class="ib press" href="'+esc(waUrl(c,"¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR."))+'" target="_blank" rel="noopener" aria-label="WhatsApp a '+esc(first(c.cli))+'">'+IC.wa+'</a>':'')+'</div>'}).join("")+'</div>'});
   h+='</div>';el.innerHTML=h;
   var inp=$("cq");inp.oninput=function(){CQ=inp.value;var pos=inp.selectionStart;renderCli();var n=$("cq");n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}};
   Array.prototype.forEach.call(el.querySelectorAll("[data-cf]"),function(b){b.onclick=function(){CF=b.dataset.cf;renderCli()}});
-  Array.prototype.forEach.call(el.querySelectorAll("[data-ck]"),function(b){b.onclick=function(){CKEY=b.dataset.ck;goView("fic",null,true)}})}
+  Array.prototype.forEach.call(el.querySelectorAll("[data-ck]"),function(b){b.onclick=function(){CKEY=b.dataset.ck;FCAR=null;goView("fic",null,true)}});
+  if($("fila"))$("fila").onclick=function(){fila(cola,CF==="gar"?"gar":"rep")}}
+
+/* MENSAJES EN FILA (WhatsApp no deja enviar masivo sin su servicio pagado: se abre uno por uno) */
+var RESERVAS=location.origin+location.pathname.replace(/v2\/[^\/]*$/,"")+"reservar/";
+function svcCorto(p){var s=svcOf(p);return s.f&&(s.p||s.v)?"los focos y el parabrisas":s.f?"los focos":s.v?"los vidrios":"el parabrisas"}
+function msgRep(c){var u=c.tcar.last;return "¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR. Ya casi se cumple un año desde que le dejamos como nuevos "+svcCorto(u)+" de su "+(u.veh||"vehículo")+". Para que siga viéndose así, le recomendamos un mantenimiento. Puede agendar aquí: "+RESERVAS}
+function msgGar(c){var u=c.tcar.last;return "¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR. Le recordamos que la garantía de "+svcCorto(u)+" de su "+(u.veh||"vehículo")+" vence el "+fmtD(c.tcar.gEnd)+". Si nota cualquier detalle, con gusto lo revisamos sin costo antes de esa fecha."}
+function fila(L,tipo){var i=0;
+  function paso(){if(i>=L.length){$("sheet").classList.add("hide");toast("Listo: "+L.length+" mensaje"+(L.length>1?"s":"")+" preparado"+(L.length>1?"s":""));refresh();return}
+    var c=L[i],msg=tipo==="gar"?msgGar(c):msgRep(c);
+    $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="q" style="font-size:20px">'+esc(c.cli)+'</span><span class="m" style="font-size:12px">'+(i+1)+' de '+L.length+'</span></div>'+
+    '<div class="bar" style="margin:0"><i style="width:'+Math.round(i*100/L.length)+'%"></i></div>'+
+    '<div class="note" style="color:var(--c);white-space:pre-line">'+esc(msg)+'</div>'+
+    '<a class="btn press" id="fsend" target="_blank" rel="noopener" href="'+esc(waUrl(c,msg))+'">'+IC.wa+' Abrir WhatsApp</a>'+
+    '<div style="display:flex;gap:8px"><button class="btn alt press" style="flex:1" id="fskip">Saltar</button><button class="btn alt press" style="flex:1" id="fend">Terminar</button></div></div>';
+    $("fsend").onclick=function(){var o={};o[tipo==="gar"?"mt":"rp"]=Date.now();save(c.tcar.last,o);i++;setTimeout(paso,400)};
+    $("fskip").onclick=function(){i++;paso()};$("fend").onclick=function(){$("sheet").classList.add("hide");refresh()}}
+  $("sheet").classList.remove("hide");paso();if(!RM)gsap.from("#sheet .in",{y:300,duration:.35,ease:"power3.out"})}
 
 /* FICHA DEL CARRO */
-var CKEY=null;
+var CKEY=null,FCAR=null,CDATA={},NEDIT=false;
 function gaugeSvg(pct){var r=40,cx=50,cy=50,a0=150,a1=390,ae=a0+(a1-a0)*Math.max(0,Math.min(1,pct));
   function pt(a){var t=a*Math.PI/180;return [cx+r*Math.cos(t),cy+r*Math.sin(t)]}
   var p0=pt(a0),p1=pt(a1),pe=pt(ae);
   return '<svg width="100" height="84" viewBox="0 0 100 84" aria-hidden="true"><path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A40 40 0 1 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" stroke="#2B0F16" stroke-width="9" fill="none" stroke-linecap="round"/>'+
    (pct>0?'<path class="gz" d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A40 40 0 '+(ae-a0>180?1:0)+' 1 '+pe[0].toFixed(1)+' '+pe[1].toFixed(1)+'" stroke="#FF4D6D" stroke-width="9" fill="none" stroke-linecap="round"/>':'')+
    '<text x="50" y="56" fill="#EDF1F5" font-size="18" text-anchor="middle" font-family="Questrial">'+Math.round(Math.max(0,pct)*100)+'%</text></svg>'}
+function locOfC(c){var p=c.ps.find(function(x){return x.lat!=null});if(p)return {lat:p.lat,lng:p.lng};if(c.info.lat!=null)return {lat:c.info.lat,lng:c.info.lng};return null}
+function saveCli(key,data){CDATA[key]=Object.assign({},CDATA[key]||{},data);if(DEMO||!DB||/^n:/.test(key)){refresh();return}
+  DB.collection("r_clientes").doc(key).set(data,{merge:true}).catch(function(){toast("No se pudo guardar. Revisá la señal.")})}
+function ubicUrl(c){return location.origin+location.pathname.replace(/v2\/[^\/]*$/,"")+"ubicacion/?"+new URLSearchParams({t:String(c.tel||"").replace(/\D/g,"").slice(-8),n:first(c.cli),r:"2"})}
+function msgUbic(c){return "¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR. Para llegar sin perdernos, ¿nos ayuda tocando este enlace? Con un toque nos comparte la ubicación exacta: "+ubicUrl(c)}
 function renderFic(){var el=$("vfic"),c=clientes().find(function(x){return x.key===CKEY});if(!c){el.innerHTML="";return}
-  var u=c.last,img=null;c.ps.some(function(p){var f=photos(p,"fd").slice(-1)[0]||photos(p,"fa")[0];if(f){img=f.u||f;return true}});
-  var hoy=parse(ymd(new Date())),gs="",rep="";
-  if(u){var s=svcOf(u);function g(lbl,m){var end=addMonths(u.date,m),tot=(end-parse(u.date))/864e5,left=(end-hoy)/864e5;
-      return '<div class="gauge">'+gaugeSvg(left/tot)+'<span style="font-size:13px">'+lbl+'</span><span class="m" style="font-size:11px">'+(left>=0?"garantía hasta "+fmtD(end):"venció el "+fmtD(end))+'</span></div>'}
+  var car=c.cars.find(function(x){return x.key===FCAR})||c.cars[0];FCAR=car.key;
+  var u=car.last,img=null;car.ps.some(function(p){var f=photos(p,"fd").slice(-1)[0]||photos(p,"fa")[0];if(f){img=f.u||f;return true}});
+  var hoy=parse(ymd(new Date())),gs="",rep="",loc=locOfC(c);
+  if(u){var s=svcOf(u);var g=function(lbl,m){var end=addMonths(u.date,m),tot=(end-parse(u.date))/864e5,left=(end-hoy)/864e5;
+      return '<div class="gauge">'+gaugeSvg(left/tot)+'<span style="font-size:13px">'+lbl+'</span><span class="m" style="font-size:11px">'+(left>=0?"garantía hasta "+fmtD(end):"venció el "+fmtD(end))+'</span></div>'};
     if(s.f)gs+=g("Focos",5);if(s.p||s.v)gs+=g(s.v?"Vidrios":"Parabrisas",3);
-    var rd=null;if(s.p||s.v||s.t)rd=addMonths(u.date,11);if(s.f){var rf=addMonths(u.date,12);rd=rd&&rd<rf?rd:rf}
-    if(rd)rep='<div class="note" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--c)">'+IC.repeat+' Le toca repetir en '+MESES[rd.getMonth()].toLowerCase()+' '+rd.getFullYear()+'</div>'}
-  var lp=c.ps.find(function(p){return p.lat!=null})||c.ps[0];
+    if(car.rep)rep='<div class="note" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--c)">'+IC.repeat+' Le toca repetir en '+MESES[car.rep.getMonth()].toLowerCase()+' '+car.rep.getFullYear()+'</div>'}
   var h='<button class="back press" id="fback" aria-label="Volver a clientes" style="position:fixed;left:16px;top:calc(16px + var(--safe-t));z-index:9;width:48px;height:48px;border-radius:24px;background:rgba(20,6,9,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)">'+IC.back+'</button><div class="vin">'+
-  '<div class="hero">'+(img?'<img src="'+esc(img)+'" alt="">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:.4;transform:scale(2.2)">'+IC.car+'</div>')+'<span class="fd"></span><div class="tx"><span class="q" style="font-size:30px;line-height:1.1">'+esc(c.veh||"Vehículo")+'</span><span class="m" style="font-size:13px">'+esc(c.cli)+(c.zona!=="Sin zona"?" · "+esc(c.zona):"")+'</span></div></div>'+
+  '<div class="hero">'+(img?'<img src="'+esc(img)+'" alt="">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:.4;transform:scale(2.2)">'+IC.car+'</div>')+'<span class="fd"></span><div class="tx"><span class="q" style="font-size:30px;line-height:1.1">'+esc(car.veh||"Vehículo")+'</span><span class="m" style="font-size:13px">'+esc(c.cli)+(c.zona!=="Sin zona"?" · "+esc(c.zona):"")+'</span></div></div>'+
+  '<div class="chips">'+c.cars.map(function(x){return '<button class="press'+(x.key===car.key?" on":"")+'" data-car="'+esc(x.key)+'">'+esc(x.veh||"Sin carro")+'</button>'}).join("")+'<button class="press" data-soon="Agendar otro carro">+ Otro carro</button></div>'+
   '<div class="acts3">'+(c.tel?'<a class="pri press" href="'+esc(waUrl(c,"¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR."))+'" target="_blank" rel="noopener">'+IC.wa+' WhatsApp</a>':'')+
-  '<a class="press" href="'+esc(wazeUrl(lp))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a><button class="press" data-soon="Agendar">'+IC.plus+' Agendar</button></div>'+
+  (loc?'<a class="press" href="'+esc(wazeUrl(loc))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a>':'')+'<button class="press" data-soon="Agendar">'+IC.plus+' Agendar</button></div>'+
+  '<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--c)"><span style="display:flex;flex-direction:column;gap:2px"><span class="q" style="font-size:19px">'+crc(c.gastado)+'</span><span class="m" style="font-size:12px">'+c.hechas.length+' visita'+(c.hechas.length===1?"":"s")+' · cliente desde '+MESES[parse(c.desde).getMonth()].toLowerCase()+' '+parse(c.desde).getFullYear()+'</span></span>'+(c.frec?'<span style="height:28px;padding:0 10px;border-radius:14px;background:var(--w);display:flex;align-items:center;font-size:12px">★ Frecuente</span>':'')+'</div>'+
+  '<div class="sec"><div class="sech"><b>Notas de la casa</b>'+(NEDIT?'':'<button class="m press" id="nedit" style="font-size:13px;min-height:44px;padding:0 4px">'+(c.info.notas?"Editar":"Agregar")+'</button>')+'</div>'+
+  (NEDIT?'<textarea id="ntxt" rows="3" maxlength="400" placeholder="Portón negro, hay perro, parquear en la acera, prefiere SINPE…" style="width:100%;border-radius:14px;border:1px solid var(--r);background:var(--s1);color:var(--c);font:inherit;font-size:16px;padding:12px;resize:vertical">'+esc(c.info.notas||"")+'</textarea><div style="display:flex;gap:8px"><button class="btn alt press" style="flex:1" id="ncan">Cancelar</button><button class="btn press" style="flex:1" id="nok">Guardar</button></div>'
+   :(c.info.notas?'<div class="note" style="color:var(--c);white-space:pre-line">'+esc(c.info.notas)+'</div>':'<div class="note">Portón, perro, dónde parquear… lo que sirva para llegar y trabajar sin preguntar.</div>'))+'</div>'+
+  (loc?'':(c.tel?'<a class="tg press" href="'+esc(waUrl(c,msgUbic(c)))+'" target="_blank" rel="noopener"><span style="display:flex;align-items:center;gap:10px">'+IC.pin+' Pedir ubicación exacta</span><span class="m" style="font-size:12px">por WhatsApp</span></a>':''))+
   (gs?'<div class="gauges">'+gs+'</div>':'')+rep+
-  '<div class="sec"><b class="q" style="font-weight:400;font-size:17px">Paradas con nosotros · '+c.ps.length+'</b>'+
-  c.ps.map(function(p){var a=photos(p,"fa")[0],d=photos(p,"fd").slice(-1)[0];a=a&&(a.u||a);d=d&&(d.u||d);
+  '<div class="sec"><b class="q" style="font-weight:400;font-size:17px">Paradas de este carro · '+car.ps.length+'</b>'+
+  car.ps.map(function(p){var a=photos(p,"fa")[0],d=photos(p,"fd").slice(-1)[0];a=a&&(a.u||a);d=d&&(d.u||d);
     return '<button class="vis press" data-pid="'+esc(p.id)+'"><i></i><span style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:14px">'+esc(p.svc||"Servicio")+'</span><span class="m" style="font-size:12px">'+esc(fmtD(parse(p.date)))+' · '+esc(p.st==="Pagada"?(p.pm||"Pagada"):(p.st||"Pendiente"))+' · '+crc(p.total)+'</span>'+
     ((a||d)?'<span style="display:flex;gap:4px">'+(a?'<img src="'+esc(a)+'" alt="Antes">':'')+(d?'<img src="'+esc(d)+'" alt="Después">':'')+'</span>':'')+'</span></button>'}).join("")+'</div></div>';
-  el.innerHTML=h;$("fback").onclick=back;bindSoon(el);
+  el.innerHTML=h;$("fback").onclick=function(){NEDIT=false;back()};bindSoon(el);
+  Array.prototype.forEach.call(el.querySelectorAll("[data-car]"),function(b){b.onclick=function(){FCAR=b.dataset.car;renderFic()}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-pid]"),function(b){b.onclick=function(){goView("par",b.dataset.pid,true)}});
+  if($("nedit"))$("nedit").onclick=function(){NEDIT=true;renderFic();var t=$("ntxt");t.focus()};
+  if($("ncan"))$("ncan").onclick=function(){NEDIT=false;renderFic()};
+  if($("nok"))$("nok").onclick=function(){var v=$("ntxt").value.trim().slice(0,400);NEDIT=false;saveCli(c.key,{notas:v});renderFic();toast("Notas guardadas")};
   if(!RM){Array.prototype.forEach.call(el.querySelectorAll(".gz"),function(pth){var L=pth.getTotalLength();gsap.fromTo(pth,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1,ease:"power2.out",delay:.2})});
     gsap.from("#vfic .vis",{y:16,opacity:0,stagger:.06,duration:.4,delay:.3})}}
+
+/* UBICACIÓN QUE MANDA EL CLIENTE: enlace ?loc=lat,lng&t=tel desde la página ubicacion/ */
+function takeLoc(){var q=new URLSearchParams(location.search),l=(q.get("loc")||"").split(","),t=(q.get("t")||"").replace(/\D/g,"").slice(-8);
+  if(l.length!==2||!t)return;var lat=+l[0],lng=+l[1];if(!isFinite(lat)||!isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180)return;
+  history.replaceState(null,"",location.pathname+(DEMO?"?demo=1":""));
+  saveCli(t,{lat:lat,lng:lng,locAt:Date.now()});
+  var hoy=ymd(new Date());if(!DEMO&&DB)DB.collection(COL).where("date",">=",hoy).get().then(function(sn){sn.docs.forEach(function(d){var x=d.data();if(String(x.tel||"").replace(/\D/g,"").slice(-8)===t&&x.lat==null)d.ref.set({lat:lat,lng:lng},{merge:true})})}).catch(function(){});
+  toast("Ubicación guardada ✓")}
 
 /* HISTORIAL DE EJEMPLO */
 function demoHist(){var t=new Date(),d=function(m,dd){var x=new Date(t);x.setMonth(x.getMonth()-m);x.setDate(x.getDate()-(dd||0));return ymd(x)};
   return [{id:"h1",cli:"Carlos Vargas",tel:"88880001",veh:"Hyundai Tucson",svc:"Parabrisas SUV",total:25000,date:d(6),time:"10:00",zona:"Zapote, San José",st:"Pagada",pm:"Efectivo",fa:[],fd:[]},
    {id:"h2",cli:"Luis Mora",tel:"88880004",veh:"Toyota Hilux 2017",svc:"Parabrisas pick-up",total:25000,date:d(11,5),time:"09:00",zona:"Santo Domingo, Heredia",lat:9.98,lng:-84.09,st:"Pagada",pm:"SINPE Móvil",fa:["../web/img/rav_before.jpg"],fd:["../web/img/rav_after.jpg"]},
+   {id:"h4",cli:"Rosa Méndez",tel:"88880002",veh:"Hyundai i10 2015",svc:"Focos",total:20000,date:d(3),time:"14:00",zona:"San Pablo, Heredia",lat:9.996,lng:-84.096,st:"Pagada",pm:"Transferencia",fa:["../web/img/faro_antes_sq.jpg"],fd:["../web/img/faro_despues_sq.jpg"]},
+   {id:"h5",cli:"Carlos Vargas",tel:"88880001",veh:"Hyundai Tucson",svc:"Focos",total:20000,date:d(2),time:"09:00",zona:"Zapote, San José",st:"Pagada",pm:"SINPE Móvil",fa:[],fd:[]},
    {id:"h3",cli:"Daniela Rojas",tel:"88880005",veh:"Toyota Yaris",svc:"Focos",total:20000,date:d(4,10),time:"11:00",zona:"Barva, Heredia",lat:10.02,lng:-84.12,st:"Pagada",pm:"SINPE Móvil",fa:["../web/img/faro_antes_sq.jpg"],fd:["../web/img/faro_despues_sq.jpg"]}]}
 
 /* CAMBIAR SEMANA DESLIZANDO */
@@ -647,13 +704,16 @@ function netState(){var off=!navigator.onLine;$("net").classList.toggle("hide",!
 addEventListener("online",netState);addEventListener("offline",netState);
 
 /* DATOS */
+var UNCLI=null;
+function listenCli(){if(DEMO){CDATA={"88880002":{notas:"Portón negro, tocar dos veces. Hay un perro tranquilo. Parquear frente a la casa."},"88880004":{lat:9.98,lng:-84.09}};return}
+  if(UNCLI)UNCLI();UNCLI=DB.collection("r_clientes").onSnapshot(function(sn){var m={};sn.docs.forEach(function(d){m[d.id]=d.data()});CDATA=m;refresh()},function(){})}
 function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
   if(DEMO){S.week=demoData().filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);return}
   if(UNSUB)UNSUB();var firstSnap=true;
   UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
     S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});dayFromWeek();renderWeek();renderAll(firstSnap);firstSnap=false},
     function(e){if(e.code==="permission-denied"){toast("Tu cuenta no tiene acceso a la app nueva todavía");}else toast("No se pudieron leer las paradas")})}
-function showApp(){restoreLocal();$("island").classList.remove("hide");$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
+function showApp(){restoreLocal();listenCli();takeLoc();$("island").classList.remove("hide");$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
   $("demo").classList.toggle("hide",!DEMO);netState();
   if(!RM)gsap.from("#top",{y:-40,opacity:0,duration:.6,ease:"power3.out"});if(!RM)gsap.from("#island",{y:90,duration:.6,ease:"back.out(1.6)",delay:.2});
   listen()}
