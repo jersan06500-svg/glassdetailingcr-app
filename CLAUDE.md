@@ -209,6 +209,14 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - **Fondo con fotos + frase del día (12 nov, 4:40 pm, elegido por el dueño en vez del video)**: `#bgv` es un `div` con una de las 12 fotos de `img/fondos/` (8 de Unsplash, licencia libre; 4 `ia-*` creadas con Canva IA), velo `#bgvv` y efecto de profundidad al deslizar. La foto cambia con la frase (`showMot` → `FOND[(MOTI+dayNum())%FOND.length]`); tocar la frase cambia las dos. `MOT` = 20 frases escritas por Claude y aprobadas. `#mot` va grande en Shrikhand blanco. `web/img/fondo.mp4` ya no se usa en la app (sí en `web/`).
 - Garantía en mensajes: comodín `{garantia}` (`garTxt`: parabrisas +3 meses, focos +5 meses desde el día de la cita); el mensaje de cobro por defecto la incluye.
 
+## Reels con Remotion (12 nov 2026, noche)
+
+- Plantilla de reels hecha con **Remotion** (`npx create-video`, plantilla TikTok) en el espacio de trabajo de Claude: `/home/claude/videos/glassdetailing-reels/` (se pierde entre sesiones: si hace falta, reinstalar con `npx create-video@latest --yes --tiktok glassdetailing-reels` y rehacer `src/GDReel.tsx`). `remotion.config.ts` usa `/usr/bin/google-chrome` (la descarga de Chrome de Remotion está bloqueada). Render con `--concurrency=2`.
+- `GDReel`: clips verticales 1080x1920 con subtítulos palabra por palabra (Questrial, palabra activa en caja `#0077B6`), logo en tarjeta blanca arriba a la derecha, acercamiento con rebote a una zona (`zoom: {x, y, at, scale}`), canción opcional (`audio`, apaga el sonido de los clips) y cierre azul oscuro con logo, precio, detalle y botón (`cta`). Cortes acomodados a los golpes de la canción (librosa).
+- **Publicado en Instagram el 12 nov, 6:27 pm**: reel del Porsche Macan (parabrisas, videos originales 4K del dueño en OneDrive `Documents/porshe macan`, placa recortada, audio que mandó el dueño): https://www.instagram.com/reel/DfqV6j8AM2K/ . Archivos en `redes/2026-11-reels/porsche-macan*`.
+- Versiones para anuncio de Meta en Descargas del dueño (`anuncio-parabrisas-A/B.mp4`): gancho A "¿Su parabrisas se ve así?", B "¿Llueve y no ve nada?", prueba de agua real (sedán), cierre "Escríbanos por WhatsApp", **sin música** (elegir de la biblioteca de Meta). Pendiente: que el dueño pague la cuenta de anuncios.
+- Tarjeta de garantía de imprenta (logo del dueño, 9 × 5 cm, PDF) hecha en HTML; la de Canva salió mal. Kit de Marca de Canva "GlassDetailingCR" (kAHavc9GxCg): títulos Questrial, texto Roboto Slab. Canva Pro en prueba por 1 mes.
+
 ## Estado al cerrar el 7 nov, 4:45 pm
 
 - **Publicado hoy en Instagram y Facebook**: reel del Mercedes clásico (12:28 pm, portada "Un clásico que brilla", audio del dueño) y reel del sedán gris "El agua ya no se pega" (4:30 pm, IG `instagram.com/reel/DfdQqkcp-BA`, FB `facebook.com/reel/1445334658660695`). Si Instagram les silencia la música por derechos, el dueño avisa.
