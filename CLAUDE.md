@@ -73,6 +73,22 @@ Fuera de la lista (13 nov, decisión del dueño): la mascota queda para más ade
 - Las descargas directas de Canva y Unsplash desde el espacio de Claude están bloqueadas: se bajan con el navegador del dueño a su carpeta de Descargas.
 - Video de fondo en la app: el dueño prefirió las fotos.
 
+## App nueva "carretera" (v2, en construcción desde el 13 nov 2026)
+
+- **Decisión del dueño (13 nov)**: rehacer la app del equipo desde cero, sin tomar la actual de base. Se construye por pasos en `v2/` (enlace de prueba: `/v2/`; con datos de ejemplo: `/v2/?demo=1`). La app actual sigue funcionando hasta que el dueño diga que se cambie.
+- **Diseño aprobado** en el lienzo de Claude "GlassDetailingCR — App del equipo nueva" (https://claude.ai/artifact/GLvxszEF2fmMXgBNmo1NgD), página "App carretera", 12 pantallas: Entrada, Ruta de hoy, Parada en curso, Cobrar, Nueva parada, Clientes (por zona), Ficha del carro (medidores de garantía), Números (odómetro), Pendientes, Insumos, Calendario del mes y Más.
+- **Solo la app del equipo cambia de colores**: fondo negro vino `#140609`, tarjetas `#1F0A0F`/`#2B0F16`, líneas `#3A1A21`, vino `#7F011F` (botones), rojo vivo `#FF4D6D` (acentos), nube `#EDF1F5` (letras), gris `#B7A6AB`. Letras Questrial + Roboto Slab. La marca hacia clientes (reservar, web, redes) sigue en azul cristal.
+- **Idea central**: el día es una carretera que baja por la pantalla; cada cita es una parada; un carrito avanza con la hora (el dueño trabaja 100 % a domicilio con un Geely EX5). Mini calendario flotante arriba con puntitos por cita, "Llevamos hoy ₡X de ₡Y · %", km del día ≈ kWh del EX5 (18,5 kWh/100 km; km en línea recta ×1,3 desde/hasta `HOME`) y aviso de lluvia (Open-Meteo, gratis, 8 a 4). Menú flotante tipo isla: Ruta, Clientes, + Agendar, Números, Pendientes; Más se abre con la inicial.
+- Cada parada: botones de WhatsApp y Waze. La siguiente se agranda: Waze, "Vamos en camino" (mensaje con 15/30/45 min: "¡Hola, {nombre}! Le saluda GlassDetailingCR. Ya vamos en camino y llegamos en unos N minutos. Le agradecemos tener el carro a mano y un tomacorriente de 110 V cerca. ¡Nos vemos!") y "Llegamos" (guarda `lleg` y manda aviso corto).
+- **Mejoras elegidas por el dueño**: energía del EX5, aviso de lluvia, botón Llegamos, funcionar sin señal (persistencia de Firestore + aviso "Sin señal"), reseña automática el día después del pago (en Pendientes), insumos que se descuentan solos. Descartadas: ordenar la ruta automáticamente (en Nueva parada solo se *sugiere* la hora más de camino), cierre de ruta con historia, firma del cliente, avisos push (por ahora).
+- **Insumos (datos del dueño, 13 nov)**: polímero 800 ml ₡20 000 ≈ 12 carros; Fireball 118 ml ₡9 000 ≈ 18 carros (todos los vidrios ≈ 10); Focus de Vonixx 240 ml ₡12 000 ≈ 20 carros, solo en vidrios; tren de lijas 240 a 1500 (3 pliegos c/u) ₡4 000 ≈ 8-10 carros (se usa 8). Costo en producto: focos ≈ ₡2 170, parabrisas ≈ ₡1 100, todos los vidrios ≈ ₡1 500. Números mostrará la ganancia real (% que queda después de producto).
+- Porcentajes que pidió el dueño: % cobrado del día, % ocupado del mes, % de clientes que repiten, % vs semana anterior, % que queda después de producto, cómo pagaron y de dónde vienen los clientes.
+- Calendario del mes: días pintados según ingreso, íconos de lluvia, garantía que vence y toca repetir, feriados de Costa Rica (quedan 1 dic y 25 dic 2026), día elegido con horas libres, "Agendar aquí" y "Llenar huecos".
+- **Datos**: base nueva en el mismo Firebase, colecciones que empiezan con `r_` (hoy `r_paradas`: cli, tel, veh, vt, svc, total, date, time, zona, dir, lat, lng, st Pendiente/Hecha/Pagada, pm, who, camino, lleg). La regla `match /{col}/{id}` con `col.matches('r_.*')` deja leer y escribir solo al equipo. Lo viejo no se toca. Al final, la página de reservas se pasa a guardar en `r_paradas`.
+- **Fotos de antes y después**: el dueño acepta activar el plan Blaze de Firebase cuando lleguemos a ese paso (con tope de gasto); lo activa él.
+- GSAP 3.12.5 está copiado en `v2/gsap.min.js` (no desde CDN, así funciona sin señal y el espacio de Claude no bloquea la prueba).
+- **Pasos**: 1 diseño (hecho) · 2 Entrada + Ruta de hoy (hecho 13 nov, datos de ejemplo con `?demo=1`) · 3 Parada en curso y Cobrar con fotos · 4 Clientes y Ficha · 5 Números · 6 Pendientes, Insumos, Mes y Más · 7 Nueva parada, pasar reservas a `r_paradas` y cambiar a la app nueva.
+
 ## Historia corta
 
 - 5 nov 2026: primera versión propia (agenda, clientes, productos, números, redes, carro eléctrico).

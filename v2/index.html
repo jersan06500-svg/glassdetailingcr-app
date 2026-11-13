@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#140609">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>GlassDetailingCR · Ruta</title>
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="gsap.min.js"></script>
+<style>
+:root{--bg:#140609;--s1:#1F0A0F;--s2:#2B0F16;--ln:#3A1A21;--w:#7F011F;--r:#FF4D6D;--c:#EDF1F5;--m:#B7A6AB;--d:#9A898E;--q:"Questrial",system-ui,sans-serif;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--c);font-family:"Roboto Slab",Georgia,serif;font-size:15px;overscroll-behavior:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+a{color:inherit;text-decoration:none}
+.q{font-family:var(--q)}
+.m{color:var(--m)}
+.hide{display:none!important}
+svg{display:block}
+.press{transition:transform .12s}
+.press:active{transform:scale(.96)}
+
+/* ENTRADA */
+#login{position:fixed;inset:0;overflow:hidden;display:flex;flex-direction:column}
+#login .road{position:absolute;inset:0;width:100%;height:100%}
+#login .glow{position:absolute;left:0;right:0;top:0;height:55%;background:radial-gradient(60% 50% at 52% 45%,rgba(255,77,109,.22),rgba(20,6,9,0) 70%)}
+#login .brand{position:relative;margin-top:calc(18vh + var(--safe-t));display:flex;flex-direction:column;align-items:center;gap:18px}
+#login .brand img{width:220px;height:auto}
+#login .brand p{margin:0;font-family:var(--q);font-size:30px;line-height:1.15;text-align:center}
+#login .bot{position:relative;margin-top:auto;padding:0 24px calc(40px + var(--safe-b));display:flex;flex-direction:column;align-items:center;gap:14px}
+.gbtn{width:100%;max-width:420px;height:58px;border-radius:29px;background:var(--c);color:var(--bg);display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;font-weight:500}
+#lmsg{min-height:20px;font-size:13px;color:var(--r);text-align:center}
+
+/* RUTA */
+#app{position:fixed;inset:0;overflow:hidden}
+#scroll{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#top{position:absolute;left:12px;right:12px;top:calc(12px + var(--safe-t));z-index:5;padding:12px;border-radius:24px;background:rgba(43,15,22,.92);border:1px solid var(--ln);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:10px}
+.toprow{display:flex;justify-content:space-between;align-items:center;padding-left:4px}
+#mes{display:flex;align-items:center;gap:6px;height:44px;font-family:var(--q);font-size:19px}
+#me{width:44px;height:44px;border-radius:22px;border:1px solid var(--ln);background:var(--s2);font-family:var(--q);font-size:17px}
+#week{display:flex;gap:2px;touch-action:pan-y}
+.day{flex:1;height:54px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--m)}
+.day b{font-family:var(--q);font-weight:400;font-size:17px;color:var(--c)}
+.day small{font-size:10px}
+.day.sel{background:var(--w);color:var(--c)}
+.day.hoy:not(.sel){box-shadow:inset 0 0 0 1.5px var(--ln)}
+.dots{display:flex;gap:2px;height:4px}
+.dots i{width:4px;height:4px;border-radius:2px;background:var(--r)}
+.day.sel .dots i{background:var(--c)}
+.sum{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:8px 4px 0;border-top:1px solid var(--ln)}
+.sum>div:first-child{min-width:0}
+.sum .big{font-family:var(--q);font-size:30px;line-height:1.05;white-space:nowrap}
+.sum .de{font-size:13px;color:var(--m);font-family:var(--q);white-space:nowrap}
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:11px;color:var(--m);text-align:right}
+.meta span{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.bar{height:6px;border-radius:3px;background:var(--s2);overflow:hidden;margin:0 4px 2px}
+.bar i{display:block;height:100%;width:0;background:var(--r);border-radius:3px}
+#net{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;background:var(--bg);font-size:12px;color:var(--m)}
+
+#road{position:relative;min-height:100%}
+#road svg.rd{position:absolute;left:0;top:0}
+.dot{position:absolute;left:48px;width:24px;height:24px;border-radius:12px;background:var(--bg);border:3px solid var(--d)}
+.dot.ok{border-color:var(--c)}
+.car{position:absolute;left:38px;width:44px;height:44px;border-radius:22px;background:var(--r);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 0 rgba(255,77,109,.45);z-index:2}
+.stop{position:absolute;left:104px;right:12px;padding:10px 10px 10px 14px;border-radius:18px;background:var(--s1);border:1px solid var(--ln);display:flex;align-items:center;gap:10px}
+.stop .t{display:flex;gap:8px;align-items:baseline}
+.stop .t b{font-family:var(--q);font-weight:400;font-size:18px}
+.stop .t small{font-size:11px}
+.stop .n{font-size:12px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:44px;height:44px;flex:none;border-radius:14px;background:var(--s2);border:1px solid var(--ln);display:flex;align-items:center;justify-content:center}
+.next{position:absolute;left:104px;right:12px;padding:14px;border-radius:22px;background:var(--w);display:flex;flex-direction:column;gap:10px}
+.next .h{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.12em}
+.next .h span:last-child{letter-spacing:0;font-size:12px}
+.next .who{font-family:var(--q);font-size:23px;line-height:1.1}
+.next .sub{font-size:12px;color:rgba(237,241,245,.85)}
+.next .acts{display:flex;gap:8px}
+.next .acts a,.next .acts button{flex:1;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px}
+.next .waze{background:var(--c);color:var(--w);font-weight:600}
+.next .go{flex:1.4!important;background:rgba(20,6,9,.35)}
+.mins{display:flex;gap:6px;align-items:center;white-space:nowrap;font-size:11px;color:rgba(237,241,245,.85)}
+.mins button{height:32px;padding:0 10px;white-space:nowrap;border-radius:16px;background:rgba(20,6,9,.35);font-size:12px}
+.mins button.on{background:var(--c);color:var(--w)}
+.llegue{height:44px;border-radius:14px;border:1px solid rgba(237,241,245,.35);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
+.empty{position:absolute;left:104px;right:12px;padding:18px;border-radius:22px;background:var(--s1);border:1px dashed var(--ln);display:flex;flex-direction:column;gap:10px}
+
+#island{position:absolute;left:50%;bottom:calc(22px + var(--safe-b));transform:translateX(-50%);height:62px;padding:0 8px;border-radius:31px;background:rgba(43,15,22,.94);border:1px solid var(--ln);display:flex;align-items:center;gap:6px;z-index:6;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#island button{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;color:var(--m)}
+#island .on{background:var(--c);color:var(--w)}
+#island .add{background:var(--w);color:var(--c)}
+
+#toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,20px);opacity:0;z-index:20;max-width:86%;padding:12px 18px;border-radius:16px;background:var(--c);color:var(--bg);font-size:14px;text-align:center;pointer-events:none}
+#sheet{position:fixed;inset:0;z-index:15;display:flex;align-items:flex-end;background:rgba(0,0,0,.5)}
+#sheet .in{width:100%;padding:12px 20px calc(28px + var(--safe-b));border-radius:28px 28px 0 0;background:var(--s1);border-top:1px solid var(--ln);display:flex;flex-direction:column;gap:12px}
+#sheet .grab{align-self:center;width:44px;height:5px;border-radius:3px;background:var(--ln)}
+.btn{height:54px;border-radius:27px;background:var(--w);font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.alt{background:var(--s2);border:1px solid var(--ln);font-weight:400}
+#demo{padding:6px 12px;border-radius:12px;background:var(--bg);font-size:12px;color:var(--m);text-align:center}
+</style>
+</head>
+<body>
+
+<section id="login" class="hide">
+<svg class="road" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<path id="lr1" d="M150 860 C 170 600, 260 520, 230 380 S 180 200, 205 -20" stroke="#22090E" stroke-width="70" fill="none"/>
+<path id="lr2" d="M150 860 C 170 600, 260 520, 230 380 S 180 200, 205 -20" stroke="#9A898E" stroke-width="3" stroke-dasharray="16 18" fill="none" opacity=".6"/>
+</svg>
+<div class="glow"></div>
+<div class="brand"><img id="llogo" src="../web/img/logo_white.png" alt="GlassDetailingCR"><p id="lslogan">Claridad que<br>se nota</p></div>
+<div class="bot">
+<span class="m" style="font-size:13px">Tu ruta te espera</span>
+<button id="lg" class="gbtn press">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h6a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.4-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.7 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.1a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.1 7.1l3.6 2.8C6.6 7.3 9.1 5.4 12 5.4z"/></svg>
+Entrar con Google</button>
+<div id="lmsg" role="status"></div>
+<a href="?demo=1" class="m" style="font-size:13px;min-height:44px;display:flex;align-items:center">Ver con datos de ejemplo</a>
+</div>
+</section>
+
+<section id="app" class="hide">
+<div id="scroll"><div id="road"></div></div>
+<div id="top">
+<div class="toprow">
+<button id="mes" class="press"><span id="mesl"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B7A6AB" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<button id="me" class="press" aria-label="Perfil y salir"></button>
+</div>
+<div id="week" role="tablist" aria-label="Días de la semana"></div>
+<div id="net" class="hide"></div>
+<div id="demo" class="hide">Datos de ejemplo · nada se guarda</div>
+<div class="sum">
+<div><div class="m" style="font-size:11px">Llevamos hoy</div><div class="big" id="llev">₡0</div><div class="de" id="lde"></div></div>
+<div class="meta"><span id="kwh"></span><span id="rain"></span></div>
+</div>
+<div class="bar"><i id="barra"></i></div>
+</div>
+<nav id="island" aria-label="Secciones">
+<button class="on" aria-label="Ruta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></button>
+<button data-soon="Clientes" aria-label="Clientes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .7 3.2 2.6 3.6 5.4"/></svg></button>
+<button class="add" data-soon="Agendar" aria-label="Agendar parada"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+<button data-soon="Números" aria-label="Números"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></button>
+<button data-soon="Pendientes" aria-label="Pendientes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></button>
+</nav>
+</section>
+
+<div id="sheet" class="hide"><div class="in"><span class="grab"></span><div id="sheetc"></div></div></div>
+<div id="toast" role="status"></div>
+
+<script>
+var FBC={apiKey:"AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",authDomain:"glassdetailingcr.firebaseapp.com",projectId:"glassdetailingcr",storageBucket:"glassdetailingcr.firebasestorage.app",messagingSenderId:"527384576479",appId:"1:527384576479:web:7ca94fc76a98bf9ce6046a"};
+var COL="r_paradas";
+var KWH_KM=0.185;
+var HOME={lat:9.998,lng:-84.117};
+var DEMO=/[?&]demo=1/.test(location.search);
+var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"];
+var DIAS=["L","K","M","J","V","S","D"];
+var AUTH=null,DB=null,USER=null,UNSUB=null;
+var S={sel:ymd(new Date()),week:[],paradas:[],mins:30};
+
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function pad(n){return n<10?"0"+n:""+n}
+function ymd(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+function monday(d){var x=new Date(d),w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return x}
+function crc(n){return "₡"+Math.round(n||0).toLocaleString("es-CR").replace(/,/g," ")}
+function hora12(t){if(!t)return "";var p=t.split(":"),h=+p[0];return (h%12||12)+":"+p[1]}
+function mins(t){var p=(t||"0:0").split(":");return +p[0]*60+ +p[1]}
+function nowMin(){var d=new Date();return d.getHours()*60+d.getMinutes()}
+function first(n){return String(n||"").trim().split(/\s+/)[0]}
+function toast(t){var el=$("toast");el.textContent=t;gsap.killTweensOf(el);gsap.to(el,{opacity:1,y:0,duration:RM?0:.25});gsap.to(el,{opacity:0,y:20,duration:RM?0:.25,delay:2.4})}
+function haversine(a,b){var R=6371,t=Math.PI/180,dl=(b.lat-a.lat)*t,dg=(b.lng-a.lng)*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dg/2)*Math.sin(dg/2);return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function done(p){return p.st==="Hecha"||p.st==="Pagada"}
+
+var IC={
+ wa:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.8z"/><path d="M9 9.5c.3 2.6 2.6 4.9 5.5 5.5l1.2-1.4-2-1-.8.8c-1-.5-1.8-1.3-2.3-2.3l.8-.8-1-2z"/></svg>',
+ waze:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15.5c-1.5-.6-2.2-1.8-2-3 1 .3 1.7-.3 1.8-1.3C5.3 6.9 8.3 4 12.3 4 16.5 4 20 7.2 20 11.4c0 3.6-2.7 6-6 6.4H10c-1.5 0-3.4-.7-5-1.9z"/><circle cx="10" cy="10.5" r=".6" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".6" fill="currentColor"/><path d="M10 13.2c1.1 1 2.9 1 4 0"/><circle cx="8" cy="19.5" r="1.6"/><circle cx="15" cy="19.5" r="1.6"/></svg>',
+ car:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EDF1F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="13" r="1"/><circle cx="16.5" cy="13" r="1"/></svg>',
+ pin:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ bat:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4D6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10v4"/><path d="M10 9l-2 3h4l-2 3"/></svg>',
+ cloud:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B7A6AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 8a4.5 4.5 0 0 1 .5 9z"/></svg>',
+ rain:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CC3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 15a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 6a4.5 4.5 0 0 1 .5 9z"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2"/></svg>',
+ flag:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+ wifi:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B7A6AB" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1"/><path d="M3 3l18 18"/></svg>'
+};
+
+/* Mensajes al cliente (de usted) */
+function msgCamino(p,m){return "¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Ya vamos en camino y llegamos en unos "+m+" minutos. Le agradecemos tener el carro a mano y un tomacorriente de 110 V cerca. ¡Nos vemos!"}
+function msgLlegamos(p){return "¡Hola, "+first(p.cli)+"! Ya llegamos. Estamos afuera para empezar con su "+(p.veh||"vehículo")+"."}
+function waUrl(p,t){var tel=String(p.tel||"").replace(/\D/g,"");if(tel.length===8)tel="506"+tel;return "https://wa.me/"+tel+"?text="+encodeURIComponent(t)}
+function wazeUrl(p){if(p.lat!=null&&p.lng!=null)return "https://waze.com/ul?ll="+p.lat+","+p.lng+"&navigate=yes";return "https://waze.com/ul?q="+encodeURIComponent(p.dir||p.zona||"")+"&navigate=yes"}
+
+/* DATOS DE EJEMPLO */
+function demoData(){var t=new Date(),out=[],mon=monday(t);
+  var base=[["Carlos Vargas","88880001","Hyundai Tucson","Focos",20000,"09:00","Zapote",9.919,-84.058,"Pagada"],
+            ["Rosa Méndez","88880002","Toyota RAV4 2019","Promo parabrisas + focos",30000,"13:30","San Pablo, Heredia",9.996,-84.096,"Pendiente"],
+            ["Andrea Solís","88880003","Nissan Sentra","Parabrisas sedán",20000,"15:30","Escazú",9.919,-84.139,"Pendiente"]];
+  base.forEach(function(b,i){out.push({id:"d"+i,cli:b[0],tel:b[1],veh:b[2],svc:b[3],total:b[4],date:ymd(t),time:b[5],zona:b[6],lat:b[7],lng:b[8],st:b[9]})});
+  [[0,1],[2,2],[5,1]].forEach(function(x,k){var d=ymd(addDays(mon,x[0]));if(d===ymd(t))return;for(var j=0;j<x[1];j++)out.push({id:"w"+k+j,cli:"Cliente",tel:"",veh:"",svc:"",total:20000,date:d,time:"10:00",zona:"",st:"Pendiente"})});
+  return out}
+
+/* SEMANA */
+function renderWeek(){var sel=parse(S.sel),mon=monday(sel),hoy=ymd(new Date()),h="";
+  $("mesl").textContent=MESES[sel.getMonth()]+" "+sel.getFullYear();
+  for(var i=0;i<7;i++){var d=addDays(mon,i),k=ymd(d),n=S.week.filter(function(p){return p.date===k}).length,dots="";
+    for(var j=0;j<Math.min(n,4);j++)dots+="<i></i>";
+    h+='<button class="day press'+(k===S.sel?" sel":"")+(k===hoy?" hoy":"")+'" role="tab" aria-selected="'+(k===S.sel)+'" aria-label="'+d.getDate()+" de "+MESES[d.getMonth()]+", "+n+' paradas" data-d="'+k+'"><small>'+DIAS[i]+'</small><b>'+d.getDate()+'</b><span class="dots">'+dots+'</span></button>'}
+  $("week").innerHTML=h;
+  Array.prototype.forEach.call($("week").children,function(b){b.onclick=function(){pick(b.dataset.d)}})}
+function pick(d){if(d===S.sel)return;var oldMon=ymd(monday(parse(S.sel)));S.sel=d;if(ymd(monday(parse(d)))!==oldMon)listen();else{dayFromWeek();renderWeek();renderAll(true)}}
+function dayFromWeek(){S.paradas=S.week.filter(function(p){return p.date===S.sel}).sort(function(a,b){return mins(a.time)-mins(b.time)})}
+
+/* RESUMEN */
+var shown=0;
+function renderSum(){var tot=0,cob=0;S.paradas.forEach(function(p){tot+=p.total||0;if(p.st==="Pagada")cob+=p.total||0});
+  var pct=tot?Math.round(cob*100/tot):0;
+  $("lde").textContent="de "+crc(tot)+(tot?" · "+pct+" %":"");
+  var o={v:shown};gsap.to(o,{v:cob,duration:RM?0:1,ease:"power2.out",onUpdate:function(){$("llev").textContent=crc(o.v)}});shown=cob;
+  gsap.to($("barra"),{width:pct+"%",duration:RM?0:1,ease:"power2.out"});
+  var pts=S.paradas.filter(function(p){return p.lat!=null&&p.lng!=null}),km=0,prev=HOME;
+  pts.forEach(function(p){km+=haversine(prev,p);prev=p});if(pts.length)km+=haversine(prev,HOME);
+  km=Math.round(km*1.3);
+  $("kwh").innerHTML=pts.length?IC.bat+" "+km+" km ≈ "+Math.round(km*KWH_KM)+" kWh":"";
+}
+
+/* LLUVIA (Open-Meteo, gratis y sin registro) */
+var RAINC={};
+function renderRain(){var d=S.sel,el=$("rain");el.innerHTML="";
+  var diff=(parse(d)-parse(ymd(new Date())))/864e5;if(diff<0||diff>6)return;
+  if(RAINC[d]){el.innerHTML=RAINC[d];return}
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=9.95&longitude=-84.1&hourly=precipitation_probability&timezone=America%2FCosta_Rica&start_date="+d+"&end_date="+d)
+  .then(function(r){return r.json()}).then(function(j){var hs=j.hourly.time,pr=j.hourly.precipitation_probability,first=null;
+    for(var i=0;i<hs.length;i++){var h=+hs[i].slice(11,13);if(h>=8&&h<=16&&pr[i]>=60){first=h;break}}
+    RAINC[d]=first==null?IC.cloud+" Sin lluvia hasta las 4":IC.rain+" Lluvia probable "+(first%12||12)+(first<12?" a. m.":" p. m.");
+    if(S.sel===d)el.innerHTML=RAINC[d]}).catch(function(){})}
+
+/* CARRETERA */
+function renderRoad(anim){var root=$("road"),list=S.paradas,top=$("top").offsetHeight+28,gapS=104,gapN=320,y=top+40,ys=[],h="";
+  var nextIdx=-1;for(var i=0;i<list.length;i++){if(!done(list[i])){nextIdx=i;break}}
+  list.forEach(function(p,i){ys.push(y);y+=(i===nextIdx?gapN:gapS)});
+  var H=Math.max(y+140,window.innerHeight);
+  root.style.height=H+"px";
+  if(!list.length){var ey=top+60;
+    h+=roadSvg([ey],H,-1,null)+'<span class="dot" style="top:'+(ey-12)+'px"></span><div class="empty" style="top:'+(ey-30)+'px"><span class="q" style="font-size:20px">Día libre</span><span class="m" style="font-size:13px">No hay paradas este día.</span><button class="btn press" data-soon="Agendar">Agendar parada</button></div>';
+    root.innerHTML=h;bindSoon(root);if(anim)animIn();return}
+  var isToday=S.sel===ymd(new Date()),carY=null;
+  if(isToday){var nm=nowMin(),lastDone=-1;list.forEach(function(p,i){if(done(p))lastDone=i});
+    if(nextIdx===-1)carY=ys[ys.length-1];
+    else{var a=lastDone>=0?ys[lastDone]:top+6,b=ys[nextIdx],ta=lastDone>=0?mins(list[lastDone].time)+60:8*60,tb=mins(list[nextIdx].time),f=tb>ta?(nm-ta)/(tb-ta):1;f=Math.max(0,Math.min(1,f));carY=a+(b-a)*f}}
+  h+=roadSvg(ys,H,nextIdx,carY);
+  list.forEach(function(p,i){var yy=ys[i];
+    if(i===nextIdx){h+=nextCard(p,yy,isToday);return}
+    var st=done(p)?(p.st==="Pagada"?"Pagada ✓":"Hecha"):"Pendiente",col=done(p)?"var(--c)":"var(--m)";
+    h+='<span class="dot'+(done(p)?" ok":"")+'" style="top:'+(yy-12)+'px"></span>'+
+      '<div class="stop" style="top:'+(yy-34)+'px"><div style="flex:1;display:flex;flex-direction:column;gap:1px;min-width:0"><span class="t"><b>'+esc(hora12(p.time))+'</b><small style="color:'+col+'">'+st+'</small></span><span class="n">'+esc(first(p.cli))+" · "+esc(p.veh)+(p.zona?" · "+esc(p.zona):"")+'</span></div>'+
+      '<a class="ib press" href="'+esc(waUrl(p,"¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR."))+'" target="_blank" rel="noopener" aria-label="WhatsApp a '+esc(first(p.cli))+'">'+IC.wa+'</a>'+
+      '<a class="ib press" href="'+esc(wazeUrl(p))+'" target="_blank" rel="noopener" aria-label="Abrir en Waze">'+IC.waze+'</a></div>'});
+  if(carY!=null)h+='<span class="car" id="car" style="top:'+(carY-22)+'px">'+IC.car+'</span>';
+  root.innerHTML=h;bindNext(root);if(anim)animIn()}
+function roadSvg(ys,H,nextIdx,carY){var x=60,d="M"+x+" 0",prevY=0;
+  function seg(a,b,dir){var q=(b-a)*.25,mid=(a+b)/2,bx=x+36*dir;return " C"+x+" "+(a+q)+" "+bx+" "+(mid-q)+" "+bx+" "+mid+" C"+bx+" "+(mid+q)+" "+x+" "+(b-q)+" "+x+" "+b}
+  ys.forEach(function(y,i){d+=seg(prevY,y,i%2?-1:1);prevY=y});
+  d+=seg(prevY,H,ys.length%2?-1:1);
+  var cut=carY!=null?carY:(nextIdx>0?ys[nextIdx-1]:0);
+  return '<svg class="rd" width="120" height="'+H+'" viewBox="0 0 120 '+H+'" aria-hidden="true"><defs><clipPath id="past"><rect x="0" y="0" width="120" height="'+cut+'"/></clipPath></defs>'+
+   '<path d="'+d+'" stroke="#2B0F16" stroke-width="32" fill="none"/>'+
+   '<path d="'+d+'" stroke="#7F011F" stroke-width="32" fill="none" opacity=".6" clip-path="url(#past)"/>'+
+   '<path class="lane" d="'+d+'" stroke="#9A898E" stroke-width="2" stroke-dasharray="8 10" fill="none"/></svg>'}
+function nextCard(p,y,isToday){var dm=mins(p.time)-nowMin(),cuando;
+  if(!isToday)cuando=hora12(p.time);else if(dm>90)cuando="en "+Math.floor(dm/60)+" h "+(dm%60?dm%60+" min":"");else if(dm>0)cuando="en "+dm+" min";else if(dm>-15)cuando="ahora";else cuando="atrasada "+(-dm)+" min";
+  var m=S.mins,mb=[15,30,45].map(function(v){return '<button class="press'+(v===m?" on":"")+'" data-min="'+v+'">'+v+' min</button>'}).join("");
+  return '<span class="dot" style="top:'+(y-12)+'px;border-color:var(--r)"></span>'+
+  '<div class="next" id="next" style="top:'+(y-36)+'px" data-id="'+esc(p.id)+'">'+
+  '<div class="h"><span>SIGUIENTE PARADA</span><span>'+esc(cuando)+'</span></div>'+
+  '<div style="display:flex;flex-direction:column;gap:2px"><span class="who">'+esc(hora12(p.time))+" · "+esc(p.cli)+'</span><span class="sub">'+esc([p.veh,p.svc?p.svc+" "+crc(p.total):crc(p.total),p.zona].filter(Boolean).join(" · "))+'</span></div>'+
+  '<div class="acts"><a class="waze press" href="'+esc(wazeUrl(p))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a>'+
+  '<a class="go press" id="gocam" href="'+esc(waUrl(p,msgCamino(p,m)))+'" target="_blank" rel="noopener">'+IC.wa+' Vamos en camino</a></div>'+
+  '<div class="mins">Llegamos en '+mb+'</div>'+
+  '<button class="llegue press" id="llegue">'+IC.flag+' Llegamos</button></div>'}
+function bindNext(root){var nx=$("next");bindSoon(root);if(!nx)return;
+  var p=S.paradas.find(function(x){return x.id===nx.dataset.id});
+  Array.prototype.forEach.call(nx.querySelectorAll("[data-min]"),function(b){b.onclick=function(){S.mins=+b.dataset.min;
+    Array.prototype.forEach.call(nx.querySelectorAll("[data-min]"),function(o){o.classList.toggle("on",o===b)});
+    $("gocam").href=waUrl(p,msgCamino(p,S.mins));if(!RM)gsap.fromTo(b,{scale:.85},{scale:1,duration:.35,ease:"back.out(3)"})}});
+  $("gocam").addEventListener("click",function(){save(p,{camino:Date.now()})});
+  $("llegue").onclick=function(){save(p,{lleg:Date.now()});window.open(waUrl(p,msgLlegamos(p)),"_blank");toast("La pantalla de la parada en curso viene en el paso 3")}}
+function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[data-soon]"),function(b){b.onclick=function(){toast(b.dataset.soon+": lo armamos en los próximos pasos")}})}
+function save(p,data){if(DEMO||!DB)return;DB.collection(COL).doc(p.id).set(data,{merge:true}).catch(function(){toast("No se pudo guardar, se reintenta con señal")})}
+
+/* ANIMACIONES */
+function animIn(){if(RM)return;var lane=document.querySelector("#road .lane");
+  if(lane){var L=lane.getTotalLength?lane.getTotalLength():2000;gsap.fromTo("#road svg.rd path",{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.1,ease:"power2.out",onComplete:function(){if(lane)lane.setAttribute("stroke-dasharray","8 10");lane.style.strokeDashoffset=""}})}
+  gsap.from("#road .dot",{scale:0,duration:.4,ease:"back.out(2.5)",stagger:.12,delay:.3});
+  gsap.from("#road .stop,#road .next,#road .empty",{x:40,opacity:0,duration:.5,ease:"power3.out",stagger:.1,delay:.35});
+  var car=$("car");if(car){gsap.from(car,{scale:0,duration:.5,ease:"back.out(2)",delay:.9});gsap.to(car,{boxShadow:"0 0 0 14px rgba(255,77,109,0)",duration:1.6,repeat:-1,ease:"power1.out"})}}
+function renderAll(anim){renderSum();renderRain();renderRoad(anim)}
+
+/* CAMBIAR SEMANA DESLIZANDO */
+(function(){var x0=null;$("week").addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
+  $("week").addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;
+    var d=addDays(parse(S.sel),dx<0?7:-7);S.sel=ymd(d);if(!RM)gsap.fromTo("#week",{x:dx<0?40:-40,opacity:0},{x:0,opacity:1,duration:.35});listen()},{passive:true})})();
+$("mes").onclick=function(){toast("El calendario del mes lo armamos en los próximos pasos")};
+$("me").onclick=function(){$("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">'+esc(USER?USER.email:"Datos de ejemplo")+'</span><span class="m" style="font-size:13px">Equipo, carro, mensajes y ajustes vienen en el paso de Más.</span><button class="btn alt press" id="salir">'+(DEMO?"Salir del ejemplo":"Salir")+'</button></div>';
+  $("sheet").classList.remove("hide");if(!RM)gsap.from("#sheet .in",{y:300,duration:.35,ease:"power3.out"});
+  $("salir").onclick=function(){if(DEMO)location.href=location.pathname;else AUTH.signOut();$("sheet").classList.add("hide")}};
+$("sheet").onclick=function(e){if(e.target===$("sheet"))$("sheet").classList.add("hide")};
+bindSoon($("island"));
+
+/* SEÑAL */
+function netState(){var off=!navigator.onLine;$("net").classList.toggle("hide",!off);$("net").innerHTML=IC.wifi+" Sin señal · los cambios se suben solos al volver"}
+addEventListener("online",netState);addEventListener("offline",netState);
+
+/* DATOS */
+function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
+  if(DEMO){S.week=demoData().filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);return}
+  if(UNSUB)UNSUB();var firstSnap=true;
+  UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
+    S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});dayFromWeek();renderWeek();renderAll(firstSnap);firstSnap=false},
+    function(e){if(e.code==="permission-denied"){toast("Tu cuenta no tiene acceso a la app nueva todavía");}else toast("No se pudieron leer las paradas")})}
+function showApp(){$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
+  $("demo").classList.toggle("hide",!DEMO);netState();
+  if(!RM)gsap.from("#top",{y:-40,opacity:0,duration:.6,ease:"power3.out"});if(!RM)gsap.from("#island",{y:90,duration:.6,ease:"back.out(1.6)",delay:.2});
+  listen()}
+function showLogin(){$("app").classList.add("hide");$("login").classList.remove("hide");
+  if(RM)return;var p=$("lr2"),L=p.getTotalLength();
+  gsap.fromTo("#lr1,#lr2",{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:"power2.inOut",onComplete:function(){p.setAttribute("stroke-dasharray","16 18");p.style.strokeDashoffset=""}});
+  gsap.from("#llogo",{opacity:0,scale:.9,duration:.8,delay:.6,ease:"power2.out"});
+  gsap.from("#lslogan",{opacity:0,y:14,duration:.6,delay:.9});
+  gsap.from("#lg",{opacity:0,y:30,duration:.6,delay:1.1,ease:"power3.out"})}
+function errEs(e){var c=e&&e.code||"";if(c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request")return "";if(c==="auth/popup-blocked")return "El navegador bloqueó la ventana de Google. Probá de nuevo.";if(c==="auth/network-request-failed")return "Sin internet. Revisá la señal.";return "No se pudo entrar. Probá de nuevo."}
+
+if(DEMO){showApp()}
+else if(!window.firebase){$("lmsg").textContent="No se pudo cargar. Revisá tu internet.";showLogin()}
+else{
+  firebase.initializeApp(FBC);AUTH=firebase.auth();DB=firebase.firestore();
+  try{DB.enablePersistence({synchronizeTabs:true}).catch(function(){})}catch(e){}
+  AUTH.getRedirectResult().catch(function(e){$("lmsg").textContent=errEs(e)});
+  AUTH.onAuthStateChanged(function(u){USER=u;if(u)showApp();else{if(UNSUB){UNSUB();UNSUB=null}showLogin()}});
+  $("lg").onclick=function(){$("lmsg").textContent="";var p=new firebase.auth.GoogleAuthProvider();
+    AUTH.signInWithPopup(p).catch(function(e){if(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment")AUTH.signInWithRedirect(p);else $("lmsg").textContent=errEs(e)})};
+}
+setInterval(function(){if(!$("app").classList.contains("hide")&&S.sel===ymd(new Date()))renderRoad(false)},60000);
+</script>
+</body>
+</html>

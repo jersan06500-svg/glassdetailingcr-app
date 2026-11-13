@@ -41,5 +41,7 @@ service cloud.firestore {
       allow delete: if jobCancelled(resource.data.job);
     }
     match /pub/{id} { allow read: if true; allow write: if isTeam(); }
+    // App nueva (v2): colecciones que empiezan con r_ (paradas, clientes, insumos...). Solo el equipo.
+    match /{col}/{id} { allow read, write: if isTeam() && col.matches('r_.*'); }
   }
 }
