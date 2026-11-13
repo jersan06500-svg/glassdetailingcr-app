@@ -238,7 +238,8 @@ function renderRain(){var d=S.sel,el=$("rain");el.innerHTML="";
   if(RAINC[d]){el.innerHTML=RAINC[d];return}
   fetch("https://api.open-meteo.com/v1/forecast?latitude=9.95&longitude=-84.1&hourly=precipitation_probability&timezone=America%2FCosta_Rica&start_date="+d+"&end_date="+d)
   .then(function(r){return r.json()}).then(function(j){var hs=j.hourly.time,pr=j.hourly.precipitation_probability,first=null;
-    for(var i=0;i<hs.length;i++){var h=+hs[i].slice(11,13);if(h>=8&&h<=16&&pr[i]>=60){first=h;break}}
+    var from=d===ymd(new Date())?Math.max(8,new Date().getHours()):8;if(from>16){RAINC[d]="";return}
+    for(var i=0;i<hs.length;i++){var h=+hs[i].slice(11,13);if(h>=from&&h<=16&&pr[i]>=60){first=h;break}}
     RAINC[d]=first==null?IC.cloud+" Sin lluvia hasta las 4":IC.rain+" Lluvia probable "+(first%12||12)+(first<12?" a. m.":" p. m.");
     if(S.sel===d)el.innerHTML=RAINC[d]}).catch(function(){})}
 
