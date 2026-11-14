@@ -38,8 +38,26 @@ export const RemotionRoot: React.FC = () => {
     cta: "Escríbanos por WhatsApp",
     vol: 0.5,
   });
+  // Porsche Cayenne, todos los vidrios (13 nov 2026). Sin sonido: la música se pone en Instagram.
+  const porsche1311: GDReelProps = {
+    clips: [
+      { src: "gd/p1.mp4", seconds: 3.0, text: "¿Sus vidrios se ven así?", zoom: { x: 0.45, y: 0.45, at: 1.2, scale: 1.5 } },
+      { src: "gd/p2.mp4", seconds: 2.2, text: "Así quedaron", zoom: { x: 0.5, y: 0.4, at: 0.8, scale: 1.3 } },
+      { src: "gd/p3.mp4", seconds: 2.6, text: "Todos los vidrios" },
+      { src: "gd/p4.mp4", seconds: 2.6, text: "Sellados con cerámico Fireball" },
+      { src: "gd/p5.mp4", seconds: 3.0, text: "Claridad que se nota" },
+    ],
+    precio: "₡40 000",
+    detalle: "Todos los vidrios SUV o pick-up\nGarantía 3 meses · A domicilio gratis en la GAM",
+    cierre: 3.2,
+    golpe: 0.3,
+    vol: 0,
+    cortes: true,
+  };
   return (
     <>
+    <Composition id="Porsche1311" component={GDReel} durationInFrames={reelFrames(porsche1311, 30)} fps={30} width={1080} height={1920} defaultProps={porsche1311} />
+    <Composition id="Porsche1311Capa" component={GDReel} durationInFrames={reelFrames(porsche1311, 30)} fps={30} width={1080} height={1920} defaultProps={{ ...porsche1311, capa: true }} />
     <Composition id="AnuncioA" component={GDReel} durationInFrames={reelFrames(anuncio("¿Su parabrisas se ve así?"), 30)} fps={30} width={1080} height={1920} defaultProps={anuncio("¿Su parabrisas se ve así?")} />
     <Composition id="AnuncioB" component={GDReel} durationInFrames={reelFrames(anuncio("¿Llueve y no ve nada?"), 30)} fps={30} width={1080} height={1920} defaultProps={anuncio("¿Llueve y no ve nada?")} />
     <Composition

@@ -50,7 +50,7 @@ Lo que sigue en este archivo es el historial día por día. Si algo de abajo cho
 **Redes y Meta**
 
 - Respuesta automática, respuesta a comentarios, preguntas frecuentes (Messenger e Instagram) y bio de Instagram ya tienen los precios, la garantía y el horario de arriba. "Responder a preguntas similares" está apagado.
-- Reels: plantilla de Remotion (ver "Reels con Remotion"). Último publicado: Porsche Macan, 12 nov, 6:27 p. m. Sin voz (el dueño no quiere usar la suya; si algún día se quiere voz natural, ElevenLabs con cuenta del dueño).
+- Reels: plantilla de Remotion, ahora **en la compu del dueño** (ver "Reels en la compu del dueño"). Último publicado: Porsche Macan, 12 nov, 6:27 p. m. **Listo sin publicar (13 nov)**: Porsche Cayenne, todos los vidrios, sin sonido (el dueño le pone música de Instagram), `04-Videos/reels-terminados/reel-porsche-cayenne-vidrios.mp4`; el dueño lo aprobó. El dueño prefiere **cortes directos** (sin fundidos ni acercamientos con rebote). Si manda un reel de referencia, imitar su ritmo, textos y efectos con la marca. Sin voz (el dueño no quiere usar la suya; si algún día se quiere voz natural, ElevenLabs con cuenta del dueño).
 - Canva Pro en prueba por 1 mes desde el 12 nov: antes de que termine, descargar todo lo que use elementos Pro. Las letras de Canva solo sirven dentro de Canva.
 - Tarjeta de garantía de imprenta (9 × 5 cm, cartulina mate) lista en PDF.
 
@@ -310,6 +310,14 @@ Comparado con Jobber, Urable y Housecall Pro (apps de citas para detallado móvi
 - **Publicado en Instagram el 12 nov, 6:27 pm**: reel del Porsche Macan (parabrisas, videos originales 4K del dueño en `Documentos/GlassDetailingCR/04-Videos/material-original/2026-11/porsche-macan` (respaldo en OneDrive `Documents/porshe macan`), placa recortada, audio que mandó el dueño): https://www.instagram.com/reel/DfqV6j8AM2K/ . Archivos en `redes/2026-11-reels/porsche-macan*`.
 - Versiones para anuncio de Meta en la compu del dueño, `Documentos/GlassDetailingCR/06-Publicidad/2026-11-anuncios-parabrisas/` (`anuncio-parabrisas-A/B.mp4`): gancho A "¿Su parabrisas se ve así?", B "¿Llueve y no ve nada?", prueba de agua real (sedán), cierre "Escríbanos por WhatsApp", **sin música** (elegir de la biblioteca de Meta). Pendiente: que el dueño pague la cuenta de anuncios.
 - Tarjeta de garantía de imprenta (logo del dueño, 9 × 5 cm, PDF, cartulina mate) hecha en HTML; la de Canva salió mal. Frente azul con logo y "Claridad que se nota"; reverso "Certificado de garantía" con líneas para cliente, vehículo, servicio, fecha y "válida hasta", recuadros Focos 5 meses / Parabrisas 3 meses, QR a reservas, Instagram y WhatsApp. Kit de Marca de Canva "GlassDetailingCR" (kAHavc9GxCg): títulos Questrial, texto Roboto Slab. Canva Pro en prueba por 1 mes.
+
+## Reels en la compu del dueño (13 nov 2026, manda sobre "Reels con Remotion")
+
+- La compu del dueño ya tiene **Node.js 26 y FFmpeg 9** (winget) y las skills `ffmpeg`, `remotion-best-practices` y `remotion-captions` (en `~/.agents/skills`). Sigue sin Python.
+- Proyecto de Remotion en `Documentos/GlassDetailingCR/04-Videos/glassdetailing-reels` (hecho desde `redes/remotion-plantilla/`). Composiciones en `src/Root.tsx` (`Porsche1311` y `Porsche1311Capa`), clips en `public/gd/`. `GDReel` tiene dos opciones nuevas: `cortes` (cortes directos) y `capa` (solo textos, logo y cierre, con fondo transparente).
+- **Windows bloquea `remotion.exe`** (Control inteligente de aplicaciones). No pedirle al dueño que lo apague: después no se puede volver a encender sin reinstalar Windows. Tampoco renderizar los videos dentro de Remotion con `Html5Video`: el video sale a saltos y el dueño lo nota ("se traba").
+- **Cómo se arma un reel**: (1) recortar los clips del iPhone, que vienen en HDR (HLG, 4K 60 fps), a 1080x1920 30 fps SDR con `zscale=t=linear:npl=203,format=gbrpf32le,zscale=p=bt709,tonemap=mobius:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30`; (2) `npx remotion render <Id>Capa <carpeta> --sequence --image-format=png --concurrency=2`; (3) unir los clips con FFmpeg (`trim=end_frame`, `concat`, `tpad=stop=<cuadros del cierre>:color=black`) en un `base.mp4`; (4) en un segundo paso, `overlay` de los PNG sobre el `base.mp4` (en un solo paso FFmpeg se atasca), codificado con `-profile:v high -level:v 4.0 -crf 20 -maxrate 8M -bufsize 16M -g 30 -movflags +faststart`.
+- Material del 13 nov en `04-Videos/porsche reel hoy 131126` (antes, después, toma del frente y una foto). Por las mordazas verdes y la forma, el carro parece un **Cayenne E-Hybrid**, no un Macan: el reel no dice el modelo.
 
 ## Estado al cerrar el 7 nov, 4:45 pm
 
