@@ -381,8 +381,8 @@ function wazeUrl(p){var ci=p.tel?CDATA[String(p.tel).replace(/\D/g,"").slice(-8)
 function demoData(){var t=new Date(),out=[],mon=monday(t);
   var base=[["Carlos Vargas","88880001","Hyundai Tucson","Focos",20000,"09:00","Zapote, San José",9.919,-84.058,"Pagada"],
             ["Rosa Méndez","88880002","Toyota RAV4 2019","Promo parabrisas + focos",30000,"13:30","San Pablo, Heredia",9.996,-84.096,"Pendiente"],
-            ["Andrea Solís","88880003","Nissan Sentra","Parabrisas sedán",20000,"15:30","Escazú, San José",9.919,-84.139,"Pendiente"]];
-  base.forEach(function(b,i){out.push({id:"d"+i,cli:b[0],tel:b[1],veh:b[2],svc:b[3],total:b[4],date:ymd(t),time:b[5],zona:b[6],lat:b[7],lng:b[8],st:b[9],fa:i===0?["../web/img/faro_antes_sq.jpg"]:[],fd:i===0?["../web/img/faro_despues_sq.jpg"]:[]})});
+            ["Andrea Solís","88880003","Nissan Sentra","Parabrisas sedán",20000,"15:30","Escazú, San José",9.919,-84.139,"Por confirmar"]];
+  base.forEach(function(b,i){out.push({id:"d"+i,cli:b[0],tel:b[1],veh:b[2],svc:b[3],total:b[4],date:ymd(t),time:b[5],zona:b[6],lat:b[7],lng:b[8],st:b[9],web:b[9]==="Por confirmar",nota:b[9]==="Por confirmar"?"Zona: Escazú (domicilio gratis) · Señas: frente al parque, portón negro":"",fa:i===0?["../web/img/faro_antes_sq.jpg"]:[],fd:i===0?["../web/img/faro_despues_sq.jpg"]:[]})});
   var extra=[["María Jiménez","88880006","Kia Sportage","Focos","Curridabat, San José"],["José Araya","88880007","Mitsubishi L200","Parabrisas pick-up","Tres Ríos, Cartago"],["Ana Quesada","88880008","Honda CR-V","Promo parabrisas + focos","Belén, Heredia"],["Pablo Castro","88880009","Suzuki Swift","Focos","Moravia, San José"]],e=0;
   [[0,1],[2,2],[5,1]].forEach(function(x,k){var d=ymd(addDays(mon,x[0]));if(d===ymd(t))return;for(var j=0;j<x[1];j++){var c=extra[e++%extra.length];out.push({id:"w"+k+j,cli:c[0],tel:c[1],veh:c[2],svc:c[3],total:/Promo/.test(c[3])?30000:c[3]==="Focos"?20000:25000,date:d,time:j?"13:00":"10:00",zona:c[4],st:d<ymd(t)?"Pagada":"Pendiente",pm:d<ymd(t)?"SINPE Móvil":"",pagAt:d<ymd(t)?parse(d).getTime()+12*36e5:null})}});
   return out}
@@ -439,7 +439,7 @@ function renderRoad(anim){var root=$("road"),list=S.paradas,top=$("top").offsetH
   h+=roadSvg(ys,H,nextIdx,carY);
   list.forEach(function(p,i){var yy=ys[i];
     if(i===nextIdx){h+=nextCard(p,yy,isToday);return}
-    var st=done(p)?(p.st==="Pagada"?"Pagada ✓":"Hecha"):"Pendiente",col=done(p)?"var(--c)":"var(--m)";
+    var st=p.st==="Por confirmar"?"Por confirmar":done(p)?(p.st==="Pagada"?"Pagada ✓":"Hecha"):"Pendiente",col=p.st==="Por confirmar"?"var(--r)":done(p)?"var(--c)":"var(--m)";
     h+='<span class="dot'+(done(p)?" ok":"")+'" style="top:'+(yy-12)+'px"></span>'+
       '<div class="stop" data-open="'+esc(p.id)+'" style="top:'+(yy-34)+'px"><div style="flex:1;display:flex;flex-direction:column;gap:1px;min-width:0"><span class="t"><b>'+esc(hora12(p.time))+'</b><small style="color:'+col+'">'+st+'</small></span><span class="n">'+esc(first(p.cli))+" · "+esc(p.veh)+(p.zona?" · "+esc(p.zona):"")+'</span></div>'+
       '<a class="ib press" href="'+esc(waUrl(p,"¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR."))+'" target="_blank" rel="noopener" aria-label="WhatsApp a '+esc(first(p.cli))+'">'+IC.wa+'</a>'+
@@ -476,7 +476,7 @@ function bindNext(root){var nx=$("next");bindSoon(root);
   $("gocam").addEventListener("click",function(){save(p,{camino:Date.now()})});
   $("llegue").onclick=function(){if(!p.lleg)save(p,{lleg:Date.now()});window.open(waUrl(p,msgLlegamos(p)),"_blank");openPar(p.id)}}
 function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[data-soon]"),function(b){b.onclick=function(){openNew({date:S.sel})}})}
-function save(p,data){Object.keys(data).forEach(function(k){p[k]=data[k]});if(DEMO||!DB){refresh();return}
+function save(p,data){Object.keys(data).forEach(function(k){p[k]=data[k]});syncBack(p,data);if(DEMO||!DB){refresh();return}
   DB.collection(COL).doc(p.id).set(data,{merge:true}).catch(function(){toast("No se pudo guardar. Revisá la señal.")})}
 function refresh(){if(!$("app").classList.contains("hide"))renderAll(false);if(!$("vpar").classList.contains("hide"))renderPar();if(!$("vcob").classList.contains("hide"))renderCob();if(!$("vcli").classList.contains("hide"))renderCli();if(!$("vfic").classList.contains("hide"))renderFic();if(!$("vnum").classList.contains("hide"))renderNum();if(!$("vpen").classList.contains("hide"))renderPen();if(!$("vins").classList.contains("hide"))renderIns();if(!$("vmes").classList.contains("hide"))renderMes();if(!$("vmas").classList.contains("hide"))renderMas();penDot()}
 function penDot(){var b=$("island").querySelector('[data-nav="pen"]');if(!b)return;var n=0;try{var sz=snz(),h0=ymd(new Date());n=pendientes().filter(function(x){var u=sz[pkey(x)];return !u||u<=h0}).length}catch(e){}var dot=b.querySelector(".pd");if(!dot){dot=document.createElement("span");dot.className="pd";b.appendChild(dot)}dot.textContent=n||"";dot.style.display=n?"":"none"}
@@ -542,7 +542,7 @@ function splitVeh(v){v=String(v||"").trim();var m=v.match(/\s(19|20)\d\d$/),yr=m
   return mk?{mk:mk,md:v.slice(mk.length).trim(),yr:yr}:{mk:v.split(" ")[0]||"",md:v.split(" ").slice(1).join(" "),yr:yr}}
 function openNew(pre){pre=pre||{};NS={step:1,cli:"",tel:"",mk:"",md:"",yr:"",vt:"",vtMan:false,src:"",items:{},desc:0,date:pre.date&&pre.date>=ymd(new Date())?pre.date:ymd(new Date()),time:pre.time||"",canton:"",prov:"",dir:"",known:false};
   if(pre.ckey){var c=clientes().find(function(x){return x.key===pre.ckey});if(c)fillCli(c,pre.car)}
-  goView("new",null,true)}
+  loadSlots().then(function(){if(VIEW==="new"&&NS&&NS.step===3)renderNew()});goView("new",null,true)}
 function fillCli(c,carKey){NS.cli=c.cli;NS.tel=String(c.tel||"").replace(/\D/g,"").slice(-8);NS.known=true;
   var last=c.ps[0],z=String(last.zona||"").split(",").map(function(x){return x.trim()});NS.prov=PROVS.indexOf(z[z.length-1])>=0?z[z.length-1]:"";NS.canton=z.length>1?z[0]:(NS.prov?"":z[0]||"");NS.dir=last.dir||"";
   NS.src=(c.ps.find(function(p){return p.src})||{}).src||"";
@@ -561,7 +561,7 @@ function pickSvc(k){var it=NS.items;it[k]=!it[k];
   if(k==="all"&&it.all){if(it.par)it.par=false;if(it.combo){it.combo=false;it.focos=true}}
   if(k==="par"&&it.par&&it.all)it.all=false}
 function slotInfo(date){var ps=allP().filter(function(p){return p.date===date}),out={};
-  SLOTS.forEach(function(s){var sh=+s.slice(0,2),p=ps.find(function(x){var h=+String(x.time).slice(0,2);return h>=sh&&h<sh+2});out[s]={busy:p||null,blk:hourBlocked(date,s)||dayBlocked(date),past:date===ymd(new Date())&&sh<=new Date().getHours()}});
+  SLOTS.forEach(function(s){var sh=+s.slice(0,2),p=ps.find(function(x){var h=+String(x.time).slice(0,2);return h>=sh&&h<sh+2})||((SLOTB[date+"_"+pad(sh)]||SLOTB[date+"_"+pad(sh+1)])&&{cli:"Ocupada",veh:"en la app actual"});out[s]={busy:p||null,blk:hourBlocked(date,s)||dayBlocked(date),past:date===ymd(new Date())&&sh<=new Date().getHours()}});
   var me=NS.known?locOfC(clientes().find(function(c){return c.key===NS.tel})||{ps:[],info:{}}):null;
   if(me){var best=null;SLOTS.forEach(function(s){var o=out[s];if(o.busy||o.blk||o.past)return;var sh=+s.slice(0,2),near=ps.filter(function(p){return p.lat!=null&&Math.abs(+String(p.time).slice(0,2)-sh)<=2});
       near.forEach(function(p){var d=haversine(me,p)*1.3;if(!best||d<best.d)best={s:s,d:d,n:first(p.cli)}})});
@@ -637,9 +637,12 @@ function agendar(){var L=svcSel(),c=clientes().find(function(x){return x.key===N
   if(loc){p.lat=loc.lat;p.lng=loc.lng}
   var done1=function(id){p.id=id;if(DEMO){DEMONEW.push(p);ALL=(ALL||[]).concat([p]);var mon=ymd(monday(parse(S.sel)));if(ymd(monday(parse(p.date)))===mon)S.week.push(p)}nOk(p,!!loc)};
   if(DEMO||!DB){done1("n"+Date.now());return}
-  var ref=DB.collection(COL).doc();ref.set(p).catch(function(){toast("No se pudo guardar. Revisá la señal.")});done1(ref.id)}
+  var ref=DB.collection(COL).doc(),bt=DB.batch(),h0=+p.time.slice(0,2);bt.set(ref,p);
+  /* aparta la hora también en la página de reservas */
+  [h0,h0+1].forEach(function(h){bt.set(DB.doc("slots/"+p.date+"_"+pad(h)),{date:p.date,h:h,job:ref.id,at:p.at})});
+  bt.commit().catch(function(){toast("No se pudo guardar. Revisá la señal.")});done1(ref.id)}
 function nOk(p,loc){var el=$("okv"),d=parse(p.date),fecha=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()].toLowerCase();
-  var msg=tpl("confirmar",{nombre:first(p.cli),carro:p.veh,fecha:fecha,hora:h12ap(p.time),servicio:p.svc,total:crc(p.total)});
+  var msg=confirmar(p);
   el.innerHTML='<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><circle id="okc" cx="48" cy="48" r="44" fill="none" stroke="#FF4D6D" stroke-width="4"/><path id="okp" d="M28 49l13 13 27-28" fill="none" stroke="#EDF1F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
   '<span class="q" style="font-size:28px">¡Agendada!</span><span class="m">'+esc(first(p.cli))+' · '+esc(fecha)+' · '+esc(h12ap(p.time))+'</span>'+
   '<div class="nx"><a class="btn press" id="okwa" target="_blank" rel="noopener" href="'+esc(waUrl(p,msg))+'">'+IC.wa+' Mandar confirmación</a>'+
@@ -649,6 +652,45 @@ function nOk(p,loc){var el=$("okv"),d=parse(p.date),fecha=["domingo","lunes","ma
   if(!RM){var c=$("okc"),pth=$("okp"),lc=c.getTotalLength(),lp=pth.getTotalLength();gsap.fromTo(c,{strokeDasharray:lc,strokeDashoffset:lc},{strokeDashoffset:0,duration:.6,ease:"power2.out"});gsap.fromTo(pth,{strokeDasharray:lp,strokeDashoffset:lp},{strokeDashoffset:0,duration:.4,delay:.45});gsap.from("#okv .q,#okv .m,#okv .nx,#okb",{y:16,opacity:0,stagger:.08,delay:.6})}
   $("okb").onclick=function(){el.classList.add("hide");NS=null;history.replaceState({v:"ruta"},"");goView("ruta",null,false);if(p.date!==S.sel)pick(p.date);else renderAll(true)}}
 
+
+var PL=[
+ ["San José centro",9.9333,-84.0833,"free","San José"],["Escazú",9.9189,-84.1390,"free","San José"],["Santa Ana",9.9320,-84.1830,"free","San José"],["Pavas",9.9480,-84.1350,"free","San José"],["La Uruca",9.9530,-84.1080,"free","San José"],["Desamparados",9.8970,-84.0630,"free","San José"],["Aserrí",9.8590,-84.0910,"free","San José"],["Alajuelita",9.9010,-84.1000,"free","San José"],["Ciudad Colón (Mora)",9.9130,-84.2420,"free","San José"],["Guadalupe (Goicoechea)",9.9500,-84.0500,"free","San José"],["Tibás",9.9590,-84.0790,"free","San José"],["Moravia",9.9620,-84.0480,"free","San José"],["San Pedro (Montes de Oca)",9.9350,-84.0510,"free","San José"],["Curridabat",9.9150,-84.0350,"free","San José"],["Coronado",9.9780,-84.0040,"free","San José"],["Acosta",9.7980,-84.1600,"no","San José"],["Puriscal",9.8480,-84.3110,"no","San José"],
+ ["Heredia centro",9.9980,-84.1170,"free","Heredia"],["Barva",10.0210,-84.1230,"free","Heredia"],["Santo Domingo",9.9810,-84.0890,"free","Heredia"],["Santa Bárbara",10.0390,-84.1570,"free","Heredia"],["San Rafael de Heredia",10.0130,-84.0990,"free","Heredia"],["San Isidro de Heredia",10.0170,-84.0560,"free","Heredia"],["Belén",9.9800,-84.1830,"free","Heredia"],["Flores",9.9980,-84.1600,"free","Heredia"],["San Pablo",9.9950,-84.0960,"free","Heredia"],
+ ["Alajuela centro",10.0160,-84.2110,"free","Alajuela"],["Río Segundo / Aeropuerto",10.0000,-84.1950,"free","Alajuela"],["San Rafael de Alajuela",9.9930,-84.2420,"free","Alajuela"],["La Guácima",9.9620,-84.2560,"free","Alajuela"],["Poás",10.0700,-84.2380,"free","Alajuela"],["Grecia",10.0730,-84.3110,"no","Alajuela"],["Sarchí",10.0890,-84.3480,"no","Alajuela"],["Naranjo",10.0990,-84.3780,"no","Alajuela"],["Palmares",10.0570,-84.4340,"no","Alajuela"],["Atenas",9.9780,-84.3790,"no","Alajuela"],["San Ramón",10.0870,-84.4700,"no","Alajuela"],["Zarcero",10.1860,-84.3920,"no","Alajuela"],["Orotina",9.9120,-84.5240,"no","Alajuela"],
+ ["Cartago centro",9.8640,-83.9190,"free","Cartago"],["Tres Ríos (La Unión)",9.9030,-83.9890,"free","Cartago"],["San Rafael de Oreamuno",9.8780,-83.9050,"free","Cartago"],["Tejar (El Guarco)",9.8480,-83.9420,"free","Cartago"],
+ ["Paraíso",9.8380,-83.8650,"free","Cartago"],["Orosi",9.7960,-83.8550,"no","Cartago"],["Pacayas",9.9160,-83.8100,"no","Cartago"],["Juan Viñas",9.8920,-83.7480,"no","Cartago"],["Turrialba",9.9040,-83.6830,"no","Cartago"],
+ ["Los Santos (Tarrazú, Dota)",9.6560,-84.0220,"no","Lejos"],["Pérez Zeledón",9.3740,-83.7030,"no","Lejos"],["San Vito (Coto Brus)",8.8210,-82.9710,"no","Lejos"],["Buenos Aires",9.1680,-83.3330,"no","Lejos"],["Ciudad Neily / Golfito",8.6450,-82.9400,"no","Lejos"],
+ ["San Carlos (Ciudad Quesada)",10.3240,-84.4270,"no","Lejos"],["Aguas Zarcas / Venecia",10.3830,-84.3300,"no","Lejos"],["La Fortuna",10.4680,-84.6430,"no","Lejos"],["Los Chiles",11.0330,-84.7130,"no","Lejos"],["Upala / Guatuso",10.8970,-85.0160,"no","Lejos"],["Sarapiquí",10.4550,-84.0180,"no","Lejos"],
+ ["Guanacaste (Liberia)",10.6350,-85.4380,"no","Lejos"],["Nicoya / Santa Cruz",10.1480,-85.4520,"no","Lejos"],["Cañas / Tilarán",10.4300,-85.0920,"no","Lejos"],
+ ["Puntarenas",9.9760,-84.8380,"no","Lejos"],["Esparza",9.9940,-84.6640,"no","Lejos"],["Jacó / Garabito",9.6150,-84.6290,"no","Lejos"],["Quepos",9.4310,-84.1620,"no","Lejos"],
+ ["Limón",9.9900,-83.0300,"no","Lejos"],["Guápiles",10.2150,-83.7870,"no","Lejos"],["Siquirres",10.0980,-83.5070,"no","Lejos"]];
+/* RESERVAS DE LA WEB: la página de reservas sigue guardando en `jobs` (así la app actual también las ve).
+   La app nueva las copia a r_paradas con el mismo id y mantiene el estado igual en las dos. */
+var STMAP={Pendiente:"Pendiente",Hecha:"Hecho",Pagada:"Pagado"};
+function zonaWeb(note){var m=String(note||"").match(/Zona: ([^(·]+)/),n=m?m[1].trim():"",p=PL.find(function(x){return x[0]===n});return p?n.replace(/ centro$/,"")+", "+p[4]:n}
+function fromJob(j){var u=String(j.ubic||"").trim(),ll=u.match(/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/),se=String(j.note||"").match(/Señas: ([^·]+)/);
+  var p={cli:j.cli||"",tel:String(j.tel||""),veh:j.veh||"",vt:j.vt||"",svc:(j.items||[]).join(" + "),items:j.items||[],total:j.total||0,date:j.date,time:j.time,zona:zonaWeb(j.note),
+    dir:se?se[1].trim():(ll?"":u),nota:String(j.note||""),st:j.st==="Pendiente"?"Pendiente":"Por confirmar",src:j.src||"Reservas web",web:true,by:"web",at:j.at||Date.now()};
+  if(ll){p.lat=+ll[1];p.lng=+ll[2]}return p}
+function syncJob(id,j){var ref=DB.collection(COL).doc(id);
+  ref.get().then(function(d){if(!d.exists){if(j.st!=="Cancelada")ref.set(fromJob(j));return}
+    var r=d.data(),up={};
+    if(j.st==="Cancelada"&&r.st!=="Cancelada"&&!done(r)){up.st="Cancelada";up.cxAt=j.cxAt||Date.now();up.cxWhy=j.cxWhy||""}
+    else if(j.st==="Pendiente"&&r.st==="Por confirmar")up.st="Pendiente";
+    if(r.st!=="Cancelada"&&!r.ini&&!done(r)&&j.st!=="Cancelada"&&(j.date!==r.date||j.time!==r.time)){up.date=j.date;up.time=j.time}
+    if(Object.keys(up).length)ref.set(up,{merge:true})}).catch(function(){})}
+function listenWeb(){if(DEMO||!DB)return;
+  DB.collection("jobs").where("date",">=",ymd(addDays(new Date(),-1))).onSnapshot(function(sn){
+    sn.docChanges().forEach(function(ch){var j=ch.doc.data();if(j.web&&ch.type!=="removed")syncJob(ch.doc.id,j)})},function(){})}
+/* lleva el estado de vuelta a la cita de la app actual */
+function syncBack(p,data){if(!p.web||DEMO||!DB||!data.st)return;var o={},s=data.st==="Cancelada"?"Cancelada":STMAP[data.st];if(!s)return;o.st=s;if(data.pm)o.pm=data.pm;
+  DB.collection("jobs").doc(p.id).update(o).catch(function(){})}
+/* horas ocupadas por la app actual o por la página de reservas (colección slots) */
+var SLOTB={};
+function loadSlots(){if(DEMO||!DB)return Promise.resolve();var a=ymd(new Date()),b=ymd(addDays(new Date(),15));
+  return DB.collection("slots").where("date",">=",a).where("date","<=",b).get().then(function(sn){SLOTB={};sn.forEach(function(d){SLOTB[d.id]=d.data().job||1})}).catch(function(){})}
+function confirmar(p){var d=parse(p.date),fecha=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()].toLowerCase();
+  return tpl("confirmar",{nombre:first(p.cli),carro:p.veh||"vehículo",fecha:fecha,hora:h12ap(p.time),servicio:p.svc||"",total:crc(p.total)})}
 
 /* VISTAS */
 var CUR=null,VIEW="ruta",TICK=null;
@@ -691,6 +733,7 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   steps.forEach(function(s,i){if(on<0&&!s[1])on=i});
   var thumb=photos(p,"fa")[0];thumb=thumb&&(thumb.u||thumb);
   var h='<div class="vhead"><button class="back press" id="pback" aria-label="Volver a la ruta">'+IC.back+'</button><span class="tt">Parada '+n+' · '+esc(first(p.cli))+'</span><span class="timer hide" id="ptimer"><i></i><span></span></span></div><div class="vin">'+
+  (p.st==="Por confirmar"?'<div class="note" style="display:flex;flex-direction:column;gap:10px;color:var(--c);border:1px solid var(--r)"><span>Reserva de la web · falta confirmarle al cliente</span><a class="btn press" id="pconf" target="_blank" rel="noopener" href="'+esc(waUrl(p,confirmar(p)))+'">'+IC.wa+' Confirmar por WhatsApp</a></div>':'')+(p.web&&p.nota?'<div class="note">'+esc(p.nota)+'</div>':'')+
   '<div class="carhd">'+(thumb?'<img class="ph" src="'+esc(thumb)+'" alt="">':'<span class="ph">'+IC.car+'</span>')+'<div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="q" style="font-size:22px">'+esc(p.veh||"Vehículo")+'</span><span class="m" style="font-size:12px">'+esc([p.svc,crc(p.total)].filter(Boolean).join(" · "))+'</span></div></div>'+
   ((CDATA[ckey(p)]||{}).notas?'<div class="note" style="color:var(--c);white-space:pre-line"><span class="m" style="font-size:11px;letter-spacing:.1em;display:block;margin-bottom:4px">NOTAS DE LA CASA</span>'+esc(CDATA[ckey(p)].notas)+'</div>':'')+
   '<div class="steps">'+steps.map(function(s,i){return '<div class="st'+(s[1]?" ok":(i===on?" on":""))+'"><span class="b">'+(s[1]?IC.chk:"")+'</span><span class="l">'+s[0]+'</span><span class="s">'+esc(s[2])+'</span></div>'}).join("")+'</div>'+
@@ -700,7 +743,7 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   if(STORAGE_OFF)h+='<div class="note">Las fotos quedan guardadas en este celular y se suben solas cuando se active el plan Blaze de Firebase.</div>';
   h+='</div><div class="vfoot">'+parBtn(p,fa,fd)+'</div>';
   el.innerHTML=h;tickTimer();
-  $("pback").onclick=back;
+  $("pback").onclick=back;if($("pconf"))$("pconf").addEventListener("click",function(){setTimeout(function(){save(p,{st:"Pendiente"});toast("Cita confirmada")},300)});
   Array.prototype.forEach.call(el.querySelectorAll("input[type=file]"),function(inp){inp.onchange=function(){addPhotos(p,inp.dataset.k,inp.files);inp.value=""}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-t]"),function(b){b.onclick=function(){var t=Object.assign({},p.tareas||{});t[b.dataset.t]=!t[b.dataset.t];save(p,{tareas:t});
     if(!RM){var bx=document.querySelector('[data-t="'+b.dataset.t+'"] .bx');if(bx)gsap.fromTo(bx,{scale:.6},{scale:1,duration:.4,ease:"back.out(3)"})}}});
@@ -783,7 +826,9 @@ function addMonths(ymdS,n){var d=parse(ymdS);d.setMonth(d.getMonth()+n);return d
 function fmtD(d){return d.getDate()+" "+MESES[d.getMonth()].slice(0,3).toLowerCase()+" "+d.getFullYear()}
 function loadAll(){if(DEMO){ALL=demoData().concat(demoHist(),demoMore(),DEMONEW);return Promise.resolve()}
   return DB.collection(COL).orderBy("date","desc").limit(2000).get().then(function(sn){ALL=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}).catch(function(){ALL=ALL||S.week.slice()})}
-function allP(){var m={};(ALL||[]).forEach(function(p){m[p.id]=p});S.week.forEach(function(p){m[p.id]=p});return Object.keys(m).map(function(k){return m[k]})}
+function allP(){var m={};(ALL||[]).forEach(function(p){m[p.id]=p});S.week.forEach(function(p){m[p.id]=p});return Object.keys(m).map(function(k){return m[k]}).filter(function(p){return p.st!=="Cancelada"})}
+var WEEKX=[];
+function cancelados(){var m={};(ALL||[]).concat(WEEKX).forEach(function(p){if(p.st==="Cancelada")m[p.id]=p});return Object.keys(m).map(function(k){return m[k]})}
 function zonaDe(p){var z=String(p.zona||p.dir||"").split(",").map(function(x){return x.trim()}).filter(Boolean);return z.length?z[z.length-1]:"Sin zona"}
 function ckey(p){return String(p.tel||"").replace(/\D/g,"").slice(-8)||("n:"+String(p.cli||"").toLowerCase())}
 function vkey(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim()||"sin carro"}
@@ -1019,6 +1064,8 @@ function renderIns(){var el=$("vins"),h='<div class="vhead"><button class="back 
 function msgRes(p){return "¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Gracias otra vez por confiar en nosotros. ¿Qué tal se ve su "+(p.veh||"vehículo")+"? Si quedó contento, nos ayudaría muchísimo con una reseña"+(REVURL?": "+REVURL:" en Google.")}
 function msgRec(p){return "¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Le recordamos su cita de mañana a las "+hora12(p.time)+(+p.time.slice(0,2)<12?" a. m.":" p. m.")+" para su "+(p.veh||"vehículo")+". Le agradecemos tener un tomacorriente de 110 V cerca y, de preferencia, el carro bajo techo. ¡Nos vemos!"}
 function pendientes(){var L=[],hoy=ymd(new Date()),man=ymd(addDays(new Date(),1)),all=allP();
+  all.forEach(function(p){if(p.st==="Por confirmar"&&p.date>=hoy)L.push({k:"cf",ic:IC.bell2,t:"Confirmar reserva de "+first(p.cli),s:"Agendó en la web · "+fmtD(parse(p.date))+" · "+hora12(p.time),b:"Confirmar",p:p,msg:confirmar(p),mark:{st:"Pendiente"}})});
+  cancelados().forEach(function(p){if(!p.cxSeen&&p.date>=hoy)L.push({k:"cx",ic:IC.clock,t:first(p.cli)+" canceló su cita",s:fmtD(parse(p.date))+" · "+hora12(p.time)+(p.cxWhy?" · "+p.cxWhy:""),b:"Escribirle",p:p,msg:"¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Vimos que canceló su cita, no hay problema. ¿Le buscamos otro día que le quede mejor?",mark:{cxSeen:1}})});
   all.forEach(function(p){if(p.st==="Pagada"&&p.pagAt&&!p.rv&&p.tel){var d=ymd(new Date(p.pagAt));var dias=(parse(hoy)-parse(d))/864e5;if(dias>=1&&dias<=7)L.push({k:"res",ic:IC.star,t:"Pedirle reseña a "+first(p.cli),s:"Pagó "+(dias===1?"ayer":"hace "+dias+" días")+" · "+(p.veh||""),b:"Pedir",p:p,msg:msgRes(p),mark:{rv:Date.now()}})}});
   INS.forEach(function(it){var s=stockOf(it);if(s.low)L.push({k:"ins",ic:IC.drop,t:"Queda poco "+it.n.toLowerCase(),s:s.carros>0?"Alcanza para "+s.carros+" "+it.carros:"Se acabó",b:"Ver",go:"ins"})});
   all.forEach(function(p){if(p.st==="Hecha"&&p.date<hoy)L.push({k:"cob",ic:IC.coin,t:"Falta cobrarle a "+first(p.cli),s:fmtD(parse(p.date))+" · "+crc(p.total),b:"Cobrar",par:p})});
@@ -1032,7 +1079,7 @@ function renderPen(){var el=$("vpen"),sz=snz(),hoy0=ymd(new Date()),L=pendientes
   ((off||nloc)?'<div id="net2" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;background:var(--bg);font-size:12px;color:var(--m)">'+IC.wifi+' '+(off?"Sin señal · ":"")+(nloc?nloc+" foto"+(nloc>1?"s":"")+" por subir":"los cambios se suben solos al volver")+'</div>':'')+'</div>'+
   '<div class="vin" style="padding-top:calc('+((off||nloc)?132:96)+'px + var(--safe-t));gap:8px">';
   if(!L.length)h+='<div class="note" style="text-align:center;padding:28px 16px"><span class="q" style="font-size:20px;color:var(--c);display:block;margin-bottom:6px">Todo al día</span>No hay nada pendiente por ahora.</div>';
-  var grupos=[["Hoy",["res","ins","cob","rec"]],["Clientes",["gar","rep"]]];
+  var grupos=[["Reservas",["cf","cx"]],["Hoy",["res","ins","cob","rec"]],["Clientes",["gar","rep"]]];
   grupos.forEach(function(g){var G=L.filter(function(x){return g[1].indexOf(x.k)>=0});if(!G.length)return;
     h+='<span class="m" style="font-size:12px;padding:8px 0 0 4px">'+g[0]+'</span>';
     G.forEach(function(x,i){var id=L.indexOf(x);h+='<div class="pend" data-ix="'+id+'" style="touch-action:pan-y"><span class="pi">'+x.ic+'</span><span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:14px">'+esc(x.t)+'</span><span class="m" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(x.s)+'</span></span>'+
@@ -1264,9 +1311,9 @@ function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
   if(DEMO){S.week=demoData().concat(DEMONEW).filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);if(!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}return}
   if(UNSUB)UNSUB();var firstSnap=true;
   UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
-    S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});dayFromWeek();renderWeek();renderAll(firstSnap);if(firstSnap&&!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}firstSnap=false},
+    S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});WEEKX=S.week.filter(function(p){return p.st==="Cancelada"});S.week=S.week.filter(function(p){return p.st!=="Cancelada"});dayFromWeek();renderWeek();renderAll(firstSnap);if(firstSnap&&!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}firstSnap=false},
     function(e){if(e.code==="permission-denied"){toast("Tu cuenta no tiene acceso a la app nueva todavía");}else toast("No se pudieron leer las paradas")})}
-function showApp(){restoreLocal();listenCli();listenMeta();listenAj();listenStock();listenTeam();listenMsg();listenComp();listenPcfg();setTimeout(function(){loadAll().then(penDot)},1500);takeLoc();$("island").classList.remove("hide");$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
+function showApp(){restoreLocal();listenWeb();listenCli();listenMeta();listenAj();listenStock();listenTeam();listenMsg();listenComp();listenPcfg();setTimeout(function(){loadAll().then(penDot)},1500);takeLoc();$("island").classList.remove("hide");$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
   $("demo").classList.toggle("hide",!DEMO);netState();
   if(!RM)gsap.from("#top",{y:-40,opacity:0,duration:.6,ease:"power3.out"});if(!RM)gsap.from("#island",{y:90,duration:.6,ease:"back.out(1.6)",delay:.2});
   listen()}
