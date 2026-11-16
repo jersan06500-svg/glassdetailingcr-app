@@ -135,6 +135,11 @@ svg{display:block}
 .ph3 em{position:absolute;left:6px;bottom:6px;font-style:normal;font-size:10px;padding:2px 7px;border-radius:8px;background:rgba(20,6,9,.75)}
 .addph{aspect-ratio:1;border-radius:14px;border:1.5px dashed var(--ln);background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--m);font-size:11px;cursor:pointer}
 .addph input{display:none}
+.fld{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.fld span{font-size:12px;color:var(--m)}.fld input{height:52px;width:100%;border-radius:16px;border:1px solid var(--ln);background:var(--s1);color:var(--c);font:inherit;font-size:16px;padding:0 14px}.fld input:focus{outline:none;border-color:var(--r)}
+.sug{display:flex;flex-direction:column}
+.sv{display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 14px;border-radius:18px;background:var(--s1);border:1px solid var(--ln);width:100%;color:var(--c)}.sv .bx{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--d);display:flex;align-items:center;justify-content:center;flex:none}.sv.on{border-color:var(--r)}.sv.on .bx{background:var(--w);border-color:var(--w)}
+.nweek{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px}.nweek .day{flex:0 0 46px}
+.nslot{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);width:100%;color:var(--c)}.nslot.on{background:var(--w);border-color:var(--w)}.nslot.sug{border-color:var(--r)}.nslot.sug span:last-child{color:var(--r)}.nslot:disabled{opacity:.4}
 .ck{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);font-size:14px;text-align:left;width:100%}
 .ck .bx{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--d);display:flex;align-items:center;justify-content:center;flex:none}
 .ck.on .bx{background:var(--w);border-color:var(--w)}
@@ -285,13 +290,14 @@ Entrar con Google</button>
 <nav id="island" class="hide" aria-label="Secciones">
 <button class="on" data-nav="ruta" aria-label="Ruta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></button>
 <button data-nav="cli" aria-label="Clientes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .7 3.2 2.6 3.6 5.4"/></svg></button>
-<button class="add" data-soon="Agendar" aria-label="Agendar parada"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+<button class="add" id="nadd" aria-label="Agendar parada"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
 <button data-nav="num" aria-label="Números"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></button>
 <button data-nav="pen" aria-label="Pendientes" style="position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></button>
 </nav>
 <section id="vpar" class="view hide" aria-label="Parada en curso"></section>
 <section id="vcob" class="view hide" aria-label="Cobrar"></section>
 <section id="vcli" class="view hide" aria-label="Clientes"></section>
+<section id="vnew" class="view hide" aria-label="Nueva parada"></section>
 <section id="vfic" class="view hide" aria-label="Ficha del carro"></section>
 <section id="vnum" class="view hide" aria-label="Números"></section>
 <section id="vpen" class="view hide" aria-label="Pendientes"></section>
@@ -469,7 +475,7 @@ function bindNext(root){var nx=$("next");bindSoon(root);
     $("gocam").href=waUrl(p,msgCamino(p,S.mins));if(!RM)gsap.fromTo(b,{scale:.85},{scale:1,duration:.35,ease:"back.out(3)"})}});
   $("gocam").addEventListener("click",function(){save(p,{camino:Date.now()})});
   $("llegue").onclick=function(){if(!p.lleg)save(p,{lleg:Date.now()});window.open(waUrl(p,msgLlegamos(p)),"_blank");openPar(p.id)}}
-function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[data-soon]"),function(b){b.onclick=function(){toast(b.dataset.soon+": lo armamos en los próximos pasos")}})}
+function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[data-soon]"),function(b){b.onclick=function(){openNew({date:S.sel})}})}
 function save(p,data){Object.keys(data).forEach(function(k){p[k]=data[k]});if(DEMO||!DB){refresh();return}
   DB.collection(COL).doc(p.id).set(data,{merge:true}).catch(function(){toast("No se pudo guardar. Revisá la señal.")})}
 function refresh(){if(!$("app").classList.contains("hide"))renderAll(false);if(!$("vpar").classList.contains("hide"))renderPar();if(!$("vcob").classList.contains("hide"))renderCob();if(!$("vcli").classList.contains("hide"))renderCli();if(!$("vfic").classList.contains("hide"))renderFic();if(!$("vnum").classList.contains("hide"))renderNum();if(!$("vpen").classList.contains("hide"))renderPen();if(!$("vins").classList.contains("hide"))renderIns();if(!$("vmes").classList.contains("hide"))renderMes();if(!$("vmas").classList.contains("hide"))renderMas();penDot()}
@@ -501,10 +507,153 @@ var SINPE="7045-8967",TITULAR="Jersan Alejandro Gutiérrez Ocampo";
 function msgCobro(p,gar){return "¡Muchas gracias, "+first(p.cli)+"! Su "+(p.veh||"vehículo")+" quedó listo. El total es "+crc(p.total)+". Puede pagar por SINPE Móvil al "+SINPE+" ("+TITULAR+"), transferencia o efectivo."+(gar&&garUrl(p)?"\n\nVea su certificado de garantía: "+garUrl(p):"")}
 function byId(id){return S.week.find(function(x){return x.id===id})||(ALL||[]).find(function(x){return x.id===id})}
 
+/* NUEVA PARADA (agendar desde la app nueva) */
+var MARCAS={"Toyota":["Corolla","Corolla Cross","Yaris","Rush","Raize","RAV4","Hilux","Fortuner","Prado","Land Cruiser","4Runner","Tacoma","Camry","Prius","C-HR","Avanza"],
+ "Hyundai":["Accent","Elantra","i10","Grand i10","Creta","Venue","Kona","Tucson","Santa Fe","H1"],
+ "Nissan":["Sentra","Versa","March","Tiida","Note","Kicks","Qashqai","X-Trail","Pathfinder","Frontier","Navara","Leaf"],
+ "Kia":["Picanto","Rio","Soluto","K3","Cerato","Sonet","Seltos","Sportage","Sorento"],
+ "Suzuki":["Alto","Celerio","Swift","Dzire","Baleno","Ertiga","Jimny","Vitara","Grand Vitara","S-Cross"],
+ "Mitsubishi":["Mirage","Attrage","Lancer","ASX","Outlander","Montero","Montero Sport","L200"],
+ "Honda":["Fit","City","Civic","Accord","HR-V","CR-V","Pilot"],
+ "Mazda":["Mazda 2","Mazda 3","Mazda 6","CX-3","CX-30","CX-5","CX-9","BT-50"],
+ "Chevrolet":["Spark","Beat","Aveo","Sail","Onix","Cruze","Tracker","Captiva","Trailblazer","Colorado","Silverado"],
+ "Ford":["Fiesta","Focus","EcoSport","Escape","Explorer","Bronco","Ranger","F-150"],
+ "Volkswagen":["Gol","Polo","Virtus","Jetta","Golf","T-Cross","Tiguan","Amarok"],
+ "Isuzu":["D-Max","MU-X"],"Subaru":["Impreza","XV","Crosstrek","Forester","Outback"],
+ "Jeep":["Renegade","Compass","Cherokee","Grand Cherokee","Wrangler","Gladiator"],
+ "Daihatsu":["Terios","Bego"],"Geely":["Coolray","Azkarra","EX5"],"BYD":["Dolphin","Seal","Song","Yuan","Atto 3"],
+ "Chery":["Tiggo 2","Tiggo 4","Tiggo 7","Tiggo 8"],"Changan":["CS35","CS55","Alsvin"],"JAC":["S2","S3","T6","T8"],
+ "Great Wall":["Jolion","H6","Wingle"],"MG":["ZS","MG 5","HS"],"SsangYong":["Tivoli","Korando","Rexton","Musso"],
+ "Peugeot":["208","2008","3008"],"Renault":["Kwid","Logan","Sandero","Duster","Koleos","Oroch"],
+ "BMW":["Serie 3","X1","X3","X5"],"Mercedes-Benz":["Clase A","Clase C","GLA","GLC"],"Audi":["A3","A4","Q3","Q5"],"Lexus":["IS","NX","RX"],
+ "Land Rover":["Defender","Discovery","Range Rover"],"Volvo":["XC40","XC60","XC90"],"Tesla":["Model 3","Model Y"],"Dodge":["Durango","Journey"],"RAM":["700","1500"]};
+var PICKRX=["hilux","tacoma","tundra","frontier","navara","l ?200","d-?max","ranger","amarok","oroch","colorado","silverado","gladiator","bt-?50","wingle","jac t[68]","musso","f-?150","ram","pick ?up","pickup"];
+var SUVRX=["rav ?4","cr-?v","hr-?v","c-?hr","prado","land ?cruiser","fortuner","rush","raize","4 ?runner","highlander","sequoia","sportage","sorento","seltos","sonet","tucson","santa ?fe","creta","venue","kona","palisade","x-?trail","qashqai","kicks","pathfinder","montero","outlander","asx","pajero","mu-?x","explorer","escape","ecosport","bronco","everest","cx-?[3589]0?","forester","outback","xv","crosstrek","vitara","jimny","s-?cross","terios","bego","tiguan","t-?cross","t-?roc","touareg","duster","koleos","captur","trailblazer","tracker","captiva","equinox","wrangler","cherokee","compass","renegade","x[1-7]","q[2-8]","gl[abce]","rx","nx","ux","gx","lx","xc[469]0","h6","jolion","coolray","azkarra","ex5","tiggo","cs[357]5","song","yuan","atto","korando","tivoli","rexton","2008","3008","zs","hs","defender","discovery","range rover","durango","journey","model y","suv","camioneta","jeep"];
+var SEDRX=["corolla","yaris","camry","prius","etios","civic","accord","city","fit","jazz","sentra","versa","almera","march","tiida","note","elantra","accent","i10","i20","i30","sonata","rio","picanto","k3","k5","cerato","forte","soluto","mazda ?[236]","demio","swift","alto","celerio","ciaz","dzire","baleno","mirage","lancer","attrage","jetta","golf","gol","polo","vento","virtus","spark","sail","aveo","cruze","onix","beat","focus","fiesta","logan","sandero","kwid","impreza","clase [ac]","serie 3","a[34]","is","model 3","leaf","ioniq","dolphin","seal","alsvin","208","mg 5","s[23]","sedan","sed[aá]n","hatchback"];
+function nrm(x){return String(x||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim()}
+function rxHit(L,x){return L.some(function(r){return new RegExp("(^|[^a-z0-9])("+r+")([^a-z0-9]|$)").test(x)})}
+var PROVS=["San José","Heredia","Alajuela","Cartago","Otra"];
+var FUENTES=["Instagram","Facebook","TikTok","WhatsApp","Referido","Google","Reservas web","Otro"];
+var VTN={sedan:"sedán",suv:"SUV",pickup:"pick-up"};
+var NS=null,NRENDER=false,DEMONEW=[];
+function vtOf(mk,md){var x=nrm(mk+" "+md);if(nrm(md).length<2&&!/^ram$/.test(nrm(mk)))return "";if(rxHit(PICKRX,x))return "pickup";var su=rxHit(SUVRX,x),se=rxHit(SEDRX,x);return su&&!se?"suv":se&&!su?"sedan":""}
+function splitVeh(v){v=String(v||"").trim();var m=v.match(/\s(19|20)\d\d$/),yr=m?m[0].trim():"";if(yr)v=v.slice(0,-5).trim();
+  var mk=Object.keys(MARCAS).sort(function(a,b){return b.length-a.length}).find(function(k){return nrm(v).indexOf(nrm(k))===0});
+  return mk?{mk:mk,md:v.slice(mk.length).trim(),yr:yr}:{mk:v.split(" ")[0]||"",md:v.split(" ").slice(1).join(" "),yr:yr}}
+function openNew(pre){pre=pre||{};NS={step:1,cli:"",tel:"",mk:"",md:"",yr:"",vt:"",vtMan:false,src:"",items:{},desc:0,date:pre.date&&pre.date>=ymd(new Date())?pre.date:ymd(new Date()),time:pre.time||"",canton:"",prov:"",dir:"",known:false};
+  if(pre.ckey){var c=clientes().find(function(x){return x.key===pre.ckey});if(c)fillCli(c,pre.car)}
+  goView("new",null,true)}
+function fillCli(c,carKey){NS.cli=c.cli;NS.tel=String(c.tel||"").replace(/\D/g,"").slice(-8);NS.known=true;
+  var last=c.ps[0],z=String(last.zona||"").split(",").map(function(x){return x.trim()});NS.prov=PROVS.indexOf(z[z.length-1])>=0?z[z.length-1]:"";NS.canton=z.length>1?z[0]:(NS.prov?"":z[0]||"");NS.dir=last.dir||"";
+  NS.src=(c.ps.find(function(p){return p.src})||{}).src||"";
+  if(carKey!==null){var car=c.cars.find(function(x){return x.key===carKey})||c.cars[0];if(car&&car.veh){var v=splitVeh(car.veh);NS.mk=v.mk;NS.md=v.md;NS.yr=v.yr;NS.vt=car.ps[0].vt||vtOf(v.mk,v.md)}}
+  else{NS.mk=NS.md=NS.yr=NS.vt=""}}
+function vehTxt(){return [NS.mk,NS.md,NS.yr].filter(Boolean).join(" ")}
+function svcSel(){var it=NS.items,vt=NS.vt||"sedan",big=vt!=="sedan",L=[];
+  if(it.combo)L.push(["combo","Promo parabrisas + focos",30000]);
+  else{if(it.focos)L.push(["focos","Focos",20000]);if(it.par)L.push([big?"pu":"ps","Parabrisas "+VTN[vt],big?25000:20000])}
+  if(it.all)L.push([big?"all":"alls","Todos los vidrios "+VTN[vt],big?40000:35000]);
+  if(it.techo)L.push(["techo","Techo panorámico",20000]);return L}
+function svcTotal(){return Math.max(0,svcSel().reduce(function(a,x){return a+x[2]},0)-(NS.desc||0))}
+function pickSvc(k){var it=NS.items;it[k]=!it[k];
+  if(k==="combo"&&it.combo){it.focos=false;it.par=false;if(it.all){it.all=false}}
+  if((k==="focos"||k==="par")&&it.focos&&it.par&&!it.all){it.focos=false;it.par=false;it.combo=true;toast("Focos + parabrisas = promo ₡30 000")}
+  if(k==="all"&&it.all){if(it.par)it.par=false;if(it.combo){it.combo=false;it.focos=true}}
+  if(k==="par"&&it.par&&it.all)it.all=false}
+function slotInfo(date){var ps=allP().filter(function(p){return p.date===date}),out={};
+  SLOTS.forEach(function(s){var sh=+s.slice(0,2),p=ps.find(function(x){var h=+String(x.time).slice(0,2);return h>=sh&&h<sh+2});out[s]={busy:p||null,blk:hourBlocked(date,s)||dayBlocked(date),past:date===ymd(new Date())&&sh<=new Date().getHours()}});
+  var me=NS.known?locOfC(clientes().find(function(c){return c.key===NS.tel})||{ps:[],info:{}}):null;
+  if(me){var best=null;SLOTS.forEach(function(s){var o=out[s];if(o.busy||o.blk||o.past)return;var sh=+s.slice(0,2),near=ps.filter(function(p){return p.lat!=null&&Math.abs(+String(p.time).slice(0,2)-sh)<=2});
+      near.forEach(function(p){var d=haversine(me,p)*1.3;if(!best||d<best.d)best={s:s,d:d,n:first(p.cli)}})});
+    if(best)out[best.s].sug="queda de camino · a "+Math.max(1,Math.round(best.d))+" km de "+best.n}
+  return out}
+function renderNew(){var el=$("vnew");if(!NS){el.innerHTML="";return}var st=NS.step,h='<div class="vhead"><button class="back press" id="nback" aria-label="'+(st>1?"Paso anterior":"Cerrar")+'">'+IC.back+'</button><span class="tt">Nueva parada</span><span style="display:flex;gap:6px;padding-right:10px" aria-label="Paso '+st+' de 3">'+[1,2,3].map(function(i){return '<span style="width:'+(i===st?26:6)+'px;height:6px;border-radius:3px;background:'+(i<st?"var(--c)":i===st?"var(--r)":"var(--ln)")+'"></span>'}).join("")+'</span></div><div class="vin" style="gap:14px">';
+  var inp=function(id,lbl,val,ph,type,list){return '<label class="fld"><span>'+lbl+'</span><input id="'+id+'" type="'+(type||"text")+'" value="'+esc(val)+'" placeholder="'+esc(ph||"")+'"'+(list?' list="'+list+'"':'')+(type==="tel"?' inputmode="numeric" maxlength="9"':'')+' autocomplete="off"></label>'};
+  if(st===1){
+    h+='<span class="q" style="font-size:20px">Cliente y carro</span>';
+    if(!NS.known)h+='<label class="srch">'+IC.search+'<input id="nq" type="search" placeholder="Buscar un cliente que ya vino" autocomplete="off"></label><div id="nsug" class="sug"></div>';
+    else h+='<div class="note" style="display:flex;justify-content:space-between;align-items:center;color:var(--c)"><span>'+esc(NS.cli)+' · '+esc(NS.tel)+'</span><button class="m press" id="nother" style="font-size:12px;min-height:44px">Cambiar</button></div>';
+    if(NS.known){var c=clientes().find(function(x){return x.key===NS.tel});if(c&&c.cars.length)h+='<div class="chips">'+c.cars.map(function(x){var on=nrm(vehTxt())===nrm(x.veh);return '<button class="press'+(on?" on":"")+'" data-ncar="'+esc(x.key)+'">'+esc(x.veh||"Sin carro")+'</button>'}).join("")+'<button class="press'+(!vehTxt()?" on":"")+'" data-ncar="">+ Otro carro</button></div>'}
+    if(!NS.known)h+='<div style="display:flex;gap:10px">'+inp("ncli","Nombre",NS.cli,"Nombre y apellido")+inp("ntel","WhatsApp",NS.tel,"8 dígitos","tel")+'</div>';
+    h+='<div style="display:flex;gap:10px">'+inp("nmk","Marca",NS.mk,"Toyota","text","dl-mk")+inp("nmd","Modelo",NS.md,"RAV4","text","dl-md")+'</div>'+
+    '<datalist id="dl-mk">'+Object.keys(MARCAS).map(function(k){return '<option value="'+esc(k)+'">'}).join("")+'</datalist><datalist id="dl-md">'+((MARCAS[NS.mk]||[]).map(function(k){return '<option value="'+esc(k)+'">'}).join(""))+'</datalist>'+
+    '<div style="display:flex;gap:10px;align-items:flex-end">'+inp("nyr","Año (opcional)",NS.yr,"2019","number")+'<div style="flex:2;display:flex;flex-direction:column;gap:6px"><span class="m" style="font-size:12px;display:flex;justify-content:space-between">Tipo'+(NS.vt&&!NS.vtMan?'<span style="color:var(--r)">detectado</span>':'')+'</span><div class="seg" style="padding:4px">'+["sedan","suv","pickup"].map(function(v){return '<button class="press'+(NS.vt===v?" on":"")+'" data-vt="'+v+'" style="height:40px;font-size:12px">'+VTN[v].replace(/^s/,"S").replace(/^p/,"P")+'</button>'}).join("")+'</div></div></div>';
+    if(!NS.known||!NS.src)h+='<div class="sec"><span class="m" style="font-size:12px">¿Cómo nos conoció?</span><div class="chips" style="flex-wrap:wrap">'+FUENTES.map(function(f){return '<button class="press'+(NS.src===f?" on":"")+'" data-src="'+f+'">'+f+'</button>'}).join("")+'</div></div>';
+  }else if(st===2){
+    var vt=NS.vt||"sedan",big=vt!=="sedan",opt=function(k,t,sub,p){var on=!!NS.items[k];return '<button class="sv press'+(on?" on":"")+'" data-sv="'+k+'"><span class="bx">'+(on?IC.chk:"")+'</span><span style="flex:1;display:flex;flex-direction:column;gap:2px;text-align:left"><span style="font-size:15px">'+t+'</span><span class="m" style="font-size:12px">'+sub+'</span></span><span class="q" style="font-size:17px">'+p+'</span></button>'};
+    h+='<span class="q" style="font-size:20px">Servicio · '+esc(vehTxt()||"vehículo")+'</span>'+
+    opt("focos","Restauración de focos","Polímero líquido · garantía 5 meses","₡20 000")+
+    opt("combo","Promo parabrisas + focos","Garantía: focos 5 meses, parabrisas 3","₡30 000")+
+    opt("par","Parabrisas "+VTN[vt],"Cerámico Fireball · garantía 3 meses",big?"₡25 000":"₡20 000")+
+    opt("all","Todos los vidrios "+VTN[vt],"Cerámico Fireball · garantía 3 meses",big?"₡40 000":"₡35 000")+
+    opt("techo","+ Techo panorámico","Extra · se suma a lo demás","+₡20 000")+
+    '<label class="fld"><span>Descuento (opcional)</span><input id="ndesc" type="number" inputmode="numeric" min="0" step="1000" value="'+(NS.desc||"")+'" placeholder="₡0"></label>';
+  }else{
+    var days="",t0=new Date();for(var i=0;i<14;i++){var d=addDays(t0,i),k=ymd(d),n=allP().filter(function(p){return p.date===k}).length,bl=dayBlocked(k);
+      days+='<button class="day press'+(k===NS.date?" sel":"")+'" data-nd="'+k+'"'+(bl?' disabled style="opacity:.35"':'')+'><small>'+DIAS[(d.getDay()+6)%7]+'</small><b>'+d.getDate()+'</b><span class="dots">'+new Array(Math.min(n,4)+1).join("<i></i>")+'</span></button>'}
+    var si=slotInfo(NS.date);
+    h+='<span class="q" style="font-size:20px">Día y lugar</span><div class="nweek">'+days+'</div><div class="sec">'+SLOTS.map(function(s){var o=si[s],dis=o.busy||o.blk||o.past,on=NS.time===s;
+      return '<button class="nslot press'+(on?" on":"")+(o.sug&&!on?" sug":"")+'" data-nt="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":(o.sug||"Libre"))+'</span></button>'}).join("")+'</div>'+
+    '<div class="sec"><span class="m" style="font-size:12px">Provincia</span><div class="chips" style="flex-wrap:wrap">'+PROVS.map(function(p){return '<button class="press'+(NS.prov===p?" on":"")+'" data-pv="'+p+'">'+p+'</button>'}).join("")+'</div></div>'+
+    '<div style="display:flex;gap:10px">'+inp("ncan","Cantón o barrio",NS.canton,"Ej.: San Pablo")+'</div>'+
+    '<label class="fld"><span>Señas (opcional)</span><input id="ndir" value="'+esc(NS.dir)+'" placeholder="200 m norte de la iglesia, casa azul" autocomplete="off"></label>'+
+    (NS.prov==="Otra"?'<div class="note" style="color:var(--r)">Fuera de la GAM: confirmá el recargo con el cliente antes de ir.</div>':'')+
+    '<div class="kp" style="gap:6px"><span class="m" style="font-size:12px">Resumen</span><span style="font-size:14px">'+esc(NS.cli)+' · '+esc(vehTxt())+'</span>'+svcSel().map(function(x){return '<div style="display:flex;justify-content:space-between;font-size:13px"><span>'+esc(x[1])+'</span><span class="q">'+crc(x[2])+'</span></div>'}).join("")+(NS.desc?'<div style="display:flex;justify-content:space-between;font-size:13px"><span>Descuento</span><span class="q">−'+crc(NS.desc)+'</span></div>':'')+'</div>';
+  }
+  h+='</div><div class="vfoot" style="align-items:center"><span style="display:flex;flex-direction:column;min-width:90px"><span class="m" style="font-size:11px">Total</span><span class="q" id="ntot" style="font-size:22px">'+crc(svcTotal())+'</span></span><button class="btn press" id="nnext" style="flex:1">'+(st<3?"Siguiente "+IC.chev:IC.chk+" Agendar")+'</button></div>';
+  NRENDER=true;el.innerHTML=h;NRENDER=false;bindNew(el)}
+function nRead(){var g=function(id){var x=$(id);return x?x.value.trim():null};
+  if(g("ncli")!=null)NS.cli=g("ncli").slice(0,60);if(g("ntel")!=null)NS.tel=g("ntel").replace(/\D/g,"").slice(-8);
+  if(g("nmk")!=null){var mk=g("nmk"),fx=Object.keys(MARCAS).find(function(k){return nrm(k)===nrm(mk)});NS.mk=(fx||mk).slice(0,30)}
+  if(g("nmd")!=null)NS.md=g("nmd").slice(0,40);if(g("nyr")!=null)NS.yr=g("nyr").slice(0,4);
+  if(g("ndesc")!=null)NS.desc=Math.max(0,Math.round(+g("ndesc")||0));
+  if(g("ncan")!=null)NS.canton=g("ncan").slice(0,40);if(g("ndir")!=null)NS.dir=g("ndir").slice(0,200);
+  if(!NS.vtMan){var v=vtOf(NS.mk,NS.md);if(v)NS.vt=v}}
+function bindNew(el){
+  $("nback").onclick=function(){nRead();if(NS.step>1){NS.step--;renderNew();$("vnew").scrollTop=0}else back()};
+  Array.prototype.forEach.call(el.querySelectorAll("input"),function(i){i.addEventListener("change",function(){if(NRENDER)return;var vt0=NS.vt,mk0=NS.mk;nRead();if(NS.vt!==vt0||NS.mk!==mk0)renderNew();else $("ntot").textContent=crc(svcTotal())})});
+  var q=$("nq");if(q)q.oninput=function(){var t=nrm(q.value),L=t.length<2?[]:clientes().filter(function(c){return nrm(c.cli+" "+c.tel+" "+c.veh).indexOf(t)>=0}).slice(0,5);
+    $("nsug").innerHTML=L.map(function(c){return '<button class="cl press" data-nc="'+esc(c.key)+'"><span class="av" style="background:'+hashC(c.key)+';width:36px;height:36px">'+esc(ini(c.cli))+'</span><span style="display:flex;flex-direction:column;min-width:0;text-align:left"><span style="font-size:14px">'+esc(c.cli)+'</span><span class="m" style="font-size:12px">'+esc(c.veh||"")+'</span></span></button>'}).join("");
+    Array.prototype.forEach.call($("nsug").querySelectorAll("[data-nc]"),function(b){b.onclick=function(){nRead();fillCli(clientes().find(function(c){return c.key===b.dataset.nc}),undefined);renderNew()}})};
+  if($("nother"))$("nother").onclick=function(){NS.known=false;NS.cli=NS.tel="";renderNew()};
+  Array.prototype.forEach.call(el.querySelectorAll("[data-ncar]"),function(b){b.onclick=function(){var c=clientes().find(function(x){return x.key===NS.tel});if(b.dataset.ncar){fillCli(c,b.dataset.ncar)}else{NS.mk=NS.md=NS.yr=NS.vt="";NS.vtMan=false}renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-vt]"),function(b){b.onclick=function(){nRead();NS.vt=b.dataset.vt;NS.vtMan=true;renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-src]"),function(b){b.onclick=function(){nRead();NS.src=b.dataset.src;renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-sv]"),function(b){b.onclick=function(){nRead();pickSvc(b.dataset.sv);renderNew();if(!RM){var t=$("ntot");if(t)gsap.fromTo(t,{scale:1.2},{scale:1,duration:.35,ease:"back.out(3)"})}}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-nd]"),function(b){b.onclick=function(){nRead();NS.date=b.dataset.nd;NS.time="";renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-nt]"),function(b){b.onclick=function(){nRead();NS.time=b.dataset.nt;renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-pv]"),function(b){b.onclick=function(){nRead();NS.prov=b.dataset.pv;renderNew()}});
+  $("nnext").onclick=function(){nRead();var e="";
+    if(NS.step===1){if(NS.cli.length<2)e="Escribí el nombre del cliente";else if(NS.tel.length!==8)e="El WhatsApp debe tener 8 dígitos";else if(!NS.mk||!NS.md)e="Falta la marca y el modelo";else if(!NS.vt)e="Elegí si es sedán, SUV o pick-up"}
+    if(NS.step===2&&!svcSel().length)e="Elegí al menos un servicio";
+    if(NS.step===3){if(!NS.time)e="Elegí la hora";else if(!NS.prov)e="Elegí la provincia"}
+    if(e){toast(e);return}
+    if(NS.step<3){NS.step++;renderNew();$("vnew").scrollTop=0;if(!RM)gsap.from("#vnew .vin",{x:40,opacity:0,duration:.3,ease:"power3.out"});return}
+    agendar()};
+  if(!RM)gsap.from("#vnew .sv,#vnew .nslot",{y:10,opacity:0,stagger:.04,duration:.3})}
+function agendar(){var L=svcSel(),c=clientes().find(function(x){return x.key===NS.tel}),loc=c?locOfC(c):null;
+  var p={cli:NS.cli,tel:NS.tel,veh:vehTxt(),vt:NS.vt,svc:L.map(function(x){return x[1]}).join(" + "),items:L.map(function(x){return x[0]}),total:svcTotal(),desc:NS.desc||0,date:NS.date,time:NS.time,
+    zona:[NS.canton,NS.prov==="Otra"?"":NS.prov].filter(Boolean).join(", ")||NS.prov,dir:NS.dir,st:"Pendiente",src:NS.src||"",who:USER?USER.email:"",by:"app",at:Date.now()};
+  if(loc){p.lat=loc.lat;p.lng=loc.lng}
+  var done1=function(id){p.id=id;if(DEMO){DEMONEW.push(p);ALL=(ALL||[]).concat([p]);var mon=ymd(monday(parse(S.sel)));if(ymd(monday(parse(p.date)))===mon)S.week.push(p)}nOk(p,!!loc)};
+  if(DEMO||!DB){done1("n"+Date.now());return}
+  var ref=DB.collection(COL).doc();ref.set(p).catch(function(){toast("No se pudo guardar. Revisá la señal.")});done1(ref.id)}
+function nOk(p,loc){var el=$("okv"),d=parse(p.date),fecha=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()].toLowerCase();
+  var msg=tpl("confirmar",{nombre:first(p.cli),carro:p.veh,fecha:fecha,hora:h12ap(p.time),servicio:p.svc,total:crc(p.total)});
+  el.innerHTML='<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><circle id="okc" cx="48" cy="48" r="44" fill="none" stroke="#FF4D6D" stroke-width="4"/><path id="okp" d="M28 49l13 13 27-28" fill="none" stroke="#EDF1F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+  '<span class="q" style="font-size:28px">¡Agendada!</span><span class="m">'+esc(first(p.cli))+' · '+esc(fecha)+' · '+esc(h12ap(p.time))+'</span>'+
+  '<div class="nx"><a class="btn press" id="okwa" target="_blank" rel="noopener" href="'+esc(waUrl(p,msg))+'">'+IC.wa+' Mandar confirmación</a>'+
+  (loc?'':'<a class="btn alt press" target="_blank" rel="noopener" href="'+esc(waUrl(p,msgUbic(p)))+'">'+IC.pin2+' Pedir ubicación exacta</a>')+'</div>'+
+  '<button class="btn alt press" id="okb" style="width:100%;max-width:400px">Ver la ruta de ese día</button>';
+  el.classList.remove("hide");
+  if(!RM){var c=$("okc"),pth=$("okp"),lc=c.getTotalLength(),lp=pth.getTotalLength();gsap.fromTo(c,{strokeDasharray:lc,strokeDashoffset:lc},{strokeDashoffset:0,duration:.6,ease:"power2.out"});gsap.fromTo(pth,{strokeDasharray:lp,strokeDashoffset:lp},{strokeDashoffset:0,duration:.4,delay:.45});gsap.from("#okv .q,#okv .m,#okv .nx,#okb",{y:16,opacity:0,stagger:.08,delay:.6})}
+  $("okb").onclick=function(){el.classList.add("hide");NS=null;history.replaceState({v:"ruta"},"");goView("ruta",null,false);if(p.date!==S.sel)pick(p.date);else renderAll(true)}}
+
+
 /* VISTAS */
 var CUR=null,VIEW="ruta",TICK=null;
 function goView(v,id,push){VIEW=v;if(id)CUR=id;
-  var map={par:"vpar",cob:"vcob",cli:"vcli",fic:"vfic",num:"vnum",pen:"vpen",ins:"vins",mes:"vmes",mas:"vmas",msg:"vmsg"};
+  var map={par:"vpar",cob:"vcob",cli:"vcli",fic:"vfic",num:"vnum",pen:"vpen",ins:"vins",mes:"vmes",mas:"vmas",msg:"vmsg",new:"vnew"};
   Object.keys(map).forEach(function(k){$(map[k]).classList.toggle("hide",k!==v)});
   $("island").classList.toggle("hide",!(v==="ruta"||v==="cli"||v==="num"||v==="pen")||$("app").classList.contains("hide"));
   Array.prototype.forEach.call($("island").querySelectorAll("[data-nav]"),function(b){b.classList.toggle("on",b.dataset.nav===v)});
@@ -519,6 +668,7 @@ function goView(v,id,push){VIEW=v;if(id)CUR=id;
   else if(v==="mes"){rainDays();renderMes();if(!RM)gsap.fromTo("#vmes .ctop",{y:-60,opacity:0},{y:0,opacity:1,duration:.4,ease:"power3.out"});loadAll().then(function(){if(VIEW==="mes")renderMes()})}
   else if(v==="mas"){renderMas();slideIn("vmas")}
   else if(v==="msg"){renderMsg();slideIn("vmsg")}
+  else if(v==="new"){renderNew();slideIn("vnew")}
   else if(v==="num"){renderNum();slideIn("vnum");loadAll().then(function(){if(VIEW==="num")renderNum()})}
   else renderAll(false)}
 function slideIn(k){$(k).scrollTop=0;if(!RM)gsap.fromTo("#"+k,{x:60,opacity:0},{x:0,opacity:1,duration:.35,ease:"power3.out"})}
@@ -631,7 +781,7 @@ var ALL=null,CF="todos",CQ="";
 var AVC=["#7F011F","#5A2A6E","#1F4E79","#2E6B4F","#8A5A1F","#6B2737"];
 function addMonths(ymdS,n){var d=parse(ymdS);d.setMonth(d.getMonth()+n);return d}
 function fmtD(d){return d.getDate()+" "+MESES[d.getMonth()].slice(0,3).toLowerCase()+" "+d.getFullYear()}
-function loadAll(){if(DEMO){ALL=demoData().concat(demoHist(),demoMore());return Promise.resolve()}
+function loadAll(){if(DEMO){ALL=demoData().concat(demoHist(),demoMore(),DEMONEW);return Promise.resolve()}
   return DB.collection(COL).orderBy("date","desc").limit(2000).get().then(function(sn){ALL=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}).catch(function(){ALL=ALL||S.week.slice()})}
 function allP(){var m={};(ALL||[]).forEach(function(p){m[p.id]=p});S.week.forEach(function(p){m[p.id]=p});return Object.keys(m).map(function(k){return m[k]})}
 function zonaDe(p){var z=String(p.zona||p.dir||"").split(",").map(function(x){return x.trim()}).filter(Boolean);return z.length?z[z.length-1]:"Sin zona"}
@@ -723,9 +873,9 @@ function renderFic(){var el=$("vfic"),c=clientes().find(function(x){return x.key
     if(car.rep)rep='<div class="note" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--c)">'+IC.repeat+' Le toca repetir en '+MESES[car.rep.getMonth()].toLowerCase()+' '+car.rep.getFullYear()+'</div>'}
   var h='<button class="back press" id="fback" aria-label="Volver a clientes" style="position:fixed;left:16px;top:calc(16px + var(--safe-t));z-index:9;width:48px;height:48px;border-radius:24px;background:rgba(20,6,9,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)">'+IC.back+'</button><div class="vin">'+
   '<div class="hero">'+(img?'<img src="'+esc(img)+'" alt="">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:.4;transform:scale(2.2)">'+IC.car+'</div>')+'<span class="fd"></span><div class="tx"><span class="q" style="font-size:30px;line-height:1.1">'+esc(car.veh||"Vehículo")+'</span><span class="m" style="font-size:13px">'+esc(c.cli)+(c.zona!=="Sin zona"?" · "+esc(c.zona):"")+'</span></div></div>'+
-  '<div class="chips">'+c.cars.map(function(x){return '<button class="press'+(x.key===car.key?" on":"")+'" data-car="'+esc(x.key)+'">'+esc(x.veh||"Sin carro")+'</button>'}).join("")+'<button class="press" data-soon="Agendar otro carro">+ Otro carro</button></div>'+
+  '<div class="chips">'+c.cars.map(function(x){return '<button class="press'+(x.key===car.key?" on":"")+'" data-car="'+esc(x.key)+'">'+esc(x.veh||"Sin carro")+'</button>'}).join("")+'<button class="press" data-nag="">+ Otro carro</button></div>'+
   '<div class="acts3">'+(c.tel?'<a class="pri press" href="'+esc(waUrl(c,"¡Hola, "+first(c.cli)+"! Le saluda GlassDetailingCR."))+'" target="_blank" rel="noopener">'+IC.wa+' WhatsApp</a>':'')+
-  (loc?'<a class="press" href="'+esc(wazeUrl(loc))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a>':'')+'<button class="press" data-soon="Agendar">'+IC.plus+' Agendar</button></div>'+
+  (loc?'<a class="press" href="'+esc(wazeUrl(loc))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a>':'')+'<button class="press" data-nag="'+esc(car.key)+'">'+IC.plus+' Agendar</button></div>'+
   '<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--c)"><span style="display:flex;flex-direction:column;gap:2px"><span class="q" style="font-size:19px">'+crc(c.gastado)+'</span><span class="m" style="font-size:12px">'+c.hechas.length+' visita'+(c.hechas.length===1?"":"s")+' · cliente desde '+MESES[parse(c.desde).getMonth()].toLowerCase()+' '+parse(c.desde).getFullYear()+'</span></span>'+(c.frec?'<span style="height:28px;padding:0 10px;border-radius:14px;background:var(--w);display:flex;align-items:center;font-size:12px">★ Frecuente</span>':'')+'</div>'+
   '<div class="sec"><div class="sech"><b>Notas de la casa</b>'+(NEDIT?'':'<button class="m press" id="nedit" style="font-size:13px;min-height:44px;padding:0 4px">'+(c.info.notas?"Editar":"Agregar")+'</button>')+'</div>'+
   (NEDIT?'<textarea id="ntxt" rows="3" maxlength="400" placeholder="Portón negro, hay perro, parquear en la acera, prefiere SINPE…" style="width:100%;border-radius:14px;border:1px solid var(--r);background:var(--s1);color:var(--c);font:inherit;font-size:16px;padding:12px;resize:vertical">'+esc(c.info.notas||"")+'</textarea><div style="display:flex;gap:8px"><button class="btn alt press" style="flex:1" id="ncan">Cancelar</button><button class="btn press" style="flex:1" id="nok">Guardar</button></div>'
@@ -737,6 +887,7 @@ function renderFic(){var el=$("vfic"),c=clientes().find(function(x){return x.key
     return '<button class="vis press" data-pid="'+esc(p.id)+'"><i></i><span style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-size:14px">'+esc(p.svc||"Servicio")+'</span><span class="m" style="font-size:12px">'+esc(fmtD(parse(p.date)))+' · '+esc(p.st==="Pagada"?(p.pm||"Pagada"):(p.st||"Pendiente"))+' · '+crc(p.total)+'</span>'+
     ((a||d)?'<span style="display:flex;gap:4px">'+(a?'<img src="'+esc(a)+'" alt="Antes">':'')+(d?'<img src="'+esc(d)+'" alt="Después">':'')+'</span>':'')+'</span></button>'}).join("")+'</div></div>';
   el.innerHTML=h;$("fback").onclick=function(){NEDIT=false;back()};bindSoon(el);
+  Array.prototype.forEach.call(el.querySelectorAll("[data-nag]"),function(b){b.onclick=function(){openNew({ckey:c.key,car:b.dataset.nag||null})}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-car]"),function(b){b.onclick=function(){FCAR=b.dataset.car;renderFic()}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-pid]"),function(b){b.onclick=function(){goView("par",b.dataset.pid,true)}});
   if($("nedit"))$("nedit").onclick=function(){NEDIT=true;renderFic();var t=$("ntxt");t.focus()};
@@ -934,11 +1085,13 @@ function renderMday(){var el=$("mday");if(!el)return;var k=MSEL||(MREF?null:S.se
   (FERIADOS[k]?'<span style="font-size:12px;color:#F2C14E">Feriado · '+esc(FERIADOS[k])+'</span>':'')+
   (dayBlocked(k)?'<span style="font-size:12px;color:var(--r)">Día bloqueado · nadie puede reservar</span>':'')+
   rows.map(function(r){var bl=hourBlocked(k,r.t);return r.free?(k>=ymd(new Date())&&!dayBlocked(k)?'<button class="slot press" data-bh="'+r.t+'"><span>'+hora12(r.t)+'</span><i class="fr"'+(bl?' style="border-style:solid;border-color:var(--r);background:var(--r)"':'')+'></i><span class="m" style="flex:1;text-align:left">'+(bl?"Bloqueada":"Libre")+'</span><span class="m" style="font-size:11px">'+(bl?"desbloquear":"bloquear")+'</span></button>':'<div class="slot"><span>'+hora12(r.t)+'</span><i class="fr"></i><span class="m">'+(dayBlocked(k)?"Bloqueado":"Libre")+'</span></div>'):'<button class="slot press" data-mp="'+esc(r.p.id)+'"><span>'+hora12(r.t)+'</span><i style="background:'+(done(r.p)?"var(--c)":"var(--r)")+'"></i><span style="flex:1;text-align:left">'+esc(first(r.p.cli))+' · '+esc(r.p.veh||"")+'</span><span class="m">'+esc(r.p.svc||"")+'</span></button>'}).join("")+
-  '<div style="display:flex;gap:8px;margin-top:6px"><button class="btn press" style="flex:1;height:48px;font-size:13px" id="mruta">'+IC.pin2+' Ver la ruta</button>'+(libres.length&&k>=ymd(new Date())?'<button class="btn alt press" style="flex:1.2;height:48px;font-size:13px" id="mllenar">'+IC.wa+' Llenar huecos</button>':'')+'</div>'+
+  (libres.length&&k>=ymd(new Date())?'<button class="btn press" id="magen" style="height:48px;font-size:14px;margin-top:6px">'+IC.plus+' Agendar aquí</button>':'')+
+  '<div style="display:flex;gap:8px;margin-top:6px"><button class="btn alt press" style="flex:1;height:48px;font-size:13px" id="mruta">'+IC.pin2+' Ver la ruta</button>'+(libres.length&&k>=ymd(new Date())?'<button class="btn alt press" style="flex:1.2;height:48px;font-size:13px" id="mllenar">'+IC.wa+' Llenar huecos</button>':'')+'</div>'+
   (k>=ymd(new Date())?'<button class="m press" id="mblk" style="font-size:13px;min-height:44px">'+(dayBlocked(k)?"Desbloquear este día":"Bloquear este día (vacaciones, día libre)")+'</button>':'')+'</div>';
   el.innerHTML=h;
   Array.prototype.forEach.call(el.querySelectorAll("[data-mp]"),function(b){b.onclick=function(){goView("par",b.dataset.mp,true)}});
   if($("mblk"))$("mblk").onclick=function(){toggleDay(k)};
+  if($("magen"))$("magen").onclick=function(){openNew({date:k})};
   Array.prototype.forEach.call(el.querySelectorAll("[data-bh]"),function(b){b.onclick=function(){toggleHour(k,b.dataset.bh)}});
   $("mruta").onclick=function(){var dd=k;history.back();setTimeout(function(){pick(dd)},50)};
   if($("mllenar"))$("mllenar").onclick=function(){var L=clientes().filter(function(c){return c.tag==="rep"&&c.tel}),hs=libres.map(function(s){return hora12(s)+(+s.slice(0,2)<12?" a. m.":" p. m.")}).join(", ");
@@ -1000,6 +1153,8 @@ var DEFMSG={
  garantia:"¡Hola, {nombre}! Le saluda GlassDetailingCR. Le recordamos que la garantía de {servicio} de su {carro} vence el {fecha}. Si nota cualquier detalle, con gusto lo revisamos sin costo antes de esa fecha."};
 var MSGN={camino:"Vamos en camino",llegamos:"Llegamos",cobro:"Cobro",recordar:"Recordatorio de mañana",resena:"Pedir reseña",repetir:"Toca repetir",garantia:"Garantía por vencer"};
 var MSGV={camino:"{nombre} {carro} {minutos}",llegamos:"{nombre} {carro}",cobro:"{nombre} {carro} {total} {sinpe} {titular} {garantia}",recordar:"{nombre} {carro} {hora}",resena:"{nombre} {carro} {resena}",repetir:"{nombre} {carro} {servicio} {reservas}",garantia:"{nombre} {carro} {servicio} {fecha}"};
+DEFMSG.confirmar="¡Hola, {nombre}! Le saluda GlassDetailingCR. Su cita quedó agendada para el {fecha} a las {hora} para su {carro}: {servicio}. Total: {total}. Le agradecemos tener un tomacorriente de 110 V cerca y, de preferencia, el carro bajo techo. ¡Nos vemos!";
+MSGN.confirmar="Confirmación de cita";MSGV.confirmar="{nombre} {carro} {fecha} {hora} {servicio} {total}";
 function tpl(k,v){return String(MSGS[k]||DEFMSG[k]).replace(/\{(\w+)\}/g,function(m,x){return v[x]!=null?v[x]:""})}
 function listenMsg(){if(DEMO)return;if(UNMSG)UNMSG();UNMSG=DB.collection("r_config").doc("mensajes").onSnapshot(function(d){MSGS=d.exists?d.data():{};refresh()},function(){})}
 function h12ap(t){return hora12(t)+(+String(t).slice(0,2)<12?" a. m.":" p. m.")}
@@ -1092,7 +1247,7 @@ function demoHist(){var t=new Date(),d=function(m,dd){var x=new Date(t);x.setMon
 $("mes").onclick=function(){MREF=null;MSEL=S.sel;goView("mes",null,true)};
 $("me").onclick=function(){goView("mas",null,true)};
 $("sheet").onclick=function(e){if(e.target===$("sheet"))$("sheet").classList.add("hide")};
-bindSoon($("island"));
+bindSoon($("island"));$("nadd").onclick=function(){openNew({date:S.sel})};
 $("island").querySelector('[data-nav="ruta"]').onclick=function(){if(VIEW!=="ruta")history.back()};
 ["cli","num","pen"].forEach(function(v){$("island").querySelector('[data-nav="'+v+'"]').onclick=function(){if(VIEW===v)return;if(VIEW==="ruta")goView(v,null,true);else{history.replaceState({v:v},"");goView(v,null,false)}}});
 
@@ -1106,7 +1261,7 @@ function listenCli(){if(DEMO){CDATA={"88880002":{notas:"Portón negro, tocar dos
   if(UNCLI)UNCLI();UNCLI=DB.collection("r_clientes").onSnapshot(function(sn){var m={};sn.docs.forEach(function(d){m[d.id]=d.data()});CDATA=m;refresh()},function(){})}
 var BDDONE=false;
 function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
-  if(DEMO){S.week=demoData().filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);if(!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}return}
+  if(DEMO){S.week=demoData().concat(DEMONEW).filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);if(!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}return}
   if(UNSUB)UNSUB();var firstSnap=true;
   UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
     S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});dayFromWeek();renderWeek();renderAll(firstSnap);if(firstSnap&&!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}firstSnap=false},
