@@ -313,6 +313,12 @@ svg{display:block}
 .leaflet-container{background:#121318;font-family:inherit}
 .leaflet-control-attribution{background:rgba(14,15,18,.75)!important;color:var(--m)!important;font-size:9px!important;border-radius:6px 0 0 0}
 .leaflet-control-attribution a{color:var(--c)!important}
+#zbtn{position:absolute;right:12px;bottom:calc(44% + 16px);z-index:3;height:36px;padding:0 12px;border-radius:18px;background:rgba(23,24,29,.94);border:1px solid var(--ln);color:var(--c);font-size:12px;display:flex;align-items:center;gap:6px}
+#zbtn.on{background:var(--w);border-color:var(--w)}
+body.mday #map,body.mday .leaflet-container{background:#e9e7e3}
+.ztip{background:rgba(14,15,18,.9);color:var(--c);border:0;border-radius:8px;font:11px "Roboto Slab",serif;box-shadow:none}
+.ztip:before{display:none}
+.zbar{display:block;height:5px;border-radius:3px;background:var(--s2);overflow:hidden}.zbar i{display:block;height:100%;background:var(--r)}
 </style>
 </head>
 <body>
@@ -336,6 +342,7 @@ Entrar con Google</button>
 
 <section id="app" class="hide">
 <div id="map" aria-label="Mapa de las paradas del día"></div>
+<button id="zbtn" class="press" aria-pressed="false" aria-label="Ver las zonas donde más trabajan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="10" r="5"/><circle cx="16" cy="15" r="4"/></svg> Zonas</button>
 <div id="top">
 <div class="toprow">
 <span style="display:flex;align-items:center;gap:6px"><button id="dprev" class="rb press" aria-label="Día anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><button id="mes" class="press" aria-label="Abrir el calendario"><span id="mesl"></span></button><button id="dnext" class="rb press" aria-label="Día siguiente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></span>
@@ -882,15 +889,37 @@ function hhmm(m){m=Math.max(0,m);return (Math.floor(m/60)%12||12)+":"+pad(m%60)}
 var MAP=null,MLAY=null,TILE=null,MEPOS=null,MEMK=null;
 /* llave gratis de CARTO (uso comercial hasta 1 millón de pedidos al mes); solo funciona en jersan06500-svg.github.io */
 var CARTO_KEY="cb1_59tp_1_f72766babebcb9c5303bc6e9";
-function tileUrl(){return "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key="+encodeURIComponent(AJ.carto||CARTO_KEY)}
+/* de día (6 a. m. a 6 p. m.) el mapa claro se lee mejor con sol; de noche, el oscuro */
+function mapDay(){var h=new Date().getHours();return h>=6&&h<18}
+function tileUrl(){return "https://basemaps.cartocdn.com/rastertiles/"+(mapDay()?"light_all":"dark_all")+"/{z}/{x}/{y}{r}.png?key="+encodeURIComponent(AJ.carto||CARTO_KEY)}
+var MAPDAY=null;function mapMode(){var d=mapDay();if(d===MAPDAY)return;MAPDAY=d;document.body.classList.toggle("mday",d);if(TILE)TILE.setUrl(tileUrl())}
+setInterval(mapMode,600000);
+/* ZONAS DONDE MÁS TRABAJAN: círculos por cantón, más grandes y más rojos donde hay más trabajos */
+var ZLAY=null,ZON=false;
+function zonasData(){var m={};allP().forEach(function(p){var z=String(p.zona||"").split(",")[0].trim(),pt=ptOf(p);
+    if(!pt&&z){var pl=PL.find(function(x){return nrm(x[0].replace(/ centro$/,""))===nrm(z)});if(pl)pt={lat:pl[1],lng:pl[2]}}
+    if(!pt)return;var k=z||"Sin zona",o=m[k]=m[k]||{n:k,c:0,lat:0,lng:0,tot:0};o.c++;o.lat+=pt.lat;o.lng+=pt.lng;if(p.st==="Pagada")o.tot+=p.total||0});
+  return Object.keys(m).map(function(k){var o=m[k];o.lat/=o.c;o.lng/=o.c;return o}).sort(function(a,b){return b.c-a.c})}
+function zonas(on){ZON=on;$("zbtn").classList.toggle("on",on);if(ZLAY){MAP.removeLayer(ZLAY);ZLAY=null}
+  if(!on){MLAY.addTo(MAP);renderRoad(false);return}
+  loadAll().then(function(){if(!ZON)return;var Z=zonasData();if(!Z.length){toast("Todavía no hay trabajos con zona o ubicación");zonas(false);return}
+    MAP.removeLayer(MLAY);ZLAY=L.layerGroup().addTo(MAP);var mx=Z[0].c,pts=[];
+    Z.forEach(function(z,i){var f=z.c/mx;pts.push([z.lat,z.lng]);
+      L.circle([z.lat,z.lng],{radius:600+1800*Math.sqrt(f),color:"#9B0A2C",weight:1,fillColor:"#FF5A5F",fillOpacity:.12+.4*f,interactive:true}).bindTooltip(esc(z.n)+" · "+z.c+" trabajo"+(z.c===1?"":"s")+(z.tot?" · "+crc(z.tot):""),{direction:"top",className:"ztip"}).addTo(ZLAY)});
+    MAP.fitBounds(pts,{padding:[50,50],paddingTopLeft:[50,130],maxZoom:13,animate:!RM});
+    var tc=Z.reduce(function(a,z){return a+z.c},0),h='<div class="rsh"><span class="q" style="font-size:18px">Dónde más trabajan</span><span class="m" style="font-size:12px">'+tc+' trabajos</span></div>';
+    Z.slice(0,10).forEach(function(z,i){var pc=Math.round(z.c*100/tc);h+='<button class="row2 press" data-z="'+i+'" style="width:100%;text-align:left"><span class="num">'+(i+1)+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:14px">'+esc(z.n)+'</span><span class="zbar"><i style="width:'+Math.max(4,Math.round(z.c*100/mx))+'%"></i></span></span><span style="text-align:right;font-size:12px"><span class="q" style="font-size:16px">'+z.c+'</span><span class="m" style="display:block;font-size:10px">'+pc+' %'+(z.tot?' · '+crc(z.tot):'')+'</span></span></button>'});
+    $("road").innerHTML=h;
+    Array.prototype.forEach.call($("road").querySelectorAll("[data-z]"),function(b){b.onclick=function(){var z=Z[+b.dataset.z];MAP.setView([z.lat,z.lng],13,{animate:!RM});rsSet(false,true)}});
+    if(!RM)gsap.from("#road > *",{y:10,opacity:0,stagger:.03,duration:.3,ease:EO})})}
 function initMap(){if(MAP||typeof L==="undefined")return;
   MAP=L.map("map",{zoomControl:false,attributionControl:true}).setView([9.95,-84.1],11);
   TILE=L.tileLayer(tileUrl(),{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attribution/" target="_blank" rel="noopener">CARTO</a>'}).addTo(MAP);
-  MAP.attributionControl.setPrefix(false);
+  MAP.attributionControl.setPrefix(false);mapMode();
   MLAY=L.layerGroup().addTo(MAP);
   if(navigator.geolocation&&!DEMO)navigator.geolocation.watchPosition(function(g){MEPOS={lat:g.coords.latitude,lng:g.coords.longitude};
     if(!MEMK)MEMK=L.marker([MEPOS.lat,MEPOS.lng],{icon:L.divIcon({className:"",html:'<span class="me"></span>',iconSize:[18,18]}),interactive:false,zIndexOffset:1000}).addTo(MAP);else MEMK.setLatLng([MEPOS.lat,MEPOS.lng])},function(){},{enableHighAccuracy:true,maximumAge:30000})}
-function updateMap(list,nextIdx,isToday){if(!MAP)return;MLAY.clearLayers();var pts=[];
+function updateMap(list,nextIdx,isToday){if(!MAP||ZON)return;MLAY.clearLayers();var pts=[];
   list.forEach(function(p,i){var pt=ptOf(p);if(!pt)return;var ok=done(p),cf=p.st==="Por confirmar",nx=i===nextIdx,cls=ok?"ok":nx?"nx":cf?"cf":"pe",sz=nx?34:28;
     L.marker([pt.lat,pt.lng],{icon:L.divIcon({className:"",html:'<span class="mk '+cls+'">'+(ok?"✓":i+1)+'</span>',iconSize:[sz,sz]}),zIndexOffset:nx?500:0,title:hora12(p.time)+" · "+p.cli}).on("click",function(){openPar(p.id)}).addTo(MLAY);
     pts.push({ll:[pt.lat,pt.lng],ok:ok})});
@@ -1523,7 +1552,7 @@ function demoHist(){var t=new Date(),d=function(m,dd){var x=new Date(t);x.setMon
 (function(){var x0=null;$("week").addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
   $("week").addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;
     var d=addDays(parse(S.sel),dx<0?7:-7);S.sel=ymd(d);if(!RM)gsap.fromTo("#week",{x:dx<0?40:-40,opacity:0},{x:0,opacity:1,duration:.35});listen()},{passive:true})})();
-$("rvb").onclick=rvSheet;
+$("rvb").onclick=rvSheet;$("zbtn").onclick=function(){zonas(!ZON);this.setAttribute("aria-pressed",ZON);vib(8)};
 $("mes").onclick=function(){MREF=null;MSEL=S.sel;goView("mes",null,true)};
 $("dprev").onclick=function(){ROADDIR=-1;pick(ymd(addDays(parse(S.sel),-1)))};$("dnext").onclick=function(){ROADDIR=1;pick(ymd(addDays(parse(S.sel),1)))};
 $("me").onclick=function(){goView("mas",null,true)};
