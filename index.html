@@ -88,13 +88,18 @@ svg{display:block}
 .llegue{height:44px;border-radius:14px;border:1px solid rgba(237,241,245,.35);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
 .empty{position:absolute;left:104px;right:12px;padding:8px 8px 8px 16px;border-radius:18px;background:var(--s1);border:1px dashed var(--ln);display:flex;align-items:center;gap:10px}
 
-#island{position:fixed;left:50%;bottom:calc(22px + var(--safe-b));transform:translateX(-50%);height:62px;padding:0 8px;border-radius:31px;background:rgba(23,24,29,.94);border:1px solid var(--ln);display:flex;align-items:center;gap:6px;z-index:10;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-#island button{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;color:var(--m)}
-#island .on{color:var(--w)}
-#island button{position:relative;z-index:1;transition:color .2s ease}
-#ipill{position:absolute;left:0;top:7px;width:48px;height:48px;border-radius:24px;background:var(--c);opacity:0;pointer-events:none}
-#island{position:fixed}
-#island .add{background:var(--w);color:var(--c)}
+#island{position:fixed;left:0;right:0;bottom:calc(22px + var(--safe-b));display:flex;flex-direction:column;align-items:center;gap:12px;z-index:10;pointer-events:none}
+#island>*{pointer-events:auto}
+#ibtn{width:62px;height:62px;border-radius:31px;background:rgba(23,24,29,.94);color:var(--c);display:grid;place-items:center;position:relative;border:1px solid #3A3D47;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+#ibtn svg{transition:transform .25s cubic-bezier(.23,1,.32,1)}#island.open #ibtn svg{transform:rotate(45deg)}
+#imenu{width:min(360px,calc(100vw - 32px));padding:10px;border-radius:28px;background:rgba(23,24,29,.97);border:1px solid var(--ln);display:flex;flex-direction:column;gap:8px;transform-origin:50% 100%;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#imenu.hide{display:none}
+#nadd{height:54px;border-radius:20px;background:var(--w);color:var(--c);display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px}
+.igrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.igrid button{height:64px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--m);font-size:11px;transition:background .2s ease,color .2s ease}
+.igrid button.on{background:var(--s2,#22242B);color:var(--c)}
+#ibtn .pd{top:0;right:0}
+#iback{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9}#iback.hide{display:none}
 
 #toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,20px);opacity:0;z-index:20;max-width:86%;padding:12px 18px;border-radius:16px;background:var(--c);color:var(--bg);font-size:14px;text-align:center;pointer-events:none}
 #sheet{position:fixed;inset:0;z-index:15;display:flex;align-items:flex-end;background:rgba(0,0,0,.5)}
@@ -220,7 +225,7 @@ svg{display:block}
 .pi{width:42px;height:42px;border-radius:14px;background:var(--s2);display:flex;align-items:center;justify-content:center;flex:none}
 .pb{height:40px;padding:0 12px;border-radius:12px;background:var(--s2);border:1px solid var(--ln);font-size:12px;white-space:nowrap;display:flex;align-items:center}
 .pb.pri{background:var(--w);border-color:var(--w)}
-#island .pd{position:absolute;top:4px;right:4px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--r);color:var(--bg);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+#island .pd{position:absolute;top:2px;right:10px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--r);color:var(--bg);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
 .tanks{display:flex;gap:6px}
 .tank{flex:1;padding:12px 6px;border-radius:18px;background:var(--s1);border:1px solid var(--ln);display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;text-align:center}
 .tank.low{border-color:var(--r)}
@@ -360,15 +365,8 @@ Entrar con Google</button>
 <div id="rs"><div id="rsg" role="button" tabindex="0" aria-label="Subir o bajar la lista de paradas"><i></i></div><div id="scroll"><div id="road"></div></div></div>
 </section>
 
-<nav id="island" class="hide" aria-label="Secciones">
-<span id="ipill" aria-hidden="true"></span>
-<button class="on" data-nav="ruta" aria-label="Ruta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></button>
-<button data-nav="mes" aria-label="Agenda"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></button>
-<button class="add" id="nadd" aria-label="Agendar parada"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-<button data-nav="cli" aria-label="Clientes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .7 3.2 2.6 3.6 5.4"/></svg></button>
-<button data-nav="num" aria-label="Números"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></button>
-<button data-nav="pen" aria-label="Pendientes" style="position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></button>
-</nav>
+<div id="iback" class="hide"></div>
+<nav id="island" class="hide" aria-label="Secciones"><div id="imenu" class="hide" role="menu"><button id="nadd" class="press"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Agendar parada</button><div class="igrid"><button class="on" data-nav="ruta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Ruta</span></button><button data-nav="mes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Agenda</span></button><button data-nav="cli"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .7 3.2 2.6 3.6 5.4"/></svg><span>Clientes</span></button><button data-nav="num"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Números</span></button><button data-nav="pen" style="position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span>Pendientes</span></button></div></div><button id="ibtn" class="press" aria-label="Abrir menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="pd" id="ibd" style="display:none"></span></button></nav>
 <section id="vpar" class="view hide" aria-label="Parada en curso"></section>
 <section id="vcob" class="view hide" aria-label="Cobrar"></section>
 <section id="vcli" class="view hide" aria-label="Clientes"></section>
@@ -474,6 +472,12 @@ function hideSheet(){var sh=$("sheet"),inn=sh.querySelector(".in");if(sh.classLi
     if(dy>110||v>.5){gsap.set(inn,{y:0});gsap.set(inn,{yPercent:dy/inn.offsetHeight*100});hideSheet()}else gsap.to(inn,{y:0,duration:.3,ease:EO})};
   inn.addEventListener("pointerup",end);inn.addEventListener("pointercancel",end)})();
 /* pastilla que se desliza a la sección activa de la isla */
+/* MENÚ FLOTANTE: un solo botón + que abre las secciones; se cierra tocando afuera, la ×, una opción o deslizando hacia abajo */
+var IMOPEN=false;
+function imSet(open,quick){if(open===IMOPEN)return;IMOPEN=open;var m=$("imenu"),bk=$("iback"),isl=$("island");isl.classList.toggle("open",open);$("ibtn").setAttribute("aria-expanded",open);$("ibtn").setAttribute("aria-label",open?"Cerrar menú":"Abrir menú");gsap.killTweensOf([m,bk]);
+  if(open){m.classList.remove("hide");bk.classList.remove("hide");vib(8);if(!RM){gsap.fromTo(bk,{opacity:0},{opacity:1,duration:.25});gsap.fromTo(m,{opacity:0,y:14,scale:.96},{opacity:1,y:0,scale:1,duration:.32,ease:EO});gsap.from("#imenu .igrid button",{y:8,opacity:0,stagger:.025,duration:.28,ease:EO,delay:.04})}return}
+  var end=function(){m.classList.add("hide");bk.classList.add("hide");gsap.set([m,bk],{clearProps:"all"})};
+  if(RM||quick){end();return}gsap.to(bk,{opacity:0,duration:.18});gsap.to(m,{opacity:0,y:10,scale:.97,duration:.18,ease:"power2.in",onComplete:end})}
 function pillTo(v){var isl=$("island"),pill=$("ipill"),b=isl.querySelector('[data-nav="'+v+'"]');if(!pill)return;
   if(!b){gsap.to(pill,{opacity:0,duration:.15});return}
   var x=b.offsetLeft;if(pill.style.opacity==="0"||!pill.dataset.on||RM){gsap.set(pill,{x:x,opacity:1});pill.dataset.on=1;return}
@@ -568,7 +572,7 @@ function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[dat
 function save(p,data){Object.keys(data).forEach(function(k){p[k]=data[k]});syncBack(p,data);if(DEMO||!DB){refresh();return}
   DB.collection(COL).doc(p.id).set(data,{merge:true}).catch(function(){toast("No se pudo guardar. Revisá la señal.")})}
 function refresh(){if(!$("app").classList.contains("hide"))renderAll(false);if(!$("vpar").classList.contains("hide"))renderPar();if(!$("vcob").classList.contains("hide"))renderCob();if(!$("vcli").classList.contains("hide"))renderCli();if(!$("vfic").classList.contains("hide"))renderFic();if(!$("vnum").classList.contains("hide"))renderNum();if(!$("vpen").classList.contains("hide"))renderPen();if(!$("vins").classList.contains("hide"))renderIns();if(!$("vmes").classList.contains("hide"))renderMes();if(!$("vmas").classList.contains("hide"))renderMas();penDot()}
-function penDot(){var b=$("island").querySelector('[data-nav="pen"]');if(!b)return;var n=0;try{var sz=snz(),h0=ymd(new Date());n=pendientes().filter(function(x){var u=sz[pkey(x)];return !u||u<=h0}).length}catch(e){}var dot=b.querySelector(".pd");if(!dot){dot=document.createElement("span");dot.className="pd";b.appendChild(dot)}dot.textContent=n||"";dot.style.display=n?"":"none"}
+function penDot(){var b=$("island").querySelector('[data-nav="pen"]');if(!b)return;var n=0;try{var sz=snz(),h0=ymd(new Date());n=pendientes().filter(function(x){var u=sz[pkey(x)];return !u||u<=h0}).length}catch(e){}var dot=b.querySelector(".pd");if(!dot){dot=document.createElement("span");dot.className="pd";b.appendChild(dot)}dot.textContent=n||"";dot.style.display=n?"":"none";var ib=$("ibd");if(ib){ib.textContent=n||"";ib.style.display=n?"":"none"}}
 
 /* ANIMACIONES */
 function animIn(){if(RM)return;var rd=ROADDIR;ROADDIR=0;gsap.from("#road > *",{x:rd*24,y:rd?0:10,opacity:0,duration:.32,ease:EO,stagger:.035})}
@@ -1024,7 +1028,7 @@ var CUR=null,VIEW="ruta",TICK=null;
 function goView(v,id,push){if(VIEW==="run"&&v!=="run")wakeOff();VIEW=v;if(id)CUR=id;
   var map={par:"vpar",cob:"vcob",cli:"vcli",fic:"vfic",num:"vnum",pen:"vpen",ins:"vins",mes:"vmes",mas:"vmas",msg:"vmsg",new:"vnew",run:"vrun"};
   Object.keys(map).forEach(function(k){$(map[k]).classList.toggle("hide",k!==v)});
-  $("island").classList.toggle("hide",!(v==="ruta"||v==="cli"||v==="num"||v==="pen"||v==="mes")||$("app").classList.contains("hide"));
+  imSet(false,true);$("island").classList.toggle("hide",!(v==="ruta"||v==="cli"||v==="num"||v==="pen"||v==="mes")||$("app").classList.contains("hide"));
   Array.prototype.forEach.call($("island").querySelectorAll("[data-nav]"),function(b){b.classList.toggle("on",b.dataset.nav===v)});pillTo(v);
   if(push)history.pushState({v:v,id:CUR},"");
   clearInterval(TICK);
@@ -1629,7 +1633,11 @@ $("mes").onclick=function(){MREF=null;MSEL=S.sel;goView("mes",null,true)};
 $("dprev").onclick=function(){ROADDIR=-1;pick(ymd(addDays(parse(S.sel),-1)))};$("dnext").onclick=function(){ROADDIR=1;pick(ymd(addDays(parse(S.sel),1)))};
 $("me").onclick=function(){goView("mas",null,true)};
 $("sheet").onclick=function(e){if(e.target===$("sheet"))hideSheet()};
-bindSoon($("island"));$("nadd").onclick=function(){openNew({date:S.sel})};
+bindSoon($("island"));$("nadd").onclick=function(){imSet(false,true);openNew({date:S.sel})};
+$("ibtn").onclick=function(){imSet(!IMOPEN)};$("iback").onclick=function(){imSet(false)};
+$("imenu").addEventListener("click",function(e){if(e.target.closest("[data-nav]"))imSet(false)},true);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&IMOPEN)imSet(false)});
+(function(){var y0=null;$("imenu").addEventListener("touchstart",function(e){y0=e.touches[0].clientY},{passive:true});$("imenu").addEventListener("touchend",function(e){if(y0!=null&&e.changedTouches[0].clientY-y0>40)imSet(false);y0=null},{passive:true})})();
 $("island").querySelector('[data-nav="ruta"]').onclick=function(){if(VIEW!=="ruta")history.back()};
 ["cli","num","pen","mes"].forEach(function(v){$("island").querySelector('[data-nav="'+v+'"]').onclick=function(){if(VIEW===v)return;if(VIEW==="ruta")goView(v,null,true);else{history.replaceState({v:v},"");goView(v,null,false)}}});
 
