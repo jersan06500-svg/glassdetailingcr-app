@@ -271,9 +271,6 @@ svg{display:block}
 .sum{flex-wrap:wrap;row-gap:2px}
 .sum .big{font-size:20px}
 .meta{flex-direction:row;gap:8px;align-items:center}
-#island{left:auto;right:10px;transform:none;height:58px;padding:0 6px;gap:3px}
-#island button{width:44px;height:44px;border-radius:22px}
-#ipill{width:44px;height:44px;border-radius:22px;top:6px}
 /* TARJETA DE ARRIBA COMPACTA (15 nov, pedido del dueño: se veía muy grande en el iPhone 14 Pro) */
 #top{padding:8px 10px 10px;gap:6px;border-radius:22px;top:calc(8px + var(--safe-t))}
 .toprow{padding-left:2px}
@@ -289,6 +286,21 @@ svg{display:block}
 .sum .m{font-size:10px!important}
 .bar{height:4px;margin:0 2px}
 #demo,#net{padding:4px 10px;font-size:11px}
+#mgrid{overflow:hidden}
+.mgh{display:flex;justify-content:space-between;align-items:center}
+.mgh button{width:38px;height:38px;border-radius:19px;display:flex;align-items:center;justify-content:center;color:var(--m)}
+.mgg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.mgg .wd{text-align:center;font-size:9px;color:var(--m);padding:2px 0}
+.mgd{height:38px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mgd b{font-family:var(--q);font-weight:400;font-size:14px}
+.mgd.past{color:var(--d)}
+.mgd.hoy{box-shadow:inset 0 0 0 1.5px var(--ln)}
+.mgd.sel{background:var(--w)}
+.mgd.sel .dots i{background:var(--c)}
+.mgd.fer{box-shadow:inset 0 -2px 0 #F2C14E}
+.mgd.blk{background:repeating-linear-gradient(135deg,transparent 0 5px,rgba(255,77,109,.18) 5px 7px)}
+#mes svg{transition:transform .25s cubic-bezier(.23,1,.32,1)}
+#mes.open svg{transform:rotate(180deg)}
 #top{left:108px;right:10px}
 .bd{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;text-align:left}
 .bdr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);font-size:14px}
@@ -321,6 +333,7 @@ Entrar con Google</button>
 <span style="display:flex;gap:8px"><button id="rvb" class="press" aria-label="Enlace de reservas para mandar a un cliente"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></button><button id="me" class="press" aria-label="Perfil y salir"></button></span>
 </div>
 <div id="week" role="tablist" aria-label="Días de la semana"></div>
+<div id="mgrid" class="hide"></div>
 <div id="net" class="hide"></div>
 <div id="demo" class="hide">Datos de ejemplo · nada se guarda</div>
 <div class="sum">
@@ -875,6 +888,26 @@ function rvSheet(){var msg=tpl("reservas",{reservas:RESERVAS});
   showSheet();
   $("rvc").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(RESERVAS):Promise.reject()).then(function(){toast("Enlace copiado");vib(10)},function(){toast(RESERVAS)})};
   if($("rvs"))$("rvs").onclick=function(){navigator.share({title:"Agende con GlassDetailingCR",text:msg.replace(RESERVAS,"").trim(),url:RESERVAS}).catch(function(){})}}
+
+/* CALENDARIO QUE SE ABRE EN LA TARJETA: tocar el mes despliega el mes completo ahí mismo */
+var MGOPEN=false,MGREF=null;
+function renderMg(){var el=$("mgrid"),ref=MGREF||parse(S.sel),y=ref.getFullYear(),mo=ref.getMonth(),first=new Date(y,mo,1),off=(first.getDay()+6)%7,days=new Date(y,mo+1,0).getDate(),hoy=ymd(new Date()),cnt={},ing={};
+  allP().forEach(function(p){cnt[p.date]=(cnt[p.date]||0)+1;if(p.st==="Pagada")ing[p.date]=(ing[p.date]||0)+(p.total||0)});
+  var mt=0,mc=0;Object.keys(cnt).forEach(function(k){if(k.slice(0,7)===ymd(first).slice(0,7)){mc+=cnt[k];mt+=ing[k]||0}});
+  var h='<div class="mgh"><button class="press" id="mgp" aria-label="Mes anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><span class="m" style="font-size:12px">'+mc+' parada'+(mc===1?'':'s')+(mt?' · '+crc(mt)+' cobrado':'')+'</span><button class="press" id="mgn" aria-label="Mes siguiente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div><div class="mgg">'+
+  DIAS.map(function(d){return '<span class="wd">'+d+'</span>'}).join("");
+  for(var i=0;i<off;i++)h+='<span></span>';
+  for(var d=1;d<=days;d++){var k=ymd(new Date(y,mo,d)),n=cnt[k]||0,cls=(k===S.sel?" sel":"")+(k===hoy?" hoy":"")+(k<hoy?" past":"")+(FERIADOS[k]?" fer":"")+(dayBlocked(k)?" blk":"");
+    h+='<button class="mgd press'+cls+'" data-mg="'+k+'" aria-label="'+d+(n?", "+n+" parada"+(n===1?"":"s"):"")+'"><b>'+d+'</b><span class="dots">'+new Array(Math.min(n,3)+1).join("<i></i>")+'</span></button>'}
+  h+='</div><button class="m press" id="mgfull" style="min-height:40px;font-size:12px;width:100%">Ver el mes con detalles</button>';
+  el.innerHTML=h;
+  Array.prototype.forEach.call(el.querySelectorAll("[data-mg]"),function(b){b.onclick=function(){var k=b.dataset.mg;mgToggle(false);if(k!==S.sel)pick(k)}});
+  $("mgp").onclick=function(){MGREF=new Date(y,mo-1,1);renderMg()};$("mgn").onclick=function(){MGREF=new Date(y,mo+1,1);renderMg()};
+  $("mgfull").onclick=function(){mgToggle(false);MREF=null;MSEL=S.sel;goView("mes",null,true)}}
+function mgToggle(open){MGOPEN=open;var el=$("mgrid"),wk=$("week");$("mes").classList.toggle("open",open);$("mes").setAttribute("aria-expanded",open);
+  if(open){MGREF=null;renderMg();el.classList.remove("hide");wk.classList.add("hide");if(!RM)gsap.fromTo(el,{height:0,opacity:0},{height:"auto",opacity:1,duration:.32,ease:EO});loadAll().then(function(){if(MGOPEN)renderMg()})}
+  else{el.classList.add("hide");wk.classList.remove("hide");if(!RM)gsap.fromTo(wk,{opacity:0},{opacity:1,duration:.2})}
+  setTimeout(function(){renderRoad(false)},RM?0:340)}
 
 /* VISTAS */
 var CUR=null,VIEW="ruta",TICK=null;
@@ -1481,7 +1514,7 @@ function demoHist(){var t=new Date(),d=function(m,dd){var x=new Date(t);x.setMon
   $("week").addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;
     var d=addDays(parse(S.sel),dx<0?7:-7);S.sel=ymd(d);if(!RM)gsap.fromTo("#week",{x:dx<0?40:-40,opacity:0},{x:0,opacity:1,duration:.35});listen()},{passive:true})})();
 $("rvb").onclick=rvSheet;
-$("mes").onclick=function(){MREF=null;MSEL=S.sel;goView("mes",null,true)};
+$("mes").onclick=function(){mgToggle(!MGOPEN)};
 $("me").onclick=function(){goView("mas",null,true)};
 $("sheet").onclick=function(e){if(e.target===$("sheet"))hideSheet()};
 bindSoon($("island"));$("nadd").onclick=function(){openNew({date:S.sel})};
