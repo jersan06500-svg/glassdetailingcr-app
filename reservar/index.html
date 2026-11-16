@@ -15,8 +15,8 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0077B6">
-<link rel="icon" href="../icon-192.png">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" href="../icon-cristal-192.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon-cristal.png">
 <link rel="canonical" href="https://jersan06500-svg.github.io/glassdetailingcr-app/reservar/">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -490,7 +490,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function fmtH(h){return (h%12||12)+":00 "+(h<12?"am":"pm")}
 function pd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
 function niceDay(s){var d=pd(s),t=ymd(new Date()),m=ymd(new Date(Date.now()+864e5));return (s===t?"hoy, ":s===m?"mañana, ":"")+DN[d.getDay()]+" "+d.getDate()+" de "+MNL[d.getMonth()]}
-try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.offh&&typeof x.offh==="object")CFG.offh=x.offh;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed();landFree()}).catch(function(){landFree()})}catch(e){}
+try{firebase.initializeApp(FBC);DB=firebase.firestore();DB.doc("pub/cfg").get().then(function(d){if(d.exists){var x=d.data();if(x.wa)CFG.wa=String(x.wa).replace(/\D/g,"");if(x.open===false)CFG.open=false;if(Array.isArray(x.off))CFG.off=x.off;if(x.offh&&typeof x.offh==="object")CFG.offh=x.offh;if(typeof x.nt==="string")CFG.nt=x.nt;if(x.promo===false){PROMO.on=false;promoUI()}}if(!CFG.open)closed();landFree()}).catch(function(){landFree()})}catch(e){}
 function closed(){$("go").outerHTML='<a class="cta" href="https://wa.me/'+CFG.wa+'?text='+encodeURIComponent("Hola GlassDetailingCR, quiero agendar un pulido")+'">Escríbanos por WhatsApp para agendar</a>'}
 function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 
@@ -716,9 +716,11 @@ function submit(){var b=$("nx");if(b.disabled)return;err("");
     bt.set(DB.doc("jobs/"+sid),{id:id,cli:$("cli").value.trim().slice(0,60),tel:tel,veh:c.veh.slice(0,60),vt:c.vt,items:L.map(function(l){return l.n}),lines:L,disc:0,total:carTotal(c)+(k===0?feeAmt():0),date:S.day,time:pad(h0)+":00",note:note,ubic:ub.slice(0,300),src:$("src").value,st:"Por confirmar",by:"web",web:true,at:at,ck:ck});
     for(var q=0;q<DUR;q++)bt.set(DB.doc("slots/"+S.day+"_"+pad(h0+q)),{date:S.day,h:h0+q,job:sid,at:at})});
   bt.set(DB.doc("holds/"+tel),{job:ids[0],date:S.day,at:at});
-  bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
+  bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);aviso("Nueva reserva web",niceDay(S.day)+", "+fmtH(S.h)+" · "+A.map(function(c){return c.veh}).join(", ")+" · "+crc(total()));done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
       if(taken){S.h=null;show(3);err("Uy, alguien acaba de tomar esa hora. Elija otra, por favor.")}
       else err("Ya hay una cita pendiente con este número de WhatsApp. Si quiere cambiarla o agendar otro carro, escríbanos por WhatsApp.")})})}
+/* aviso al celular del equipo (ntfy); sin nombre ni teléfono del cliente */
+function aviso(t,m){if(!/^glassdetailingcr-[a-z0-9]{6,30}$/.test(CFG.nt||""))return;try{fetch("https://ntfy.sh/",{method:"POST",body:JSON.stringify({topic:CFG.nt,title:t,message:m,tags:["calendar"],click:"https://jersan06500-svg.github.io/glassdetailingcr-app/"})}).catch(function(){})}catch(e){}}
 function done(){px("Schedule",{value:total(),currency:"CRC",num_items:allCars().length});px("Lead",{value:total(),currency:"CRC"});var t=waText();$("cxl").href=CX.url||"#";$("cxl").parentNode.hidden=!CX.url;$("wa").href=waUrl(t);var A=allCars(),n=A.length;$("dt").innerHTML="<b>"+niceDay(S.day)+", "+fmtH(S.h)+"</b><br>"+(n>1?n+" carros: "+A.map(function(c){return esc(c.veh)}).join(", "):esc(A[0].veh))+" · "+crc(total());
   var d=pd(S.day),f=function(h){return S.day.replace(/-/g,"")+"T"+pad(h)+"0000"};
   $("cal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailingCR: pulido a domicilio")+"&dates="+f(S.h)+"/"+f(S.h+DUR*n)+"&details="+encodeURIComponent(A.map(function(c){return c.veh+": "+lines(c).map(function(l){return l.n}).join(" + ")}).join(" | ")+" · "+crc(total()))+"&location="+encodeURIComponent(mapLink()||$("addr").value.trim());
@@ -741,7 +743,7 @@ function cxRun(P,b){if(!DB){$("cxe").textContent="No hay conexión. Revise su in
   var why=$("cxw").value,bt=DB.batch();P.ids.forEach(function(id){bt.update(DB.doc("jobs/"+id),{st:"Cancelada",cxk:P.k,cxAt:Date.now(),cxWhy:why})});
   bt.commit().then(function(){var dels=[];P.ids.forEach(function(id,k){for(var q=0;q<DUR;q++)dels.push(DB.doc("slots/"+P.d+"_"+pad(P.h+DUR*k+q)).delete().catch(function(){}))});
       if(P.t)dels.push(DB.doc("holds/"+P.t).delete().catch(function(){}));
-      return Promise.all(dels)}).then(function(){
+      aviso("Cancelaron una cita",niceDay(P.d)+", "+fmtH(P.h));return Promise.all(dels)}).then(function(){
       $("cxc").innerHTML='<div class="check"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><h2>Su cita quedó cancelada</h2><p class="sub">Ya le avisamos al equipo. Cuando guste, agende otra.</p><a class="cta" href="./">Agendar otra cita</a><a class="lbtn" href="'+waUrl("Hola GlassDetailingCR 👋 Acabo de cancelar mi cita del "+niceDay(P.d)+". ")+'" target="_blank" rel="noopener">Escribirnos por WhatsApp</a><a class="lbtn" href="./">Volver al inicio</a>'},
     function(){b.disabled=false;b.textContent="Sí, cancelar mi cita";$("cxe").textContent="No pudimos cancelarla: puede que ya esté cancelada o que el enlace no sea el correcto. Escríbanos por WhatsApp y le ayudamos.";$("cxe").classList.add("on")})}
 $("cxcopy").onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(CX.url):Promise.reject()).then(function(){b.textContent="Enlace copiado ✓"},function(){b.textContent="Mantenga presionado “Cancelar mi cita” para copiarlo"})};

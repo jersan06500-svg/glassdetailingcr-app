@@ -538,6 +538,7 @@ var PROVS=["San José","Heredia","Alajuela","Cartago","Otra"];
 var FUENTES=["Instagram","Facebook","TikTok","WhatsApp","Referido","Google","Reservas web","Otro"];
 var VTN={sedan:"sedán",suv:"SUV",pickup:"pick-up"};
 var NS=null,NRENDER=false,DEMONEW=[];
+function demoMix(){var ids=DEMONEW.map(function(p){return p.id});return demoData().filter(function(p){return ids.indexOf(p.id)<0}).concat(DEMONEW)}
 function vtOf(mk,md){var x=nrm(mk+" "+md);if(nrm(md).length<2&&!/^ram$/.test(nrm(mk)))return "";if(rxHit(PICKRX,x))return "pickup";var su=rxHit(SUVRX,x),se=rxHit(SEDRX,x);return su&&!se?"suv":se&&!su?"sedan":""}
 function splitVeh(v){v=String(v||"").trim();var m=v.match(/\s(19|20)\d\d$/),yr=m?m[0].trim():"";if(yr)v=v.slice(0,-5).trim();
   var mk=Object.keys(MARCAS).sort(function(a,b){return b.length-a.length}).find(function(k){return nrm(v).indexOf(nrm(k))===0});
@@ -562,9 +563,9 @@ function pickSvc(k){var it=NS.items;it[k]=!it[k];
   if((k==="focos"||k==="par")&&it.focos&&it.par&&!it.all){it.focos=false;it.par=false;it.combo=true;toast("Focos + parabrisas = promo ₡30 000")}
   if(k==="all"&&it.all){if(it.par)it.par=false;if(it.combo){it.combo=false;it.focos=true}}
   if(k==="par"&&it.par&&it.all)it.all=false}
-function slotInfo(date){var ps=allP().filter(function(p){return p.date===date}),out={};
-  SLOTS.forEach(function(s){var sh=+s.slice(0,2),p=ps.find(function(x){var h=+String(x.time).slice(0,2);return h>=sh&&h<sh+2})||((SLOTB[date+"_"+pad(sh)]||SLOTB[date+"_"+pad(sh+1)])&&{cli:"Ocupada",veh:"en la app actual"});out[s]={busy:p||null,blk:hourBlocked(date,s)||dayBlocked(date),past:date===ymd(new Date())&&sh<=new Date().getHours()}});
-  var me=NS.known?locOfC(clientes().find(function(c){return c.key===NS.tel})||{ps:[],info:{}}):null;
+function slotInfo(date,skip){var ps=allP().filter(function(p){return p.date===date&&p.id!==skip}),out={};
+  SLOTS.forEach(function(s){var sh=+s.slice(0,2),p=ps.find(function(x){var h=+String(x.time).slice(0,2);return h>=sh&&h<sh+2})||([sh,sh+1].some(function(h){var j=SLOTB[date+"_"+pad(h)];return j&&j!==skip&&!allP().some(function(x){return x.id===j})})&&{cli:"Ocupada",veh:"por otra reserva"});out[s]={busy:p||null,blk:hourBlocked(date,s)||dayBlocked(date),past:date===ymd(new Date())&&sh<=new Date().getHours()}});
+  var me=NS&&NS.known&&!skip?locOfC(clientes().find(function(c){return c.key===NS.tel})||{ps:[],info:{}}):null;
   if(me){var best=null;SLOTS.forEach(function(s){var o=out[s];if(o.busy||o.blk||o.past)return;var sh=+s.slice(0,2),near=ps.filter(function(p){return p.lat!=null&&Math.abs(+String(p.time).slice(0,2)-sh)<=2});
       near.forEach(function(p){var d=haversine(me,p)*1.3;if(!best||d<best.d)best={s:s,d:d,n:first(p.cli)}})});
     if(best)out[best.s].sug="queda de camino · a "+Math.max(1,Math.round(best.d))+" km de "+best.n}
@@ -694,6 +695,62 @@ function loadSlots(){if(DEMO||!DB)return Promise.resolve();var a=ymd(new Date())
 function confirmar(p){var d=parse(p.date),fecha=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()].toLowerCase();
   return tpl("confirmar",{nombre:first(p.cli),carro:p.veh||"vehículo",fecha:fecha,hora:h12ap(p.time),servicio:p.svc||"",total:crc(p.total)})}
 
+/* MOVER O CANCELAR UNA PARADA */
+function slotDocs(p,fn){if(DEMO||!DB)return Promise.resolve();
+  return DB.collection("slots").where("job","==",p.id).get().then(function(sn){var bt=DB.batch();sn.forEach(function(d){bt.delete(d.ref)});if(fn)fn(bt);return bt.commit()}).catch(function(){})}
+function fechaTxt(k){var d=parse(k);return ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"][d.getDay()]+" "+d.getDate()+" de "+MESES[d.getMonth()].toLowerCase()}
+function parMenu(p){
+  $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:10px"><span class="q" style="font-size:20px">'+esc(first(p.cli))+' · '+esc(hora12(p.time))+'</span>'+
+  '<button class="btn alt press" id="mmov">'+IC.clock+' Cambiar día u hora</button>'+
+  '<button class="btn alt press" id="mcan" style="color:var(--r)">Cancelar esta parada</button></div>';
+  $("sheet").classList.remove("hide");if(!RM)gsap.from("#sheet .in",{y:300,duration:.35,ease:"power3.out"});
+  $("mmov").onclick=function(){loadSlots().then(function(){moverSheet(p,p.date,"")})};
+  $("mcan").onclick=function(){cancelSheet(p)}}
+function moverSheet(p,date,time){var days="",t0=new Date();
+  for(var i=0;i<14;i++){var d=addDays(t0,i),k=ymd(d),bl=dayBlocked(k);days+='<button class="day press'+(k===date?" sel":"")+'" data-md2="'+k+'"'+(bl?' disabled style="opacity:.35"':'')+'><small>'+DIAS[(d.getDay()+6)%7]+'</small><b>'+d.getDate()+'</b></button>'}
+  var si=slotInfo(date,p.id);
+  $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:10px"><span class="q" style="font-size:20px">Mover a '+esc(first(p.cli))+'</span><div class="nweek" style="margin:0 -20px">'+days+'</div>'+
+  SLOTS.map(function(s){var o=si[s],dis=o.busy||o.blk||o.past,on=time===s;return '<button class="nslot press'+(on?" on":"")+'" data-mt2="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":"Libre")+'</span></button>'}).join("")+
+  '<button class="btn press" id="mok"'+(time?'':' disabled style="opacity:.4"')+'>Mover</button></div>';
+  Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-md2]"),function(b){b.onclick=function(){moverSheet(p,b.dataset.md2,"")}});
+  Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-mt2]"),function(b){b.onclick=function(){moverSheet(p,date,b.dataset.mt2)}});
+  $("mok").onclick=function(){if(!time)return;var old=p.date+" "+p.time;save(p,{date:date,time:time,rc:null});
+    var h0=+time.slice(0,2);slotDocs(p,function(bt){[h0,h0+1].forEach(function(h){bt.set(DB.doc("slots/"+date+"_"+pad(h)),{date:date,h:h,job:p.id,at:Date.now()})})});
+    if(DEMO&&DEMONEW.indexOf(p)<0)DEMONEW.push(p);
+    var msg="¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Le confirmamos el cambio de su cita: ahora es el "+fechaTxt(date)+" a las "+h12ap(time)+". ¡Gracias!";
+    $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">Parada movida</span><span class="m">'+esc(fechaTxt(date))+' · '+esc(h12ap(time))+'</span><a class="btn press" id="mwa" target="_blank" rel="noopener" href="'+esc(waUrl(p,msg))+'">'+IC.wa+' Avisarle al cliente</a><button class="btn alt press" id="mfin">Listo</button></div>';
+    var fin=function(){$("sheet").classList.add("hide");history.replaceState({v:"ruta"},"");goView("ruta",null,false);if(date!==S.sel)pick(date);else renderAll(true)};
+    $("mwa").addEventListener("click",function(){setTimeout(fin,400)});$("mfin").onclick=fin}}
+function cancelSheet(p){
+  $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">¿Cancelar la parada de '+esc(first(p.cli))+'?</span><span class="m" style="font-size:13px">'+esc(fechaTxt(p.date))+' · '+esc(h12ap(p.time))+'<br>La hora queda libre otra vez en la página de reservas.</span>'+
+  '<button class="btn press" id="cok" style="background:var(--r);color:var(--bg)">Sí, cancelar</button><button class="btn alt press" id="cno">No, dejarla</button></div>';
+  $("cno").onclick=function(){$("sheet").classList.add("hide")};
+  $("cok").onclick=function(){save(p,{st:"Cancelada",cxAt:Date.now(),cxSeen:1});slotDocs(p);
+    if(DEMO&&DEMONEW.indexOf(p)<0)DEMONEW.push(p);S.week=S.week.filter(function(x){return x!==p});
+    var msg="¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Le confirmamos que su cita del "+fechaTxt(p.date)+" quedó cancelada. Cuando guste, con mucho gusto le buscamos otro día.";
+    $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">Parada cancelada</span><a class="btn press" id="cwa" target="_blank" rel="noopener" href="'+esc(waUrl(p,msg))+'">'+IC.wa+' Avisarle al cliente</a><button class="btn alt press" id="cfin">Listo</button></div>';
+    var fin=function(){$("sheet").classList.add("hide");history.replaceState({v:"ruta"},"");goView("ruta",null,false);dayFromWeek();renderWeek();renderAll(true)};
+    $("cwa").addEventListener("click",function(){setTimeout(fin,400)});$("cfin").onclick=fin}}
+
+/* AVISOS AL CELULAR (ntfy): la página de reservas avisa cuando entra o se cancela una reserva */
+function ntSheet(){var t=AJ.nt||"";
+  if(!t){$("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">Avisos al celular</span><span class="m" style="font-size:13px">Cuando un cliente reserve o cancele en la página de reservas, les llega un aviso al celular. Usa la app gratis ntfy.</span><button class="btn press" id="nton">Activar avisos</button></div>';
+    $("sheet").classList.remove("hide");
+    $("nton").onclick=function(){var go=function(tp){saveAj({nt:tp});savePcfg({nt:tp});ntSheet()};
+      if(DEMO||!DB){go("glassdetailingcr-ejemplo");return}
+      DB.doc("settings/notify").get().then(function(d){var o=d.exists?String(d.data().topic||""):"";go(/^glassdetailingcr-[a-z0-9]{6,30}$/.test(o)?o:"glassdetailingcr-"+Math.random().toString(36).slice(2,12))}).catch(function(){go("glassdetailingcr-"+Math.random().toString(36).slice(2,12))})};
+    return}
+  var steps="Para recibir los avisos de reservas de GlassDetailingCR:\n1. Instale la app gratis ntfy:\n   Android: https://play.google.com/store/apps/details?id=io.heckel.ntfy\n   iPhone: https://apps.apple.com/app/ntfy/id1625396347\n2. Ábrala, toque + y escriba este canal: "+t;
+  $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">Avisos al celular · activados</span>'+
+  '<div class="note" style="color:var(--c);font-size:13px">1. Instalá <b>ntfy</b>: <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener" style="color:var(--r)">Android</a> · <a href="https://apps.apple.com/app/ntfy/id1625396347" target="_blank" rel="noopener" style="color:var(--r)">iPhone</a><br>2. Abrila, tocá <b>+</b> y escribí este canal:</div>'+
+  '<div class="sinpe"><span class="q" style="font-size:15px;overflow:hidden;text-overflow:ellipsis">'+esc(t)+'</span><button class="tb press" id="ntc">Copiar</button></div>'+
+  '<div style="display:flex;gap:8px"><a class="btn alt press" style="flex:1;font-size:13px" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(steps)+'">'+IC.wa+' Mandar al equipo</a><button class="btn alt press" style="flex:1;font-size:13px" id="ntp">Probar aviso</button></div>'+
+  '<button class="m press" id="ntoff" style="min-height:44px;font-size:13px">Apagar avisos</button></div>';
+  $("sheet").classList.remove("hide");
+  $("ntc").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){toast("Canal copiado")},function(){toast(t)})};
+  $("ntp").onclick=function(){fetch("https://ntfy.sh/",{method:"POST",body:JSON.stringify({topic:t,title:"Prueba",message:"Así se ven los avisos de reservas",tags:["calendar"]})}).then(function(){toast("Aviso enviado")},function(){toast("No se pudo enviar. Revisá la señal.")})};
+  $("ntoff").onclick=function(){saveAj({nt:""});savePcfg({nt:""});$("sheet").classList.add("hide");toast("Avisos apagados")}}
+
 /* VISTAS */
 var CUR=null,VIEW="ruta",TICK=null;
 function goView(v,id,push){VIEW=v;if(id)CUR=id;
@@ -734,7 +791,7 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   var steps=[["Llegamos",!!p.lleg,p.lleg?hm(p.lleg):""],["Fotos de antes",fa>0,fa?fa+" foto"+(fa>1?"s":""):""],["Trabajo",!!p.fin,p.fin?"listo":(p.ini?"en curso":"")],["Fotos de después",fd>0,fd?fd+" foto"+(fd>1?"s":""):""],["Cobro",p.st==="Pagada",p.st==="Pagada"?"cobrado":""]],on=-1;
   steps.forEach(function(s,i){if(on<0&&!s[1])on=i});
   var thumb=photos(p,"fa")[0];thumb=thumb&&(thumb.u||thumb);
-  var h='<div class="vhead"><button class="back press" id="pback" aria-label="Volver a la ruta">'+IC.back+'</button><span class="tt">Parada '+n+' · '+esc(first(p.cli))+'</span><span class="timer hide" id="ptimer"><i></i><span></span></span></div><div class="vin">'+
+  var h='<div class="vhead"><button class="back press" id="pback" aria-label="Volver a la ruta">'+IC.back+'</button><span class="tt">Parada '+n+' · '+esc(first(p.cli))+'</span><span class="timer hide" id="ptimer"><i></i><span></span></span>'+(done(p)?'':'<button class="back press" id="pmore" aria-label="Mover o cancelar"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>')+'</div><div class="vin">'+
   (p.st==="Por confirmar"?'<div class="note" style="display:flex;flex-direction:column;gap:10px;color:var(--c);border:1px solid var(--r)"><span>Reserva de la web · falta confirmarle al cliente</span><a class="btn press" id="pconf" target="_blank" rel="noopener" href="'+esc(waUrl(p,confirmar(p)))+'">'+IC.wa+' Confirmar por WhatsApp</a></div>':'')+(p.web&&p.nota?'<div class="note">'+esc(p.nota)+'</div>':'')+
   '<div class="carhd">'+(thumb?'<img class="ph" src="'+esc(thumb)+'" alt="">':'<span class="ph">'+IC.car+'</span>')+'<div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="q" style="font-size:22px">'+esc(p.veh||"Vehículo")+'</span><span class="m" style="font-size:12px">'+esc([p.svc,crc(p.total)].filter(Boolean).join(" · "))+'</span></div></div>'+
   ((CDATA[ckey(p)]||{}).notas?'<div class="note" style="color:var(--c);white-space:pre-line"><span class="m" style="font-size:11px;letter-spacing:.1em;display:block;margin-bottom:4px">NOTAS DE LA CASA</span>'+esc(CDATA[ckey(p)].notas)+'</div>':'')+
@@ -745,7 +802,7 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   if(STORAGE_OFF)h+='<div class="note">Las fotos quedan guardadas en este celular y se suben solas cuando se active el plan Blaze de Firebase.</div>';
   h+='</div><div class="vfoot">'+parBtn(p,fa,fd)+'</div>';
   el.innerHTML=h;tickTimer();
-  $("pback").onclick=back;if($("pconf"))$("pconf").addEventListener("click",function(){setTimeout(function(){save(p,{st:"Pendiente"});toast("Cita confirmada")},300)});
+  $("pback").onclick=back;if($("pmore"))$("pmore").onclick=function(){parMenu(p)};if($("pconf"))$("pconf").addEventListener("click",function(){setTimeout(function(){save(p,{st:"Pendiente"});toast("Cita confirmada")},300)});
   Array.prototype.forEach.call(el.querySelectorAll("input[type=file]"),function(inp){inp.onchange=function(){addPhotos(p,inp.dataset.k,inp.files);inp.value=""}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-t]"),function(b){b.onclick=function(){var t=Object.assign({},p.tareas||{});t[b.dataset.t]=!t[b.dataset.t];save(p,{tareas:t});
     if(!RM){var bx=document.querySelector('[data-t="'+b.dataset.t+'"] .bx');if(bx)gsap.fromTo(bx,{scale:.6},{scale:1,duration:.4,ease:"back.out(3)"})}}});
@@ -826,7 +883,7 @@ var ALL=null,CF="todos",CQ="";
 var AVC=["#7F011F","#5A2A6E","#1F4E79","#2E6B4F","#8A5A1F","#6B2737"];
 function addMonths(ymdS,n){var d=parse(ymdS);d.setMonth(d.getMonth()+n);return d}
 function fmtD(d){return d.getDate()+" "+MESES[d.getMonth()].slice(0,3).toLowerCase()+" "+d.getFullYear()}
-function loadAll(){if(DEMO){ALL=demoData().concat(demoHist(),demoMore(),DEMONEW);return Promise.resolve()}
+function loadAll(){if(DEMO){ALL=demoMix().concat(demoHist(),demoMore());return Promise.resolve()}
   return DB.collection(COL).orderBy("date","desc").limit(2000).get().then(function(sn){ALL=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}).catch(function(){ALL=ALL||S.week.slice()})}
 function allP(){var m={};(ALL||[]).forEach(function(p){m[p.id]=p});S.week.forEach(function(p){m[p.id]=p});return Object.keys(m).map(function(k){return m[k]}).filter(function(p){return p.st!=="Cancelada"})}
 var WEEKX=[];
@@ -1167,11 +1224,13 @@ function renderMas(){var el=$("vmas"),me=USER?USER.email:"",nm=USER?(USER.displa
   row("m-sinpe",IC.copy,"Datos de SINPE",SINPE)+
   row("m-rev",IC.star,"Enlace de reseñas de Google",REVURL?"listo":"falta")+
   row("m-meta",IC.target,"Meta del mes",META[mesKey()]?crc(META[mesKey()]):"sin meta")+
+  row("m-nt",IC.bell2,"Avisos al celular",AJ.nt?"activados":"apagados")+
   row("m-msg",IC.wa2,"Mensajes de WhatsApp",Object.keys(MSGS).filter(function(k){return MSGS[k]}).length?"editados":"originales")+
   row("m-xls",IC.down,"Respaldo en Excel","descargar")+
   '</div><button class="btn alt press" id="m-out">'+(DEMO?"Salir del ejemplo":"Salir")+'</button></div>';
   el.innerHTML=h;$("mback").onclick=back;
   $("m-ins").onclick=function(){goView("ins",null,true)};
+  $("m-nt").onclick=ntSheet;
   $("m-meta").onclick=function(){metaSheet(META[mesKey()]||0)};
   $("m-msg").onclick=function(){goView("msg",null,true)};
   $("m-xls").onclick=respaldo;
@@ -1309,7 +1368,7 @@ function listenCli(){if(DEMO){CDATA={"88880002":{notas:"Portón negro, tocar dos
   if(UNCLI)UNCLI();UNCLI=DB.collection("r_clientes").onSnapshot(function(sn){var m={};sn.docs.forEach(function(d){m[d.id]=d.data()});CDATA=m;refresh()},function(){})}
 var BDDONE=false;
 function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
-  if(DEMO){S.week=demoData().concat(DEMONEW).filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);if(!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}return}
+  if(DEMO){S.week=demoMix().filter(function(p){return p.st!=="Cancelada"}).filter(function(p){return p.date>=a&&p.date<=b});dayFromWeek();renderWeek();renderAll(true);if(!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}return}
   if(UNSUB)UNSUB();var firstSnap=true;
   UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
     S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});WEEKX=S.week.filter(function(p){return p.st==="Cancelada"});S.week=S.week.filter(function(p){return p.st!=="Cancelada"});dayFromWeek();renderWeek();renderAll(firstSnap);if(firstSnap&&!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}firstSnap=false},
