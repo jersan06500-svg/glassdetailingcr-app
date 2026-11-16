@@ -880,7 +880,9 @@ function hhmm(m){m=Math.max(0,m);return (Math.floor(m/60)%12||12)+":"+pad(m%60)}
 
 /* MAPA DEL DÍA (Leaflet + mapa oscuro de CARTO con datos de OpenStreetMap; la atribución tiene que quedar visible) */
 var MAP=null,MLAY=null,TILE=null,MEPOS=null,MEMK=null;
-function tileUrl(){return "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"+(AJ.carto?"?key="+encodeURIComponent(AJ.carto):"")}
+/* llave gratis de CARTO (uso comercial hasta 1 millón de pedidos al mes); solo funciona en jersan06500-svg.github.io */
+var CARTO_KEY="cb1_59tp_1_f72766babebcb9c5303bc6e9";
+function tileUrl(){return "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key="+encodeURIComponent(AJ.carto||CARTO_KEY)}
 function initMap(){if(MAP||typeof L==="undefined")return;
   MAP=L.map("map",{zoomControl:false,attributionControl:true}).setView([9.95,-84.1],11);
   TILE=L.tileLayer(tileUrl(),{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> © <a href="https://carto.com/attribution/" target="_blank" rel="noopener">CARTO</a>'}).addTo(MAP);
