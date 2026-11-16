@@ -262,6 +262,21 @@ svg{display:block}
 .rbig.waze{background:var(--c);color:var(--w);height:92px;font-size:22px}
 .rbig.alt{background:var(--w)}
 .rbig svg{width:26px;height:26px}
+/* TARJETA DE ARRIBA COMPACTA (15 nov, pedido del dueño: se veía muy grande en el iPhone 14 Pro) */
+#top{padding:8px 10px 10px;gap:6px;border-radius:22px;top:calc(8px + var(--safe-t))}
+.toprow{padding-left:2px}
+#mes{height:38px;font-size:17px}
+#me,#rvb{width:38px;height:38px;border-radius:19px}
+#me{font-size:15px}
+.day{height:44px;gap:2px;border-radius:12px}
+.day b{font-size:15px}
+.day small{font-size:9px}
+.sum{padding:6px 2px 0}
+.sum .big{font-size:24px}
+.sum .de{font-size:12px}
+.sum .m{font-size:10px!important}
+.bar{height:4px;margin:0 2px}
+#demo,#net{padding:4px 10px;font-size:11px}
 .bd{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;text-align:left}
 .bdr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);font-size:14px}
 </style>
@@ -1475,7 +1490,7 @@ function listen(){var mon=monday(parse(S.sel)),a=ymd(mon),b=ymd(addDays(mon,6));
   UNSUB=DB.collection(COL).where("date",">=",a).where("date","<=",b).onSnapshot(function(sn){
     S.week=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});WEEKX=S.week.filter(function(p){return p.st==="Cancelada"});S.week=S.week.filter(function(p){return p.st!=="Cancelada"});dayFromWeek();renderWeek();renderAll(firstSnap);if(firstSnap&&!BDDONE){BDDONE=true;setTimeout(buenosDias,900)}firstSnap=false},
     function(e){if(e.code==="permission-denied"){toast("Tu cuenta no tiene acceso a la app nueva todavía");}else toast("No se pudieron leer las paradas")})}
-function showApp(){restoreLocal();listenWeb();listenCli();listenMeta();listenAj();listenStock();listenTeam();listenMsg();listenComp();listenPcfg();setTimeout(function(){loadAll().then(penDot)},1500);takeLoc();$("island").classList.remove("hide");$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
+function showApp(){restoreLocal();listenWeb();listenCli();listenMeta();listenAj();listenStock();listenTeam();listenMsg();listenComp();listenPcfg();setTimeout(function(){loadAll().then(penDot)},1500);takeLoc();$("island").classList.remove("hide");setTimeout(function(){pillTo(VIEW)},30);$("login").classList.add("hide");$("app").classList.remove("hide");$("me").textContent=DEMO?"E":(USER.displayName||USER.email||"?").trim()[0].toUpperCase();
   $("demo").classList.toggle("hide",!DEMO);netState();
   if(!RM)gsap.from("#top",{y:-40,opacity:0,duration:.6,ease:"power3.out"});if(!RM)gsap.from("#island",{y:90,duration:.6,ease:"back.out(1.6)",delay:.2});
   listen()}
