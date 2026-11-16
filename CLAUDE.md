@@ -38,6 +38,9 @@ Lo que sigue en este archivo es el historial día por día. Si algo de abajo cho
 
 **App del equipo, como está hoy**
 
+- **15 nov 2026: la app "carretera" (antes `v2/`) ya es la app del equipo**, en la raíz (`index.html`). El dueño dijo que la app vieja estaba vacía y que se podía desechar: se quitó del sitio (queda en el historial de git, commit anterior a "Cambio a la app nueva"). `/v2/` solo redirige a la raíz. Lo de esta lista de abajo es de la app vieja y ya no aplica; lo vigente está en "App nueva carretera". Los datos viejos de Firestore (`jobs`, `settings`, etc.) **no se borraron**; `reservar/` sigue guardando en `jobs` y la app nueva los copia a `r_paradas`.
+
+
 - Barra de abajo: Hoy, Reservas, Clientes, Números y Más. Se agenda **solo** con el botón flotante "Agendar cita".
 - Pantalla de entrada azul con el logo y solo "Entrar con Google".
 - Fondo con 12 fotos (`img/fondos/`) que cambian con la frase del día; tocar la frase cambia las dos.
@@ -75,6 +78,7 @@ Fuera de la lista (13 nov, decisión del dueño): la mascota queda para más ade
 
 ## App nueva "carretera" (v2, en construcción desde el 13 nov 2026)
 
+- **15 nov: ya está en la raíz** (`/`), ya no en `v2/`; con datos de ejemplo: `/?demo=1`.
 - **Decisión del dueño (13 nov)**: rehacer la app del equipo desde cero, sin tomar la actual de base. Se construye por pasos en `v2/` (enlace de prueba: `/v2/`; con datos de ejemplo: `/v2/?demo=1`). La app actual sigue funcionando hasta que el dueño diga que se cambie.
 - **Diseño aprobado** en el lienzo de Claude "GlassDetailingCR — App del equipo nueva" (https://claude.ai/artifact/GLvxszEF2fmMXgBNmo1NgD), página "App carretera", 12 pantallas: Entrada, Ruta de hoy, Parada en curso, Cobrar, Nueva parada, Clientes (por zona), Ficha del carro (medidores de garantía), Números (odómetro), Pendientes, Insumos, Calendario del mes y Más.
 - **Solo la app del equipo cambia de colores**: fondo negro vino `#140609`, tarjetas `#1F0A0F`/`#2B0F16`, líneas `#3A1A21`, vino `#7F011F` (botones), rojo vivo `#FF4D6D` (acentos), nube `#EDF1F5` (letras), gris `#B7A6AB`. Letras Questrial + Roboto Slab. La marca hacia clientes (reservar, web, redes) sigue en azul cristal.
@@ -96,7 +100,7 @@ Fuera de la lista (13 nov, decisión del dueño): la mascota queda para más ade
 - **Paso 7a (15 nov, hecho): Nueva parada** (`#vnew`, `openNew`, `renderNew`, `agendar`): se abre con el + de la isla, "Agendar parada" en un día libre, "Agendar aquí" del calendario del mes (con ese día) y Agendar / "+ Otro carro" de la Ficha (con el cliente ya puesto). 3 pasos: (1) cliente (buscador de clientes que ya vinieron o nombre + WhatsApp), carros del cliente, marca y modelo con sugerencias (`MARCAS`), año, tipo que se detecta solo (`vtOf`, listas `PICKRX`/`SUVRX`/`SEDRX` copiadas de la app actual) y "¿Cómo nos conoció?" (`src`); (2) servicio con precios de Vigente (focos + parabrisas pasa solo a la promo; `items` = focos/combo/pu/ps/all/alls/techo) y descuento; (3) día (14 días, sin días bloqueados), hora (08, 10, 12, 14; sin ocupadas, bloqueadas ni pasadas; sugiere la que "queda de camino" si el cliente tiene punto), provincia + cantón (`zona` = "Cantón, Provincia") y señas. Guarda en `r_paradas` con `st: "Pendiente"`, `who`, `by: "app"`, `at`, y si el cliente tiene punto, `lat`/`lng`. Pantalla "¡Agendada!" con "Mandar confirmación" (mensaje editable nuevo `confirmar` en Más → Mensajes) y "Pedir ubicación exacta" si no hay punto.
 - **Paso 7b (15 nov, hecho, decisión del dueño: las dos apps a la vez)**: `reservar/` **no se tocó**: sigue guardando en `jobs` + `slots` + `holds`, así la app actual sigue igual. La app nueva escucha `jobs` web desde ayer en adelante (`listenWeb`, `syncJob`) y copia cada reserva a `r_paradas/<mismo id>` (`fromJob`: zona = zona de `PL` + provincia, `lat`/`lng` si `ubic` es "lat,lng", señas, `nota`, `web: true`, `st: "Por confirmar"`). Si el cliente cancela con su enlace, la parada pasa a `Cancelada` (sale de la ruta y aparece en Pendientes → Reservas, `cxSeen`); si la app actual le cambia día u hora o la confirma, se copia. Lo que se hace en la app nueva vuelve a `jobs` (`syncBack`: Pendiente/Hecho/Pagado/Cancelada y `pm`). Estado nuevo **Por confirmar**: rojo en la ruta, aviso con "Confirmar por WhatsApp" en Parada en curso y en Pendientes → Reservas (mensaje `confirmar`). Nueva parada ahora aparta sus 2 horas en `slots` (la página de reservas ya no las ofrece) y no ofrece horas ocupadas en `slots` por la app actual. No hizo falta cambiar `firestore.rules`.
 - **Fotos en la nube: falta que el dueño active el plan Blaze** y publique `storage.rules` (Firebase Console → Storage → Reglas). Mientras tanto las fotos quedan en el celular de quien las tomó, marcadas "sin subir", y se suben solas después.
-- **Pasos**: 1 diseño (hecho) · 2 Entrada + Ruta de hoy (hecho 13 nov, datos de ejemplo con `?demo=1`) · 3 Parada en curso y Cobrar con fotos (hecho 13 nov) · 4 Clientes y Ficha (hecho 13 nov) · 5 Números (hecho 13 nov) · 6 Pendientes, Insumos, Mes y Más (hecho 13 nov) · 7a Nueva parada (hecho 15 nov) · 7b reservas de la web en la app nueva (hecho 15 nov) · 7c cambiar a la app nueva (cuando el dueño diga).
+- **Pasos**: 1 diseño (hecho) · 2 Entrada + Ruta de hoy (hecho 13 nov, datos de ejemplo con `?demo=1`) · 3 Parada en curso y Cobrar con fotos (hecho 13 nov) · 4 Clientes y Ficha (hecho 13 nov) · 5 Números (hecho 13 nov) · 6 Pendientes, Insumos, Mes y Más (hecho 13 nov) · 7a Nueva parada (hecho 15 nov) · 7b reservas de la web en la app nueva (hecho 15 nov) · 7c cambio a la app nueva (hecho 15 nov).
 
 ## Historia corta
 
@@ -117,7 +121,7 @@ Fuera de la lista (13 nov, decisión del dueño): la mascota queda para más ade
 
 ## Archivos
 
-- `index.html`: la app interna, que es HTML + JS puro con Firebase **compat** SDK 10.12.2. Trae agenda, nueva cita, clientes, notas y metas, insumos, números (finanzas y anuncios de Meta), ruta del día, avisos de viaje entre citas, pedir reseña de Google y la animación de entrada con el logo.
+- `index.html`: desde el 15 nov es la app nueva "carretera" (ver esa sección; GSAP en `gsap.min.js`). Lo que sigue en este punto describe la app vieja: HTML + JS puro con Firebase **compat** SDK 10.12.2. Trae agenda, nueva cita, clientes, notas y metas, insumos, números (finanzas y anuncios de Meta), ruta del día, avisos de viaje entre citas, pedir reseña de Google y la animación de entrada con el logo.
 - `reservar/index.html`: página pública donde el cliente agenda solo. Permite varios carros, servicios con precio por carro, ubicación por GPS, zonas con recargo y horas libres según las otras citas.
 - `ubicacion/index.html`: el cliente manda su ubicación por WhatsApp. El enlace que vuelve (`/?loc=lat,lng&t=tel`) se guarda solo en su cita.
 - `firestore.rules`: copia de las reglas vigentes. También están dentro de `index.html` como `var RULES`. Las vigentes de verdad se publican a mano en Firebase Console → Firestore → Reglas.
