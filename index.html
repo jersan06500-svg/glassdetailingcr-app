@@ -262,6 +262,18 @@ svg{display:block}
 .rbig.waze{background:var(--c);color:var(--w);height:92px;font-size:22px}
 .rbig.alt{background:var(--w)}
 .rbig svg{width:26px;height:26px}
+/* CARRETERA LIBRE (15 nov, pedido del dueño): la tarjeta de arriba y la isla van en la columna de la derecha, como las paradas, y no tapan la carretera */
+#top{left:108px;right:10px}
+#mes{font-size:15px;gap:4px}
+#mes svg{width:14px;height:14px}
+#week{gap:0}
+.day small{font-size:9px}
+.sum{flex-wrap:wrap;row-gap:2px}
+.sum .big{font-size:20px}
+.meta{flex-direction:row;gap:8px;align-items:center}
+#island{left:auto;right:10px;transform:none;height:58px;padding:0 6px;gap:3px}
+#island button{width:44px;height:44px;border-radius:22px}
+#ipill{width:44px;height:44px;border-radius:22px;top:6px}
 /* TARJETA DE ARRIBA COMPACTA (15 nov, pedido del dueño: se veía muy grande en el iPhone 14 Pro) */
 #top{padding:8px 10px 10px;gap:6px;border-radius:22px;top:calc(8px + var(--safe-t))}
 .toprow{padding-left:2px}
@@ -277,6 +289,7 @@ svg{display:block}
 .sum .m{font-size:10px!important}
 .bar{height:4px;margin:0 2px}
 #demo,#net{padding:4px 10px;font-size:11px}
+#top{left:108px;right:10px}
 .bd{width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px;text-align:left}
 .bdr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);font-size:14px}
 </style>
@@ -512,7 +525,7 @@ function renderRoad(anim){var root=$("road"),list=S.paradas,top=$("top").offsetH
   if(carY!=null)h+='<span class="car" id="car" style="top:'+(carY-22)+'px">'+IC.car+'</span>';
   root.innerHTML=h;bindNext(root);if(anim)animIn()}
 function roadSvg(ys,H,nextIdx,carY){var x=60,d="M"+x+" 0",prevY=0;
-  function seg(a,b,dir){var q=(b-a)*.25,mid=(a+b)/2,bx=x+36*dir;return " C"+x+" "+(a+q)+" "+bx+" "+(mid-q)+" "+bx+" "+mid+" C"+bx+" "+(mid+q)+" "+x+" "+(b-q)+" "+x+" "+b}
+  function seg(a,b,dir){var q=(b-a)*.25,mid=(a+b)/2,bx=x+28*dir;return " C"+x+" "+(a+q)+" "+bx+" "+(mid-q)+" "+bx+" "+mid+" C"+bx+" "+(mid+q)+" "+x+" "+(b-q)+" "+x+" "+b}
   ys.forEach(function(y,i){d+=seg(prevY,y,i%2?-1:1);prevY=y});
   d+=seg(prevY,H,ys.length%2?-1:1);
   var cut=carY!=null?carY:(nextIdx>0?ys[nextIdx-1]:0);
