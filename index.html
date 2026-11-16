@@ -48,6 +48,9 @@ svg{display:block}
 #top{position:absolute;left:12px;right:12px;top:calc(12px + var(--safe-t));z-index:5;padding:12px;border-radius:24px;background:rgba(43,15,22,.92);border:1px solid var(--ln);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:10px}
 .toprow{display:flex;justify-content:space-between;align-items:center;padding-left:4px}
 #mes{display:flex;align-items:center;gap:6px;height:44px;font-family:var(--q);font-size:19px}
+#rvb{width:44px;height:44px;border-radius:22px;border:1px solid var(--ln);background:var(--s2);color:var(--c);display:flex;align-items:center;justify-content:center}
+#undo{position:fixed;left:16px;right:16px;bottom:calc(96px + var(--safe-b));z-index:14;max-width:480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 16px;border-radius:18px;background:var(--c);color:var(--bg);font-size:14px}
+#undo button{height:40px;padding:0 14px;border-radius:12px;background:var(--w);color:var(--c);font-size:13px}
 #me{width:44px;height:44px;border-radius:22px;border:1px solid var(--ln);background:var(--s2);font-family:var(--q);font-size:17px}
 #week{display:flex;gap:2px;touch-action:pan-y}
 .day{flex:1;height:54px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--m)}
@@ -287,7 +290,7 @@ Entrar con Google</button>
 <div id="top">
 <div class="toprow">
 <button id="mes" class="press"><span id="mesl"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B7A6AB" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-<button id="me" class="press" aria-label="Perfil y salir"></button>
+<span style="display:flex;gap:8px"><button id="rvb" class="press" aria-label="Enlace de reservas para mandar a un cliente"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></button><button id="me" class="press" aria-label="Perfil y salir"></button></span>
 </div>
 <div id="week" role="tablist" aria-label="Días de la semana"></div>
 <div id="net" class="hide"></div>
@@ -324,6 +327,7 @@ Entrar con Google</button>
 <div id="okv" class="hide" role="dialog" aria-label="Cobro registrado"></div>
 <div id="sheet" class="hide"><div class="in"><span class="grab"></span><div id="sheetc"></div></div></div>
 <div id="toast" role="status"></div>
+<div id="undo" class="hide" role="status"></div>
 
 <script>
 var FBC={apiKey:"AIzaSyCaUKMJG8cP9aFAJgWmtz87P4Q4-hwo-7w",authDomain:"glassdetailingcr.firebaseapp.com",projectId:"glassdetailingcr",storageBucket:"glassdetailingcr.firebasestorage.app",messagingSenderId:"527384576479",appId:"1:527384576479:web:7ca94fc76a98bf9ce6046a"};
@@ -825,6 +829,25 @@ var ROADDIR=0;
   $("scroll").addEventListener("touchend",function(e){if(sx==null)return;var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;
     if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*2)return;ROADDIR=dx<0?1:-1;vib(8);pick(ymd(addDays(parse(S.sel),dx<0?1:-1)))},{passive:true})})();
 
+/* DESHACER: unos segundos para corregir un toque sin querer */
+var UNDO=null;
+function undoable(p,data,label,after){var prev={};Object.keys(data).forEach(function(k){prev[k]=p[k]===undefined?null:p[k]});save(p,data);
+  var bar=$("undo");clearTimeout(UNDO);bar.innerHTML='<span>'+esc(label)+'</span><button class="press" id="undob">Deshacer</button>';bar.classList.remove("hide");
+  if(!RM)gsap.fromTo(bar,{y:20,opacity:0},{y:0,opacity:1,duration:.3,ease:EO});
+  var close=function(){if(RM){bar.classList.add("hide");return}gsap.to(bar,{y:20,opacity:0,duration:.2,ease:"power2.in",onComplete:function(){bar.classList.add("hide")}})};
+  $("undob").onclick=function(){clearTimeout(UNDO);save(p,prev);vib(10);close();if(after)after();toast("Listo, lo dejé como estaba")};
+  UNDO=setTimeout(close,6000)}
+/* ENLACE DE RESERVAS: para mandárselo a cualquier cliente */
+function rvSheet(){var msg=tpl("reservas",{reservas:RESERVAS});
+  $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:12px"><span class="q" style="font-size:20px">Enlace de reservas</span><span class="m" style="font-size:13px">El cliente escoge el día, la hora y el servicio solo.</span>'+
+  '<div class="sinpe"><span style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(RESERVAS.replace(/^https?:\/\//,""))+'</span><button class="tb press" id="rvc">Copiar</button></div>'+
+  '<a class="btn press" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(msg)+'">'+IC.wa+' Mandar por WhatsApp</a>'+
+  '<div style="display:flex;gap:8px">'+(navigator.share?'<button class="btn alt press" id="rvs" style="flex:1;font-size:14px">Compartir</button>':'')+'<a class="btn alt press" style="flex:1;font-size:14px" target="_blank" rel="noopener" href="'+esc(RESERVAS)+'">Ver la página</a></div>'+
+  '<span class="m" style="font-size:12px">El mensaje se cambia en Más → Mensajes de WhatsApp.</span></div>';
+  showSheet();
+  $("rvc").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(RESERVAS):Promise.reject()).then(function(){toast("Enlace copiado");vib(10)},function(){toast(RESERVAS)})};
+  if($("rvs"))$("rvs").onclick=function(){navigator.share({title:"Agende con GlassDetailingCR",text:msg.replace(RESERVAS,"").trim(),url:RESERVAS}).catch(function(){})}}
+
 /* VISTAS */
 var CUR=null,VIEW="ruta",TICK=null;
 function goView(v,id,push){if(VIEW==="run"&&v!=="run")wakeOff();VIEW=v;if(id)CUR=id;
@@ -895,7 +918,7 @@ function parAct(p,a){
   if(a==="ruta")back();
   else if(a==="lleg"){save(p,{lleg:Date.now()});window.open(waUrl(p,msgLlegamos(p)),"_blank")}
   else if(a==="ini")save(p,{ini:Date.now(),st:p.st||"Pendiente"});
-  else if(a==="fin"){save(p,{fin:Date.now(),st:"Hecha",gasto:gasto(p)});vib(25);if(!RM)setTimeout(function(){var x=$("secfd");if(x)x.scrollIntoView({behavior:"smooth"})},80)}
+  else if(a==="fin"){undoable(p,{fin:Date.now(),st:"Hecha",gasto:gasto(p)},"Parada marcada como terminada");vib(25);if(!RM)setTimeout(function(){var x=$("secfd");if(x)x.scrollIntoView({behavior:"smooth"})},80)}
   else if(a==="cob")goView("cob",p.id,true)}
 
 /* FOTOS: se achican en el celular, se guardan aunque no haya señal y se suben a Firebase Storage */
@@ -937,7 +960,7 @@ function renderCob(){var p=byId(CUR),el=$("vcob");if(!p){el.innerHTML="";return}
   if($("ccopy"))$("ccopy").onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(SINPE.replace("-","")):Promise.reject()).then(function(){toast("Número copiado")}).catch(function(){toast(SINPE)})};
   if($("cgar"))$("cgar").onclick=function(){GAR=!GAR;renderCob()};
   if($("cvolver"))$("cvolver").onclick=function(){history.go(-2)};
-  if($("cpago"))$("cpago").onclick=function(){save(p,{st:"Pagada",pm:PM,pagAt:Date.now()});paid(p)};
+  if($("cpago"))$("cpago").onclick=function(){undoable(p,{st:"Pagada",pm:PM,pagAt:Date.now()},"Cobro registrado",function(){$("okv").classList.add("hide");renderCob()});paid(p)};
   compDrag()}
 function compDrag(){var c=$("comp");if(!c)return;
   function set(x){var r=c.getBoundingClientRect(),f=Math.max(.04,Math.min(.96,(x-r.left)/r.width))*100;$("cbf").style.width=f+"%";$("cln").style.left=f+"%";$("ckn").style.left=f+"%"}
@@ -1294,6 +1317,7 @@ function renderMas(){var el=$("vmas"),me=USER?USER.email:"",nm=USER?(USER.displa
   '<div class="kp" style="flex-direction:row;align-items:center;gap:12px"><span class="av" style="background:var(--w);width:52px;height:52px;border-radius:26px;font-size:20px">'+esc(ini(nm))+'</span><span style="display:flex;flex-direction:column;min-width:0"><span class="q" style="font-size:18px">'+esc(nm)+'</span><span class="m" style="font-size:12px;overflow:hidden;text-overflow:ellipsis">'+esc(me)+'</span></span></div>'+
   (TEAM.length?'<div class="kp" style="gap:6px"><span class="m" style="font-size:12px">Equipo con acceso</span>'+TEAM.map(function(e){return '<span style="font-size:13px;overflow:hidden;text-overflow:ellipsis">'+esc(e)+'</span>'}).join("")+'</div>':'')+
   '<div style="display:flex;flex-direction:column">'+
+  row("m-rv",IC.wa2,"Enlace de reservas","mandar a un cliente")+
   row("m-ins",IC.drop,"Insumos",low?low+" por acabarse":"al día")+
   row("m-car",IC.bat,"Mi carro y punto de salida","Geely EX5 · "+((AJ.kwh||18.5)+" kWh/100 km"))+
   row("m-sinpe",IC.copy,"Datos de SINPE",SINPE)+
@@ -1305,7 +1329,7 @@ function renderMas(){var el=$("vmas"),me=USER?USER.email:"",nm=USER?(USER.displa
   '</div><button class="btn alt press" id="m-out">'+(DEMO?"Salir del ejemplo":"Salir")+'</button></div>';
   el.innerHTML=h;$("mback").onclick=back;
   $("m-ins").onclick=function(){goView("ins",null,true)};
-  $("m-nt").onclick=ntSheet;
+  $("m-nt").onclick=ntSheet;$("m-rv").onclick=rvSheet;
   $("m-meta").onclick=function(){metaSheet(META[mesKey()]||0)};
   $("m-msg").onclick=function(){goView("msg",null,true)};
   $("m-xls").onclick=respaldo;
@@ -1335,6 +1359,8 @@ var DEFMSG={
  garantia:"¡Hola, {nombre}! Le saluda GlassDetailingCR. Le recordamos que la garantía de {servicio} de su {carro} vence el {fecha}. Si nota cualquier detalle, con gusto lo revisamos sin costo antes de esa fecha."};
 var MSGN={camino:"Vamos en camino",llegamos:"Llegamos",cobro:"Cobro",recordar:"Recordatorio de mañana",resena:"Pedir reseña",repetir:"Toca repetir",garantia:"Garantía por vencer"};
 var MSGV={camino:"{nombre} {carro} {minutos}",llegamos:"{nombre} {carro}",cobro:"{nombre} {carro} {total} {sinpe} {titular} {garantia}",recordar:"{nombre} {carro} {hora}",resena:"{nombre} {carro} {resena}",repetir:"{nombre} {carro} {servicio} {reservas}",garantia:"{nombre} {carro} {servicio} {fecha}"};
+DEFMSG.reservas="¡Hola! Le saluda GlassDetailingCR. Puede agendar su cita aquí en un minuto, escogiendo el día y la hora que le quedan mejor: {reservas}\nVamos a domicilio sin costo en toda la GAM.";
+MSGN.reservas="Enlace de reservas";MSGV.reservas="{reservas}";
 DEFMSG.confirmar="¡Hola, {nombre}! Le saluda GlassDetailingCR. Su cita quedó agendada para el {fecha} a las {hora} para su {carro}: {servicio}. Total: {total}. Le agradecemos tener un tomacorriente de 110 V cerca y, de preferencia, el carro bajo techo. ¡Nos vemos!";
 MSGN.confirmar="Confirmación de cita";MSGV.confirmar="{nombre} {carro} {fecha} {hora} {servicio} {total}";
 function tpl(k,v){return String(MSGS[k]||DEFMSG[k]).replace(/\{(\w+)\}/g,function(m,x){return v[x]!=null?v[x]:""})}
@@ -1426,6 +1452,7 @@ function demoHist(){var t=new Date(),d=function(m,dd){var x=new Date(t);x.setMon
 (function(){var x0=null;$("week").addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
   $("week").addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;
     var d=addDays(parse(S.sel),dx<0?7:-7);S.sel=ymd(d);if(!RM)gsap.fromTo("#week",{x:dx<0?40:-40,opacity:0},{x:0,opacity:1,duration:.35});listen()},{passive:true})})();
+$("rvb").onclick=rvSheet;
 $("mes").onclick=function(){MREF=null;MSEL=S.sel;goView("mes",null,true)};
 $("me").onclick=function(){goView("mas",null,true)};
 $("sheet").onclick=function(e){if(e.target===$("sheet"))hideSheet()};
