@@ -136,6 +136,10 @@ svg{display:block}
 .addph input{display:none}
 .fld{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.fld span{font-size:12px;color:var(--m)}.fld input{height:52px;width:100%;border-radius:16px;border:1px solid var(--ln);background:var(--s1);color:var(--c);font:inherit;font-size:16px;padding:0 14px}.fld input:focus{outline:none;border-color:var(--r)}
 .sug{display:flex;flex-direction:column}
+.mks:empty{display:none}.mks{margin-top:-6px}
+.nmore{min-height:44px;width:100%;border-radius:16px;border:1px dashed var(--ln);color:var(--m);font-size:13px}
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.hgrid button{height:44px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);color:var(--c);font-size:12px;white-space:nowrap}.hgrid button.on{background:var(--w);border-color:var(--w)}.hgrid button.x{border-color:var(--r)}.hgrid button:disabled{opacity:.3}
+.ibtn{width:52px;flex:none;border-radius:16px;background:var(--s1);border:1px solid var(--ln);color:var(--c);display:grid;place-items:center}
 .sv{display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 14px;border-radius:18px;background:var(--s1);border:1px solid var(--ln);width:100%;color:var(--c)}.sv .bx{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--d);display:flex;align-items:center;justify-content:center;flex:none}.sv.on{border-color:var(--r)}.sv.on .bx{background:var(--w);border-color:var(--w)}
 .nweek{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px}.nweek .day{flex:0 0 46px}
 .nslot{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);width:100%;color:var(--c)}.nslot.on{background:var(--w);border-color:var(--w)}.nslot.sug{border-color:var(--r)}.nslot.sug span:last-child{color:var(--r)}.nslot:disabled{opacity:.4}
@@ -421,6 +425,7 @@ var IC={
  rainS:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CC3E6" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 15a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 6a4.5 4.5 0 0 1 .5 9z"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2"/></svg>',
  shieldS:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F2F3F5" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/></svg>',
  repS:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F2F3F5" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg>',
+ user:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
  pin2:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
  target:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF5A5F" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
  chev:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7D828C" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
@@ -448,7 +453,7 @@ var IC={
 function msgCamino(p,m){return "¡Hola, "+first(p.cli)+"! Le saluda GlassDetailingCR. Ya vamos en camino y llegamos en unos "+m+" minutos. Le agradecemos tener el carro a mano y un tomacorriente de 110 V cerca. ¡Nos vemos!"}
 function msgLlegamos(p){return "¡Hola, "+first(p.cli)+"! Ya llegamos. Estamos afuera para empezar con su "+(p.veh||"vehículo")+"."}
 function waUrl(p,t){var tel=String(p.tel||"").replace(/\D/g,"");if(tel.length===8)tel="506"+tel;return "https://wa.me/"+tel+"?text="+encodeURIComponent(t)}
-function wazeUrl(p){var ci=p.tel?CDATA[String(p.tel).replace(/\D/g,"").slice(-8)]:null;if(p.lat==null&&ci&&ci.lat!=null)p={lat:ci.lat,lng:ci.lng};if(p.lat!=null&&p.lng!=null)return "https://waze.com/ul?ll="+p.lat+","+p.lng+"&navigate=yes";return "https://waze.com/ul?q="+encodeURIComponent(p.dir||p.zona||"")+"&navigate=yes"}
+function wazeUrl(p){var ci=p.tel?CDATA[String(p.tel).replace(/\D/g,"").slice(-8)]:null;if(p.lat==null&&ci&&ci.lat!=null)p={lat:ci.lat,lng:ci.lng};if(p.lat!=null&&p.lng!=null)return "https://waze.com/ul?ll="+p.lat+","+p.lng+"&navigate=yes";if(p.mapa)return p.mapa;return "https://waze.com/ul?q="+encodeURIComponent(p.dir||p.zona||"")+"&navigate=yes"}
 
 /* MOVIMIENTO: curvas y piezas comunes (hoja de abajo, pastilla de la isla, chispas) */
 var EO="expo.out",NAVBACK=false;
@@ -615,20 +620,25 @@ function rxHit(L,x){return L.some(function(r){return new RegExp("(^|[^a-z0-9])("
 var PROVS=["San José","Heredia","Alajuela","Cartago","Otra"];
 var FUENTES=["Instagram","Facebook","TikTok","WhatsApp","Referido","Google","Reservas web","Otro"];
 var VTN={sedan:"sedán",suv:"SUV",pickup:"pick-up"};
-var NS=null,NRENDER=false,DEMONEW=[];
+var NS=null,NRENDER=false,DEMONEW=[],CONTACTS="contacts" in navigator&&"ContactsManager" in window;
 function demoMix(){var ids=DEMONEW.map(function(p){return p.id});return demoData().filter(function(p){return ids.indexOf(p.id)<0}).concat(DEMONEW)}
 function vtOf(mk,md){var x=nrm(mk+" "+md);if(nrm(md).length<2&&!/^ram$/.test(nrm(mk)))return "";if(rxHit(PICKRX,x))return "pickup";var su=rxHit(SUVRX,x),se=rxHit(SEDRX,x);return su&&!se?"suv":se&&!su?"sedan":""}
 function splitVeh(v){v=String(v||"").trim();var m=v.match(/\s(19|20)\d\d$/),yr=m?m[0].trim():"";if(yr)v=v.slice(0,-5).trim();
   var mk=Object.keys(MARCAS).sort(function(a,b){return b.length-a.length}).find(function(k){return nrm(v).indexOf(nrm(k))===0});
   return mk?{mk:mk,md:v.slice(mk.length).trim(),yr:yr}:{mk:v.split(" ")[0]||"",md:v.split(" ").slice(1).join(" "),yr:yr}}
-function openNew(pre){pre=pre||{};NS={step:1,cli:"",tel:"",mk:"",md:"",yr:"",vt:"",vtMan:false,src:"",items:{},desc:0,date:pre.date&&pre.date>=ymd(new Date())?pre.date:ymd(new Date()),time:pre.time||"",canton:"",prov:"",dir:"",known:false};
+function openNew(pre){pre=pre||{};NS={step:1,cli:"",tel:"",mk:"",md:"",yr:"",vt:"",vtMan:false,src:"",items:{},desc:0,date:pre.date&&pre.date>=ymd(new Date())?pre.date:ymd(new Date()),time:pre.time||"",canton:"",prov:"",dir:"",known:false,vtAuto:false,lat:null,lng:null,mapa:"",more:false,pre:!!pre.date};
   if(pre.ckey){var c=clientes().find(function(x){return x.key===pre.ckey});if(c)fillCli(c,pre.car)}
   loadSlots().then(function(){if(VIEW==="new"&&NS&&NS.step===3)renderNew()});goView("new",null,true)}
 function fillCli(c,carKey){NS.cli=c.cli;NS.tel=String(c.tel||"").replace(/\D/g,"").slice(-8);NS.known=true;
   var last=c.ps[0],z=String(last.zona||"").split(",").map(function(x){return x.trim()});NS.prov=PROVS.indexOf(z[z.length-1])>=0?z[z.length-1]:"";NS.canton=z.length>1?z[0]:(NS.prov?"":z[0]||"");NS.dir=last.dir||"";
   NS.src=(c.ps.find(function(p){return p.src})||{}).src||"";
   if(carKey!==null){var car=c.cars.find(function(x){return x.key===carKey})||c.cars[0];if(car&&car.veh){var v=splitVeh(car.veh);NS.mk=v.mk;NS.md=v.md;NS.yr=v.yr;NS.vt=car.ps[0].vt||vtOf(v.mk,v.md)}}
-  else{NS.mk=NS.md=NS.yr=NS.vt=""}}
+  else{NS.mk=NS.md=NS.yr=NS.vt=""}
+  NS.vtAuto=false;NS.vtMan=!!NS.vt;
+  /* lo de la última vez ya marcado: se quita con un toque si cambia */
+  if(!Object.keys(NS.items).some(function(k){return NS.items[k]})){var IT={combo:"combo",focos:"focos",pu:"par",ps:"par",all:"all",alls:"all",techo:"techo"},sv=nrm(last.svc);
+    if(last.items&&last.items.length)last.items.forEach(function(k){if(IT[k])NS.items[IT[k]]=true});
+    else{if(/promo/.test(sv))NS.items.combo=true;else{if(/foco/.test(sv))NS.items.focos=true;if(/parabrisas/.test(sv))NS.items.par=true}if(/todos los vidrios/.test(sv))NS.items.all=true;if(/techo/.test(sv))NS.items.techo=true}}}
 function vehTxt(){return [NS.mk,NS.md,NS.yr].filter(Boolean).join(" ")}
 function svcSel(){var it=NS.items,vt=NS.vt||"sedan",big=vt!=="sedan",L=[];
   if(it.combo)L.push(["combo","Promo parabrisas + focos",30000]);
@@ -649,16 +659,15 @@ function slotInfo(date,skip){var ps=allP().filter(function(p){return p.date===da
     if(best)out[best.s].sug="queda de camino · a "+Math.max(1,Math.round(best.d))+" km de "+best.n}
   return out}
 function renderNew(){var el=$("vnew");if(!NS){el.innerHTML="";return}var st=NS.step,h='<div class="vhead"><button class="back press" id="nback" aria-label="'+(st>1?"Paso anterior":"Cerrar")+'">'+IC.back+'</button><span class="tt">Nueva parada</span><span style="display:flex;gap:6px;padding-right:10px" aria-label="Paso '+st+' de 3">'+[1,2,3].map(function(i){return '<span style="width:'+(i===st?26:6)+'px;height:6px;border-radius:3px;background:'+(i<st?"var(--c)":i===st?"var(--r)":"var(--ln)")+'"></span>'}).join("")+'</span></div><div class="vin" style="gap:14px">';
-  var inp=function(id,lbl,val,ph,type,list){return '<label class="fld"><span>'+lbl+'</span><input id="'+id+'" type="'+(type||"text")+'" value="'+esc(val)+'" placeholder="'+esc(ph||"")+'"'+(list?' list="'+list+'"':'')+(type==="tel"?' inputmode="numeric" maxlength="9"':'')+' autocomplete="off"></label>'};
+  var inp=function(id,lbl,val,ph,type,list){return '<label class="fld"><span>'+lbl+'</span><input id="'+id+'" type="'+(type||"text")+'" value="'+esc(val)+'" placeholder="'+esc(ph||"")+'"'+(list?' list="'+list+'"':'')+(type==="tel"?' inputmode="numeric" maxlength="14"':'')+(id==="ncli"?' autocapitalize="words"':'')+' enterkeyhint="next" autocomplete="off"></label>'};
   if(st===1){
     h+='<span class="q" style="font-size:20px">Cliente y carro</span>';
-    if(!NS.known)h+='<label class="srch">'+IC.search+'<input id="nq" type="search" placeholder="Buscar un cliente que ya vino" autocomplete="off"></label><div id="nsug" class="sug"></div>';
+    if(!NS.known)h+='<div style="display:flex;gap:8px"><label class="srch" style="flex:1">'+IC.search+'<input id="nq" type="search" placeholder="Buscar un cliente que ya vino" autocomplete="off"></label>'+(CONTACTS?'<button class="ibtn press" id="ncon" aria-label="Elegir de mis contactos">'+IC.user+'</button>':'')+'</div><div id="nsug" class="sug"></div>';
     else h+='<div class="note" style="display:flex;justify-content:space-between;align-items:center;color:var(--c)"><span>'+esc(NS.cli)+' · '+esc(NS.tel)+'</span><button class="m press" id="nother" style="font-size:12px;min-height:44px">Cambiar</button></div>';
     if(NS.known){var c=clientes().find(function(x){return x.key===NS.tel});if(c&&c.cars.length)h+='<div class="chips">'+c.cars.map(function(x){var on=nrm(vehTxt())===nrm(x.veh);return '<button class="press'+(on?" on":"")+'" data-ncar="'+esc(x.key)+'">'+esc(x.veh||"Sin carro")+'</button>'}).join("")+'<button class="press'+(!vehTxt()?" on":"")+'" data-ncar="">+ Otro carro</button></div>'}
-    if(!NS.known)h+='<div style="display:flex;gap:10px">'+inp("ncli","Nombre",NS.cli,"Nombre y apellido")+inp("ntel","WhatsApp",NS.tel,"8 dígitos","tel")+'</div>';
-    h+='<div style="display:flex;gap:10px">'+inp("nmk","Marca",NS.mk,"Toyota","text","dl-mk")+inp("nmd","Modelo",NS.md,"RAV4","text","dl-md")+'</div>'+
-    '<datalist id="dl-mk">'+Object.keys(MARCAS).map(function(k){return '<option value="'+esc(k)+'">'}).join("")+'</datalist><datalist id="dl-md">'+((MARCAS[NS.mk]||[]).map(function(k){return '<option value="'+esc(k)+'">'}).join(""))+'</datalist>'+
-    '<div style="display:flex;gap:10px;align-items:flex-end">'+inp("nyr","Año (opcional)",NS.yr,"2019","number")+'<div style="flex:2;display:flex;flex-direction:column;gap:6px"><span class="m" style="font-size:12px;display:flex;justify-content:space-between">Tipo'+(NS.vt&&!NS.vtMan?'<span style="color:var(--r)">detectado</span>':'')+'</span><div class="seg" style="padding:4px">'+["sedan","suv","pickup"].map(function(v){return '<button class="press'+(NS.vt===v?" on":"")+'" data-vt="'+v+'" style="height:40px;font-size:12px">'+VTN[v].replace(/^s/,"S").replace(/^p/,"P")+'</button>'}).join("")+'</div></div></div>';
+    if(!NS.known)h+='<div style="display:flex;gap:10px">'+inp("ncli","Nombre",NS.cli,"Nombre y apellido")+inp("ntel","WhatsApp",NS.tel,"8 dígitos","tel")+'</div><div id="ntelk"></div>';
+    h+='<div style="display:flex;gap:10px">'+inp("nmk","Marca",NS.mk,"Toyota")+inp("nmd","Modelo",NS.md,"RAV4")+'</div><div class="chips mks" id="nmks"></div>'+
+    '<div style="display:flex;gap:10px;align-items:flex-end">'+inp("nyr","Año (opcional)",NS.yr,"2019","number")+'<div style="flex:2;display:flex;flex-direction:column;gap:6px"><span class="m" id="nvtl" style="font-size:12px;display:flex;justify-content:space-between;align-items:center;min-height:18px"></span><div class="seg" style="padding:4px">'+["sedan","suv","pickup"].map(function(v){return '<button class="press" data-vt="'+v+'" style="height:40px;font-size:12px">'+VTN[v].replace(/^s/,"S").replace(/^p/,"P")+'</button>'}).join("")+'</div></div></div>';
     if(!NS.known||!NS.src)h+='<div class="sec"><span class="m" style="font-size:12px">¿Cómo nos conoció?</span><div class="chips" style="flex-wrap:wrap">'+FUENTES.map(function(f){return '<button class="press'+(NS.src===f?" on":"")+'" data-src="'+f+'">'+f+'</button>'}).join("")+'</div></div>';
   }else if(st===2){
     var vt=NS.vt||"sedan",big=vt!=="sedan",opt=function(k,t,sub,p){var on=!!NS.items[k];return '<button class="sv press'+(on?" on":"")+'" data-sv="'+k+'"><span class="bx">'+(on?IC.chk:"")+'</span><span style="flex:1;display:flex;flex-direction:column;gap:2px;text-align:left"><span style="font-size:15px">'+t+'</span><span class="m" style="font-size:12px">'+sub+'</span></span><span class="q" style="font-size:17px">'+p+'</span></button>'};
@@ -674,12 +683,12 @@ function renderNew(){var el=$("vnew");if(!NS){el.innerHTML="";return}var st=NS.s
       days+='<button class="day press'+(k===NS.date?" sel":"")+'" data-nd="'+k+'"'+(bl?' disabled style="opacity:.35"':'')+'><small>'+DIAS[(d.getDay()+6)%7]+'</small><b>'+d.getDate()+'</b><span class="dots">'+new Array(Math.min(n,4)+1).join("<i></i>")+'</span></button>'}
     var si=slotInfo(NS.date);
     h+='<span class="q" style="font-size:20px">Día y lugar</span><div class="nweek">'+days+'</div><div class="sec">'+SLOTS.map(function(s){var o=si[s],dis=o.busy||o.blk||o.past,on=NS.time===s;
-      return '<button class="nslot press'+(on?" on":"")+(o.sug&&!on?" sug":"")+'" data-nt="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":(o.sug||"Libre"))+'</span></button>'}).join("")+'</div>'+
+      return '<button class="nslot press'+(on?" on":"")+(o.sug&&!on?" sug":"")+'" data-nt="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":(o.sug||"Libre"))+'</span></button>'}).join("")+horasExtra(NS.date,null,NS.time,"nt",NS.more)+'</div>'+
+    '<div class="fld"><span>Ubicación</span><div style="display:flex;gap:8px"><input id="ncan" value="'+esc(NS.canton)+'" placeholder="Enlace de Maps o Waze, o el cantón" autocomplete="off" enterkeyhint="next"><button class="btn alt press" id="npaste" style="width:auto;min-height:52px;padding:0 14px;flex:none">Pegar</button></div></div><div id="nlocs">'+locNote()+'</div>'+
     '<div class="sec"><span class="m" style="font-size:12px">Provincia</span><div class="chips" style="flex-wrap:wrap">'+PROVS.map(function(p){return '<button class="press'+(NS.prov===p?" on":"")+'" data-pv="'+p+'">'+p+'</button>'}).join("")+'</div></div>'+
-    '<div style="display:flex;gap:10px">'+inp("ncan","Cantón o barrio",NS.canton,"Ej.: San Pablo")+'</div>'+
     '<label class="fld"><span>Señas (opcional)</span><input id="ndir" value="'+esc(NS.dir)+'" placeholder="200 m norte de la iglesia, casa azul" autocomplete="off"></label>'+
     (NS.prov==="Otra"?'<div class="note" style="color:var(--r)">Fuera de la GAM: confirmá el recargo con el cliente antes de ir.</div>':'')+
-    '<div class="kp" style="gap:6px"><span class="m" style="font-size:12px">Resumen</span><span style="font-size:14px">'+esc(NS.cli)+' · '+esc(vehTxt())+'</span>'+svcSel().map(function(x){return '<div style="display:flex;justify-content:space-between;font-size:13px"><span>'+esc(x[1])+'</span><span class="q">'+crc(x[2])+'</span></div>'}).join("")+(NS.desc?'<div style="display:flex;justify-content:space-between;font-size:13px"><span>Descuento</span><span class="q">−'+crc(NS.desc)+'</span></div>':'')+'</div>';
+    '<div class="kp" style="gap:6px"><span class="m" style="font-size:12px">Resumen</span><span style="font-size:14px">'+esc(NS.cli)+' · '+esc(vehTxt())+'</span>'+(NS.time?'<span class="m" style="font-size:13px">'+esc(fechaTxt(NS.date))+' · '+esc(h12ap(NS.time))+'</span>':'')+svcSel().map(function(x){return '<div style="display:flex;justify-content:space-between;font-size:13px"><span>'+esc(x[1])+'</span><span class="q">'+crc(x[2])+'</span></div>'}).join("")+(NS.desc?'<div style="display:flex;justify-content:space-between;font-size:13px"><span>Descuento</span><span class="q">−'+crc(NS.desc)+'</span></div>':'')+'</div>';
   }
   h+='</div><div class="vfoot" style="align-items:center"><span style="display:flex;flex-direction:column;min-width:90px"><span class="m" style="font-size:11px">Total</span><span class="q" id="ntot" style="font-size:22px">'+crc(svcTotal())+'</span></span><button class="btn press" id="nnext" style="flex:1">'+(st<3?"Siguiente "+IC.chev:IC.chk+" Agendar")+'</button></div>';
   NRENDER=true;el.innerHTML=h;NRENDER=false;bindNew(el)}
@@ -689,10 +698,65 @@ function nRead(){var g=function(id){var x=$(id);return x?x.value.trim():null};
   if(g("nmd")!=null)NS.md=g("nmd").slice(0,40);if(g("nyr")!=null)NS.yr=g("nyr").slice(0,4);
   if(g("ndesc")!=null)NS.desc=Math.max(0,Math.round(+g("ndesc")||0));
   if(g("ncan")!=null)NS.canton=g("ncan").slice(0,40);if(g("ndir")!=null)NS.dir=g("ndir").slice(0,200);
-  if(!NS.vtMan){var v=vtOf(NS.mk,NS.md);if(v)NS.vt=v}}
+  if(!NS.mk&&NS.md){var bm=mkDeMd(NS.md);if(bm)NS.mk=bm}
+  autoVt()}
+function mkDeMd(md){var t=nrm(md);return t.length<2?"":Object.keys(MARCAS).find(function(k){return MARCAS[k].some(function(m){return nrm(m)===t})})||""}
+/* el tipo se detecta por marca y modelo; si se detecta, los otros quedan bloqueados */
+function autoVt(){if(NS.vtMan)return;var v=vtOf(NS.mk,NS.md);if(v){NS.vt=v;NS.vtAuto=true}else if(NS.vtAuto){NS.vt="";NS.vtAuto=false}}
+function paintVt(){var el=$("vnew");if(!el)return;Array.prototype.forEach.call(el.querySelectorAll("[data-vt]"),function(b){var on=NS.vt===b.dataset.vt;b.classList.toggle("on",on);b.disabled=NS.vtAuto&&!on;b.style.opacity=b.disabled?".3":""});
+  var l=$("nvtl");if(l)l.innerHTML='Tipo'+(NS.vtAuto?'<span style="display:flex;gap:8px;align-items:center"><span style="color:var(--ok)">detectado '+IC.chk+'</span><button class="press" id="nvtx" style="color:var(--m);text-decoration:underline;font-size:12px;min-height:28px">No es</button></span>':'');
+  if($("nvtx"))$("nvtx").onclick=function(){NS.vtMan=true;NS.vtAuto=false;paintVt()}}
+var TOPMK=["Toyota","Hyundai","Nissan","Kia","Suzuki","Mitsubishi","Honda","Mazda","Chevrolet","Ford"];
+/* sugerencias tocables para marca y modelo (el datalist casi no se ve en iPhone) */
+function paintMk(){var box=$("nmks"),a=$("nmk"),b=$("nmd");if(!box||!a)return;var t=nrm(a.value),ks=Object.keys(MARCAS),mk=ks.find(function(k){return nrm(k)===t}),L,at;
+  if(!mk){L=t?ks.filter(function(k){return nrm(k).indexOf(t)===0}).concat(ks.filter(function(k){return nrm(k).indexOf(t)>0})):TOPMK;at="mk"}
+  else{var md=nrm(b.value),ms=MARCAS[mk];L=ms.some(function(m){return nrm(m)===md})?[]:ms.filter(function(m){return !md||nrm(m).indexOf(md)>=0});at="md"}
+  box.innerHTML=L.slice(0,12).map(function(k){return '<button class="press" data-'+at+'="'+esc(k)+'">'+esc(k)+'</button>'}).join("");
+  Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.onclick=function(){if(x.dataset.mk){a.value=x.dataset.mk;nRead();paintMk();paintVt();b.focus()}else{b.value=x.dataset.md;nRead();paintMk();paintVt()}}})}
+var XHRS=[6,7,8,9,10,11,12,13,14,15,16,17,18];
+function horaInfo(date,skip,t){var m=mins(t),hoy=ymd(new Date()),n=new Date(),c=allP().find(function(p){return p.date===date&&p.id!==skip&&p.time&&Math.abs(mins(p.time)-m)<120});
+  return {busy:c||null,blk:hourBlocked(date,t)||dayBlocked(date),past:date===hoy&&m<=n.getHours()*60+n.getMinutes()}}
+/* horas fuera de los 4 espacios normales, cuando el cliente lo pide */
+function horasExtra(date,skip,time,attr,open){var cus=time&&SLOTS.indexOf(time)<0;open=open||cus;
+  var h='<button class="nmore press" data-hm="1">'+(open?'Menos horas':'Otra hora · a pedido del cliente')+'</button>';if(!open)return h;
+  h+='<div class="hgrid">'+XHRS.filter(function(x){return SLOTS.indexOf(pad(x)+":00")<0}).map(function(x){var t=pad(x)+":00",o=horaInfo(date,skip,t),w=o.busy?"Ojo: queda cerca de "+first(o.busy.cli)+" ("+h12ap(o.busy.time)+")":"";
+    return '<button class="press'+(time===t?" on":"")+(o.busy?" x":"")+'" data-'+attr+'="'+t+'"'+(w?' data-warn="'+esc(w)+'"':'')+(o.past||o.blk?" disabled":"")+'>'+(x%12||12)+(x<12?" a. m.":" p. m.")+'</button>'}).join("")+'</div>'+
+  '<label class="fld"><span>Hora exacta</span><input id="'+attr+'x" type="time" step="900" min="06:00" max="19:00" value="'+(cus?esc(time):"")+'"></label>';return h}
+function horaPick(attr,t,date,skip){var o=horaInfo(date,skip,t);if(o.blk){toast("Esa hora está bloqueada");return false}if(o.past){toast("Esa hora ya pasó");return false}if(o.busy)toast("Ojo: queda cerca de "+first(o.busy.cli)+" ("+h12ap(o.busy.time)+")");return true}
+/* UBICACIÓN: acepta enlaces de Google Maps, Waze, ubicación de WhatsApp o "lat, lng" */
+function ghash(g){var B="0123456789bcdefghjkmnpqrstuvwxyz",la=[-90,90],lo=[-180,180],ev=true;for(var i=0;i<g.length;i++){var c=B.indexOf(g[i]);if(c<0)return null;for(var k=4;k>=0;k--){var r=ev?lo:la,mid=(r[0]+r[1])/2;if(c>>k&1)r[0]=mid;else r[1]=mid;ev=!ev}}return {lat:(la[0]+la[1])/2,lng:(lo[0]+lo[1])/2}}
+function llDe(t){t=String(t||"").replace(/\+/g," ");try{t=decodeURIComponent(t)}catch(e){}var R=[/!3d(-?\d{1,2}\.\d+)!4d(-?\d{1,3}\.\d+)/,/[?&](?:q|ll|query|destination|daddr|saddr|center|to)=(?:ll\.)?(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/i,/ll\.(-?\d{1,2}\.\d+),(-?\d{1,3}\.\d+)/,/@(-?\d{1,2}\.\d+),(-?\d{1,3}\.\d+)/,/^\s*(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})\s*$/],m=null;
+  for(var i=0;i<R.length&&!m;i++)m=t.match(R[i]);
+  if(!m){var g=t.match(/waze\.com\/ul\/h([0-9a-z]{5,12})/);if(g)return ghash(g[1])}
+  if(!m)return null;var la=+m[1],ln=+m[2];return Math.abs(la)>90||Math.abs(ln)>180?null:{lat:la,lng:ln}}
+function plCerca(ll){var b=null;PL.forEach(function(x){var d=haversine(ll,{lat:x[1],lng:x[2]});if(!b||d<b.d)b={x:x,d:d}});return b}
+function plNom(x){return x[0].replace(/ centro$/,"").replace(/\s*\(.*\)$/,"")}
+function locIn(v){var ll=llDe(v);
+  if(ll){var b=plCerca(ll);NS.lat=ll.lat;NS.lng=ll.lng;NS.mapa="";if(b&&b.d<40){NS.canton=plNom(b.x);NS.prov=b.x[4]==="Lejos"?"Otra":b.x[4]}renderNew();vib(15);toast("Punto exacto guardado ✓");return}
+  var u=String(v).match(/https?:\/\/\S+/);
+  if(u&&/goo\.gl|google\.|g\.co|waze\.com|maps\.apple/i.test(u[0])){NS.mapa=u[0].slice(0,300);NS.lat=NS.lng=null;NS.canton="";renderNew();return}
+  NS.canton=String(v).slice(0,40);var t=nrm(v),box=$("nlocs");if(!box)return;
+  var L=t.length<2?[]:PL.filter(function(x){return nrm(x[0]).indexOf(t)>=0&&nrm(plNom(x))!==t}).slice(0,6);
+  box.innerHTML=(L.length?'<div class="chips" style="flex-wrap:wrap">'+L.map(function(x){return '<button class="press" data-pl="'+esc(x[0])+'">'+esc(plNom(x))+' <span class="m" style="font-size:11px">'+esc(x[4]==="Lejos"?"fuera de la GAM":x[4])+'</span></button>'}).join("")+'</div>':'')+locNote();
+  Array.prototype.forEach.call(box.querySelectorAll("[data-pl]"),function(b){b.onclick=function(){var x=PL.find(function(y){return y[0]===b.dataset.pl});nRead();NS.canton=plNom(x);NS.prov=x[4]==="Lejos"?"Otra":x[4];renderNew()}});bindLocNote()}
+function locNote(){if(NS.lat!=null)return '<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--ok)"><span>'+IC.pin2+' Punto exacto guardado: Waze va directo</span><button class="m press" id="nlocx" style="font-size:12px;min-height:40px">Quitar</button></div>';
+  if(NS.mapa)return '<div class="note" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>Enlace corto de Google guardado: el botón de navegar lo abre en Google Maps. Para Waze directo, pegá el enlace largo o pedile la ubicación al cliente.</span><button class="m press" id="nlocx" style="font-size:12px;min-height:40px">Quitar</button></div>';
+  return ''}
+function bindLocNote(){if($("nlocx"))$("nlocx").onclick=function(){nRead();NS.lat=NS.lng=null;NS.mapa="";renderNew()}}
 function bindNew(el){
   $("nback").onclick=function(){nRead();if(NS.step>1){NS.step--;renderNew();$("vnew").scrollTop=0;if(!RM)gsap.from("#vnew .vin",{x:-32,opacity:0,duration:.3,ease:EO})}else back()};
-  Array.prototype.forEach.call(el.querySelectorAll("input"),function(i){i.addEventListener("change",function(){if(NRENDER)return;var vt0=NS.vt,mk0=NS.mk;nRead();if(NS.vt!==vt0||NS.mk!==mk0)renderNew();else $("ntot").textContent=crc(svcTotal())})});
+  Array.prototype.forEach.call(el.querySelectorAll("input"),function(i){i.addEventListener("change",function(){if(NRENDER||i.id==="ncan"||/x$/.test(i.id))return;nRead();paintVt();$("ntot").textContent=crc(svcTotal())})});
+  ["nmk","nmd"].forEach(function(id){var x=$(id);if(x)x.addEventListener("input",function(){nRead();paintMk();paintVt()})});
+  paintMk();paintVt();
+  var tl=$("ntel");if(tl)tl.addEventListener("input",function(){var d=tl.value.replace(/\D/g,"").slice(-8),c=d.length===8&&clientes().find(function(x){return x.key===d});
+    $("ntelk").innerHTML=c?'<button class="note press" id="ntelc" style="width:100%;text-align:left;color:var(--ok)">Ya es cliente: '+esc(c.cli)+' · tocá para llenar sus datos</button>':'';
+    if(c)$("ntelc").onclick=function(){nRead();fillCli(c,undefined);renderNew()}});
+  if($("ncon"))$("ncon").onclick=function(){navigator.contacts.select(["name","tel"],{multiple:false}).then(function(r){if(!r||!r[0])return;var x=r[0],d=String((x.tel||[])[0]||"").replace(/\D/g,"").slice(-8),c=clientes().find(function(y){return y.key===d});
+    nRead();if(c)fillCli(c,undefined);else{NS.cli=String((x.name||[])[0]||"").slice(0,60);NS.tel=d}renderNew()}).catch(function(){})};
+  var cn=$("ncan");if(cn)cn.addEventListener("input",function(){locIn(cn.value)});
+  if($("npaste"))$("npaste").onclick=function(){if(!navigator.clipboard||!navigator.clipboard.readText){toast("Mantené presionado el campo y elegí Pegar");return}navigator.clipboard.readText().then(function(v){if(v){nRead();locIn(v)}}).catch(function(){toast("Mantené presionado el campo y elegí Pegar")})};
+  bindLocNote();
+  if($("ntx"))$("ntx").onchange=function(){var t=$("ntx").value;if(!t)return;nRead();if(horaPick("nt",t,NS.date,null)){NS.time=t;NS.more=true;renderNew()}};
   var q=$("nq");if(q)q.oninput=function(){var t=nrm(q.value),L=t.length<2?[]:clientes().filter(function(c){return nrm(c.cli+" "+c.tel+" "+c.veh).indexOf(t)>=0}).slice(0,5);
     $("nsug").innerHTML=L.map(function(c){return '<button class="cl press" data-nc="'+esc(c.key)+'"><span class="av" style="background:'+hashC(c.key)+';width:36px;height:36px">'+esc(ini(c.cli))+'</span><span style="display:flex;flex-direction:column;min-width:0;text-align:left"><span style="font-size:14px">'+esc(c.cli)+'</span><span class="m" style="font-size:12px">'+esc(c.veh||"")+'</span></span></button>'}).join("");
     Array.prototype.forEach.call($("nsug").querySelectorAll("[data-nc]"),function(b){b.onclick=function(){nRead();fillCli(clientes().find(function(c){return c.key===b.dataset.nc}),undefined);renderNew()}})};
@@ -702,20 +766,24 @@ function bindNew(el){
   Array.prototype.forEach.call(el.querySelectorAll("[data-src]"),function(b){b.onclick=function(){nRead();NS.src=b.dataset.src;renderNew()}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-sv]"),function(b){b.onclick=function(){nRead();pickSvc(b.dataset.sv);renderNew();if(!RM){var t=$("ntot");if(t)gsap.fromTo(t,{scale:1.2},{scale:1,duration:.35,ease:"back.out(3)"})}}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-nd]"),function(b){b.onclick=function(){nRead();NS.date=b.dataset.nd;NS.time="";renderNew()}});
-  Array.prototype.forEach.call(el.querySelectorAll("[data-nt]"),function(b){b.onclick=function(){nRead();NS.time=b.dataset.nt;renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-nt]"),function(b){b.onclick=function(){nRead();if(b.dataset.warn)toast(b.dataset.warn);NS.time=b.dataset.nt;renderNew()}});
+  Array.prototype.forEach.call(el.querySelectorAll("[data-hm]"),function(b){b.onclick=function(){nRead();NS.more=!NS.more;renderNew()}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-pv]"),function(b){b.onclick=function(){nRead();NS.prov=b.dataset.pv;renderNew()}});
   $("nnext").onclick=function(){nRead();var e="";
     if(NS.step===1){if(NS.cli.length<2)e="Escribí el nombre del cliente";else if(NS.tel.length!==8)e="El WhatsApp debe tener 8 dígitos";else if(!NS.mk||!NS.md)e="Falta la marca y el modelo";else if(!NS.vt)e="Elegí si es sedán, SUV o pick-up"}
     if(NS.step===2&&!svcSel().length)e="Elegí al menos un servicio";
     if(NS.step===3){if(!NS.time)e="Elegí la hora";else if(!NS.prov)e="Elegí la provincia"}
     if(e){toast(e);return}
+    if(NS.step===2&&!NS.pre&&!NS.time)NS.date=diaLibre(NS.date);
     if(NS.step<3){NS.step++;renderNew();$("vnew").scrollTop=0;if(!RM)gsap.from("#vnew .vin",{x:32,opacity:0,duration:.3,ease:EO});return}
     agendar()};
   if(!RM)gsap.from("#vnew .sv,#vnew .nslot",{y:10,opacity:0,stagger:.04,duration:.3})}
+function diaLibre(d0){for(var i=0;i<14;i++){var k=ymd(addDays(parse(d0),i)),si=slotInfo(k);if(!dayBlocked(k)&&SLOTS.some(function(s){var o=si[s];return !o.busy&&!o.blk&&!o.past}))return k}return d0}
 function agendar(){var L=svcSel(),c=clientes().find(function(x){return x.key===NS.tel}),loc=c?locOfC(c):null;
   var p={cli:NS.cli,tel:NS.tel,veh:vehTxt(),vt:NS.vt,svc:L.map(function(x){return x[1]}).join(" + "),items:L.map(function(x){return x[0]}),total:svcTotal(),desc:NS.desc||0,date:NS.date,time:NS.time,
     zona:[NS.canton,NS.prov==="Otra"?"":NS.prov].filter(Boolean).join(", ")||NS.prov,dir:NS.dir,st:"Pendiente",src:NS.src||"",who:USER?USER.email:"",by:"app",at:Date.now()};
-  if(loc){p.lat=loc.lat;p.lng=loc.lng}
+  if(NS.lat!=null){loc={lat:NS.lat,lng:NS.lng};saveCli(NS.tel,{lat:NS.lat,lng:NS.lng,locAt:Date.now()})}
+  if(loc){p.lat=loc.lat;p.lng=loc.lng}else if(NS.mapa)p.mapa=NS.mapa;
   var done1=function(id){p.id=id;if(DEMO){DEMONEW.push(p);ALL=(ALL||[]).concat([p]);var mon=ymd(monday(parse(S.sel)));if(ymd(monday(parse(p.date)))===mon)S.week.push(p)}nOk(p,!!loc)};
   if(DEMO||!DB){done1("n"+Date.now());return}
   var ref=DB.collection(COL).doc(),bt=DB.batch(),h0=+p.time.slice(0,2);bt.set(ref,p);
@@ -784,14 +852,17 @@ function parMenu(p){
   showSheet();
   $("mmov").onclick=function(){loadSlots().then(function(){moverSheet(p,p.date,"")})};
   $("mcan").onclick=function(){cancelSheet(p)}}
+var MVMORE=false;
 function moverSheet(p,date,time){var days="",t0=new Date();
   for(var i=0;i<14;i++){var d=addDays(t0,i),k=ymd(d),bl=dayBlocked(k);days+='<button class="day press'+(k===date?" sel":"")+'" data-md2="'+k+'"'+(bl?' disabled style="opacity:.35"':'')+'><small>'+DIAS[(d.getDay()+6)%7]+'</small><b>'+d.getDate()+'</b></button>'}
   var si=slotInfo(date,p.id);
   $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:10px"><span class="q" style="font-size:20px">Mover a '+esc(first(p.cli))+'</span><div class="nweek" style="margin:0 -20px">'+days+'</div>'+
-  SLOTS.map(function(s){var o=si[s],dis=o.busy||o.blk||o.past,on=time===s;return '<button class="nslot press'+(on?" on":"")+'" data-mt2="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":"Libre")+'</span></button>'}).join("")+
+  SLOTS.map(function(s){var o=si[s],dis=o.busy||o.blk||o.past,on=time===s;return '<button class="nslot press'+(on?" on":"")+'" data-mt2="'+s+'"'+(dis?" disabled":"")+'><span class="q" style="font-size:17px;width:96px;white-space:nowrap;text-align:left">'+h12ap(s)+'</span><span style="flex:1;text-align:left;font-size:13px">'+(o.busy?esc(first(o.busy.cli))+" · "+esc(o.busy.veh||""):o.blk?"Bloqueada":o.past?"Ya pasó":"Libre")+'</span></button>'}).join("")+horasExtra(date,p.id,time,"mt2",MVMORE)+
   '<button class="btn press" id="mok"'+(time?'':' disabled style="opacity:.4"')+'>Mover</button></div>';
   Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-md2]"),function(b){b.onclick=function(){moverSheet(p,b.dataset.md2,"")}});
-  Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-mt2]"),function(b){b.onclick=function(){moverSheet(p,date,b.dataset.mt2)}});
+  Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-mt2]"),function(b){b.onclick=function(){if(b.dataset.warn)toast(b.dataset.warn);moverSheet(p,date,b.dataset.mt2)}});
+  Array.prototype.forEach.call($("sheetc").querySelectorAll("[data-hm]"),function(b){b.onclick=function(){MVMORE=!MVMORE;moverSheet(p,date,time)}});
+  if($("mt2x"))$("mt2x").onchange=function(){var t=$("mt2x").value;if(t&&horaPick("mt2",t,date,p.id)){MVMORE=true;moverSheet(p,date,t)}};
   $("mok").onclick=function(){if(!time)return;var old=p.date+" "+p.time;save(p,{date:date,time:time,rc:null});
     var h0=+time.slice(0,2);slotDocs(p,function(bt){[h0,h0+1].forEach(function(h){bt.set(DB.doc("slots/"+date+"_"+pad(h)),{date:date,h:h,job:p.id,at:Date.now()})})});
     if(DEMO&&DEMONEW.indexOf(p)<0)DEMONEW.push(p);
