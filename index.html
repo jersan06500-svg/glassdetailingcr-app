@@ -548,7 +548,7 @@ function nextCard(p,y,isToday){var dm=mins(p.time)-nowMin(),cuando;
   (function(){if(!isToday)return '';var sl=salida(p,S.paradas.indexOf(p));if(!sl||p.lleg)return '';var tarde=nowMin()>sl.m;return '<div class="sal"'+(tarde?' style="color:#fff;background:rgba(255,90,95,.35)"':'')+'>'+(tarde?'Ya deberían ir saliendo':'Salí a las '+hhmm(sl.m))+' · '+sl.t.min+' min de camino</div>'})()+'<div class="acts"><a class="waze press" href="'+esc(wazeUrl(p))+'" target="_blank" rel="noopener">'+IC.waze+' Waze</a>'+
   '<a class="go press" id="gocam" href="'+esc(waUrl(p,msgCamino(p,m)))+'" target="_blank" rel="noopener">'+IC.wa+' Vamos en camino</a></div>'+
   '<div class="mins">Llegamos en '+mb+'</div>'+
-  '<div style="display:flex;gap:8px"><button class="llegue press" id="llegue" style="flex:1">'+IC.flag+' Llegamos</button><button class="llegue press" id="runb" aria-label="Modo en ruta: pantalla grande para el carro" style="width:52px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div></div>'}
+  '<div style="display:flex;gap:8px"><button class="llegue press" id="llegue" style="flex:1">'+IC.flag+' Llegamos</button><button class="llegue press" id="nopt" aria-label="Cambiar día u hora, o cancelar la cita" style="width:52px"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button><button class="llegue press" id="runb" aria-label="Modo en ruta: pantalla grande para el carro" style="width:52px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div></div>'}
 function bindNext(root){var nx=$("next");bindSoon(root);
   Array.prototype.forEach.call(root.querySelectorAll("[data-open]"),function(el){el.addEventListener("click",function(e){if(e.target.closest("a,button"))return;openPar(el.dataset.open)})});
   if(!nx)return;
@@ -557,7 +557,7 @@ function bindNext(root){var nx=$("next");bindSoon(root);
     Array.prototype.forEach.call(nx.querySelectorAll("[data-min]"),function(o){o.classList.toggle("on",o===b)});
     $("gocam").href=waUrl(p,msgCamino(p,S.mins));if(!RM)gsap.fromTo(b,{scale:.85},{scale:1,duration:.35,ease:"back.out(3)"})}});
   $("gocam").addEventListener("click",function(){save(p,{camino:Date.now()})});
-  $("runb").onclick=function(){goView("run",p.id,true)};
+  $("runb").onclick=function(){goView("run",p.id,true)};$("nopt").onclick=function(){parMenu(p)};
   $("llegue").onclick=function(){if(!p.lleg)save(p,{lleg:Date.now()});vib(25);window.open(waUrl(p,msgLlegamos(p)),"_blank");openPar(p.id)}}
 function bindSoon(root){Array.prototype.forEach.call(root.querySelectorAll("[data-soon]"),function(b){b.onclick=function(){openNew({date:S.sel})}})}
 function save(p,data){Object.keys(data).forEach(function(k){p[k]=data[k]});syncBack(p,data);if(DEMO||!DB){refresh();return}
@@ -780,7 +780,7 @@ function fechaTxt(k){var d=parse(k);return ["domingo","lunes","martes","miércol
 function parMenu(p){
   $("sheetc").innerHTML='<div style="display:flex;flex-direction:column;gap:10px"><span class="q" style="font-size:20px">'+esc(first(p.cli))+' · '+esc(hora12(p.time))+'</span>'+
   '<button class="btn alt press" id="mmov">'+IC.clock+' Cambiar día u hora</button>'+
-  '<button class="btn alt press" id="mcan" style="color:var(--r)">Cancelar esta parada</button></div>';
+  '<button class="btn alt press" id="mcan" style="color:var(--r)">Cancelar cita</button></div>';
   showSheet();
   $("mmov").onclick=function(){loadSlots().then(function(){moverSheet(p,p.date,"")})};
   $("mcan").onclick=function(){cancelSheet(p)}}
@@ -998,9 +998,10 @@ function renderPar(){var p=byId(CUR),el=$("vpar");if(!p){el.innerHTML="";return}
   if(tk.length)h+='<div class="sec"><b class="q" style="font-weight:400;font-size:17px">Lo que falta</b>'+tk.map(function(t){return '<button class="ck press'+(hech[t[0]]?" on":"")+'" data-t="'+t[0]+'"><span class="bx">'+(hech[t[0]]?IC.chk:"")+'</span><span>'+t[1]+'</span></button>'}).join("")+'</div>';
   if(p.fin||fd)h+='<div class="sec" id="secfd"><div class="sech"><b>Fotos de después</b><span class="m" style="font-size:12px">para la garantía y las redes</span></div>'+phGrid(p,"fd","Después")+'</div>';
   if(STORAGE_OFF)h+='<div class="note">Las fotos quedan guardadas en este celular y se suben solas cuando se active el plan Blaze de Firebase.</div>';
+  if(!done(p))h+='<div style="display:flex;gap:8px;margin-top:6px"><button class="btn alt press" id="pmov" style="flex:1;font-size:13px">'+IC.clock+' Cambiar día u hora</button><button class="btn alt press" id="pcan" style="flex:1;font-size:13px;color:var(--r);border-color:var(--r)">Cancelar cita</button></div>';
   h+='</div><div class="vfoot">'+parBtn(p,fa,fd)+'</div>';
   el.innerHTML=h;tickTimer();
-  $("pback").onclick=back;if($("pmore"))$("pmore").onclick=function(){parMenu(p)};if($("pconf"))$("pconf").addEventListener("click",function(){setTimeout(function(){save(p,{st:"Pendiente"});toast("Cita confirmada")},300)});
+  $("pback").onclick=back;if($("pmore"))$("pmore").onclick=function(){parMenu(p)};if($("pcan"))$("pcan").onclick=function(){cancelSheet(p);showSheet()};if($("pmov"))$("pmov").onclick=function(){loadSlots().then(function(){moverSheet(p,p.date,"");showSheet()})};if($("pconf"))$("pconf").addEventListener("click",function(){setTimeout(function(){save(p,{st:"Pendiente"});toast("Cita confirmada")},300)});
   Array.prototype.forEach.call(el.querySelectorAll("input[type=file]"),function(inp){inp.onchange=function(){addPhotos(p,inp.dataset.k,inp.files);inp.value=""}});
   Array.prototype.forEach.call(el.querySelectorAll("[data-t]"),function(b){b.onclick=function(){var t=Object.assign({},p.tareas||{});t[b.dataset.t]=!t[b.dataset.t];save(p,{tareas:t});
     if(!RM){var bx=document.querySelector('[data-t="'+b.dataset.t+'"] .bx');if(bx)gsap.fromTo(bx,{scale:.6},{scale:1,duration:.4,ease:"back.out(3)"})}}});
