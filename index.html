@@ -95,7 +95,7 @@ svg{display:block}
 .mins button{height:32px;padding:0 10px;white-space:nowrap;border-radius:16px;background:rgba(20,6,9,.35);font-size:12px}
 .mins button.on{background:var(--c);color:var(--w)}
 .llegue{height:44px;border-radius:14px;border:1px solid rgba(237,241,245,.35);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
-.empty{position:absolute;left:104px;right:12px;padding:18px;border-radius:22px;background:var(--s1);border:1px dashed var(--ln);display:flex;flex-direction:column;gap:10px}
+.empty{position:absolute;left:104px;right:12px;padding:8px 8px 8px 16px;border-radius:18px;background:var(--s1);border:1px dashed var(--ln);display:flex;align-items:center;gap:10px}
 
 #island{position:fixed;left:50%;bottom:calc(22px + var(--safe-b));transform:translateX(-50%);height:62px;padding:0 8px;border-radius:31px;background:rgba(43,15,22,.94);border:1px solid var(--ln);display:flex;align-items:center;gap:6px;z-index:10;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 #island button{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;color:var(--m)}
@@ -478,7 +478,7 @@ function dayFromWeek(){S.paradas=S.week.filter(function(p){return p.date===S.sel
 
 /* RESUMEN */
 var shown=0;
-function renderSum(){var tot=0,cob=0;S.paradas.forEach(function(p){tot+=p.total||0;if(p.st==="Pagada")cob+=p.total||0});
+function renderSum(){var none=!S.paradas.length;document.querySelector("#top .sum").classList.toggle("hide",none);document.querySelector("#top .bar").classList.toggle("hide",none);var tot=0,cob=0;S.paradas.forEach(function(p){tot+=p.total||0;if(p.st==="Pagada")cob+=p.total||0});
   var pct=tot?Math.round(cob*100/tot):0;
   $("lde").textContent="de "+crc(tot)+(tot?" · "+pct+" %":"");
   var o={v:shown};gsap.to(o,{v:cob,duration:RM?0:1,ease:"power2.out",onUpdate:function(){$("llev").textContent=crc(o.v)}});shown=cob;
@@ -508,7 +508,7 @@ function renderRoad(anim){var root=$("road"),list=S.paradas,top=$("top").offsetH
   var H=Math.max(y+140,window.innerHeight);
   root.style.height=H+"px";
   if(!list.length){var ey=top+60;
-    h+=roadSvg([ey],H,-1,null)+'<span class="dot" style="top:'+(ey-12)+'px"></span><div class="empty" style="top:'+(ey-30)+'px"><span class="q" style="font-size:20px">Día libre</span><span class="m" style="font-size:13px">No hay paradas este día.</span><button class="btn press" data-soon="Agendar">Agendar parada</button></div>';
+    h+=roadSvg([ey],H,-1,null)+'<span class="dot" style="top:'+(ey-12)+'px"></span><div class="empty" style="top:'+(ey-26)+'px"><span class="q" style="font-size:16px;flex:1">Día libre</span><button class="press" data-soon="Agendar" style="height:36px;padding:0 14px;border-radius:18px;background:var(--w);font-size:13px">+ Agendar</button></div>';
     root.innerHTML=h;bindSoon(root);if(anim)animIn();return}
   var isToday=S.sel===ymd(new Date()),carY=null;
   if(isToday){var nm=nowMin(),lastDone=-1;list.forEach(function(p,i){if(done(p))lastDone=i});
