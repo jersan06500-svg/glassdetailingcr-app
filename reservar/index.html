@@ -488,7 +488,7 @@ footer{color:#7D828C}
       </div>
       <div class="warn" id="vw"></div>
       <div class="hint">Si al llegar el tipo de carro es otro, el precio se ajusta al real.</div>
-      <h3 class="svch" id="h2t">¿Qué le hacemos?</h3><p class="sub">Focos con 5 meses de garantía; parabrisas, 3 meses.</p>
+      <h3 class="svch" id="h2t" style="scroll-margin-top:84px">¿Qué le hacemos?</h3><p class="sub">Focos con 5 meses de garantía; parabrisas, 3 meses.</p>
       <div class="forcar" id="forcar"></div>
       <div class="svc" id="gl"></div>
       <div class="need"><b>Servicio a domicilio gratis en toda la GAM</b>
@@ -585,7 +585,7 @@ function hasGift(c){c=c||S;return promoOn()&&c.gl===PROMO.svc}
 var FOCOS={id:"fo",n:"Restauración premium de focos con polímero líquido",s:"El par · garantía 5 meses",p:20000,ic:"💡"};
 var SUVRX=["rav ?4","cr-?v","hr-?v","c-?hr","prado","land ?cruiser","fortuner","rush","hilux","tacoma","tundra","4 ?runner","highlander","sequoia","sportage","sorento","seltos","sonet","tucson","santa ?fe","creta","venue","kona","palisade","x-?trail","qashqai","kicks","frontier","navara","pathfinder","montero","outlander","asx","l ?200","pajero","nativa","mu-?x","d-?max","ranger","explorer","escape","ecosport","bronco","everest","cx-?[3589]0?","bt-?50","forester","outback","xv","crosstrek","vitara","jimny","s-?cross","terios","bego","tiguan","t-?cross","t-?roc","touareg","amarok","duster","koleos","captur","oroch","trailblazer","tracker","equinox","colorado","silverado","wrangler","cherokee","compass","renegade","gladiator","x[1-7]","q[2-8]","gl[abce]","ml","rx","nx","ux","gx","lx","xc[469]0","h6","jolion","haval","korando","tivoli","rexton","actyon","musso","partner","l300","hiace","4x4","pick ?up","pickup","camioneta","suv","jeep"];
 var SEDRX=["corolla","yaris","camry","prius","etios","civic","accord","city","fit","jazz","sentra","versa","almera","march","tiida","note","elantra","accent","i10","i20","i30","grand i10","sonata","rio","picanto","k3","k5","cerato","forte","soluto","mazda ?[236]","demio","swift","alto","celerio","ciaz","dzire","baleno","mirage","lancer","attrage","jetta","golf","gol","polo","vento","virtus","spark","sail","aveo","cruze","onix","beat","focus","fiesta","logan","sandero","clase c","model 3","leaf","ioniq","sedan","sed[aá]n","hatchback"];
-var S={vt:"",gl:"combo",fo:false,day:"",h:null,lat:null,lng:null,acc:null,step:0},BUSY={},CFG={wa:"50670458967",open:true,off:[]},T0=Date.now(),DB=null;
+var S={vt:"",gl:"",fo:false,day:"",h:null,lat:null,lng:null,acc:null,step:0},BUSY={},CFG={wa:"50670458967",open:true,off:[]},T0=Date.now(),DB=null;
 var $=function(i){return document.getElementById(i)},pad=function(n){return n<10?"0"+n:""+n},ymd=function(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
 var DN=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],DS=["dom","lun","mar","mié","jue","vie","sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],MNL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 function crc(n){return "₡"+Math.round(n).toLocaleString("es-CR")}
@@ -606,7 +606,7 @@ $("go").onclick=function(){px("InitiateCheckout");document.body.classList.add("b
 $("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(0);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
 window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(0)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
 /* VARIOS CARROS */
-function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,tp:false,mk:"",md:"",yr:"",col:"",pl:""}}
+function newCar(){return {vt:"",veh:"",gl:"",fo:false,tp:false,mk:"",md:"",yr:"",col:"",pl:""}}
 var CARS=[newCar()];S.ci=0;
 function vehOf(c){return [c.mk==="Otra"?"":c.mk,c.md,c.yr].filter(Boolean).join(" ").trim()}
 function syncVeh(){$("veh").value=vehOf({mk:mkName(),md:$("md").value.trim(),yr:$("yr").value.replace(/\D/g,"")})}
@@ -646,10 +646,14 @@ function err(t){$("er").textContent=t||"";$("er").classList.toggle("on",!!t)}
 function total(){return allCars().reduce(function(a,c){return a+carTotal(c)},0)+feeAmt()}
 function okStep(){if(S.step===0)return !!S.vt&&mkName().length>=2&&$("md").value.trim().length>=1&&carTotal(curCar())>0;if(S.step===1)return zoneOk()&&(S.lat!=null||$("addr").value.trim().length>=10);if(S.step===2)return !!S.day&&S.h!=null;
   if(S.step===3)return $("cli").value.trim().length>=2&&telOk();return true}
-function upd(){var n=CARS.length;if(S.svt!==S.vt){S.svt=S.vt;buildSvc()}$("tot").textContent=crc(total());$("totl").textContent=n>1?"Total · "+n+" carros":"Total";$("nx").disabled=!okStep();renderCars()}
+function upd(){var n=CARS.length;if(S.svt!==S.vt){S.svt=S.vt;buildSvc()}$("tot").textContent=crc(total());$("totl").textContent=n>1?"Total · "+n+" carros":"Total";
+  var falta=faltaSvc();$("nx").disabled=!okStep()&&!falta;if(S.step===0)$("nx").textContent=falta?"Elija el servicio ↓":"Siguiente";renderCars()}
+/* Carro listo pero sin servicio: el botón de abajo lleva a los servicios (están más abajo en la misma pantalla). */
+var RMQ=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function faltaSvc(){return S.step===0&&!!S.vt&&mkName().length>=2&&$("md").value.trim().length>=1&&!carTotal(curCar())}
 function telN(){var n=$("tel").value.replace(/\D/g,"");if(n.length===11&&n.indexOf("506")===0)n=n.slice(3);return n}
 function telOk(){return /^[245678]\d{7}$/.test(telN())}
-$("nx").onclick=function(){if(!okStep()){hintStep();return}
+$("nx").onclick=function(){if(faltaSvc()){$("h2t").scrollIntoView({behavior:RMQ?"auto":"smooth",block:"start"});return}if(!okStep()){hintStep();return}
   if(S.step===0){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(0);err("Falta completar el carro "+(i+1)+".");return}saveCar();px("AddToCart",{value:total(),currency:"CRC",num_items:allCars().length})}
   if(S.step<4)show(S.step+1);else submit()};
 function hintStep(){if(S.step===0)err(!S.vt?"Toque si su carro es sedán o SUV.":mkName().length<2?"Escriba la marca del carro.":!$("md").value.trim()?"Escriba el modelo del carro.":"Elija un servicio para su carro.");if(S.step===1)err(!S.zone?"Mándenos su ubicación o elija la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escríbanos por WhatsApp para un pedido especial.":"Escriba la dirección con algunas señas.");if(S.step===2)err("Elija el día y la hora.");if(S.step===3)err(!telOk()?"Revise su número de WhatsApp: son 8 dígitos.":"Escriba su nombre.")}
