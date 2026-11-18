@@ -396,6 +396,18 @@ footer{color:#7D828C}
 .cta,.next,.opt,.day,.hr,.gps,.wbtn,.lbtn,.back,.cars button,.stick button,.wafab{transition:transform .16s cubic-bezier(.23,1,.32,1),background-color .2s,border-color .2s}
 .cta:active,.next:active,.opt:active,.day:active,.hr:active,.gps:active,.wbtn:active,.lbtn:active,.back:active,.cars button:active,.stick button:active,.wafab:active{transform:scale(.97)}
 .svch{font-size:22px;margin:26px 0 4px}
+.mycita{background:#17181D;border:1px solid #2C2E36;border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.mycita[hidden]{display:none}
+.mycita .mt{font-size:12px;color:#9EA3AD}
+.mc{display:flex;align-items:center;gap:12px}
+.mc span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.mc b{font-family:"Questrial",sans-serif!important;font-weight:400;font-size:17px}
+.mc small{font-size:12px;color:#9EA3AD;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mcx{flex:none;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #FF5A5F;color:#FF5A5F!important;display:flex;align-items:center;text-decoration:none;font-size:14px}
+#addmore{margin-top:12px;border-style:dashed}
+.check svg path{stroke-dashoffset:0!important}
+#cxl{border-color:#FF5A5F;color:#FF5A5F}
+#again{background:#22242B;border-color:#9B0A2C}#addmore[hidden]{display:none}
 .step.on{animation:paso .32s cubic-bezier(.23,1,.32,1)}
 @keyframes paso{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.step.on{animation:none}}
@@ -417,6 +429,7 @@ footer{color:#7D828C}
     <button class="cta" id="go">Agendar cita <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     <div class="pg"><div><small>Focos, el par</small><b>₡20 000</b></div><div><small>Parabrisas desde</small><b>₡20 000</b></div><div class="star" id="promo"><small>Promo los dos</small><b>₡30 000</b></div></div>
     <p class="garl">Garantía: focos 5 meses · parabrisas 3 meses</p>
+    <div class="mycita" id="mycita" hidden></div>
     </div>
   </div></div>
   <div class="wrap">
@@ -513,6 +526,7 @@ footer{color:#7D828C}
     <div class="step" id="s5">
       <h2>Revise su cita</h2><p class="sub">Si todo está bien, toque Confirmar.</p>
       <div class="sum" id="sum"></div>
+      <button type="button" class="lbtn" id="addmore">+ Agregar otro carro a esta visita</button>
       <div class="note">Al confirmar le pedimos mandarnos un mensaje por WhatsApp para dejarla lista. Así evitamos citas falsas y su hora queda apartada solo para usted.</div>
     </div>
     <div class="err" id="er" role="alert"></div>
@@ -526,8 +540,8 @@ footer{color:#7D828C}
   <a class="wbtn" id="wa" href="#" target="_blank" rel="noopener"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2.1 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l2 1c.3.1.4.2.5.3.1.2.1.7-.1 1.3z"/></svg>Confirmar por WhatsApp</a>
   <p style="font-size:13px;margin-top:10px">Mande el mensaje para que confirmemos su cita. Le respondemos por ahí mismo.</p>
   <a class="lbtn" id="cal" href="#" target="_blank" rel="noopener">Agregar a mi calendario</a>
+  <button type="button" class="lbtn" id="again">¿Otro carro? Agéndelo sin volver a escribir sus datos</button>
   <div class="cxbox"><b>¿Y si no puede?</b><small>Guarde este enlace. Con él puede cancelar su cita usted mismo, sin escribirnos.</small><a class="lbtn" id="cxl" href="#">Cancelar mi cita</a><button class="lbtn" id="cxcopy" type="button">Copiar el enlace</button></div>
-  <a class="lbtn" href="./">Agendar otro carro</a>
 </div></section>
 
 <div id="locdlg" role="alertdialog" aria-modal="true" aria-labelledby="loct" hidden><div class="box">
@@ -780,7 +794,7 @@ $("locno").onclick=function(){$("locdlg").hidden=true;$("zsel").focus()};
 function lines(c){c=c||curCar();var L=[],g=GLASS.find(function(x){return x.id===c.gl});if(g&&g.id!=="none")L.push({n:gln(g,c.vt),p:gp(g,c.vt)});if(g&&g.id==="none")L.push({n:FOCOS.n,p:FOCOS.p});if(c.tp)L.push({n:TECHO.n,p:TECHO.p});if(hasGift(c))L.push({n:PROMO.n,p:0});return L}
 function mapLink(){return S.lat!=null?"https://www.google.com/maps/search/?api=1&query="+S.lat+","+S.lng:""}
 function lineRows(L){return L.map(function(l){return l.p?'<div><i>✨</i><span>'+esc(l.n)+'</span><b>'+crc(l.p)+'</b></div>':'<div><i>🎁</i><span>'+esc(l.n.replace(/^🎁 /,""))+'</span><b style="color:var(--ok)">Gratis</b></div>'}).join("")}
-function renderSum(){var A=allCars(),n=A.length,len=DUR*n;
+function renderSum(){var A=allCars(),n=A.length,len=DUR*n;$("addmore").hidden=n>=MAXC;
   $("sum").innerHTML='<div><i>📅</i><span><b>'+niceDay(S.day).replace(/^./,function(c){return c.toUpperCase()})+'</b><br>'+fmtH(S.h)+' a '+fmtH(S.h+len)+(n>1?' · '+n+' carros':'')+'</span></div>'+
   A.map(function(c,k){return (n>1?'<div class="carh"><span>Carro '+(k+1)+' · '+fmtH(S.h+DUR*k)+'</span><b>'+crc(carTotal(c))+'</b></div>':'')+'<div><i>🚗</i><span>'+esc(c.veh)+' · '+vtN(c)+(extra(c)?'<br><small>'+esc(extra(c))+'</small>':'')+'</span></div>'+lineRows(lines(c))}).join("")+
   '<div><i>🔌</i><span>Ocupamos un toma de 110 V y, de preferencia, el carro bajo techo</span></div>'+
@@ -805,7 +819,7 @@ function submit(){var b=$("nx");if(b.disabled)return;err("");
     bt.set(DB.doc("jobs/"+sid),{id:id,cli:$("cli").value.trim().slice(0,60),tel:tel,veh:c.veh.slice(0,60),vt:c.vt,items:L.map(function(l){return l.n}),lines:L,disc:0,total:carTotal(c)+(k===0?feeAmt():0),date:S.day,time:pad(h0)+":00",note:note,ubic:ub.slice(0,300),src:$("src").value,st:"Por confirmar",by:"web",web:true,at:at,ck:ck});
     for(var q=0;q<DUR;q++)bt.set(DB.doc("slots/"+S.day+"_"+pad(h0+q)),{date:S.day,h:h0+q,job:sid,at:at})});
   bt.set(DB.doc("holds/"+tel),{job:ids[0],date:S.day,at:at});
-  bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);aviso("Nueva reserva web",niceDay(S.day)+", "+fmtH(S.h)+" · "+A.map(function(c){return c.veh}).join(", ")+" · "+crc(total()));done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
+  bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);guardarCita();aviso("Nueva reserva web",niceDay(S.day)+", "+fmtH(S.h)+" · "+A.map(function(c){return c.veh}).join(", ")+" · "+crc(total()));done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
       if(taken){S.h=null;show(2);err("Uy, alguien acaba de tomar esa hora. Elija otra, por favor.")}
       else err("Ya hay una cita pendiente con este número de WhatsApp. Si quiere cambiarla o agendar otro carro, escríbanos por WhatsApp.")})})}
 /* aviso al celular del equipo (ntfy); sin nombre ni teléfono del cliente */
@@ -815,6 +829,19 @@ function done(){px("Schedule",{value:total(),currency:"CRC",num_items:allCars().
   $("cal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("GlassDetailingCR: pulido a domicilio")+"&dates="+f(S.h)+"/"+f(S.h+DUR*n)+"&details="+encodeURIComponent(A.map(function(c){return c.veh+": "+lines(c).map(function(l){return l.n}).join(" + ")}).join(" | ")+" · "+crc(total()))+"&location="+encodeURIComponent(mapLink()||$("addr").value.trim());
   document.body.classList.remove("book");document.body.classList.add("ok");window.scrollTo(0,0)}
 function promoUI(){buildSvc()}
+/* OTRO CARRO SIN VOLVER A ESCRIBIR: en el resumen se suma a la misma visita (hay que escoger la hora otra vez,
+   porque ocupa 2 horas más); después de agendar, "Agendar otro carro" empieza otra cita con nombre, WhatsApp y ubicación ya puestos. */
+function otroCarroVisita(){if(CARS.length>=MAXC)return;saveCar();CARS.push(newCar());loadCar(CARS.length-1);S.h=null;show(0);toast2("Carro "+CARS.length+" agregado. Sus datos y su ubicación ya quedaron.")}
+function otraCita(){CARS=[newCar()];S.ci=0;useCar(CARS[0]);S.day="";S.h=null;CX.url="";
+  document.body.classList.remove("ok");document.body.classList.add("book");history.pushState({b:1},"");show(0);toast2("Sus datos y su ubicación ya quedaron. Solo falta el carro.")}
+/* EN ESTE CELULAR se recuerdan el nombre, el WhatsApp y las citas futuras (con su enlace para cancelar), para mostrar "Su próxima cita" en la portada. */
+function lsGet(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function citasMias(){var hoy=Date.now();return lsGet("gdcr_citas",[]).filter(function(c){return c&&c.url&&pd(c.d).getTime()+c.h*36e5>hoy-36e5})}
+function guardarCita(){var L=citasMias();L.push({url:CX.url,d:S.day,h:S.h,v:allCars().map(function(c){return c.veh}).join(", ")});lsSet("gdcr_citas",L.slice(-5));lsSet("gdcr_cli",{n:$("cli").value.trim(),t:telN()})}
+function quitarCita(ids){lsSet("gdcr_citas",citasMias().filter(function(c){return ids.every(function(id){return c.url.indexOf(id)<0})}))}
+function pintarMias(){var L=citasMias().sort(function(a,b){return (a.d+pad(a.h)).localeCompare(b.d+pad(b.h))}),el=$("mycita");if(!el)return;el.hidden=!L.length;if(!L.length)return;
+  el.innerHTML='<span class="mt">'+(L.length>1?"Sus próximas citas":"Su próxima cita")+'</span>'+L.map(function(c){return '<div class="mc"><span><b>'+esc(niceDay(c.d).replace(/^./,function(x){return x.toUpperCase()}))+', '+fmtH(c.h)+'</b><small>'+esc(c.v||"")+'</small></span><a class="mcx" href="'+esc(c.url)+'">Cancelar</a></div>'}).join("")}
 /* CANCELAR CITA: el enlace lleva los ids, la clave (ck) que se guardó en la cita, el día, la hora y el WhatsApp.
    Las reglas solo dejan pasar la cita a "Cancelada" si la clave coincide; después se liberan sus horas. */
 var CX={url:""};
@@ -832,9 +859,11 @@ function cxRun(P,b){if(!DB){$("cxe").textContent="No hay conexión. Revise su in
   var why=$("cxw").value,bt=DB.batch();P.ids.forEach(function(id){bt.update(DB.doc("jobs/"+id),{st:"Cancelada",cxk:P.k,cxAt:Date.now(),cxWhy:why})});
   bt.commit().then(function(){var dels=[];P.ids.forEach(function(id,k){for(var q=0;q<DUR;q++)dels.push(DB.doc("slots/"+P.d+"_"+pad(P.h+DUR*k+q)).delete().catch(function(){}))});
       if(P.t)dels.push(DB.doc("holds/"+P.t).delete().catch(function(){}));
-      aviso("Cancelaron una cita",niceDay(P.d)+", "+fmtH(P.h));return Promise.all(dels)}).then(function(){
+      aviso("Cancelaron una cita",niceDay(P.d)+", "+fmtH(P.h));quitarCita(P.ids);return Promise.all(dels)}).then(function(){
       $("cxc").innerHTML='<div class="check"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><h2>Su cita quedó cancelada</h2><p class="sub">Ya le avisamos al equipo. Cuando guste, agende otra.</p><a class="cta" href="./">Agendar otra cita</a><a class="lbtn" href="'+waUrl("Hola GlassDetailingCR 👋 Acabo de cancelar mi cita del "+niceDay(P.d)+". ")+'" target="_blank" rel="noopener">Escribirnos por WhatsApp</a><a class="lbtn" href="./">Volver al inicio</a>'},
     function(){b.disabled=false;b.textContent="Sí, cancelar mi cita";$("cxe").textContent="No pudimos cancelarla: puede que ya esté cancelada o que el enlace no sea el correcto. Escríbanos por WhatsApp y le ayudamos.";$("cxe").classList.add("on")})}
+$("addmore").onclick=otroCarroVisita;$("again").onclick=otraCita;pintarMias();
+(function(){var c=lsGet("gdcr_cli",null);if(c){if(c.n&&!$("cli").value)$("cli").value=c.n;if(c.t&&!$("tel").value)$("tel").value=c.t.replace(/(\d{4})(\d{4})/,"$1 $2")}})();
 $("cxcopy").onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(CX.url):Promise.reject()).then(function(){b.textContent="Enlace copiado ✓"},function(){b.textContent="Mantenga presionado “Cancelar mi cita” para copiarlo"})};
 document.querySelectorAll(".comp").forEach(function(c){var r=c.querySelector("input"),d=c.querySelector(".desp"),l=c.querySelector(".linea");function pon(){d.style.clipPath="inset(0 0 0 "+r.value+"%)";l.style.left=r.value+"%"}r.addEventListener("input",pon);pon()});
 $("cxwa").href=waUrl("Hola GlassDetailingCR 👋 Necesito cancelar mi cita.");$("wafab").href=waUrl("Hola GlassDetailingCR 👋 Tengo una consulta.");
