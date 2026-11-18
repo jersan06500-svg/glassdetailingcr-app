@@ -99,7 +99,7 @@ svg{display:block}
 .igrid button{height:64px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--m);font-size:11px;transition:background .2s ease,color .2s ease}
 .igrid button.on{background:var(--s2,#22242B);color:var(--c)}
 #ibtn .pd{top:0;right:0}
-#iback{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9}#iback.hide{display:none}
+#imback{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9}#imback.hide{display:none}
 
 #toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,20px);opacity:0;z-index:20;max-width:86%;padding:12px 18px;border-radius:16px;background:var(--c);color:var(--bg);font-size:14px;text-align:center;pointer-events:none}
 #sheet{position:fixed;inset:0;z-index:15;display:flex;align-items:flex-end;background:rgba(0,0,0,.5)}
@@ -365,7 +365,7 @@ Entrar con Google</button>
 <div id="rs"><div id="rsg" role="button" tabindex="0" aria-label="Subir o bajar la lista de paradas"><i></i></div><div id="scroll"><div id="road"></div></div></div>
 </section>
 
-<div id="iback" class="hide"></div>
+<div id="imback" class="hide"></div>
 <nav id="island" class="hide" aria-label="Secciones"><div id="imenu" class="hide" role="menu"><button id="nadd" class="press"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Agendar parada</button><div class="igrid"><button class="on" data-nav="ruta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Ruta</span></button><button data-nav="mes"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Agenda</span></button><button data-nav="cli"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .7 3.2 2.6 3.6 5.4"/></svg><span>Clientes</span></button><button data-nav="num"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Números</span></button><button data-nav="pen" style="position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg><span>Pendientes</span></button></div></div><button id="ibtn" class="press" aria-label="Abrir menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="pd" id="ibd" style="display:none"></span></button></nav>
 <section id="vpar" class="view hide" aria-label="Parada en curso"></section>
 <section id="vcob" class="view hide" aria-label="Cobrar"></section>
@@ -475,7 +475,7 @@ function hideSheet(){var sh=$("sheet"),inn=sh.querySelector(".in");if(sh.classLi
 /* pastilla que se desliza a la sección activa de la isla */
 /* MENÚ FLOTANTE: un solo botón + que abre las secciones; se cierra tocando afuera, la ×, una opción o deslizando hacia abajo */
 var IMOPEN=false;
-function imSet(open,quick){if(open===IMOPEN)return;IMOPEN=open;var m=$("imenu"),bk=$("iback"),isl=$("island");isl.classList.toggle("open",open);$("ibtn").setAttribute("aria-expanded",open);$("ibtn").setAttribute("aria-label",open?"Cerrar menú":"Abrir menú");gsap.killTweensOf([m,bk]);
+function imSet(open,quick){if(open===IMOPEN)return;IMOPEN=open;var m=$("imenu"),bk=$("imback"),isl=$("island");isl.classList.toggle("open",open);$("ibtn").setAttribute("aria-expanded",open);$("ibtn").setAttribute("aria-label",open?"Cerrar menú":"Abrir menú");gsap.killTweensOf([m,bk]);
   if(open){m.classList.remove("hide");bk.classList.remove("hide");vib(8);if(!RM){gsap.fromTo(bk,{opacity:0},{opacity:1,duration:.25});gsap.fromTo(m,{opacity:0,y:14,scale:.96},{opacity:1,y:0,scale:1,duration:.32,ease:EO});gsap.from("#imenu .igrid button",{y:8,opacity:0,stagger:.025,duration:.28,ease:EO,delay:.04})}return}
   var end=function(){m.classList.add("hide");bk.classList.add("hide");gsap.set([m,bk],{clearProps:"all"})};
   if(RM||quick){end();return}gsap.to(bk,{opacity:0,duration:.18});gsap.to(m,{opacity:0,y:10,scale:.97,duration:.18,ease:"power2.in",onComplete:end})}
@@ -1360,12 +1360,15 @@ function renderNum(){var el=$("vnum"),R=rango(NP,0),P=rango(NP,-1),all=allP();
   '<button class="kp press" id="meta" style="flex-direction:row;align-items:center;gap:12px;text-align:left"><svg width="56" height="56" viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="24" fill="none" stroke="#22242B" stroke-width="7"/><circle id="mring" cx="29" cy="29" r="24" fill="none" stroke="#FF5A5F" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(150.8*mp/100).toFixed(1)+' 150.8" transform="rotate(-90 29 29)"/></svg><span style="display:flex;flex-direction:column"><span class="q" style="font-size:20px">'+(meta?mp+" %":"Meta")+'</span><span class="m" style="font-size:11px">'+(meta?"de "+crc(meta)+" este mes":"Tocá para poner la del mes")+'</span></span></button>'+
   '<div class="kp"><span class="q" style="font-size:20px">'+(ing?queda+" %":"—")+'</span><span class="m" style="font-size:11px">'+(ing?"queda después de producto ("+crc(ing-cst)+")":"queda después de producto")+'</span></div></div>'+
   (function(){var cp=COMPRAS.filter(function(c){return c.date>=R[0]&&c.date<=R[1]}),tc=cp.reduce(function(a,c){return a+(c.price||0)},0);return '<div class="kp" style="flex-direction:row;justify-content:space-between;align-items:center"><span style="display:flex;flex-direction:column;gap:2px"><span class="m" style="font-size:12px">Compras de producto</span><span class="q" style="font-size:20px">'+crc(tc)+'</span></span><span class="m" style="font-size:12px;text-align:right">'+cp.length+' compra'+(cp.length===1?"":"s")+(ing?'<br>'+Math.round(tc*100/ing)+' % de lo que entró':'')+'</span></div>'})()+
+  (function(){var lo=0,rows=INS.map(function(it){var x=stockOf(it),pv=Math.min(100,x.pct);if(x.low)lo++;
+    return '<div style="display:flex;flex-direction:column;gap:5px"><div style="display:flex;justify-content:space-between;font-size:13px;gap:10px"><span>'+it.n+'</span><span class="m" style="white-space:nowrap'+(x.low?';color:var(--r)':'')+'">'+(x.carros>0?"alcanza "+x.carros:"se acabó")+' · '+pv+' %</span></div><div style="height:6px;border-radius:3px;background:var(--s2)"><div class="sb2" style="width:'+pv+'%;height:100%;border-radius:3px;background:'+(x.low?'var(--r)':'var(--ok)')+'"></div></div></div>'}).join("");
+    return '<button class="kp press" id="ninsu" style="gap:12px;text-align:left;width:100%"><span style="display:flex;justify-content:space-between;align-items:center"><span class="q" style="font-size:16px">Insumos</span><span class="m" style="font-size:12px'+(lo?';color:var(--r)':'')+'">'+(lo?lo+" por acabarse · ":"")+'Ver y comprar ›</span></span>'+rows+'</button>'})()+
   '<div class="kp" style="gap:12px">'+mixBar("Cómo pagaron",mix(paid,"pm"),"Todavía no hay cobros en este período.")+mixBar("De dónde vienen",mix(cur,"src"),"Se va a llenar con \"¿Cómo nos conoció?\" al agendar.")+'</div>'+
   (svL.length?'<div class="kp" style="gap:12px"><span class="q" style="font-size:16px">Lo que más se vende</span>'+svL.map(function(n){return '<div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:13px;gap:10px"><span>'+esc(n)+'</span><span class="q">'+crc(sv[n])+'</span></div><div style="height:6px;border-radius:3px;background:var(--s2)"><div class="sb2" style="width:'+Math.round(sv[n]*100/svMax)+'%;height:100%;border-radius:3px;background:var(--w)"></div></div></div>'}).join("")+'</div>':'')+
   '</div>';
   el.innerHTML=h;
   Array.prototype.forEach.call(el.querySelectorAll("[data-np]"),function(b){b.onclick=function(){NP=b.dataset.np;renderNum()}});
-  $("meta").onclick=function(){metaSheet(meta)};
+  $("meta").onclick=function(){metaSheet(meta)};$("ninsu").onclick=function(){goView("ins",null,true)};
   animNum()}
 function num(n){return Math.round(n).toLocaleString("es-CR").replace(/,/g," ")}
 function kpi(i,v,l){return '<div class="kp">'+i+'<span class="q" style="font-size:'+(v.length>7?16:20)+'px;white-space:nowrap">'+v+'</span><span class="m" style="font-size:11px">'+l+'</span></div>'}
@@ -1658,7 +1661,7 @@ $("dprev").onclick=function(){ROADDIR=-1;pick(ymd(addDays(parse(S.sel),-1)))};$(
 $("me").onclick=function(){goView("mas",null,true)};
 $("sheet").onclick=function(e){if(e.target===$("sheet"))hideSheet()};
 bindSoon($("island"));$("nadd").onclick=function(){imSet(false,true);openNew({date:S.sel})};
-$("ibtn").onclick=function(){imSet(!IMOPEN)};$("iback").onclick=function(){imSet(false)};
+$("ibtn").onclick=function(){imSet(!IMOPEN)};$("imback").onclick=function(){imSet(false)};
 $("imenu").addEventListener("click",function(e){if(e.target.closest("[data-nav]"))imSet(false)},true);
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&IMOPEN)imSet(false)});
 (function(){var y0=null;$("imenu").addEventListener("touchstart",function(e){y0=e.touches[0].clientY},{passive:true});$("imenu").addEventListener("touchend",function(e){if(y0!=null&&e.changedTouches[0].clientY-y0>40)imSet(false);y0=null},{passive:true})})();
