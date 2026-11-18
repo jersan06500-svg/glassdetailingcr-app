@@ -202,12 +202,12 @@ footer{color:var(--mute);font-size:12px;text-align:center;margin:26px 0 10px}
 .forcar{background:var(--card);border-radius:14px;padding:10px 14px;margin:0 0 12px;font-size:15px;color:var(--mute)}
 .forcar:empty{display:none}
 .forcar b{color:var(--ink)}
-#s2 .svc{gap:12px}
-#s2 .svc .opt{padding:18px 16px;min-height:96px}
-#s2 .opt b{font-size:19px}
-#s2 .opt small{font-size:14px}
-#s2 .svc .pr{font-size:20px}
-#s2 .both{display:block;margin-top:6px;font-size:13px;font-weight:700;color:var(--ink);background:color-mix(in srgb,#2b5aa8 18%,transparent);border-radius:8px;padding:3px 8px;width:fit-content}
+#gl{gap:12px}
+#gl .opt{padding:18px 16px;min-height:96px}
+#gl .opt b{font-size:19px}
+#gl .opt small{font-size:14px}
+#gl .pr{font-size:20px}
+#gl .both{display:block;margin-top:6px;font-size:13px;font-weight:700;color:var(--ink);background:color-mix(in srgb,#2b5aa8 18%,transparent);border-radius:8px;padding:3px 8px;width:fit-content}
 #locdlg{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
 #locdlg[hidden]{display:none}
 #locdlg .box{width:100%;max-width:560px;background:var(--card);border-radius:24px 24px 0 0;padding:22px 18px calc(18px + env(safe-area-inset-bottom,0px));font-size:16px}
@@ -258,7 +258,7 @@ h1,h2,h3{font-family:Inter,system-ui,sans-serif;font-stretch:normal;letter-spaci
 .opt[aria-pressed=true]::after{background:var(--acc)}
 .day{border-radius:12px}.hr{border-radius:999px;border-width:1.5px}
 .zc.free{background:var(--tint);border-color:var(--acc)}
-#s2 .both{background:var(--tint);color:var(--deep)}
+#gl .both{background:var(--tint);color:var(--deep)}
 .pl .star{background:var(--tint)}
 .need{border-width:1.5px;border-color:var(--acc)}
 input,textarea,select{background:var(--card);border-width:1px;border-radius:10px}
@@ -356,7 +356,7 @@ body{background:#0E0F12;color:#F2F3F5}
 .svc .ic{background:#22242B}.svc .ic svg{color:#F2F3F5}
 .svc .pr{font-family:"Questrial",sans-serif!important;font-weight:400}
 .tag{background:#9B0A2C;color:#fff}
-#s2 .both{background:#22242B;color:#F2F3F5}
+#gl .both{background:#22242B;color:#F2F3F5}
 .svc .plus{background:#F2F3F5;color:#0E0F12}
 .day{background:#17181D;border:1px solid #2C2E36;border-radius:16px;color:#F2F3F5}
 .day b{font-family:"Questrial",sans-serif!important;font-weight:400}
@@ -395,6 +395,7 @@ footer{color:#7D828C}
 /* animaciones suaves: los botones se hunden al tocarlos y cada paso entra suave */
 .cta,.next,.opt,.day,.hr,.gps,.wbtn,.lbtn,.back,.cars button,.stick button,.wafab{transition:transform .16s cubic-bezier(.23,1,.32,1),background-color .2s,border-color .2s}
 .cta:active,.next:active,.opt:active,.day:active,.hr:active,.gps:active,.wbtn:active,.lbtn:active,.back:active,.cars button:active,.stick button:active,.wafab:active{transform:scale(.97)}
+.svch{font-size:22px;margin:26px 0 4px}
 .step.on{animation:paso .32s cubic-bezier(.23,1,.32,1)}
 @keyframes paso{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.step.on{animation:none}}
@@ -474,10 +475,7 @@ footer{color:#7D828C}
       </div>
       <div class="warn" id="vw"></div>
       <div class="hint">Si al llegar el tipo de carro es otro, el precio se ajusta al real.</div>
-    </div>
-
-    <div class="step" id="s2">
-      <div class="cars" id="ct2"></div><h2 id="h2t">¿Qué le hacemos?</h2><p class="sub">Toque una opción. Focos con 5 meses de garantía; parabrisas, 3 meses.</p>
+      <h3 class="svch" id="h2t">¿Qué le hacemos?</h3><p class="sub">Focos con 5 meses de garantía; parabrisas, 3 meses.</p>
       <div class="forcar" id="forcar"></div>
       <div class="svc" id="gl"></div>
       <div class="need"><b>Servicio a domicilio gratis en toda la GAM</b>
@@ -586,13 +584,13 @@ function closed(){$("go").outerHTML='<a class="cta" href="https://wa.me/'+CFG.wa
 function waUrl(t){return "https://wa.me/"+CFG.wa+"?text="+encodeURIComponent(t)}
 
 /* PASOS */
-var STEPS=["s1","s2","s4","s3","s4b","s5"];
-function show(i){S.step=i;STEPS.forEach(function(s,k){$(s).classList.toggle("on",k===i)});$("pt").textContent=i<5?"Paso "+(i+1)+" de 5":"Último paso";$("pb").style.width=((i+1)/6*100)+"%";
-  $("nx").textContent=i===5?"Confirmar cita":"Siguiente";err("");upd();window.scrollTo(0,0);if(i===3)loadBusy();if(i===5)renderSum()}
+var STEPS=["s1","s4","s3","s4b","s5"];
+function show(i){S.step=i;STEPS.forEach(function(s,k){$(s).classList.toggle("on",k===i)});$("pt").textContent=i<4?"Paso "+(i+1)+" de 4":"Último paso";$("pb").style.width=((i+1)/5*100)+"%";
+  $("nx").textContent=i===4?"Confirmar cita":"Siguiente";err("");upd();window.scrollTo(0,0);if(i===2)loadBusy();if(i===4)renderSum()}
 function px(e,d){try{fbq("track",e,d)}catch(x){}}
 $("go").onclick=function(){px("InitiateCheckout");document.body.classList.add("book");history.pushState({b:1},"");show(0)};
-$("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(1);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
-window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(1)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
+$("bk").onclick=function(){if(S.step===0&&S.ci>0){loadCar(S.ci-1);show(0);return}if(S.step===0){document.body.classList.remove("book");return}show(S.step-1)};
+window.addEventListener("popstate",function(){if(document.body.classList.contains("book")){if(S.step===0&&S.ci>0){history.pushState({b:1},"");loadCar(S.ci-1);show(0)}else if(S.step>0){history.pushState({b:1},"");show(S.step-1)}else document.body.classList.remove("book")}});
 /* VARIOS CARROS */
 function newCar(){return {vt:"",veh:"",gl:"combo",fo:false,tp:false,mk:"",md:"",yr:"",col:"",pl:""}}
 var CARS=[newCar()];S.ci=0;
@@ -607,10 +605,10 @@ function carTotal(c){var g=GLASS.find(function(x){return x.id===c.gl});if(!g)ret
 function carOk(c){return !!c.vt&&(c.mk||"").length>=2&&(c.md||"").length>=1&&carTotal(c)>0}
 function vtN(c){return c.vt==="suv"?"SUV o pick-up":"Sedán o hatchback"}
 function renderCars(){var A=allCars(),n=A.length,h="";
-  if(n>1)h=A.map(function(c,i){return '<span class="chip"><button type="button" data-ci="'+i+'" aria-pressed="'+(i===S.ci)+'"'+(carOk(c)&&i!==S.ci?' class="ok"':'')+'>🚗 '+(c.veh?esc(c.veh.slice(0,14)):"Carro "+(i+1))+'</button><button type="button" class="x" data-cx="'+i+'" aria-label="Quitar carro '+(i+1)+'">✕</button></span>'}).join("");
-  ["ct1","ct2"].forEach(function(id){$(id).innerHTML=h});
+  if(n>1)h=A.map(function(c,i){return '<span class="chip"><button type="button" data-ci="'+i+'" aria-pressed="'+(i===S.ci)+'"'+(carOk(c)&&i!==S.ci?' class="ok"':'')+'>'+(c.veh?esc(c.veh.slice(0,14)):"Carro "+(i+1))+'</button><button type="button" class="x" data-cx="'+i+'" aria-label="Quitar carro '+(i+1)+'">✕</button></span>'}).join("");
+  $("ct1").innerHTML=h;
   $("h1t").textContent=n>1?"Carro "+(S.ci+1)+": ¿cuál es?":"¿Qué carro tiene?";
-  $("h2t").textContent=n>1?"Carro "+(S.ci+1)+": ¿qué le hacemos?":"¿Qué le hacemos?";
+  $("h2t").textContent="¿Qué le hacemos?";
   $("more").innerHTML=n<MAXC?'<button type="button" id="addcar"><span style="font-size:20px">＋</span> Agregar otro carro</button><small>¿Tiene otro carro? Agéndelos juntos en la misma visita. Cada uno con sus propios servicios.</small>':
     '<small>Máximo '+MAXC+' carros por reserva aquí. ¿Son más? <a href="'+waUrl("Hola GlassDetailingCR, quiero agendar más de "+MAXC+" carros")+'" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>.</small>';
 }
@@ -618,29 +616,29 @@ function renderCars(){var A=allCars(),n=A.length,h="";
    en el celular, el toque podía caer en "Agregar otro carro" justo después de elegir un servicio. */
 function addCar(){if(CARS.length>=MAXC||Date.now()-(S.tapT||0)<700||Date.now()-(S.addT||0)<1200)return;
   if(!carOk(curCar())){err(!S.vt||mkName().length<2||!$("md").value.trim()?"Primero complete el tipo, la marca y el modelo de este carro.":"Elija al menos un servicio para este carro.");return}
-  S.addT=Date.now();saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado 🚗")}
+  S.addT=Date.now();saveCar();CARS.push(newCar());loadCar(CARS.length-1);show(0);toast2("Carro "+CARS.length+" agregado")}
 function useCar(c){S.vt=c.vt;S.gl=c.gl;S.fo=c.fo;S.tp=!!c.tp;setCarFields(c);
   Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(y){y.setAttribute("aria-pressed",y.dataset.vt===S.vt)});chkModel();buildSvc()}
-function rmCar(k){if(CARS.length<2)return;saveCar();CARS.splice(k,1);if(k<S.ci||S.ci>=CARS.length)S.ci--;useCar(CARS[S.ci]);show(S.step>1?1:S.step);toast2("Carro quitado")}
+function rmCar(k){if(CARS.length<2)return;saveCar();CARS.splice(k,1);if(k<S.ci||S.ci>=CARS.length)S.ci--;useCar(CARS[S.ci]);show(0);toast2("Carro quitado")}
 /* Carros que quedaron en blanco (sin tipo, marca ni modelo) se quitan solos al seguir. */
 function dropEmpty(){saveCar();var keep=CARS.filter(function(c){return c.vt||c.mk||c.md});if(!keep.length)keep=[CARS[0]];
   if(keep.length===CARS.length)return;var cur=CARS[S.ci];CARS=keep;S.ci=Math.max(0,CARS.indexOf(cur));if(S.ci<0)S.ci=0;useCar(CARS[S.ci])}
 document.addEventListener("click",function(e){var t=e.target.closest?e.target:e.target.parentElement;
   var x=t.closest("[data-cx]");if(x){e.preventDefault();rmCar(+x.dataset.cx);return}
-  var b=t.closest("[data-ci]");if(b){var i=+b.dataset.ci;if(i!==S.ci){loadCar(i);show(S.step>1?0:S.step)}return}
+  var b=t.closest("[data-ci]");if(b){var i=+b.dataset.ci;if(i!==S.ci){loadCar(i);show(0)}return}
   if(t.closest("#addcar"))addCar()});
 function toast2(m){var t=$("er");t.textContent=m;t.style.background="color-mix(in srgb,var(--ok) 14%,transparent)";t.style.color="var(--ok)";t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on");t.style.background="";t.style.color=""},2200)}
 function err(t){$("er").textContent=t||"";$("er").classList.toggle("on",!!t)}
 function total(){return allCars().reduce(function(a,c){return a+carTotal(c)},0)+feeAmt()}
-function okStep(){if(S.step===0)return !!S.vt&&mkName().length>=2&&$("md").value.trim().length>=1;if(S.step===1)return carTotal(curCar())>0;if(S.step===2)return zoneOk()&&(S.lat!=null||$("addr").value.trim().length>=10);if(S.step===3)return !!S.day&&S.h!=null;
-  if(S.step===4)return $("cli").value.trim().length>=2&&telOk();return true}
-function upd(){var n=CARS.length;$("tot").textContent=crc(total());$("totl").textContent=n>1?"Total · "+n+" carros":"Total";$("nx").disabled=!okStep();renderCars()}
+function okStep(){if(S.step===0)return !!S.vt&&mkName().length>=2&&$("md").value.trim().length>=1&&carTotal(curCar())>0;if(S.step===1)return zoneOk()&&(S.lat!=null||$("addr").value.trim().length>=10);if(S.step===2)return !!S.day&&S.h!=null;
+  if(S.step===3)return $("cli").value.trim().length>=2&&telOk();return true}
+function upd(){var n=CARS.length;if(S.svt!==S.vt){S.svt=S.vt;buildSvc()}$("tot").textContent=crc(total());$("totl").textContent=n>1?"Total · "+n+" carros":"Total";$("nx").disabled=!okStep();renderCars()}
 function telN(){var n=$("tel").value.replace(/\D/g,"");if(n.length===11&&n.indexOf("506")===0)n=n.slice(3);return n}
 function telOk(){return /^[245678]\d{7}$/.test(telN())}
 $("nx").onclick=function(){if(!okStep()){hintStep();return}
-  if(S.step===1){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(carTotal(A[i])>0||!A[i].vt||A[i].veh.length<3?0:1);err("Falta completar el carro "+(i+1)+".");return}saveCar();px("AddToCart",{value:total(),currency:"CRC",num_items:allCars().length})}
-  if(S.step<5)show(S.step+1);else submit()};
-function hintStep(){if(S.step===0)err(!S.vt?"Toque si su carro es sedán o SUV.":mkName().length<2?"Escriba la marca del carro.":"Escriba el modelo del carro.");if(S.step===2)err(!S.zone?"Mándenos su ubicación o elija la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escríbanos por WhatsApp para un pedido especial.":"Escriba la dirección con algunas señas.");if(S.step===3)err("Elija el día y la hora.");if(S.step===4)err(!telOk()?"Revise su número de WhatsApp: son 8 dígitos.":"Escriba su nombre.")}
+  if(S.step===0){dropEmpty();var A=allCars();for(var i=0;i<A.length;i++)if(!carOk(A[i])){loadCar(i);show(0);err("Falta completar el carro "+(i+1)+".");return}saveCar();px("AddToCart",{value:total(),currency:"CRC",num_items:allCars().length})}
+  if(S.step<4)show(S.step+1);else submit()};
+function hintStep(){if(S.step===0)err(!S.vt?"Toque si su carro es sedán o SUV.":mkName().length<2?"Escriba la marca del carro.":!$("md").value.trim()?"Escriba el modelo del carro.":"Elija un servicio para su carro.");if(S.step===1)err(!S.zone?"Mándenos su ubicación o elija la zona donde está el carro.":S.zone.z==="no"?"No llegamos a esa zona por la web. Escríbanos por WhatsApp para un pedido especial.":"Escriba la dirección con algunas señas.");if(S.step===2)err("Elija el día y la hora.");if(S.step===3)err(!telOk()?"Revise su número de WhatsApp: son 8 dígitos.":"Escriba su nombre.")}
 
 /* PASO 1: tipo de carro */
 Array.prototype.forEach.call(document.querySelectorAll("[data-vt]"),function(b){b.onclick=function(){var g=guess();
@@ -808,7 +806,7 @@ function submit(){var b=$("nx");if(b.disabled)return;err("");
     for(var q=0;q<DUR;q++)bt.set(DB.doc("slots/"+S.day+"_"+pad(h0+q)),{date:S.day,h:h0+q,job:sid,at:at})});
   bt.set(DB.doc("holds/"+tel),{job:ids[0],date:S.day,at:at});
   bt.commit().then(function(){CX.url=cxUrl(ids,ck,S.day,S.h,tel);aviso("Nueva reserva web",niceDay(S.day)+", "+fmtH(S.h)+" · "+A.map(function(c){return c.veh}).join(", ")+" · "+crc(total()));done()},function(){loadBusy().then(function(){var taken=false;for(var k=0;k<DUR*n;k++)if(BUSY[S.day+"_"+pad(S.h+k)])taken=true;b.textContent="Confirmar cita";upd();
-      if(taken){S.h=null;show(3);err("Uy, alguien acaba de tomar esa hora. Elija otra, por favor.")}
+      if(taken){S.h=null;show(2);err("Uy, alguien acaba de tomar esa hora. Elija otra, por favor.")}
       else err("Ya hay una cita pendiente con este número de WhatsApp. Si quiere cambiarla o agendar otro carro, escríbanos por WhatsApp.")})})}
 /* aviso al celular del equipo (ntfy); sin nombre ni teléfono del cliente */
 function aviso(t,m){if(!/^glassdetailingcr-[a-z0-9]{6,30}$/.test(CFG.nt||""))return;try{fetch("https://ntfy.sh/",{method:"POST",body:JSON.stringify({topic:CFG.nt,title:t,message:m,tags:["calendar"],click:"https://jersan06500-svg.github.io/glassdetailingcr-app/"})}).catch(function(){})}catch(e){}}
