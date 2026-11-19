@@ -371,7 +371,7 @@ body.mday #map,body.mday .leaflet-container{background:#e9e7e3}
 #rs{--s1:rgba(255,255,255,.07);--s2:rgba(255,255,255,.1);--ln:rgba(255,255,255,.12)}
 #mes,.rb,#rvb,#me,.pill2,#zbtn,#ibtn{background-color:rgba(44,26,20,.55)!important}
 #imenu{background-color:rgba(24,25,31,.72)!important}
-#gbg{position:fixed;inset:0;z-index:7;display:none;pointer-events:none;background:radial-gradient(90% 50% at 0% 0%,rgba(255,176,90,.28),transparent 65%),radial-gradient(80% 50% at 100% 100%,rgba(155,10,44,.35),transparent 65%),linear-gradient(180deg,rgba(12,8,6,.18),rgba(12,8,6,.55)),url(img/glass-bg.jpg?v=2) center/cover #1A1210}
+#gbg{position:fixed;inset:0;z-index:7;display:none;pointer-events:none;}
 body:not([data-v="ruta"]):not([data-v="run"]) #gbg{display:block}
 .view:not(#vrun){background:transparent;--s1:rgba(255,255,255,.075);--s2:rgba(255,255,255,.11);--ln:rgba(255,255,255,.14)}
 .view:not(#vrun) :is(.kp,.pend,.gauge,.tank,.chart,.sv,.bdr,.tg,.nslot,.ck,.note,.seg,.sinpe,.steps,.ibtn){box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 24px rgba(0,0,0,.18)}
@@ -388,6 +388,15 @@ body:not([data-v="ruta"]):not([data-v="run"]) #gbg{display:block}
 #rsp .bar{height:5px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
 #rsp .bar i{display:block;height:100%;width:0;border-radius:3px;transition:width .7s cubic-bezier(.23,1,.32,1)}
 @media (prefers-reduced-motion:reduce){#rsp .bar i{transition:none}}
+/* COLORES DE LA REFERENCIA (18 nov, el dueño: "quiero los colores de la referencia"): fondo ámbar, rojo, vino, morado y verde oliva; tarjetas de vidrio rojizo */
+:root{--mesh:radial-gradient(60% 42% at 0% 0%,rgba(222,140,42,.95),transparent 70%),radial-gradient(55% 38% at 100% 4%,rgba(196,84,40,.9),transparent 70%),radial-gradient(75% 45% at 45% 52%,rgba(128,36,46,.9),transparent 75%),radial-gradient(60% 40% at 28% 100%,rgba(96,44,112,.9),transparent 75%),radial-gradient(55% 40% at 100% 96%,rgba(72,98,44,.9),transparent 75%);--sf:#F5C518;--sc:#FF7A2E;--sp:#34D17A;--sv:#A78BFA;--st:#4CC9F0}
+#gbg{background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.28)),var(--mesh),#4A1E22!important}
+.view:not(#vrun),#sheet .in,#rs{--s1:rgba(64,24,24,.42);--s2:rgba(255,255,255,.09);--ln:rgba(255,255,255,.15)}
+.ctop{background:rgba(64,24,24,.45)!important}
+#rs{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,0) 30%),var(--mesh),rgba(74,30,34,.9)!important}
+#mes,.rb,#rvb,#me,.pill2,#zbtn,#ibtn{background-color:rgba(70,30,28,.62)!important}
+#imenu{background-color:rgba(74,30,34,.82)!important}
+#sheet .in{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 30%),var(--mesh),rgba(74,30,34,.94)!important}
 </style>
 </head>
 <body data-v="ruta">
@@ -1356,7 +1365,7 @@ function renderFic(){var el=$("vfic"),c=clientes().find(function(x){return x.key
   var hoy=parse(ymd(new Date())),gs="",rep="",loc=locOfC(c);
   if(u){var s=svcOf(u);var g=function(lbl,m,col){var end=addMonths(u.date,m),tot=(end-parse(u.date))/864e5,left=(end-hoy)/864e5;
       return '<div class="gauge">'+gaugeSvg(left/tot,col)+'<span style="font-size:13px">'+lbl+'</span><span class="m" style="font-size:11px">'+(left>=0?"garantía hasta "+fmtD(end):"venció el "+fmtD(end))+'</span></div>'};
-    if(s.f)gs+=g("Focos",5,"#FFB547");if(s.p||s.v)gs+=g(s.v?"Vidrios":"Parabrisas",3,s.v?"#8B9CFF":"#4CC9F0");
+    if(s.f)gs+=g("Focos",5,"#F5C518");if(s.p||s.v)gs+=g(s.v?"Vidrios":"Parabrisas",3,s.v?"#A78BFA":"#34D17A");
     if(car.rep)rep='<div class="note" style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--c)">'+IC.repeat+' Le toca repetir en '+MESES[car.rep.getMonth()].toLowerCase()+' '+car.rep.getFullYear()+'</div>'}
   var h='<button class="back press" id="fback" aria-label="Volver a clientes" style="position:fixed;left:16px;top:calc(16px + var(--safe-t));z-index:9;width:48px;height:48px;border-radius:24px;background:rgba(14,15,18,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)">'+IC.back+'</button><div class="vin">'+
   '<div class="hero">'+(img?'<img src="'+esc(img)+'" alt="">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:.4;transform:scale(2.2)">'+IC.car+'</div>')+'<span class="fd"></span><div class="tx"><span class="q" style="font-size:30px;line-height:1.1">'+esc(car.veh||"Vehículo")+'</span><span class="m" style="font-size:13px">'+esc(c.cli)+(c.zona!=="Sin zona"?" · "+esc(c.zona):"")+'</span></div></div>'+
