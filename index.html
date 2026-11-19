@@ -397,6 +397,10 @@ body:not([data-v="ruta"]):not([data-v="run"]) #gbg{display:block}
 #mes,.rb,#rvb,#me,.pill2,#zbtn,#ibtn{background-color:rgba(70,30,28,.62)!important}
 #imenu{background-color:rgba(74,30,34,.82)!important}
 #sheet .in{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 30%),var(--mesh),rgba(74,30,34,.94)!important}
+/* AGENDA EN BLANCO (18 nov, el dueño: "en la agenda que el vino sea blanco") */
+.md.sel{background:#F2F3F5!important;border-color:#F2F3F5;color:#1A0E10}
+.md.sel .mi{filter:brightness(0)}
+#vmes #magen{background:#F2F3F5;color:#1A0E10}
 </style>
 </head>
 <body data-v="ruta">
@@ -1563,13 +1567,13 @@ function renderMes(){var el=$("vmes"),ref=MREF||parse(S.sel),y=ref.getFullYear()
   var g=DIAS.map(function(d){return '<span class="wd">'+d+'</span>'}).join(""),off=(first1.getDay()+6)%7;for(var i=0;i<off;i++)g+="<span></span>";
   for(var d=1;d<=nd;d++){var k=pre+"-"+pad(d),v=val[k]||0,a=v?(.12+.5*v/mx).toFixed(2):0,ic="";
     if(RAIND[k]>=60)ic+=IC.rainS;if(gar[k])ic+=IC.shieldS;if(rep[k])ic+=IC.repS;
-    g+='<button class="md press'+(k===MSEL?" sel":"")+(k===hoy?" hoy":"")+(FERIADOS[k]?" fer":"")+(dayBlocked(k)?" blk":"")+(k<hoy&&!v?" past":"")+'" data-md="'+k+'" style="'+(v&&k!==MSEL?"background:rgba(255,90,95,"+a+")":"")+'" aria-label="'+d+' de '+MESES[mo]+(cnt[k]?", "+cnt[k]+" paradas":"")+(FERIADOS[k]?", feriado":"")+'"><b>'+d+'</b><span class="mi">'+ic+'</span></button>'}
+    g+='<button class="md press'+(k===MSEL?" sel":"")+(k===hoy?" hoy":"")+(FERIADOS[k]?" fer":"")+(dayBlocked(k)?" blk":"")+(k<hoy&&!v?" past":"")+'" data-md="'+k+'" style="'+(v&&k!==MSEL?"background:rgba(255,255,255,"+(a*.5).toFixed(2)+")":"")+'" aria-label="'+d+' de '+MESES[mo]+(cnt[k]?", "+cnt[k]+" paradas":"")+(FERIADOS[k]?", feriado":"")+'"><b>'+d+'</b><span class="mi">'+ic+'</span></button>'}
   var nf=Object.keys(FERIADOS).filter(function(k){return k>=hoy}).sort()[0];
   var h='<div class="ctop" style="position:relative;left:auto;right:auto;top:auto;margin:calc(12px + var(--safe-t)) 12px 0"><div style="display:flex;justify-content:space-between;align-items:center"><button class="back press" id="mprev" aria-label="Mes anterior" style="border-radius:22px;border:1px solid var(--ln)">'+IC.back+'</button>'+
   '<span style="display:flex;flex-direction:column;align-items:center"><span class="q" style="font-size:20px">'+MESES[mo]+' '+y+'</span><span class="m" style="font-size:11px">'+crc(tot)+' · '+ocup+' % ocupado'+(meta?' · meta '+Math.round(tot*100/meta)+' %':'')+'</span></span>'+
   '<button class="back press" id="mnext" aria-label="Mes siguiente" style="border-radius:22px;border:1px solid var(--ln);transform:scaleX(-1)">'+IC.back+'</button></div>'+
   '<div class="mgrid">'+g+'</div>'+
-  '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--m);padding:0 2px;flex-wrap:wrap;gap:6px"><span style="display:flex;align-items:center;gap:4px"><span style="width:26px;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(255,90,95,.12),rgba(255,90,95,.6))"></span>más ingreso</span><span style="display:flex;gap:4px;align-items:center">'+IC.rainS+'lluvia</span><span style="display:flex;gap:4px;align-items:center">'+IC.shieldS+'garantía vence</span><span style="display:flex;gap:4px;align-items:center">'+IC.repS+'toca repetir</span></div>'+
+  '<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--m);padding:0 2px;flex-wrap:wrap;gap:6px"><span style="display:flex;align-items:center;gap:4px"><span style="width:26px;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.31))"></span>más ingreso</span><span style="display:flex;gap:4px;align-items:center">'+IC.rainS+'lluvia</span><span style="display:flex;gap:4px;align-items:center">'+IC.shieldS+'garantía vence</span><span style="display:flex;gap:4px;align-items:center">'+IC.repS+'toca repetir</span></div>'+
   (nf?'<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:var(--bg);font-size:12px"><span style="width:8px;height:8px;border-radius:4px;background:#F2C14E;flex:none"></span>Próximo feriado: '+fmtD(parse(nf))+' · '+esc(FERIADOS[nf])+'</div>':'')+'</div>'+
   '<div class="vin" id="mday" style="padding-top:0"></div>';
   el.innerHTML=h;$("mday").style.paddingTop="12px";
