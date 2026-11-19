@@ -364,6 +364,19 @@ body.mday #map,body.mday .leaflet-container{background:#e9e7e3}
 .next .stag{background:rgba(14,15,18,.4);border-color:rgba(255,255,255,.18)}
 .mk.pe{border-color:var(--k,var(--d))}
 .num.pe{border-color:var(--k,var(--d))}
+/* LIQUID GLASS MÁS VISIBLE (18 nov, el dueño "no veo nada en liquid glass"): fondo de foto real borrosa en las vistas y tarjetas de vidrio */
+:root{--gl:rgba(30,32,40,.5);--glr:rgba(255,255,255,.18);--glh:rgba(255,255,255,.28)}
+#mes,.rb,#rvb,#me,.pill2,#zbtn,#ibtn,#imenu,#rs{background-image:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,0) 60%)!important;-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%)}
+#rs{background-color:rgba(24,25,31,.66)!important}
+#imenu{background-color:rgba(24,25,31,.72)!important}
+#gbg{position:fixed;inset:0;z-index:7;display:none;pointer-events:none;background:radial-gradient(120% 60% at 100% 0%,rgba(155,10,44,.45),transparent 60%),linear-gradient(180deg,rgba(10,10,14,.25),rgba(10,10,14,.62)),url(img/glass-bg.jpg) center/cover #0E0F12}
+body:not([data-v="ruta"]):not([data-v="run"]) #gbg{display:block}
+.view:not(#vrun){background:transparent;--s1:rgba(255,255,255,.075);--s2:rgba(255,255,255,.11);--ln:rgba(255,255,255,.14)}
+.view:not(#vrun) :is(.kp,.pend,.gauge,.tank,.chart,.sv,.bdr,.tg,.nslot,.ck,.note,.seg,.sinpe,.steps,.ibtn){box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 24px rgba(0,0,0,.18)}
+.view::before{background:rgba(14,15,18,.35);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.ctop{background:rgba(24,25,31,.55);border-color:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 10px 30px rgba(0,0,0,.3);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%)}
+#sheet .in{background:rgba(26,27,33,.78);border-top-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.2);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);--s1:rgba(255,255,255,.075);--s2:rgba(255,255,255,.11);--ln:rgba(255,255,255,.14)}
+@media (prefers-reduced-transparency:reduce){#gbg{display:none!important}.view:not(#vrun){background:var(--bg);--s1:#17181D;--s2:#22242B;--ln:#2C2E36}.ctop,#sheet .in{background:#17181D}}
 #rsp{flex:none;display:flex;gap:18px;padding:0 16px 12px}
 #rsp.hide{display:none}
 #rsp>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
@@ -394,6 +407,7 @@ Entrar con Google</button>
 </div>
 </section>
 
+<div id="gbg" aria-hidden="true"></div>
 <section id="app" class="hide">
 <div id="map" aria-label="Mapa de las paradas del día"></div>
 <button id="zbtn" class="press" aria-pressed="false" aria-label="Ver las zonas donde más trabajan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="10" r="5"/><circle cx="16" cy="15" r="4"/></svg> Zonas</button>
